@@ -73,20 +73,34 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "ava": {
+    "babel": true,
+    "require": [
+      "@babel/register"
+    ],
+    "files": [
+      "**/{*.,}test.js"
+    ]
+  },
   "devDependencies": {
+    "@ava/babel": "1.0.1",
     "@babel/core": "7.11.6",
     "@babel/node": "7.10.5",
     "@babel/preset-env": "7.11.5",
+    "@babel/register": "7.11.5",
     "@commitlint/cli": "9.1.2",
     "@commitlint/config-conventional": "9.1.2",
     "@tomer/eslint-config": "0.0.6",
     "@tomer/prettier-config": "0.0.2",
+    "ava": "3.12.1",
+    "ava-fast-check": "3.0.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-jsx-pragmatic": "1.0.2",
     "babel-plugin-module-resolver": "4.0.0",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-power-assert": "3.0.0",
     "eslint": "7.8.1",
+    "fast-check": "2.3.0",
     "husky": "4.3.0",
     "lint-staged": "10.3.0",
     "npm-run-all": "4.1.5",
