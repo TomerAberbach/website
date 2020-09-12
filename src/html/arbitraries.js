@@ -1,5 +1,5 @@
 import { fc } from 'ava-fast-check'
-import { html } from './index'
+import { createElement } from './index'
 import { getNonSelfClosingTags, getSelfClosingTags, getTags } from './tags'
 
 const constantArb = arb => () => arb
@@ -31,7 +31,7 @@ export const nonElementChildArb = () =>
 export const selfClosingElementArb = () =>
   fc
     .tuple(selfClosingTagArb(), attributesArb())
-    .map(([tag, attributes]) => html(tag, attributes))
+    .map(([tag, attributes]) => createElement(tag, attributes))
 
 export const nonSelfClosingElementArb = fc.memo(n =>
   fc
@@ -41,7 +41,9 @@ export const nonSelfClosingElementArb = fc.memo(n =>
       // eslint-disable-next-line no-use-before-define
       childrenArb(n)
     )
-    .map(([tag, attributes, children]) => html(tag, attributes, ...children))
+    .map(([tag, attributes, children]) =>
+      createElement(tag, attributes, ...children)
+    )
 )
 
 export const elementArb = fc.memo(n =>

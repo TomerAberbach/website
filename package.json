@@ -36,8 +36,8 @@
       [
         "transform-react-jsx",
         {
-          "pragma": "html",
-          "pragmaFrag": "html",
+          "pragma": "createElement",
+          "pragmaFrag": "createElement",
           "useSpread": true
         }
       ],
@@ -45,8 +45,8 @@
         "jsx-pragmatic",
         {
           "module": "html",
-          "import": "html",
-          "export": "html"
+          "import": "createElement",
+          "export": "createElement"
         }
       ],
       [

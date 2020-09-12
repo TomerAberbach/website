@@ -5,7 +5,7 @@ const elements = new WeakSet()
 
 export const isElement = value => elements.has(value)
 
-export const html = (tag, attributes, ...children) => {
+export const createElement = (tag, attributes, ...children) => {
   attributes = attributes ?? {}
 
   if (typeof tag === `function`) {

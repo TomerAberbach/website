@@ -6,32 +6,32 @@ import {
   selfClosingTagArb
 } from './arbitraries'
 import { isTag } from './tags'
-import { html, isElement } from './index'
+import { createElement, isElement } from './index'
 
 testProp(
-  `html throws on invalid tag`,
+  `createElement throws on invalid tag`,
   [
     fc.string().filter(string => !isTag(string)),
     attributesArb(),
     childrenArb(4)
   ],
   (t, tag, attributes, children) => {
-    t.throws(() => html(tag, attributes, ...children))
+    t.throws(() => createElement(tag, attributes, ...children))
   }
 )
 
 testProp(
-  `html throws on self closing tag with children`,
+  `createElement throws on self closing tag with children`,
   [
     selfClosingTagArb(),
     attributesArb(),
     childrenArb(4).filter(children => children.length > 0)
   ],
   (t, tag, attributes, children) => {
-    t.throws(() => html(tag, attributes, ...children))
+    t.throws(() => createElement(tag, attributes, ...children))
   }
 )
 
-testProp(`html returns elements`, [elementArb(4)], (t, element) => {
+testProp(`createElement returns elements`, [elementArb(4)], (t, element) => {
   t.true(isElement(element))
 })
