@@ -45,7 +45,8 @@
         "jsx-pragmatic",
         {
           "module": "html",
-          "import": "html"
+          "import": "html",
+          "export": "html"
         }
       ],
       [
