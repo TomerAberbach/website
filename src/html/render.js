@@ -1,23 +1,9 @@
+import createHtmlElement from 'create-html-element'
 import { htmlEscape } from 'escape-goat'
-import { isSelfClosingTag } from './tags'
 import { isElement } from './index'
 
 const render = ({ tag, attributes, children }) => {
-  let code = `<${tag}`
-
-  for (const [name, value] of Object.entries(attributes)) {
-    if (value == null) {
-      continue
-    }
-
-    code += ` ${name}="${htmlEscape(String(value))}"`
-  }
-
-  code += `>`
-
-  if (isSelfClosingTag(tag)) {
-    return code
-  }
+  let html = ``
 
   for (const child of children) {
     for (const grandchild of [].concat(child)) {
@@ -25,14 +11,17 @@ const render = ({ tag, attributes, children }) => {
         continue
       }
 
-      code += isElement(grandchild)
+      html += isElement(grandchild)
         ? render(grandchild)
         : htmlEscape(String(grandchild))
     }
   }
 
-  code += `</${tag}>`
-  return code
+  return createHtmlElement({
+    name: tag,
+    attributes,
+    html
+  })
 }
 
 export default render
