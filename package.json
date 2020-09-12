@@ -1,0 +1,98 @@
+{
+  "private": true,
+  "name": "website",
+  "author": {
+    "name": "Tomer Aberbach",
+    "email": "tomeraberbach@gmail.com",
+    "url": "https://tomeraberba.ch"
+  },
+  "scripts": {
+    "lint:eslint:base": "eslint --cache --ext js --ignore-path .gitignore --ignore-pattern \"**/fixtures/**/*\"",
+    "lint:eslint": "pnpm run lint:eslint:base -- --fix .",
+    "lint:prettier:base": "prettier --loglevel silent",
+    "lint:prettier": "pnpm run lint:prettier:base -- --write .",
+    "lint": "run-s lint:*",
+    "build": "babel-node src/index.js",
+    "clean": "rimraf build"
+  },
+  "eslintConfig": {
+    "extends": "@tomer",
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off"
+    }
+  },
+  "prettier": "@tomer/prettier-config",
+  "browserslist": [
+    "current node"
+  ],
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "power-assert"
+    ],
+    "plugins": [
+      [
+        "transform-react-jsx",
+        {
+          "pragma": "html",
+          "pragmaFrag": "html",
+          "useSpread": true
+        }
+      ],
+      [
+        "jsx-pragmatic",
+        {
+          "module": "html",
+          "import": "html"
+        }
+      ],
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ]
+        }
+      ]
+    ]
+  },
+  "lint-staged": {
+    "*.js": [
+      "pnpm run lint:eslint:base -- --fix",
+      "pnpm run lint:prettier:base -- --write"
+    ],
+    "!(pnpm-lock).{json,yaml,md}": "pnpm run lint:prettier:base -- --write"
+  },
+  "commitlint": {
+    "extends": "@commitlint/config-conventional"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "7.11.1",
+    "@babel/node": "7.10.5",
+    "@babel/preset-env": "7.11.0",
+    "@commitlint/cli": "9.1.1",
+    "@commitlint/config-conventional": "9.1.1",
+    "@tomer/eslint-config": "0.0.6",
+    "@tomer/prettier-config": "0.0.2",
+    "babel-eslint": "10.1.0",
+    "babel-plugin-jsx-pragmatic": "1.0.2",
+    "babel-plugin-module-resolver": "4.0.0",
+    "babel-plugin-transform-react-jsx": "6.24.1",
+    "babel-preset-power-assert": "3.0.0",
+    "eslint": "7.6.0",
+    "husky": "4.2.5",
+    "lint-staged": "10.2.11",
+    "npm-run-all": "4.1.5",
+    "power-assert": "1.6.1",
+    "prettier": "2.0.5",
+    "rimraf": "3.0.2"
+  }
+}
