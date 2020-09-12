@@ -83,6 +83,9 @@
       "**/{*.,}test.js"
     ]
   },
+  "dependencies": {
+    "html-tags": "3.1.0"
+  },
   "devDependencies": {
     "@ava/babel": "1.0.1",
     "@babel/core": "7.11.6",

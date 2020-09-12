@@ -1,3 +1,5 @@
+dependencies:
+  html-tags: 3.1.0
 devDependencies:
   '@ava/babel': 1.0.1
   '@babel/core': 7.11.6
@@ -3118,6 +3120,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-f/wzC2QaWBs7t9IYqB4T3sR1xviIViXJRJTWBlx2Gf3g0Xi5vI7Yy4koXQ1c9OYDGHN9sBy1DQ2AB8fqZBWhUg==
+  /html-tags/3.1.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-1qYz89hW3lFDEazhjW0yVAV87lw8lVkrJocr72XmBkMKsoSVJCQx3W8BXsC7hO2qAt8BoVjYjtAcZ9perqGnNg==
   /http-cache-semantics/4.1.0:
     dev: true
     resolution:
@@ -5628,6 +5636,7 @@ specifiers:
   babel-preset-power-assert: 3.0.0
   eslint: 7.9.0
   fast-check: 2.3.0
+  html-tags: 3.1.0
   husky: 4.3.0
   lint-staged: 10.3.0
   npm-run-all: 4.1.5
