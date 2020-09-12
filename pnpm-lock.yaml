@@ -1,4 +1,5 @@
 dependencies:
+  escape-goat: 3.0.0
   html-tags: 3.1.0
 devDependencies:
   '@ava/babel': 1.0.1
@@ -2502,6 +2503,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-8/uIhbG12Csjy2JEW7D9pHbreaVaS/OpN3ycnyvElTdwM5n6GY6W6e2IPemfvGZeUMqZ9A/3GqIZMgKnBhAw/Q==
+  /escape-goat/3.0.0:
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-w3PwNZJwRxlp47QGzhuEBldEqVHHhh8/tIPcl6ecf2Bou99cdAt0knihBV0Ecc7CGxYduXVBDheH1K2oADRlvw==
   /escape-string-regexp/1.0.5:
     dev: true
     engines:
@@ -5634,6 +5641,7 @@ specifiers:
   babel-plugin-module-resolver: 4.0.0
   babel-plugin-transform-react-jsx: 6.24.1
   babel-preset-power-assert: 3.0.0
+  escape-goat: 3.0.0
   eslint: 7.9.0
   fast-check: 2.3.0
   html-tags: 3.1.0
