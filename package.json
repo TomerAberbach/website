@@ -84,6 +84,7 @@
     ]
   },
   "dependencies": {
+    "escape-goat": "3.0.0",
     "html-tags": "3.1.0"
   },
   "devDependencies": {
