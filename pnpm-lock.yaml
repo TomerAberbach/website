@@ -1,4 +1,5 @@
 dependencies:
+  create-html-element: 3.0.0
   escape-goat: 3.0.0
   html-tags: 3.1.0
 devDependencies:
@@ -373,8 +374,8 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-fCL7QF0Jo83uy1K0P2YXrfX11tj3lkpN7l4dMv9Y9VkowkhkQDwFHFd8IiwyK5MZjE8UpbgokkgtcReH88Abaw==
-  ? /@babel/plugin-proposal-logical-assignment-operators/7.11.0_@babel+core@7.11.6
-  : dependencies:
+  /@babel/plugin-proposal-logical-assignment-operators/7.11.0_@babel+core@7.11.6:
+    dependencies:
       '@babel/core': 7.11.6
       '@babel/helper-plugin-utils': 7.10.4
       '@babel/plugin-syntax-logical-assignment-operators': 7.10.4_@babel+core@7.11.6
@@ -748,8 +749,8 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-mohW5q3uAEt8T45YT7Qc5ws6mWgJAaL/8BfWD9Dodo1A3RKWli8wTS+WiQ/knF+tXlPirW/1/MqzzGfCExKECA==
-  ? /@babel/plugin-transform-named-capturing-groups-regex/7.10.4_@babel+core@7.11.6
-  : dependencies:
+  /@babel/plugin-transform-named-capturing-groups-regex/7.10.4_@babel+core@7.11.6:
+    dependencies:
       '@babel/core': 7.11.6
       '@babel/helper-create-regexp-features-plugin': 7.10.4_@babel+core@7.11.6
     dev: true
@@ -2161,6 +2162,17 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-pondGvTuVYDk++upghXJabWzL6Kxu6f26ljFw64Swq9v6sQPUL3EUlVDV56diOjpCayKihL6hVe8exIACU4XcA==
+  /create-html-element/3.0.0:
+    dependencies:
+      escape-goat: 2.1.1
+      html-tags: 3.1.0
+      stringify-attributes: 2.0.0
+      type-fest: 0.5.2
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-ce7uOeddOpUC2BVrwyewE6ZlA2oN7jUotRhgq4somwBqsFvGEvVwbq4mZwC7/6EuFggIfI2Hm57yBl5r3SbZcA==
   /cross-spawn/6.0.5:
     dependencies:
       nice-try: 1.0.5
@@ -2498,7 +2510,6 @@ packages:
     resolution:
       integrity: sha512-gPYAU37hYCUhW5euPeR+Y74F7BL+IBsV93j5cvGriSaD1aG6MGsqsV1yamRdrWrb2j3aiZvb0X+UBOWpx3JWtQ==
   /escape-goat/2.1.1:
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -5129,6 +5140,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-cNsMOqqrcbLcHTXEVmkw9y0fwDwkdgtZwlfyolzpQDoAE1xdNGhQhxBUfiDvvZIKl1hnUEgMv66nHwtMz3OjPw==
+  /stringify-attributes/2.0.0:
+    dependencies:
+      escape-goat: 2.1.1
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-wrVfRV6sCCB6wr3gx8OgKsp/9dSWWbKr8ifLfOxEcd/BBoa8d5pAf4BZb/jQW1JZnoZImjvUdxdo3ikYHZmYiw==
   /stringify-object/3.3.0:
     dependencies:
       get-own-enumerable-property-symbols: 3.0.2
@@ -5360,6 +5379,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-cUGJnCdr4STbePCgqNFbpVNCepa+kAVohJs1sLhxzdH+gnEoOd8VhbYa7pD3zZYGiURWM2xzEII3fQcRizDkYQ==
+  /type-fest/0.5.2:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-DWkS49EQKVX//Tbupb9TFa19c7+MK1XmzkrZUR8TAktmE/DizXoaoJV6TZ/tSIPXipqNiRI6CyAe7x69Jb6RSw==
   /type-fest/0.6.0:
     dev: true
     engines:
@@ -5641,6 +5666,7 @@ specifiers:
   babel-plugin-module-resolver: 4.0.0
   babel-plugin-transform-react-jsx: 6.24.1
   babel-preset-power-assert: 3.0.0
+  create-html-element: 3.0.0
   escape-goat: 3.0.0
   eslint: 7.9.0
   fast-check: 2.3.0
