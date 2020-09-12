@@ -7,10 +7,10 @@
     "url": "https://tomeraberba.ch"
   },
   "scripts": {
-    "lint:eslint:base": "eslint --cache --ext js --ignore-path .gitignore --ignore-pattern \"**/fixtures/**/*\"",
-    "lint:eslint": "pnpm run lint:eslint:base -- --fix .",
     "lint:prettier:base": "prettier --loglevel silent",
     "lint:prettier": "pnpm run lint:prettier:base -- --write .",
+    "lint:eslint:base": "eslint --cache --ext js --ignore-path .gitignore --ignore-pattern \"**/fixtures/**/*\"",
+    "lint:eslint": "pnpm run lint:eslint:base -- --fix .",
     "lint": "run-s lint:*",
     "test": "ava",
     "build": "babel-node src/index.js",
