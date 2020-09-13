@@ -2,6 +2,7 @@ dependencies:
   create-html-element: 3.0.0
   escape-goat: 3.0.0
   html-tags: 3.1.0
+  svg-tag-names: 2.0.1
 devDependencies:
   '@ava/babel': 1.0.1
   '@babel/core': 7.11.6
@@ -5250,6 +5251,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
+  /svg-tag-names/2.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-BEZ508oR+X/b5sh7bT0RqDJ7GhTpezjj3P1D4kugrOaPs6HijviWksoQ63PS81vZn0QCjZmVKjHDBniTo+Domg==
   /table/5.4.6:
     dependencies:
       ajv: 6.12.4
@@ -5677,3 +5682,4 @@ specifiers:
   power-assert: 1.6.1
   prettier: 2.1.1
   rimraf: 3.0.2
+  svg-tag-names: 2.0.1
