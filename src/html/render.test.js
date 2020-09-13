@@ -20,6 +20,17 @@ testProp(
   }
 )
 
+test(`render svg`, t => {
+  t.is(
+    render(
+      <svg>
+        <g>Hello World!</g>
+      </svg>
+    ),
+    `<svg><g>Hello World!</g></svg>`
+  )
+})
+
 test(`render concrete example`, t => {
   t.is(render(<h1>Hello World!</h1>), `<h1>Hello World!</h1>`)
 })
