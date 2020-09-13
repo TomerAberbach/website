@@ -61,8 +61,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "pnpm run lint:eslint:base -- --fix",
-      "pnpm run lint:prettier:base -- --write"
+      "pnpm run lint:prettier:base -- --write",
+      "pnpm run lint:eslint:base -- --fix"
     ],
     "!(pnpm-lock).{json,yaml,md}": "pnpm run lint:prettier:base -- --write"
   },
