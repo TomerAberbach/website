@@ -1,8 +1,10 @@
 dependencies:
   '@sindresorhus/fnv1a': 2.0.1
   create-html-element: 3.0.0
+  dedent: 0.7.0
   escape-goat: 3.0.0
   html-tags: 3.1.0
+  indent-string: 4.0.0
   svg-tag-names: 2.0.1
 devDependencies:
   '@ava/babel': 1.0.1
@@ -2273,7 +2275,6 @@ packages:
     resolution:
       integrity: sha1-gKTdMjdIOEv6JICDYirt7Jgq3/M=
   /dedent/0.7.0:
-    dev: true
     resolution:
       integrity: sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=
   /deep-equal/1.1.1:
@@ -3243,7 +3244,6 @@ packages:
     resolution:
       integrity: sha1-Sl/W0nzDMvN+VBmlBNu4NxBckok=
   /indent-string/4.0.0:
-    dev: true
     engines:
       node: '>=8'
     resolution:
@@ -5680,11 +5680,13 @@ specifiers:
   babel-plugin-transform-react-jsx: 6.24.1
   babel-preset-power-assert: 3.0.0
   create-html-element: 3.0.0
+  dedent: 0.7.0
   escape-goat: 3.0.0
   eslint: 7.9.0
   fast-check: 2.3.0
   html-tags: 3.1.0
   husky: 4.3.0
+  indent-string: 4.0.0
   lint-staged: 10.3.0
   npm-run-all: 4.1.5
   power-assert: 1.6.1

@@ -87,8 +87,10 @@
   "dependencies": {
     "@sindresorhus/fnv1a": "2.0.1",
     "create-html-element": "3.0.0",
+    "dedent": "0.7.0",
     "escape-goat": "3.0.0",
     "html-tags": "3.1.0",
+    "indent-string": "4.0.0",
     "svg-tag-names": "2.0.1"
   },
   "devDependencies": {
