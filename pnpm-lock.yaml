@@ -1,4 +1,5 @@
 dependencies:
+  '@sindresorhus/fnv1a': 2.0.1
   create-html-element: 3.0.0
   escape-goat: 3.0.0
   html-tags: 3.1.0
@@ -1229,6 +1230,12 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-1V9XOY4rDW0rehzbrcqAmHnz8e7SKvX27gh8Gt2WgB0+pdzdiLV83p72kZPU+jvMbS1qU5mauP2iOvO8rhmurQ==
+  /@sindresorhus/fnv1a/2.0.1:
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-suq9tRQ6bkpMukTG5K5z0sPWB7t0zExMzZCdmYm6xTSSIm/yCKNm7VCL36wVeyTsFr597/UhU1OAYdHGMDiHrw==
   /@sindresorhus/is/0.14.0:
     dev: true
     engines:
@@ -5662,6 +5669,7 @@ specifiers:
   '@babel/register': 7.11.5
   '@commitlint/cli': 9.1.2
   '@commitlint/config-conventional': 9.1.2
+  '@sindresorhus/fnv1a': 2.0.1
   '@tomer/eslint-config': 0.0.7
   '@tomer/prettier-config': 0.0.2
   ava: 3.12.1
