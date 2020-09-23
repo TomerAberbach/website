@@ -1,6 +1,6 @@
 import { fc } from 'ava-fast-check'
-import { createElement } from './index'
-import { getNonSelfClosingTags, getSelfClosingTags, getTags } from './tags'
+import { createElement } from 'html'
+import { getNonSelfClosingTags, getSelfClosingTags, getTags } from 'html/tags'
 
 const constantArb = arb => () => arb
 

@@ -1,8 +1,8 @@
 import test from 'ava'
 import { testProp } from 'ava-fast-check'
 import { elementArb } from './arbitraries'
-import render from './render'
-import traverse from './traverse'
+import render from 'html/render'
+import traverse from 'html/traverse'
 
 testProp(`render returns a string`, [elementArb(4)], (t, element) => {
   t.true(typeof render(element) === `string`)
