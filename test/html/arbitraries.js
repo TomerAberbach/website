@@ -1,18 +1,12 @@
 import { fc } from 'ava-fast-check'
 import { createElement } from 'html'
-import { getNonSelfClosingTags, getSelfClosingTags, getTags } from 'html/tags'
+import { nonSelfClosingTags, tags, selfClosingTags } from 'html/tags'
 
-const constantArb = arb => () => arb
+export const tagArb = () => fc.constantFrom(...tags)
 
-export const tagArb = constantArb(fc.constantFrom(...getTags()))
+export const selfClosingTagArb = () => fc.constantFrom(...selfClosingTags)
 
-export const selfClosingTagArb = constantArb(
-  fc.constantFrom(...getSelfClosingTags())
-)
-
-export const nonSelfClosingTagArb = constantArb(
-  fc.constantFrom(...getNonSelfClosingTags())
-)
+export const nonSelfClosingTagArb = () => fc.constantFrom(...nonSelfClosingTags)
 
 export const attributeNameArb = fc.string
 
