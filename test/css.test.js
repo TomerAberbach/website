@@ -2,7 +2,7 @@ import test from 'ava'
 import { testProp, fc } from 'ava-fast-check'
 import dedent from 'dedent'
 import indentString from 'indent-string'
-import { classes, css } from './index'
+import { classes, css } from 'css'
 
 test(`css returns a generated class`, t => {
   const className = css`

@@ -5,8 +5,8 @@ import {
   elementArb,
   selfClosingTagArb
 } from './arbitraries'
-import { isTag } from './tags'
-import { createElement, isElement } from './index'
+import { isTag } from 'html/tags'
+import { createElement, isElement } from 'html'
 
 testProp(
   `createElement throws on invalid tag`,

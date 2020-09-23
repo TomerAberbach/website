@@ -1,5 +1,5 @@
 import test from 'ava'
-import traverse from './traverse'
+import traverse from 'html/traverse'
 
 test(`traverse concrete example`, t => {
   let count = 0
@@ -12,7 +12,8 @@ test(`traverse concrete example`, t => {
         <p>
           In the
           {` `}
-          <b>beginning</b>, there was HTML!
+          <b>beginning</b>
+          , there was HTML!
         </p>
       </article>
     </body>,
