@@ -4,7 +4,11 @@ import voidHtmlTags from 'html-tags/void'
 
 export const tags = new Set(htmlTags.concat(svgTagNames))
 
+export const isTag = value => tags.has(value)
+
 export const selfClosingTags = new Set(voidHtmlTags)
+
+export const isSelfClosingTag = value => selfClosingTags.has(value)
 
 export const nonSelfClosingTags = new Set(
   (function* () {
@@ -15,3 +19,5 @@ export const nonSelfClosingTags = new Set(
     }
   })()
 )
+
+export const isNonSelfClosingTag = value => nonSelfClosingTags.has(value)

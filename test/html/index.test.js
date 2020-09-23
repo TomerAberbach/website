@@ -5,13 +5,13 @@ import {
   elementArb,
   selfClosingTagArb
 } from './arbitraries'
-import { tags } from 'html/tags'
+import { isTag } from 'html/tags'
 import { createElement, isElement } from 'html'
 
 testProp(
   `createElement throws on invalid tag`,
   [
-    fc.string().filter(string => !tags.has(string)),
+    fc.string().filter(string => !isTag(string)),
     attributesArb(),
     childrenArb(4)
   ],
