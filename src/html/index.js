@@ -1,5 +1,6 @@
 import assert from 'assert'
 import { isTag, isSelfClosingTag } from './tags'
+import { isAttribute } from './attributes'
 
 const elements = new WeakSet()
 
@@ -15,11 +16,8 @@ export const createElement = (tag, attributes, ...children) => {
   assert(isTag(tag))
   assert(children.length === 0 || !isSelfClosingTag(tag))
 
-  for (const [name, value] of Object.entries(attributes)) {
-    assert(typeof name === `string`)
-    assert(
-      value == null || [`string`, `number`, `boolean`].includes(typeof value)
-    )
+  for (const attribute of Object.entries(attributes)) {
+    assert(isAttribute(attribute))
   }
 
   for (const child of children) {
