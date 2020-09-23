@@ -1,6 +1,6 @@
 import createHtmlElement from 'create-html-element'
 import { htmlEscape } from 'escape-goat'
-import { isElement } from './index'
+import { isElement } from './create-element'
 
 const render = ({ tag, attributes, children }) => {
   let html = ``

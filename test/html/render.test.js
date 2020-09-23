@@ -1,6 +1,6 @@
 import test from 'ava'
 import { testProp } from 'ava-fast-check'
-import { elementArb } from './arbitraries'
+import { elementArb } from './create-element/arbitraries'
 import render from 'html/render'
 import traverse from 'html/traverse'
 

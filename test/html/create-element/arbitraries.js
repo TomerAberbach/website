@@ -1,6 +1,10 @@
 import { fc } from 'ava-fast-check'
-import { createElement } from 'html'
-import { nonSelfClosingTags, tags, selfClosingTags } from 'html/tags'
+import { createElement } from 'html/create-element'
+import {
+  nonSelfClosingTags,
+  tags,
+  selfClosingTags
+} from 'html/create-element/tags'
 
 export const tagArb = () => fc.constantFrom(...tags)
 

@@ -1,4 +1,4 @@
-import { isElement } from './index'
+import { isElement } from './create-element'
 
 const traverse = (element, fn) => {
   const stack = [element]
