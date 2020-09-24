@@ -1,8 +1,9 @@
 import { testProp, fc } from 'ava-fast-check'
 import { isTag } from 'html/create-element/tags'
 import { createElement, isElement } from 'html/create-element'
-import { attributesArb, childrenArb, elementArb } from './arbitraries'
+import { childrenArb, elementArb } from './arbitraries'
 import { selfClosingTagArb } from './tags/arbitraries'
+import { attributesArb } from './attributes/arbitraries'
 
 testProp(
   `createElement throws on invalid tag`,

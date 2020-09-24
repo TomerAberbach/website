@@ -1,17 +1,7 @@
 import { fc } from 'ava-fast-check'
 import { createElement } from 'html/create-element'
 import { nonSelfClosingTagArb, selfClosingTagArb } from './tags/arbitraries'
-
-export const attributeNameArb = fc.string
-
-export const attributeValueArb = () =>
-  fc.oneof(fc.string(), fc.integer(), fc.float(), fc.boolean())
-
-export const attributeArb = () =>
-  fc.tuple(attributeNameArb(), attributeValueArb())
-
-export const attributesArb = () =>
-  fc.dictionary(attributeNameArb(), attributeValueArb())
+import { attributesArb } from './attributes/arbitraries'
 
 export const nonElementChildArb = () =>
   fc.oneof(fc.string(), fc.integer(), fc.float())
