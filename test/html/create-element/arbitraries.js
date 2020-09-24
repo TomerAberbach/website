@@ -2,9 +2,7 @@ import { fc } from 'ava-fast-check'
 import { createElement } from 'html/create-element'
 import { nonSelfClosingTagArb, selfClosingTagArb } from './tags/arbitraries'
 import { attributesArb } from './attributes/arbitraries'
-
-export const nonElementChildArb = () =>
-  fc.oneof(fc.string(), fc.integer(), fc.float())
+import { childrenArb } from './children/arbitraries'
 
 export const selfClosingElementArb = () =>
   fc
@@ -13,12 +11,7 @@ export const selfClosingElementArb = () =>
 
 export const nonSelfClosingElementArb = fc.memo(n =>
   fc
-    .tuple(
-      nonSelfClosingTagArb(),
-      attributesArb(),
-      // eslint-disable-next-line no-use-before-define
-      childrenArb(n)
-    )
+    .tuple(nonSelfClosingTagArb(), attributesArb(), childrenArb(n))
     .map(([tag, attributes, children]) =>
       createElement(tag, attributes, ...children)
     )
@@ -26,14 +19,6 @@ export const nonSelfClosingElementArb = fc.memo(n =>
 
 export const elementArb = fc.memo(n =>
   fc.oneof(selfClosingElementArb(), nonSelfClosingElementArb(n))
-)
-
-export const childArb = fc.memo(n =>
-  fc.oneof(elementArb(n), elementArb(n), nonElementChildArb())
-)
-
-export const childrenArb = fc.memo(n =>
-  fc.array(n <= 1 ? nonElementChildArb() : childArb(n - 1))
 )
 
 export const componentArb = fc.memo(n => fc.func(elementArb(n)))
