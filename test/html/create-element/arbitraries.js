@@ -5,16 +5,16 @@ import { attributesArb } from './attributes/arbitraries'
 import { childrenArb } from './children/arbitraries'
 
 export const selfClosingElementArb = () =>
-  fc
-    .tuple(selfClosingTagArb(), attributesArb())
-    .map(([tag, attributes]) => createElement(tag, attributes))
+  selfClosingTagArb().chain(tag =>
+    attributesArb(tag).map(attributes => createElement(tag, attributes))
+  )
 
 export const nonSelfClosingElementArb = fc.memo(n =>
-  fc
-    .tuple(nonSelfClosingTagArb(), attributesArb(), childrenArb(n))
-    .map(([tag, attributes, children]) =>
-      createElement(tag, attributes, ...children)
-    )
+  nonSelfClosingTagArb().chain(tag =>
+    fc
+      .tuple(attributesArb(tag), childrenArb(n))
+      .map(([attributes, children]) => createElement(tag, attributes, children))
+  )
 )
 
 export const elementArb = fc.memo(n =>

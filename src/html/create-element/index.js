@@ -18,7 +18,7 @@ export const createElement = (tag, attributes, ...children) => {
   assert(children.length === 0 || !isSelfClosingTag(tag))
 
   for (const attribute of Object.entries(attributes)) {
-    assert(isAttribute(attribute))
+    assert(isAttribute({ value: attribute, tag }))
   }
 
   for (const child of children) {
