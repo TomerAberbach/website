@@ -7,6 +7,14 @@
     "email": "tomeraberbach@gmail.com",
     "url": "https://tomeraberba.ch"
   },
+  "browserslist": [
+    "current node"
+  ],
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ]
+  },
   "commitlint": {
     "extends": "@commitlint/config-conventional"
   },
@@ -16,6 +24,9 @@
     }
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "husky": "^4.3.6"
