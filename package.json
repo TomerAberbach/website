@@ -42,12 +42,17 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "dependencies": {
+    "escape-goat": "^3.0.0",
+    "self-closing-tags": "^1.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@tomer/eslint-config": "^0.0.8",
     "@tomer/prettier-config": "^0.0.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.15.0",
