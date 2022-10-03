@@ -22,7 +22,14 @@ export const links: LinksFunction = () => [
 
 export default function App() {
   return (
-    <html lang='en'>
+    <html
+      // The mismatch between server and client for the `className` attribute is
+      // expected when JS is enabled because the `className` will be set to `js`
+      // before hydration happens (this needs to happen early to prevent a
+      // "flicker" of non-JS styles)
+      suppressHydrationWarning
+      lang='en'
+    >
       <head>
         <Meta />
         <Links />
