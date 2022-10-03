@@ -21,6 +21,11 @@ export default function App() {
       <head>
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.className='js'`,
+          }}
+        />
       </head>
       <body>
         <Outlet />
