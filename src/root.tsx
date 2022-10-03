@@ -11,7 +11,7 @@ import '../styles/index.css'
 
 export const meta: MetaFunction = () => ({
   charset: `utf-8`,
-  title: `New Remix App`,
+  title: `Tomer Aberbach`,
   viewport: `width=device-width,initial-scale=1`,
 })
 
