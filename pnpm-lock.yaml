@@ -11,8 +11,12 @@ specifiers:
   '@remix-run/node': ^1.7.2
   '@remix-run/react': ^1.7.2
   '@remix-run/serve': ^1.7.2
+  '@testing-library/jest-dom': ^5.16.5
+  '@testing-library/react': ^13.4.0
+  '@types/jest': ^29.1.1
   '@types/react': ^18.0.15
   '@types/react-dom': ^18.0.6
+  '@types/testing-library__jest-dom': ^5.14.5
   autoprefixer: ^10.4.12
   cssnano: ^5.1.13
   eslint: ^8.23.1
@@ -23,7 +27,7 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   tailwindcss: ^3.1.8
-  tomer: ^0.2.6
+  tomer: ^0.2.7
   typescript: ^4.7.4
 
 dependencies:
@@ -36,8 +40,12 @@ dependencies:
 devDependencies:
   '@remix-run/dev': 1.7.2_63cxfdg5f5bb4xpkk3vcjfcl3q
   '@remix-run/eslint-config': 1.7.2_2arap3zrpdsgaavggmaateumgu
+  '@testing-library/jest-dom': 5.16.5
+  '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
+  '@types/jest': 29.1.1
   '@types/react': 18.0.21
   '@types/react-dom': 18.0.6
+  '@types/testing-library__jest-dom': 5.14.5
   autoprefixer: 10.4.12_postcss@8.4.17
   cssnano: 5.1.13_postcss@8.4.17
   eslint: 8.24.0
@@ -46,10 +54,17 @@ devDependencies:
   postcss-cli: 10.0.0_postcss@8.4.17
   postcss-import: 15.0.0_postcss@8.4.17
   tailwindcss: 3.1.8_postcss@8.4.17
-  tomer: 0.2.6
+  tomer: 0.2.7
   typescript: 4.8.4
 
 packages:
+  /@adobe/css-tools/4.0.1:
+    resolution:
+      {
+        integrity: sha512-+u76oB43nOHrF4DDWRLWDCtci7f3QJoEBigemIdIeTi1ODqjx6Tad9NCVnPRwewWlKkVab5PlK8DCtPTyX7S8g==,
+      }
+    dev: true
+
   /@ampproject/remapping/2.2.0:
     resolution:
       {
@@ -4045,6 +4060,41 @@ packages:
       pretty-format: 27.5.1
     dev: true
 
+  /@testing-library/jest-dom/5.16.5:
+    resolution:
+      {
+        integrity: sha512-N5ixQ2qKpi5OLYfwQmUb/5mSV9LneAcaUfp32pn4yCnpb8r/Yz0pXFPck21dIicKmi+ta5WRAknkZCfA8refMA==,
+      }
+    engines: { node: '>=8', npm: '>=6', yarn: '>=1' }
+    dependencies:
+      '@adobe/css-tools': 4.0.1
+      '@babel/runtime': 7.19.0
+      '@types/testing-library__jest-dom': 5.14.5
+      aria-query: 5.0.2
+      chalk: 3.0.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.5.14
+      lodash: 4.17.21
+      redent: 3.0.0
+    dev: true
+
+  /@testing-library/react/13.4.0_biqbaboplfbrettd7655fr4n2y:
+    resolution:
+      {
+        integrity: sha512-sXOGON+WNTh3MLE9rve97ftaZukN3oNf2KjDy7YTx6hcTO2uuLHuCGynMDhFwGw/jYf4OJ2Qk0i4i79qMNNkyw==,
+      }
+    engines: { node: '>=12' }
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.19.0
+      '@testing-library/dom': 8.18.1
+      '@types/react-dom': 18.0.6
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: true
+
   /@tomer/eslint-config/0.5.7_iuaxzk4peqgfsq32w4ik5jyxuy:
     resolution:
       {
@@ -4336,6 +4386,16 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
+  /@types/jest/29.1.1:
+    resolution:
+      {
+        integrity: sha512-U9Ey07dGWl6fUFaIaUQUKWG5NoKi/zizeVQCGV8s4nSU0jPgqphVZvS64+8BtWYvrc3ZGw6wo943NSYPxkrp/g==,
+      }
+    dependencies:
+      expect: 29.1.2
+      pretty-format: 29.1.2
+    dev: true
+
   /@types/jsdom/20.0.0:
     resolution:
       {
@@ -4506,6 +4566,15 @@ packages:
       {
         integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==,
       }
+    dev: true
+
+  /@types/testing-library__jest-dom/5.14.5:
+    resolution:
+      {
+        integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==,
+      }
+    dependencies:
+      '@types/jest': 29.1.1
     dev: true
 
   /@types/tough-cookie/4.0.2:
@@ -5911,6 +5980,17 @@ packages:
       supports-color: 5.5.0
     dev: true
 
+  /chalk/3.0.0:
+    resolution:
+      {
+        integrity: sha512-4D3B6Wf41KOYRFdszmDqMCGq5VV/uMAB273JILmO+3jAlh8X4qDtdtgCR3fxtbLEMzSx22QdhnDcJvu2u1fVwg==,
+      }
+    engines: { node: '>=8' }
+    dependencies:
+      ansi-styles: 4.3.0
+      supports-color: 7.2.0
+    dev: true
+
   /chalk/4.1.2:
     resolution:
       {
@@ -6555,6 +6635,13 @@ packages:
         integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==,
       }
     engines: { node: '>= 6' }
+    dev: true
+
+  /css.escape/1.5.1:
+    resolution:
+      {
+        integrity: sha512-YUifsXXuknHlUsmlgyY0PKzgPOr7/FjCePfHNt0jxm83wHZi44VDMQ7/fGNkjY3/jV1MC+1CmZbaHzugyeRtpg==,
+      }
     dev: true
 
   /cssesc/3.0.0:
@@ -16012,10 +16099,10 @@ packages:
       }
     engines: { node: '>=0.6' }
 
-  /tomer/0.2.6:
+  /tomer/0.2.7:
     resolution:
       {
-        integrity: sha512-2unvGBGyLlfhmJABCKOQrYnjp68u2wtWvkXL/YSkUZpQmIFrbm+P3eSWyr1jOSxiXlKWxfy0/Jhq4h3OL+CApA==,
+        integrity: sha512-OcxVCuEGoCtpQufGpLK8hzY2jARta82YWPP9oYEdc2XmTysesXPqXsK4S6037u7HNO55Ws48Y8rgrtczZ3xjgg==,
       }
     engines: { node: '>= 16' }
     hasBin: true
