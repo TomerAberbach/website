@@ -14,14 +14,14 @@ import { selectAll } from 'hast-util-select'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { cached } from '../cache.server.js'
 import renderHtml from '../html'
-import queryRawPosts from './query.server.js'
-import type { RawPost } from './query.server.js'
+import getRawPosts from './raw.server.js'
+import type { RawPost } from './raw.server.js'
 import parseReferences from './references.server'
 import parseMarkdown from './markdown.server'
 
 export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
   const postEntries = await pipe(
-    await queryRawPosts(),
+    await getRawPosts(),
     mapConcur(
       async (rawPost): Promise<[string, Post]> => [
         rawPost.id,
