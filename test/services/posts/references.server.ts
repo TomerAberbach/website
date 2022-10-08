@@ -1,4 +1,4 @@
-import parseReferences from '../../src/services/references.server'
+import parseReferences from '../../../src/services/references.server'
 
 test(`parseReferences parses references`, () => {
   const hrefs = [
