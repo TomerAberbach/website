@@ -15,22 +15,6 @@ import stylesUrl from './styles/build.css'
 import Layout from './components/layout'
 import { getPosts } from './services/posts/index'
 
-export const meta: MetaFunction = () => ({
-  charset: `utf-8`,
-  title: `Tomer Aberbach`,
-  viewport: `width=device-width,initial-scale=1`,
-})
-
-export const links: LinksFunction = () => [
-  { rel: `stylesheet`, href: stylesUrl },
-]
-
-export const loader: LoaderFunction = async () => {
-  console.log(await getPosts())
-
-  return null
-}
-
 export default function App() {
   return (
     <html
@@ -60,4 +44,20 @@ export default function App() {
       </body>
     </html>
   )
+}
+
+export const meta: MetaFunction = () => ({
+  charset: `utf-8`,
+  title: `Tomer Aberbach`,
+  viewport: `width=device-width,initial-scale=1`,
+})
+
+export const links: LinksFunction = () => [
+  { rel: `stylesheet`, href: stylesUrl },
+]
+
+export const loader: LoaderFunction = async () => {
+  console.log(await getPosts())
+
+  return null
 }
