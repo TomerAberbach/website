@@ -1,32 +1,26 @@
-export default function Index() {
-  return (
-    <div style={{ fontFamily: `system-ui, sans-serif`, lineHeight: `1.4` }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target='_blank'
-            href='https://remix.run/tutorials/blog'
-            rel='noreferrer'
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target='_blank'
-            href='https://remix.run/tutorials/jokes'
-            rel='noreferrer'
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target='_blank' href='https://remix.run/docs' rel='noreferrer'>
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
-  )
+import type { LoaderFunction } from '@remix-run/node'
+import GraphWidget from '../components/graph'
+import type { Graph } from '../services/graph.server'
+import { getGraph } from '../services/graph.server'
+import { json, useLoaderData } from '../services/json'
+import { getTags } from '../services/posts.server'
+
+export default function HomePage() {
+  const { tags, graph } = useLoaderData<LoaderData>()
+
+  return <GraphWidget tags={tags} graph={graph} />
 }
+
+export const loader: LoaderFunction = async () =>
+  json<LoaderData>({
+    tags: await getTags(),
+    graph: await getGraph(),
+  })
+
+type LoaderData = {
+  tags: Set<string>
+  graph: Graph
+}
+
+// eslint-disable-next-line camelcase
+export const unstable_shouldReload = () => false

@@ -1,8 +1,4 @@
-import type {
-  LinksFunction,
-  LoaderFunction,
-  MetaFunction,
-} from '@remix-run/node'
+import type { LinksFunction, MetaFunction } from '@remix-run/node'
 import {
   Links,
   LiveReload,
@@ -13,7 +9,6 @@ import {
 } from '@remix-run/react'
 import stylesUrl from './styles/build.css'
 import Layout from './components/layout'
-import { getPosts } from './services/posts/index'
 
 export default function App() {
   return (
@@ -55,9 +50,3 @@ export const meta: MetaFunction = () => ({
 export const links: LinksFunction = () => [
   { rel: `stylesheet`, href: stylesUrl },
 ]
-
-export const loader: LoaderFunction = async () => {
-  console.log(await getPosts())
-
-  return null
-}

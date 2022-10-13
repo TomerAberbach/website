@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
-import { Link } from '@remix-run/react'
-import ExternalLink from './external-link'
+import { ExternalLink, InternalLink } from './link'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className='flex flex-1 flex-col space-y-12 md:space-y-14'>
+    <div className='flex flex-1 flex-col space-y-12 md:space-y-14 text-slate-800'>
       <Header />
       <main className='flex flex-1 flex-col'>{children}</main>
       <Footer />
@@ -15,9 +14,9 @@ export default function Layout({ children }: { children: ReactNode }) {
 function Header() {
   return (
     <header className='px-12 pt-12 md:px-16 md:pt-16'>
-      <Link to='/' className='focus-ring underlined'>
+      <InternalLink href='/' className='focus-ring underlined'>
         <h1 className='inline text-2xl font-bold'>Tomer Aberbach</h1>
-      </Link>
+      </InternalLink>
     </header>
   )
 }

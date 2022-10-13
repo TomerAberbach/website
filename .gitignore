@@ -6,3 +6,8 @@ node_modules
 .env
 
 /src/styles/build.css
+
+**/*.tsbuildinfo
+
+/cypress/videos
+/cypress/screenshots

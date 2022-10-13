@@ -1,6 +1,10 @@
 import { nextTick } from 'process'
 
 export function cached<Value>(fn: () => Value): () => Value {
+  if (process.env.NODE_ENV !== `production`) {
+    return fn
+  }
+
   // Call and cache asynchronously to ensure dependencies are initialized
   nextTick(() => get(fn))
 

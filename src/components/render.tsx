@@ -2,8 +2,9 @@ import type { ComponentType } from 'react'
 import { unified } from 'unified'
 import { useHydrated } from 'remix-utils'
 import rehypeDomParse from 'rehype-dom-parse'
-import { Link } from '@remix-run/react'
 import renderHtml from '../services/html'
+import assert from '../services/assert.js'
+import { Link } from './link.js'
 
 export default function Render({
   html,
@@ -23,14 +24,16 @@ export default function Render({
   }
 
   return renderHtml(htmlParser.parse(html), {
-    a: ({ rel, href, ref, ...props }) =>
-      !rel && href ? (
-        // eslint-disable-next-line jsx-a11y/anchor-has-content
-        <Link {...props} to={href} />
-      ) : (
-        // eslint-disable-next-line jsx-a11y/anchor-has-content
-        <a rel={rel} href={href} {...props} />
-      ),
+    a: ({ ref, href, children, ...props }) => {
+      assert(href)
+      assert(children)
+
+      return (
+        <Link href={href} {...props}>
+          {children}
+        </Link>
+      )
+    },
     ...components,
   })
 }
