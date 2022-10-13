@@ -42,16 +42,6 @@ export default function App() {
   )
 }
 
-export const meta: MetaFunction = () => ({
-  charset: `utf-8`,
-  title: `Tomer Aberbach`,
-  viewport: `width=device-width,initial-scale=1`,
-})
-
-export const links: LinksFunction = () => [
-  { rel: `stylesheet`, href: stylesUrl },
-]
-
 function Layout({ children }: { children: ReactNode }) {
   return (
     <div className='flex flex-1 flex-col space-y-12 md:space-y-14 text-slate-800'>
@@ -154,3 +144,13 @@ function IconLink({
     </ExternalLink>
   )
 }
+
+export const meta: MetaFunction = () => ({
+  charset: `utf-8`,
+  title: `Tomer Aberbach`,
+  viewport: `width=device-width,initial-scale=1`,
+})
+
+export const links: LinksFunction = () => [
+  { rel: `stylesheet`, href: stylesUrl },
+]
