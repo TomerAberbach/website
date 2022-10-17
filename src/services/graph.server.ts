@@ -2,6 +2,7 @@ import {
   filter,
   flatMap,
   forEach,
+  index,
   keys,
   map,
   pipe,
@@ -22,7 +23,7 @@ export const getGraph = cached(async (): Promise<Graph> => {
     posts,
     map(([id, { title, tags }]): [string, Vertex] => [
       id,
-      { id, label: title, tags, href: `/${id}` },
+      { id, label: title, tags, href: `/${id}`, external: false },
     ]),
     reduce(toMap()),
   )
@@ -55,6 +56,7 @@ export const getGraph = cached(async (): Promise<Graph> => {
             label: toId,
             tags: new Set(),
             href: url.origin,
+            external: true,
           }),
         )
       }
@@ -81,6 +83,7 @@ export type Vertex = {
   label: string
   tags: Set<string>
   href: string
+  external: boolean
 }
 
 export type Edge = {
@@ -107,13 +110,25 @@ function layoutGraph({
     ngraph.addLink(fromId, toId)
   }
 
+  const springLength = 30
   const layout = createLayout(ngraph, {
-    springLength: 30,
+    springLength,
     springCoefficient: 0.02,
     gravity: -0.5,
     theta: 0.8,
     dragCoefficient: 0.02,
   })
+
+  pipe(
+    vertices.values(),
+    filter(({ external }) => !external),
+    index,
+    forEach(([index, { id }]) => {
+      layout.setNodePosition(id, 0, index * springLength)
+      layout.pinNode(ngraph.getNode(id)!, true)
+    }),
+  )
+
   for (let iteration = 0; iteration < 1_000_000; iteration++) {
     layout.step()
   }
