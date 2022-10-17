@@ -19,7 +19,6 @@ import clsx from 'clsx'
 import cssesc from 'cssesc'
 import type { ChangeEventHandler, ReactNode } from 'react'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
-import { useHydrated } from 'remix-utils'
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
 import { Form, useSearchParams } from '@remix-run/react'
 import createPanZoom from 'panzoom'
@@ -227,14 +226,13 @@ function TagsFilterForm({
   targetId: string
   tags: Set<string>
 }) {
-  const hydrated = useHydrated()
   const [logicalOperator, setLogicalOperator] = useLogicalOperator()
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
-  const content = (
-    <fieldset className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'>
+  return (
+    <Form className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'>
       <div className='flex items-center gap-3'>
-        <legend className='text-lg font-medium'>Filter by tags</legend>
+        <h2 className='text-lg font-medium'>Filter by tags</h2>
         {
           <LogicalOperatorRadioButtonGroup
             logicalOperator={logicalOperator}
@@ -256,10 +254,8 @@ function TagsFilterForm({
           selectedTags={selectedTags}
         />
       )}
-    </fieldset>
+    </Form>
   )
-
-  return hydrated ? content : <Form>{content}</Form>
 }
 
 function TagsFilterStyle({
@@ -313,12 +309,11 @@ function LogicalOperatorRadioButtonGroup({
 
   return (
     <div className='flex items-center gap-1.5'>
-      <div
-        role='radiogroup'
-        aria-label='Logical operator'
+      <fieldset
         aria-describedby={tooltipId}
         className='grid auto-cols-fr grid-flow-col -space-x-[2px] rounded-2xl'
       >
+        <legend className='sr-only'>Logical operator</legend>
         {pipe(
           LOGICAL_OPERATORS,
           index,
@@ -349,7 +344,7 @@ function LogicalOperatorRadioButtonGroup({
           }),
           reduce(toArray()),
         )}
-      </div>
+      </fieldset>
       <div className='relative'>
         <QuestionMarkCircleIcon className='peer h-5 w-5' />
         <div
@@ -358,7 +353,7 @@ function LogicalOperatorRadioButtonGroup({
         >
           <span className='font-mono'>||</span> and{` `}
           <span className='font-mono'>&&</span> filter for posts matching{` `}
-          <em>any</em> and <em>all</em> of the tags, respectively.
+          <em>any</em> and <em>all</em> of the tags, respectively
         </div>
       </div>
     </div>
@@ -429,7 +424,8 @@ function TagsCheckboxGroup({
 
   return (
     <div className='flex flex-col items-center gap-3'>
-      <div role='group' className='flex flex-wrap justify-center gap-2'>
+      <fieldset className='flex flex-wrap justify-center gap-2'>
+        <legend className='sr-only'>Tags</legend>
         {pipe(
           entries(selectedTags),
           map(([tag, selected]) => (
@@ -451,7 +447,7 @@ function TagsCheckboxGroup({
             </label>
           )),
         )}
-      </div>
+      </fieldset>
       <div className='flex gap-2'>
         <button
           type='button'
