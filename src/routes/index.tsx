@@ -305,7 +305,6 @@ function LogicalOperatorRadioButtonGroup({
   const tooltipId = useId()
 
   const handleLogicalOperatorChange = useCallback<
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
     ChangeEventHandler<HTMLInputElement>
   >(
     event => setLogicalOperator(event.target.value as LogicalOperator),
@@ -409,7 +408,6 @@ function TagsCheckboxGroup({
 }) {
   const [recentlyReset, setRecentlyReset] = useState(false)
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
   const handleTagChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     event => {
       const tag = event.target.value
