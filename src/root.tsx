@@ -44,7 +44,7 @@ export default function App() {
 
 function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className='flex flex-1 flex-col space-y-12 md:space-y-14 text-slate-800'>
+    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-14 text-slate-800 p-8 sm:p-12 md:p-16'>
       <Header />
       <main className='flex flex-1 flex-col'>{children}</main>
       <Footer />
@@ -54,7 +54,7 @@ function Layout({ children }: { children: ReactNode }) {
 
 function Header() {
   return (
-    <header className='px-12 pt-12 md:px-16 md:pt-16'>
+    <header>
       <InternalLink href='/' className='focus-ring underlined'>
         <h1 className='inline text-2xl font-bold'>Tomer Aberbach</h1>
       </InternalLink>
@@ -64,11 +64,11 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className='mx-auto flex flex-col items-center space-y-3 px-12 pb-12 text-sm text-slate-500 md:px-16 md:pb-16'>
+    <footer className='mx-auto flex flex-col items-center gap-y-3 text-sm text-slate-500'>
       <p className='text-center'>
         ©&nbsp;Tomer&nbsp;Aberbach. All&nbsp;rights&nbsp;reserved.
       </p>
-      <ul className='flex items-center space-x-3'>
+      <ul className='flex items-center gap-x-3'>
         <li>
           <GitHubIcon />
         </li>

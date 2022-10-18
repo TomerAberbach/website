@@ -110,9 +110,8 @@ function layoutGraph({
     ngraph.addLink(fromId, toId)
   }
 
-  const springLength = 30
   const layout = createLayout(ngraph, {
-    springLength,
+    springLength: SPRING_LENGTH,
     springCoefficient: 0.02,
     gravity: -0.5,
     theta: 0.8,
@@ -124,7 +123,11 @@ function layoutGraph({
     filter(({ external }) => !external),
     index,
     forEach(([index, { id }]) => {
-      layout.setNodePosition(id, 0, index * springLength)
+      layout.setNodePosition(
+        id,
+        (index % 2 === 0 ? -1 : 1) * 10,
+        index * SPRING_LENGTH,
+      )
       layout.pinNode(ngraph.getNode(id)!, true)
     }),
   )
@@ -140,12 +143,10 @@ function layoutGraph({
     max_y: maxY,
   } = layout.simulator.getBoundingBox()
 
-  const scale = 10
-  const padding = 50
   return {
     boundingBox: {
-      width: (maxX - minX) * scale + padding * 2,
-      height: (maxY - minY) * scale + padding * 2,
+      width: (maxX - minX) * SCALE + PADDING * 2,
+      height: (maxY - minY) * SCALE + PADDING * 2,
     },
     positions: pipe(
       keys(vertices),
@@ -153,13 +154,17 @@ function layoutGraph({
         const { x, y } = layout.getNodePosition(id)
         return [
           id,
-          { x: (x - minX) * scale + padding, y: (y - minY) * scale + padding },
+          { x: (x - minX) * SCALE + PADDING, y: (y - minY) * SCALE + PADDING },
         ]
       }),
       reduce(toMap()),
     ),
   }
 }
+
+const SPRING_LENGTH = 30
+const SCALE = 10
+const PADDING = 50
 
 export type GraphLayout = {
   boundingBox: BoundingBox

@@ -17,11 +17,10 @@ import {
 } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
-import type { ChangeEventHandler, ReactNode } from 'react'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import type { ChangeEventHandler } from 'react'
+import { useCallback, useId, useState } from 'react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
 import { Form, useSearchParams } from '@remix-run/react'
-import createPanZoom from 'panzoom'
 import { getTags } from '../services/posts.server'
 import { json, useLoaderData } from '../services/json'
 import { getGraph } from '../services/graph.server'
@@ -30,193 +29,14 @@ import { Link } from '../components/link.js'
 
 export default function HomePage() {
   const { tags, graph } = useLoaderData<LoaderData>()
-
-  return <GraphWidget tags={tags} graph={graph} />
-}
-
-export const loader: LoaderFunction = async () =>
-  json<LoaderData>({
-    tags: await getTags(),
-    graph: await getGraph(),
-  })
-
-type LoaderData = {
-  tags: Set<string>
-  graph: Graph
-}
-
-function GraphWidget({ tags, graph }: { tags: Set<string>; graph: Graph }) {
   const graphId = useId()
-  const descriptionId = useId()
 
   return (
-    <div className='flex flex-col space-y-12'>
+    <div className='flex flex-col flex-1 gap-8 sm:gap-y-12 md:gap-y-14'>
       <TagsFilterForm targetId={graphId} tags={tags} />
-      <nav
-        id={graphId}
-        className='focus-ring mx-4 flex flex-1 flex-col overflow-hidden'
-        aria-label='Site graph'
-        aria-describedby={descriptionId}
-      >
-        <span id={descriptionId} className='sr-only'>
-          Use gestures, arrow keys, or mouse to pan the graph. Use gestures or
-          scrolling while holding <kbd>Alt</kbd> or <kbd>Option</kbd> to zoom.
-        </span>
-        <PannableZoomable>
-          <GraphSvg graph={graph} />
-        </PannableZoomable>
-      </nav>
+      <GraphWidget id={graphId} graph={graph} />
     </div>
   )
-}
-
-function PannableZoomable({ children }: { children: ReactNode }) {
-  const elementRef = useRef(null)
-
-  useEffect(() => {
-    const panZoom = createPanZoom(elementRef.current!, {
-      minZoom: 0.5,
-      maxZoom: 2,
-      bounds: true,
-      boundsPadding: 0.5,
-      smoothScroll: false,
-
-      // Prevent zooming interfering with page scrolling
-      beforeWheel: e => !e.altKey,
-    })
-
-    return () => panZoom.dispose()
-  }, [])
-
-  return (
-    <div
-      ref={elementRef}
-      className='flex w-full flex-1 flex-col items-center justify-center'
-    >
-      {children}
-    </div>
-  )
-}
-
-function GraphSvg({
-  graph: {
-    vertices,
-    edges,
-    layout: {
-      boundingBox: { width, height },
-      positions,
-    },
-  },
-}: {
-  graph: Graph
-}) {
-  const markerId = useId()
-  const vertexRadius = 10
-
-  return (
-    <div className='relative overflow-visible' style={{ width, height }}>
-      <svg
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-        className='absolute'
-      >
-        <defs>
-          <marker
-            id={markerId}
-            viewBox='0 0 10 10'
-            refX='8'
-            refY='5'
-            markerUnits='strokeWidth'
-            markerWidth='10'
-            markerHeight='5'
-            orient='auto'
-            className='fill-slate-500'
-          >
-            <path d='M 0 0 L 10 5 L 0 10 z' />
-          </marker>
-        </defs>
-        <g>
-          {pipe(
-            values(edges),
-            map(({ fromId, toId, tags }) => {
-              const fromPosition = positions.get(fromId)!
-              const toPosition = positions.get(toId)!
-
-              return (
-                <line
-                  key={`${fromId} ${toId}`}
-                  strokeWidth='2.5'
-                  markerEnd={`url(#${cssesc(markerId, {
-                    isIdentifier: true,
-                  })})`}
-                  x1={intersectCircle(toPosition, fromPosition, vertexRadius).x}
-                  y1={intersectCircle(toPosition, fromPosition, vertexRadius).y}
-                  x2={intersectCircle(fromPosition, toPosition, vertexRadius).x}
-                  y2={intersectCircle(fromPosition, toPosition, vertexRadius).y}
-                  className={clsx(
-                    `stroke-slate-500`,
-                    pipe(
-                      tags,
-                      map(tag => `tag:${tag}`),
-                      reduce(toArray()),
-                    ),
-                  )}
-                />
-              )
-            }),
-            reduce(toArray()),
-          )}
-        </g>
-      </svg>
-      {pipe(
-        vertices,
-        map(([id, { label, tags, href }]) => {
-          const { x, y } = positions.get(id)!
-          return (
-            <Link
-              key={id}
-              href={href}
-              className={clsx(
-                `absolute group focus-ring rounded-full ring-offset-0`,
-                pipe(
-                  tags,
-                  map(tag => `tag:${tag}`),
-                  reduce(toArray()),
-                ),
-              )}
-              style={{ left: x - vertexRadius, top: y - vertexRadius }}
-            >
-              <div
-                className='rounded-full bg-slate-500 group-hover:bg-slate-600'
-                style={{ width: vertexRadius * 2, height: vertexRadius * 2 }}
-              />
-              <div className='absolute left-1/2 w-36 bottom-[150%] text-center -translate-x-1/2 font-medium'>
-                <span className='bg-slate-200 shadow-slate-200 group-hover:bg-slate-300 group-hover:shadow-slate-300 group-focus-visible:bg-orange-200  group-focus-visible:shadow-orange-200 shadow-[-0.25em_0_0,0.25em_0_0] py-[0.25em]'>
-                  {label}
-                </span>
-              </div>
-            </Link>
-          )
-        }),
-        reduce(toArray()),
-      )}
-    </div>
-  )
-}
-
-function intersectCircle(
-  start: Position,
-  end: Position,
-  radius: number,
-): Position {
-  const width = end.x - start.x
-  const height = end.y - start.y
-  const angle = Math.atan2(height, width)
-  const dx = Math.cos(angle) * radius
-  const dy = Math.sin(angle) * radius
-
-  return { x: end.x - dx, y: end.y - dy }
 }
 
 function TagsFilterForm({
@@ -230,7 +50,7 @@ function TagsFilterForm({
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
   return (
-    <Form className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'>
+    <Form className='flex max-w-[60ch] flex-col items-center gap-3 mx-auto'>
       <div className='flex items-center gap-3'>
         <h2 className='text-lg font-medium'>Filter by tags</h2>
         {
@@ -519,6 +339,196 @@ function useSelectedTags(
   )
 
   return [selectedTags, setSelectedTags]
+}
+
+function GraphWidget({ id, graph }: { id: string; graph: Graph }) {
+  const {
+    layout: {
+      boundingBox: { width, height },
+    },
+  } = graph
+
+  return (
+    <div className='w-full flex-grow flex items-center justify-center'>
+      <div className='w-full px-16 py-3 overflow-x-auto'>
+        <div
+          id={id}
+          className='relative w-full overflow-visible m-auto'
+          style={{
+            minWidth: width / 2,
+            maxWidth: width,
+            aspectRatio: `${width} / ${height}`,
+          }}
+        >
+          <Edges graph={graph} />
+          <Vertices graph={graph} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Edges({
+  graph: {
+    edges,
+    layout: {
+      boundingBox: { width, height },
+      positions,
+    },
+  },
+}: {
+  graph: Graph
+}) {
+  const markerId = useId()
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className='absolute w-full h-full'>
+      <defs>
+        <marker
+          id={markerId}
+          viewBox='0 0 10 10'
+          refX='8.5'
+          refY='5'
+          markerUnits='strokeWidth'
+          markerWidth='17'
+          markerHeight='7.5'
+          orient='auto'
+          className='fill-slate-500'
+        >
+          <path d='M 0 0 L 10 5 L 0 10 z' />
+        </marker>
+      </defs>
+      <g>
+        {pipe(
+          values(edges),
+          map(({ fromId, toId, tags }) => {
+            const fromPosition = positions.get(fromId)!
+            const toPosition = positions.get(toId)!
+
+            const intersectedFromPosition = intersectCircle(
+              toPosition,
+              fromPosition,
+              VERTEX_RADIUS,
+            )
+            const intersectedToPosition = intersectCircle(
+              fromPosition,
+              toPosition,
+              VERTEX_RADIUS,
+            )
+
+            return (
+              <line
+                key={`${fromId} ${toId}`}
+                strokeWidth='2.5'
+                markerEnd={`url(#${cssesc(markerId, {
+                  isIdentifier: true,
+                })})`}
+                x1={intersectedFromPosition.x}
+                y1={intersectedFromPosition.y}
+                x2={intersectedToPosition.x}
+                y2={intersectedToPosition.y}
+                className={clsx(
+                  `stroke-slate-500`,
+                  pipe(
+                    tags,
+                    map(tag => `tag:${tag}`),
+                    reduce(toArray()),
+                  ),
+                )}
+              />
+            )
+          }),
+          reduce(toArray()),
+        )}
+      </g>
+    </svg>
+  )
+}
+
+function intersectCircle(
+  start: Position,
+  end: Position,
+  radius: number,
+): Position {
+  const width = end.x - start.x
+  const height = end.y - start.y
+  const angle = Math.atan2(height, width)
+  const dx = Math.cos(angle) * radius
+  const dy = Math.sin(angle) * radius
+
+  return { x: end.x - dx, y: end.y - dy }
+}
+
+function Vertices({
+  graph: {
+    vertices,
+    layout: {
+      boundingBox: { width, height },
+      positions,
+    },
+  },
+}: {
+  graph: Graph
+}) {
+  return (
+    <>
+      {pipe(
+        vertices,
+        map(([id, { label, tags, href }]) => {
+          const { x, y } = positions.get(id)!
+
+          return (
+            <Link
+              key={id}
+              href={href}
+              className={clsx(
+                `absolute group focus-ring rounded-full ring-offset-0`,
+                pipe(
+                  tags,
+                  map(tag => `tag:${tag}`),
+                  reduce(toArray()),
+                ),
+              )}
+              style={{
+                left: getScaledCalc(x - VERTEX_RADIUS, width),
+                top: getScaledCalc(y - VERTEX_RADIUS, height),
+                width: getScaledCalc(VERTEX_SIZE, width),
+                height: getScaledCalc(VERTEX_SIZE, height),
+              }}
+            >
+              <div className='rounded-full bg-slate-500 group-hover:bg-slate-600 w-full h-full' />
+              <div className='absolute left-1/2 w-36 bottom-[150%] text-center -translate-x-1/2 font-medium'>
+                <span className='text-sm sm:text-base bg-slate-200 opacity-75 shadow-slate-200 group-hover:bg-slate-300 group-hover:shadow-slate-300 group-focus-visible:bg-orange-200 group-focus-visible:shadow-orange-200 shadow-[-0.25em_0_0,0.25em_0_0] py-[0.30em] sm:py-[0.25em]'>
+                  <span className='opacity-0' aria-hidden='true'>
+                    {label}
+                  </span>
+                </span>
+                <span className='w-36 absolute left-0 top-0'>{label}</span>
+              </div>
+            </Link>
+          )
+        }),
+        reduce(toArray()),
+      )}
+    </>
+  )
+}
+
+const VERTEX_RADIUS = 10
+const VERTEX_SIZE = VERTEX_RADIUS * 2
+
+const getScaledCalc = (value: number, limit: number) =>
+  `calc(${(100 * value) / limit}%)`
+
+export const loader: LoaderFunction = async () =>
+  json<LoaderData>({
+    tags: await getTags(),
+    graph: await getGraph(),
+  })
+
+type LoaderData = {
+  tags: Set<string>
+  graph: Graph
 }
 
 // eslint-disable-next-line camelcase
