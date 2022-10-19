@@ -1,6 +1,5 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
-import type { ComponentType } from 'react'
 import { unified } from 'unified'
 import { useHydrated } from 'remix-utils'
 import rehypeDomParse from 'rehype-dom-parse'
@@ -60,17 +59,7 @@ function Tag({ tag }: { tag: string }) {
   )
 }
 
-function Render({
-  html,
-  components,
-}: {
-  html: string
-  components?: Partial<{
-    [TagName in keyof JSX.IntrinsicElements]:
-      | keyof JSX.IntrinsicElements
-      | ComponentType<JSX.IntrinsicElements[TagName]>
-  }>
-}) {
+function Render({ html }: { html: string }) {
   const hydrated = useHydrated()
 
   if (!hydrated) {
@@ -88,7 +77,6 @@ function Render({
         </Link>
       )
     },
-    ...components,
   })
 }
 
