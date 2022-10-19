@@ -32,6 +32,7 @@ import { unified } from 'unified'
 import { getHighlighter } from 'shiki'
 import rehypeShiki from '@leafac/rehype-shiki'
 import rehypePresetMinify from 'rehype-preset-minify'
+import { visit } from 'unist-util-visit'
 import renderHtml from './html'
 import { cached } from './cache.server'
 import assert from './assert'
@@ -115,6 +116,7 @@ const parseMarkdown = async (markdown: string): Promise<Root> =>
     .use(remarkRehype)
     .use(rehypeExternalLinks)
     .use(rehypeShiki, { highlighter: await highlighterPromise })
+    .use(rehypeRemoveShikiClasses)
     .use(rehypePresetMinify)
     .use(function () {
       // eslint-disable-next-line @typescript-eslint/no-invalid-this
@@ -122,7 +124,25 @@ const parseMarkdown = async (markdown: string): Promise<Root> =>
     })
     .processSync(markdown).result as Root
 
-const highlighterPromise = getHighlighter({ theme: `light-plus` })
+const highlighterPromise = getHighlighter({ theme: `material-palenight` })
+
+const rehypeRemoveShikiClasses = () => (tree: Root) => {
+  visit(tree, { tagName: `pre` }, node => {
+    const stack = [node]
+    do {
+      const node = stack.pop()!
+      delete node.properties?.className
+
+      for (const child of node.children) {
+        if (child.type === `element`) {
+          stack.push(child)
+        }
+      }
+    } while (stack.length > 0)
+  })
+
+  return tree
+}
 
 const postMetadataSchema = z.object({
   title: z.string(),
