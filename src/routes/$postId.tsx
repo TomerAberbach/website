@@ -17,8 +17,8 @@ export default function PostPage() {
   const dateTime = new Date(timestamp)
 
   return (
-    <article className='prose mx-auto w-[80ch] max-w-full px-12 md:prose-lg md:px-16'>
-      <header className='mb-4 mt-7 space-y-2'>
+    <article className='prose mx-auto w-[80ch] max-w-full md:prose-lg'>
+      <header className='mb-4 space-y-2'>
         <h1 className='m-0 md:m-0'>{title}</h1>
         <p className='space-y-2 whitespace-nowrap text-slate-500'>
           <time dateTime={dateTime.toISOString()}>
