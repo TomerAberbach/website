@@ -6,8 +6,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from '@remix-run/react'
 import type { ReactNode } from 'react'
+import { useHydrated } from 'remix-utils'
 import stylesUrl from './styles/build.css'
 import { ExternalLink, InternalLink } from './components/link'
 
@@ -34,12 +36,28 @@ export default function App() {
         <Layout>
           <Outlet />
         </Layout>
-        <ScrollRestoration />
+        <ConditionalScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
   )
+}
+
+function ConditionalScrollRestoration() {
+  const hydrated = useHydrated()
+  const location = useLocation()
+
+  if (
+    hydrated &&
+    location.state != null &&
+    typeof location.state === `object` &&
+    (location.state as { scroll?: boolean }).scroll === false
+  ) {
+    return null
+  }
+
+  return <ScrollRestoration />
 }
 
 function Layout({ children }: { children: ReactNode }) {
