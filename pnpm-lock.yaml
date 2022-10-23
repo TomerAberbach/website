@@ -28,6 +28,7 @@ specifiers:
   '@types/testing-library__jest-dom': ^5.14.5
   autoprefixer: ^10.4.12
   clsx: ^1.2.1
+  cross-env: ^7.0.3
   cssesc: ^3.0.0
   cssnano: ^5.1.13
   cypress: ^10.10.0
@@ -44,6 +45,7 @@ specifiers:
   postcss: ^8.4.17
   postcss-cli: ^10.0.0
   postcss-import: ^15.0.0
+  prettier-plugin-tailwindcss: ^0.1.13
   react: ^18.2.0
   react-dom: ^18.2.0
   reading-time: ^1.5.0
@@ -112,6 +114,7 @@ devDependencies:
   '@types/react-dom': 18.0.6
   '@types/testing-library__jest-dom': 5.14.5
   autoprefixer: 10.4.12_postcss@8.4.18
+  cross-env: 7.0.3
   cssnano: 5.1.13_postcss@8.4.18
   cypress: 10.10.0
   eslint: 8.25.0
@@ -120,6 +123,7 @@ devDependencies:
   postcss: 8.4.18
   postcss-cli: 10.0.0_postcss@8.4.18
   postcss-import: 15.0.0_postcss@8.4.18
+  prettier-plugin-tailwindcss: 0.1.13
   start-server-and-test: 1.14.0
   tailwindcss: 3.1.8_postcss@8.4.18
   tomer: 0.2.10
@@ -15858,6 +15862,16 @@ packages:
         integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==,
       }
     engines: { node: '>= 0.8.0' }
+    dev: true
+
+  /prettier-plugin-tailwindcss/0.1.13:
+    resolution:
+      {
+        integrity: sha512-/EKQURUrxLu66CMUg4+1LwGdxnz8of7IDvrSLqEtDqhLH61SAlNNUSr90UTvZaemujgl3OH/VHg+fyGltrNixw==,
+      }
+    engines: { node: '>=12.17.0' }
+    peerDependencies:
+      prettier: '>=2.2.0'
     dev: true
 
   /prettier/2.7.1:

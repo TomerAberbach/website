@@ -15,7 +15,6 @@
     "not IE 11",
     "not op_mini all"
   ],
-  "prettier": "tomer/prettier",
   "eslintConfig": {
     "root": true,
     "extends": [
@@ -41,9 +40,9 @@
     "dev:css": "postcss ./src/styles/index.css -o ./src/styles/build.css --watch",
     "dev:remix": "remix dev",
     "dev": "npm-run-all build:css -p dev:*",
-    "cy": "cypress run --browser chrome",
-    "test:unit": "tomer test --no-watch",
-    "test:e2e": "start-server-and-test dev http-get://localhost:3000 cy",
+    "cy": "cross-env NODE_ENV=test cypress run --browser chrome",
+    "test:unit": "cross-env NODE_ENV=test tomer test --no-watch",
+    "test:e2e": "cross-env NODE_ENV=test start-server-and-test dev http-get://localhost:3000 cy",
     "test": "run-p test:*",
     "start": "remix-serve build",
     "deploy": "fly deploy --remote-only"
@@ -96,6 +95,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/testing-library__jest-dom": "^5.14.5",
     "autoprefixer": "^10.4.12",
+    "cross-env": "^7.0.3",
     "cssnano": "^5.1.13",
     "cypress": "^10.10.0",
     "eslint": "^8.23.1",
@@ -104,6 +104,7 @@
     "postcss": "^8.4.17",
     "postcss-cli": "^10.0.0",
     "postcss-import": "^15.0.0",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.8",
     "tomer": "^0.2.10",

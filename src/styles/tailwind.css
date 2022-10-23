@@ -9,9 +9,8 @@
   }
 
   body {
-    @apply flex-1;
+    @apply flex-1 subpixel-antialiased;
     font-feature-settings: 'kern';
-    -webkit-font-smoothing: subpixel-antialiased;
   }
 
   code {
@@ -21,16 +20,16 @@
 
 @layer utilities {
   .focus-ring {
-    @apply ring-orange-300 ring-offset-2 focus:outline-none focus-visible:ring;
+    @apply outline-none ring-blue-300 ring-offset-2 transition duration-200 hover:ring focus-visible:ring;
   }
 
   .underlined {
     background: linear-gradient(to right, currentColor, currentColor),
       linear-gradient(
         to right,
-        theme('colors.orange.500'),
-        theme('colors.orange.500'),
-        theme('colors.orange.500')
+        theme('colors.blue.500'),
+        theme('colors.blue.500'),
+        theme('colors.blue.500')
       );
     background-size: 100% 0.2em, 0 0.2em;
     background-position: 100% 100%, 0 100%;

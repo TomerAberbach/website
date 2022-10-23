@@ -62,7 +62,7 @@ function ConditionalScrollRestoration() {
 
 function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-14 text-slate-800 p-8 sm:p-12 md:p-16'>
+    <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:p-12 md:gap-y-14 md:p-16'>
       <Header />
       <main className='flex flex-1 flex-col'>{children}</main>
       <Footer />
@@ -73,7 +73,7 @@ function Layout({ children }: { children: ReactNode }) {
 function Header() {
   return (
     <header>
-      <InternalLink href='/' className='focus-ring underlined'>
+      <InternalLink href='/' className='underlined focus:outline-none'>
         <h1 className='inline text-2xl font-bold'>Tomer Aberbach</h1>
       </InternalLink>
     </header>
@@ -82,7 +82,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className='mx-auto flex flex-col items-center gap-y-3 text-sm text-slate-500'>
+    <footer className='mx-auto flex flex-col items-center gap-y-3 text-sm text-gray-500'>
       <p className='text-center'>
         ©&nbsp;Tomer&nbsp;Aberbach. All&nbsp;rights&nbsp;reserved.
       </p>
@@ -154,7 +154,7 @@ function IconLink({
         role='img'
         viewBox='0 0 24 24'
         xmlns='http://www.w3.org/2000/svg'
-        className='w-7 fill-slate-500 hover:fill-slate-600'
+        className='w-7 fill-gray-500 hover:fill-gray-600'
       >
         <title>{title}</title>
         {children}
@@ -171,4 +171,14 @@ export const meta: MetaFunction = () => ({
 
 export const links: LinksFunction = () => [
   { rel: `stylesheet`, href: stylesUrl },
+  { rel: `preconnect`, href: `https://fonts.googleapis.com` },
+  {
+    rel: `preconnect`,
+    href: `https://fonts.gstatic.com`,
+    crossOrigin: `anonymous`,
+  },
+  {
+    rel: `stylesheet`,
+    href: `https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap`,
+  },
 ]

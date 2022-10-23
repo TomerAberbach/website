@@ -4,7 +4,6 @@ import {
   entries,
   filter,
   flatMap,
-  index,
   join,
   keys,
   map,
@@ -32,7 +31,7 @@ export default function HomePage() {
   const graphId = useId()
 
   return (
-    <div className='flex flex-col flex-1 gap-8 sm:gap-y-12 md:gap-y-14'>
+    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-14'>
       <TagsFilterForm targetId={graphId} tags={tags} />
       <GraphWidget id={graphId} graph={graph} />
     </div>
@@ -50,9 +49,9 @@ function TagsFilterForm({
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
   return (
-    <Form className='flex max-w-[60ch] flex-col items-center gap-3 mx-auto'>
+    <Form className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'>
       <div className='flex items-center gap-3'>
-        <h2 className='text-lg font-medium'>Filter by tags</h2>
+        <h2 className='text-lg font-medium md:text-xl'>Filter by tags</h2>
         {
           <LogicalOperatorRadioButtonGroup
             logicalOperator={logicalOperator}
@@ -129,47 +128,37 @@ function LogicalOperatorRadioButtonGroup({
 
   return (
     <div className='flex items-center gap-1.5'>
-      <fieldset
-        aria-describedby={tooltipId}
-        className='grid auto-cols-fr grid-flow-col -space-x-[2px] rounded-2xl'
-      >
+      <fieldset aria-describedby={tooltipId}>
         <legend className='sr-only'>Logical operator</legend>
-        {pipe(
-          LOGICAL_OPERATORS,
-          index,
-          map(([index, currentLogicalOperator]) => {
+        <div className='flex -space-x-[2px] rounded-2xl'>
+          {LOGICAL_OPERATORS.map(currentLogicalOperator => {
             const checked = currentLogicalOperator === logicalOperator
             return (
               <label
                 key={currentLogicalOperator}
-                className='relative p-2 text-center font-mono font-medium leading-none hover:bg-slate-50'
+                className='group relative text-center font-mono font-medium leading-none first:rounded-l-xl last:rounded-r-xl md:text-lg md:leading-none'
               >
                 <input
                   type='radio'
                   name='op'
                   value={currentLogicalOperator}
                   checked={checked}
-                  className={clsx(
-                    `peer focus-ring absolute left-0 top-0 h-full w-full cursor-pointer appearance-none border-2 border-slate-300 checked:z-10 checked:border-orange-600 focus-visible:z-20`,
-                    index === 0 && `rounded-l-xl`,
-                    index === LOGICAL_OPERATORS.length - 1 && `rounded-r-xl`,
-                  )}
+                  className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none border-2 border-gray-300 checked:z-10 checked:border-blue-600 hover:z-20 focus-visible:z-20 group-first:rounded-l-xl group-last:rounded-r-xl'
                   onChange={handleLogicalOperatorChange}
                 />
-                <span className='text-slate-500 peer-checked:text-orange-700'>
+                <div className='h-full w-full bg-white p-2 text-gray-500 transition group-first:rounded-l-xl group-last:rounded-r-xl peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
                   {currentLogicalOperator}
-                </span>
+                </div>
               </label>
             )
-          }),
-          reduce(toArray()),
-        )}
+          })}
+        </div>
       </fieldset>
       <div className='relative'>
         <QuestionMarkCircleIcon className='peer h-5 w-5' />
         <div
           id={tooltipId}
-          className="sr-only left-1/2 z-10 translate-y-3 -translate-x-1/2 rounded-md bg-neutral-800 text-center text-sm text-white after:absolute after:top-0 after:left-1/2 after:-translate-y-full after:-translate-x-1/2 after:border-8 after:border-solid after:border-transparent after:border-b-neutral-800 after:content-[''] hover:not-sr-only hover:absolute hover:w-[20ch] hover:p-2 peer-hover:not-sr-only peer-hover:absolute peer-hover:w-[20ch] peer-hover:p-2"
+          className="pointer-events-none absolute left-1/2 z-10 w-[20ch] translate-y-3 -translate-x-1/2 rounded-md bg-gray-800 p-2 text-center text-sm text-white opacity-0 transition-opacity duration-200 after:absolute after:top-0 after:left-1/2 after:-translate-y-full after:-translate-x-1/2 after:border-8 after:border-solid after:border-transparent after:border-b-gray-800 after:content-[''] hover:pointer-events-auto hover:opacity-100 peer-hover:pointer-events-auto peer-hover:opacity-100"
         >
           <span className='font-mono'>||</span> and{` `}
           <span className='font-mono'>&&</span> filter for posts matching{` `}
@@ -236,7 +225,7 @@ function TagsCheckboxGroup({
     setSelectedTags(
       pipe(
         keys(selectedTags),
-        map(tag => [tag, false] as const),
+        map((tag): [string, boolean] => [tag, false]),
         reduce(toObject()),
       ),
     )
@@ -249,21 +238,18 @@ function TagsCheckboxGroup({
         {pipe(
           entries(selectedTags),
           map(([tag, selected]) => (
-            <label
-              key={tag}
-              className='relative rounded-2xl p-2.5 font-medium leading-none hover:bg-slate-50'
-            >
+            <label key={tag} className='group relative rounded-2xl'>
               <input
                 type='checkbox'
                 name='tags'
                 value={tag}
                 checked={selected}
-                className='peer focus-ring absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-slate-300 checked:border-orange-600'
+                className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600'
                 onChange={handleTagChange}
               />
-              <span className='text-slate-500 peer-checked:text-orange-700'>
+              <div className='rounded-2xl bg-white p-2.5 font-medium leading-none text-gray-500 transition peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
                 {tag}
-              </span>
+              </div>
             </label>
           )),
         )}
@@ -271,20 +257,20 @@ function TagsCheckboxGroup({
       <div className='flex gap-2'>
         <button
           type='button'
-          className='focus-ring hidden rounded-xl bg-slate-200 p-2 text-sm font-medium text-slate-500 hover:bg-slate-300 js:inline-block'
+          className='focus-ring hidden rounded-xl bg-gray-100 p-2 text-sm font-medium text-gray-600 hover:bg-blue-100 active:bg-blue-200 js:inline-block'
           onClick={handleReset}
         >
           Reset
         </button>
         <button
           type='submit'
-          className='focus-ring rounded-xl bg-slate-200 p-2 text-sm font-medium text-slate-500 hover:bg-slate-300 js:hidden'
+          className='focus-ring rounded-xl bg-gray-100 p-2 text-sm font-medium text-gray-600 hover:bg-blue-100 active:bg-blue-200 js:hidden'
         >
           Submit
         </button>
         {recentlyReset && (
           <span role='alert' className='sr-only'>
-            Unchecked all tags.
+            Unchecked all tags
           </span>
         )}
       </div>
@@ -349,11 +335,11 @@ function GraphWidget({ id, graph }: { id: string; graph: Graph }) {
   } = graph
 
   return (
-    <div className='w-full flex-grow flex items-center justify-center'>
-      <div className='w-full px-16 py-3 overflow-x-auto'>
+    <div className='flex w-full flex-grow items-center justify-center'>
+      <div className='w-full overflow-x-auto px-16 py-3'>
         <div
           id={id}
-          className='relative w-full overflow-visible m-auto'
+          className='relative m-auto w-full overflow-visible'
           style={{
             minWidth: width / 2,
             maxWidth: width,
@@ -382,7 +368,7 @@ function Edges({
   const markerId = useId()
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className='absolute w-full h-full'>
+    <svg viewBox={`0 0 ${width} ${height}`} className='absolute h-full w-full'>
       <defs>
         <marker
           id={markerId}
@@ -393,7 +379,7 @@ function Edges({
           markerWidth='17'
           markerHeight='7.5'
           orient='auto'
-          className='fill-slate-500'
+          className='fill-gray-500'
         >
           <path d='M 0 0 L 10 5 L 0 10 z' />
         </marker>
@@ -428,7 +414,7 @@ function Edges({
                 x2={intersectedToPosition.x}
                 y2={intersectedToPosition.y}
                 className={clsx(
-                  `stroke-slate-500`,
+                  `stroke-gray-500`,
                   pipe(
                     tags,
                     map(tag => `tag:${tag}`),
@@ -482,7 +468,7 @@ function Vertices({
               key={id}
               href={href}
               className={clsx(
-                `absolute group focus-ring rounded-full ring-offset-0`,
+                `focus-ring group absolute rounded-full ring-offset-0`,
                 pipe(
                   tags,
                   map(tag => `tag:${tag}`),
@@ -496,14 +482,14 @@ function Vertices({
                 height: getScaledCalc(VERTEX_SIZE, height),
               }}
             >
-              <div className='rounded-full bg-slate-500 group-hover:bg-slate-600 w-full h-full' />
-              <div className='absolute left-1/2 w-36 bottom-[150%] text-center -translate-x-1/2 font-medium'>
-                <span className='text-sm sm:text-base bg-slate-200 opacity-75 shadow-slate-200 group-hover:bg-slate-300 group-hover:shadow-slate-300 group-focus-visible:bg-orange-200 group-focus-visible:shadow-orange-200 shadow-[-0.25em_0_0,0.25em_0_0] py-[0.30em] sm:py-[0.25em]'>
+              <div className='h-full w-full rounded-full bg-gray-500 group-hover:bg-gray-600' />
+              <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center font-medium'>
+                <span className='bg-gray-200 py-[0.30em] text-sm opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] shadow-gray-200 group-hover:bg-gray-300 group-hover:shadow-gray-300 group-focus-visible:bg-blue-200 group-focus-visible:shadow-blue-200 sm:py-[0.25em] sm:text-base'>
                   <span className='opacity-0' aria-hidden='true'>
                     {label}
                   </span>
                 </span>
-                <span className='w-36 absolute left-0 top-0'>{label}</span>
+                <span className='absolute left-0 top-0 w-36'>{label}</span>
               </div>
             </Link>
           )

@@ -19,7 +19,7 @@ export default function PostPage() {
     <article className='prose mx-auto w-[80ch] max-w-full md:prose-lg'>
       <header className='mb-4 space-y-2'>
         <h1 className='m-0 md:m-0'>{title}</h1>
-        <p className='space-y-2 whitespace-nowrap text-slate-500'>
+        <p className='space-y-2 whitespace-nowrap text-gray-500'>
           <time dateTime={dateTime.toISOString()}>
             {dateTime.toLocaleDateString(undefined, {
               year: `numeric`,
@@ -51,10 +51,10 @@ function Tag({ tag }: { tag: string }) {
   return (
     <InternalLink
       href={`/?tags=${encodeURIComponent(tag)}`}
-      className='focus-ring relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-slate-50'
+      className='focus-ring relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50'
     >
-      <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-slate-300' />
-      <span className='text-slate-600'>{tag}</span>
+      <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-gray-300' />
+      <span className='text-gray-600'>{tag}</span>
     </InternalLink>
   )
 }
