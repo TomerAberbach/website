@@ -5,12 +5,12 @@ import { useHydrated } from 'remix-utils'
 import rehypeDomParse from 'rehype-dom-parse'
 import type { Post } from '../services/posts.server'
 import { getPosts } from '../services/posts.server'
-import { json, useLoaderData } from '../services/json'
+import { json, useLoaderData } from '../services/json.js'
 import { InternalLink, Link } from '../components/link.js'
-import renderHtml from '../services/html'
+import renderHtml from '../services/html.js'
 import assert from '../services/assert.js'
 
-export default function PostPage() {
+const PostPage = () => {
   const { post } = useLoaderData<LoaderData>()
   const { title, tags, timestamp, minutesToRead, content } = post
   const dateTime = new Date(timestamp)
@@ -47,19 +47,17 @@ export default function PostPage() {
   )
 }
 
-function Tag({ tag }: { tag: string }) {
-  return (
-    <InternalLink
-      href={`/?tags=${encodeURIComponent(tag)}`}
-      className='focus-ring relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50'
-    >
-      <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-gray-300' />
-      <span className='text-gray-600'>{tag}</span>
-    </InternalLink>
-  )
-}
+const Tag = ({ tag }: { tag: string }) => (
+  <InternalLink
+    href={`/?tags=${encodeURIComponent(tag)}`}
+    className='focus-ring relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50'
+  >
+    <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-gray-300' />
+    <span className='text-gray-600'>{tag}</span>
+  </InternalLink>
+)
 
-function Render({ html }: { html: string }) {
+const Render = ({ html }: { html: string }) => {
   const hydrated = useHydrated()
 
   if (!hydrated) {
@@ -91,3 +89,5 @@ export const loader: LoaderFunction = async ({ params }) => {
 type LoaderData = {
   post: Pick<Post, `title` | `tags` | `timestamp` | `minutesToRead` | `content`>
 }
+
+export default PostPage

@@ -33,9 +33,9 @@ import { getHighlighter } from 'shiki'
 import rehypeShiki from '@leafac/rehype-shiki'
 import rehypePresetMinify from 'rehype-preset-minify'
 import { visit } from 'unist-util-visit'
-import renderHtml from './html'
+import renderHtml from './html.js'
 import { cached } from './cache.server'
-import assert from './assert'
+import assert from './assert.js'
 
 export const getTags: () => Promise<Set<string>> = cached(
   async () =>
@@ -85,7 +85,7 @@ export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
   return posts
 })
 
-async function parseRawPost(rawPost: RawPost): Promise<Post> {
+const parseRawPost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
   const htmlAst = await parseMarkdown(content)
 
@@ -116,17 +116,18 @@ const parseMarkdown = async (markdown: string): Promise<Root> =>
     .use(remarkRehype)
     .use(rehypeExternalLinks)
     .use(rehypeShiki, { highlighter: await highlighterPromise })
-    .use(rehypeRemoveShikiClasses)
+    .use(() => rehypeRemoveShikiClasses)
     .use(rehypePresetMinify)
+    // eslint-disable-next-line no-restricted-syntax
     .use(function () {
-      // eslint-disable-next-line @typescript-eslint/no-invalid-this
+      // eslint-disable-next-line typescript/no-invalid-this
       this.Compiler = htmlAst => htmlAst
     })
     .processSync(markdown).result as Root
 
 const highlighterPromise = getHighlighter({ theme: `material-palenight` })
 
-const rehypeRemoveShikiClasses = () => (tree: Root) => {
+const rehypeRemoveShikiClasses = (tree: Root) => {
   visit(tree, { tagName: `pre` }, node => {
     const stack = [node]
     do {
@@ -174,7 +175,7 @@ const parseReferences = (hrefs: Iterable<string>): Map<string, Set<string>> =>
     reduce(toGrouped(toSet(), toMap())),
   )
 
-function parseReference(href: string): string {
+const parseReference = (href: string): string => {
   const url = new URL(href, `https://${HOSTNAME}`)
 
   if (url.hostname === HOSTNAME) {
@@ -187,13 +188,11 @@ function parseReference(href: string): string {
 const HOSTNAME = `tomeraberba.ch`
 
 const removePrefix = (string: string, prefix: string): string =>
-  string.startsWith(prefix) ? string.substring(prefix.length) : string
+  string.startsWith(prefix) ? string.slice(prefix.length) : string
 
-async function getGitHubPosts(): Promise<ConcurIterable<RawPost>> {
-  const files = await getGitHubRepositoryDirectory(POSTS_PATH)
-
-  return pipe(
-    asConcur(files),
+const getGitHubPosts = async (): Promise<ConcurIterable<RawPost>> =>
+  pipe(
+    asConcur(await getGitHubRepositoryDirectory(POSTS_PATH)),
     mapConcur(async ({ type, name, path }) => {
       assert(type === `file`, `Expected ${path} to be a file, but was: ${type}`)
 
@@ -203,9 +202,8 @@ async function getGitHubPosts(): Promise<ConcurIterable<RawPost>> {
       }
     }),
   )
-}
 
-async function getGitHubRepositoryDirectory(path: string) {
+const getGitHubRepositoryDirectory = async (path: string) => {
   const response = await getGitHubRepositoryContents(path)
   const files = response.data
 
@@ -214,7 +212,7 @@ async function getGitHubRepositoryDirectory(path: string) {
   return files
 }
 
-async function getGitHubRepositoryFile(path: string) {
+const getGitHubRepositoryFile = async (path: string) => {
   const response = await getGitHubRepositoryContents(path)
   const file = response.data
 
@@ -226,8 +224,8 @@ async function getGitHubRepositoryFile(path: string) {
   return file
 }
 
-function getGitHubRepositoryContents(path: string) {
-  return new Octokit({ auth: process.env.GITHUB_TOKEN }).request(
+const getGitHubRepositoryContents = (path: string) =>
+  new Octokit({ auth: process.env.GITHUB_TOKEN }).request(
     `GET /repos/{owner}/{repo}/contents/{path}`,
     {
       owner: `TomerAberbach`,
@@ -235,15 +233,14 @@ function getGitHubRepositoryContents(path: string) {
       path,
     },
   )
-}
 
-function getFileContent({
+const getFileContent = ({
   encoding,
   content,
 }: {
   readonly encoding: string
   readonly content: string
-}): string {
+}): string => {
   if (encoding !== `base64`) {
     return content
   }
@@ -251,7 +248,7 @@ function getFileContent({
   return Buffer.from(content, `base64`).toString(`utf8`)
 }
 
-async function getLocalPosts(): Promise<ConcurIterable<RawPost>> {
+const getLocalPosts = async (): Promise<ConcurIterable<RawPost>> => {
   const postsDirectory = join(process.cwd(), POSTS_PATH)
 
   return pipe(
@@ -267,7 +264,7 @@ type RawPost = { id: string; content: string }
 
 const POSTS_PATH = `src/posts`
 
-function parseId(name: string) {
+const parseId = (name: string): string => {
   assert(name.endsWith(MD_EXTENSION))
   return basename(name, MD_EXTENSION)
 }

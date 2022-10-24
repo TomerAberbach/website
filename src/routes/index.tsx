@@ -21,12 +21,12 @@ import { useCallback, useId, useState } from 'react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
 import { Form, useSearchParams } from '@remix-run/react'
 import { getTags } from '../services/posts.server'
-import { json, useLoaderData } from '../services/json'
+import { json, useLoaderData } from '../services/json.js'
 import { getGraph } from '../services/graph.server'
 import type { Graph, Position } from '../services/graph.server'
 import { Link } from '../components/link.js'
 
-export default function HomePage() {
+const HomePage = () => {
   const { tags, graph } = useLoaderData<LoaderData>()
   const graphId = useId()
 
@@ -38,13 +38,13 @@ export default function HomePage() {
   )
 }
 
-function TagsFilterForm({
+const TagsFilterForm = ({
   targetId,
   tags,
 }: {
   targetId: string
   tags: Set<string>
-}) {
+}) => {
   const [logicalOperator, setLogicalOperator] = useLogicalOperator()
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
@@ -77,7 +77,7 @@ function TagsFilterForm({
   )
 }
 
-function TagsFilterStyle({
+const TagsFilterStyle = ({
   targetId,
   logicalOperator,
   selectedTags,
@@ -85,7 +85,7 @@ function TagsFilterStyle({
   targetId: string
   logicalOperator: LogicalOperator
   selectedTags: Record<string, boolean>
-}) {
+}) => {
   const tagClassSelectors = pipe(
     entries(selectedTags),
     filter(([, selected]) => selected),
@@ -110,13 +110,13 @@ function TagsFilterStyle({
   )
 }
 
-function LogicalOperatorRadioButtonGroup({
+const LogicalOperatorRadioButtonGroup = ({
   logicalOperator,
   setLogicalOperator,
 }: {
   logicalOperator: LogicalOperator
   setLogicalOperator: (newLogicalOperator: LogicalOperator) => void
-}) {
+}) => {
   const tooltipId = useId()
 
   const handleLogicalOperatorChange = useCallback<
@@ -169,10 +169,10 @@ function LogicalOperatorRadioButtonGroup({
   )
 }
 
-function useLogicalOperator(): [
+const useLogicalOperator = (): [
   LogicalOperator,
   (newLogicalOperator: LogicalOperator) => void,
-] {
+] => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const logicalOperator = parseLogicalOperator(searchParams.get(`op`))
@@ -203,13 +203,13 @@ const parseLogicalOperator = (operator: string | null): LogicalOperator =>
 const LOGICAL_OPERATORS: readonly LogicalOperator[] = [`||`, `&&`]
 type LogicalOperator = `||` | `&&`
 
-function TagsCheckboxGroup({
+const TagsCheckboxGroup = ({
   selectedTags,
   setSelectedTags,
 }: {
   selectedTags: Record<string, boolean>
   setSelectedTags: (newSelectedTags: Record<string, boolean>) => void
-}) {
+}) => {
   const [recentlyReset, setRecentlyReset] = useState(false)
 
   const handleTagChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -278,12 +278,12 @@ function TagsCheckboxGroup({
   )
 }
 
-function useSelectedTags(
+const useSelectedTags = (
   tags: Set<string>,
 ): [
   Record<string, boolean>,
   (newSelectedTags: Record<string, boolean>) => void,
-] {
+] => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const searchTags = new Set(
@@ -327,7 +327,7 @@ function useSelectedTags(
   return [selectedTags, setSelectedTags]
 }
 
-function GraphWidget({ id, graph }: { id: string; graph: Graph }) {
+const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
   const {
     layout: {
       boundingBox: { width, height },
@@ -354,7 +354,7 @@ function GraphWidget({ id, graph }: { id: string; graph: Graph }) {
   )
 }
 
-function Edges({
+const Edges = ({
   graph: {
     edges,
     layout: {
@@ -364,7 +364,7 @@ function Edges({
   },
 }: {
   graph: Graph
-}) {
+}) => {
   const markerId = useId()
 
   return (
@@ -431,11 +431,11 @@ function Edges({
   )
 }
 
-function intersectCircle(
+const intersectCircle = (
   start: Position,
   end: Position,
   radius: number,
-): Position {
+): Position => {
   const width = end.x - start.x
   const height = end.y - start.y
   const angle = Math.atan2(height, width)
@@ -445,7 +445,7 @@ function intersectCircle(
   return { x: end.x - dx, y: end.y - dy }
 }
 
-function Vertices({
+const Vertices = ({
   graph: {
     vertices,
     layout: {
@@ -455,50 +455,48 @@ function Vertices({
   },
 }: {
   graph: Graph
-}) {
-  return (
-    <>
-      {pipe(
-        vertices,
-        map(([id, { label, tags, href }]) => {
-          const { x, y } = positions.get(id)!
+}) => (
+  <>
+    {pipe(
+      vertices,
+      map(([id, { label, tags, href }]) => {
+        const { x, y } = positions.get(id)!
 
-          return (
-            <Link
-              key={id}
-              href={href}
-              className={clsx(
-                `focus-ring group absolute rounded-full ring-offset-0`,
-                pipe(
-                  tags,
-                  map(tag => `tag:${tag}`),
-                  reduce(toArray()),
-                ),
-              )}
-              style={{
-                left: getScaledCalc(x - VERTEX_RADIUS, width),
-                top: getScaledCalc(y - VERTEX_RADIUS, height),
-                width: getScaledCalc(VERTEX_SIZE, width),
-                height: getScaledCalc(VERTEX_SIZE, height),
-              }}
-            >
-              <div className='h-full w-full rounded-full bg-gray-500 group-hover:bg-gray-600' />
-              <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center font-medium'>
-                <span className='bg-gray-200 py-[0.30em] text-sm opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] shadow-gray-200 group-hover:bg-gray-300 group-hover:shadow-gray-300 group-focus-visible:bg-blue-200 group-focus-visible:shadow-blue-200 sm:py-[0.25em] sm:text-base'>
-                  <span className='opacity-0' aria-hidden='true'>
-                    {label}
-                  </span>
+        return (
+          <Link
+            key={id}
+            href={href}
+            className={clsx(
+              `focus-ring group absolute rounded-full ring-offset-0`,
+              pipe(
+                tags,
+                map(tag => `tag:${tag}`),
+                reduce(toArray()),
+              ),
+            )}
+            style={{
+              left: getScaledCalc(x - VERTEX_RADIUS, width),
+              top: getScaledCalc(y - VERTEX_RADIUS, height),
+              width: getScaledCalc(VERTEX_SIZE, width),
+              height: getScaledCalc(VERTEX_SIZE, height),
+            }}
+          >
+            <div className='h-full w-full rounded-full bg-gray-500 group-hover:bg-gray-600' />
+            <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center font-medium'>
+              <span className='bg-gray-200 py-[0.30em] text-sm opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] shadow-gray-200 group-hover:bg-gray-300 group-hover:shadow-gray-300 group-focus-visible:bg-blue-200 group-focus-visible:shadow-blue-200 sm:py-[0.25em] sm:text-base'>
+                <span className='opacity-0' aria-hidden='true'>
+                  {label}
                 </span>
-                <span className='absolute left-0 top-0 w-36'>{label}</span>
-              </div>
-            </Link>
-          )
-        }),
-        reduce(toArray()),
-      )}
-    </>
-  )
-}
+              </span>
+              <span className='absolute left-0 top-0 w-36'>{label}</span>
+            </div>
+          </Link>
+        )
+      }),
+      reduce(toArray()),
+    )}
+  </>
+)
 
 const VERTEX_RADIUS = 10
 const VERTEX_SIZE = VERTEX_RADIUS * 2
@@ -519,3 +517,5 @@ type LoaderData = {
 
 // eslint-disable-next-line camelcase
 export const unstable_shouldReload = () => false
+
+export default HomePage
