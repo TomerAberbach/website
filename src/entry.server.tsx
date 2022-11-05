@@ -4,15 +4,13 @@ import { Response } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import { renderToPipeableStream } from 'react-dom/server'
 
-const ABORT_DELAY = 5000
-
-export default function handleRequest(
+const handleRequest = (
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
-) {
-  return new Promise((resolve, reject) => {
+) =>
+  new Promise((resolve, reject) => {
     let didError = false
 
     const stream = renderToPipeableStream(
@@ -45,4 +43,7 @@ export default function handleRequest(
 
     setTimeout(() => stream.abort(), ABORT_DELAY)
   })
-}
+
+const ABORT_DELAY = 5000
+
+export default handleRequest

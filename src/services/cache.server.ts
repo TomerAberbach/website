@@ -1,6 +1,6 @@
 import { nextTick } from 'process'
 
-export function cached<Value>(fn: () => Value): () => Value {
+export const cached = <Value>(fn: () => Value): (() => Value) => {
   if (process.env.NODE_ENV !== `production`) {
     return fn
   }
@@ -11,7 +11,7 @@ export function cached<Value>(fn: () => Value): () => Value {
   return () => get(fn)
 }
 
-export function refreshCache(): void {
+export const refreshCache = (): void => {
   for (const entry of cache.values()) {
     entry.expired = true
   }
@@ -21,7 +21,7 @@ export function refreshCache(): void {
   }
 }
 
-function get<Value>(fn: () => Value): Value {
+const get = <Value>(fn: () => Value): Value => {
   let entry = cache.get(fn)
 
   if (!entry) {

@@ -93,13 +93,13 @@ export type Edge = {
   hrefs: Set<string>
 }
 
-function layoutGraph({
+const layoutGraph = ({
   vertices,
   edges,
 }: {
   vertices: Map<string, Vertex>
   edges: Map<string, Edge>
-}): GraphLayout {
+}): GraphLayout => {
   const ngraph = createGraph<string, string>()
 
   for (const id of vertices.keys()) {

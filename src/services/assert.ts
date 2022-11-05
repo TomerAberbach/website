@@ -1,7 +1,7 @@
-export default function assert(
+const assert: (
   condition: unknown,
   message?: string | (() => string),
-): asserts condition {
+) => asserts condition = (condition, message) => {
   if (condition) {
     return
   }
@@ -12,3 +12,5 @@ export default function assert(
 
   throw new Error(message)
 }
+
+export default assert

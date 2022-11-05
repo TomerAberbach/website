@@ -7,6 +7,8 @@ timestamp: 2018-08-16T04:00:00.000Z
 When I first started learning JavaScript I was confused by the seemingly endless
 ways you can check for the absence of a value:
 
+<!-- eslint-skip -->
+
 ```js
 console.log(value == null)
 console.log(value === null)
@@ -34,12 +36,16 @@ JavaScript has two ways of representing an absent value.
 [`typeof` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof)
 on `undefined` returns the string `'undefined'`:
 
+<!-- eslint-skip -->
+
 ```js
 console.log(typeof undefined)
 //=> undefined
 ```
 
 It is the default value of any declared, but unassigned variable:
+
+<!-- eslint-skip -->
 
 ```js
 let x
@@ -49,6 +55,8 @@ console.log(x)
 
 It is the value returned when trying to access a nonexistent object property:
 
+<!-- eslint-skip -->
+
 ```js
 let obj = {}
 console.log(obj.a)
@@ -57,6 +65,8 @@ console.log(obj.a)
 
 It is the default return value of a function that doesn't explicitly return
 anything:
+
+<!-- eslint-skip -->
 
 ```js
 function f() {}
@@ -68,6 +78,8 @@ console.log(f())
 It is returned by the
 [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void),
 which evaluates an expression and then returns `undefined`:
+
+<!-- eslint-skip -->
 
 ```js
 console.log(void 0)
@@ -96,6 +108,8 @@ property on browsers).
 `null` is also a JavaScript primitive type, but checking its type using the
 `typeof` operator doesn't return what you'd expect:
 
+<!-- eslint-skip -->
+
 ```js
 console.log(typeof null)
 //=> object
@@ -114,6 +128,8 @@ couldn't be found or constructed.
 For example, in browsers
 [`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById)
 returns `null` if there's no element in the document with the given ID:
+
+<!-- eslint-skip -->
 
 ```js
 console.log(document.getElementById('some-id-that-no-element-has'))
@@ -140,6 +156,8 @@ type and their values match, then the expression evaluates to `true`. Otherwise,
 it evaluates to `false`.
 
 Examples:
+
+<!-- eslint-skip -->
 
 ```js
 console.log(0 === 0)
@@ -185,6 +203,8 @@ the two. This second case has prompted the JavaScript community to avoid loose
 equality somewhat.
 
 Examples:
+
+<!-- eslint-skip -->
 
 ```js
 console.log(1 == 1)
@@ -237,6 +257,8 @@ reference on how `==` and `===` behave, then look no further than this
 It's time to check which of the expressions from the beginning of the post work!
 Let's take a look at the first expression and write a checklist to evaluate it:
 
+<!-- eslint-skip -->
+
 ```js
 console.log(value == null)
 ```
@@ -273,6 +295,8 @@ would return `false`, but in browsers it would throw a `ReferenceError`! One way
 to handle this issue is to use `try-catch` blocks to catch the `ReferenceError`
 and resume execution when case we're not running on Node.js:
 
+<!-- eslint-skip -->
+
 ```js
 try {
   // expression statement will throw a ReferenceError if value is an undeclared variable
@@ -290,6 +314,8 @@ Note that if any code following the first statement in the `try` block throws an
 error for some other reason then the `catch` block would be executed even though
 `value` was declared. This issue can be avoided by checking that the thrown
 error was specifically a `ReferenceError` using the `instanceof` operator:
+
+<!-- eslint-skip -->
 
 ```js
 try {
@@ -327,6 +353,8 @@ with a value of `undefined` using the `typeof` operator will also return the
 string `'undefined'`. So the expression `typeof value === 'undefined'` also
 checks off the first item on our checklist! However, it doesn't take into
 account if `value` is `null` so we must add an additional check in an or clause:
+
+<!-- eslint-skip -->
 
 ```js
 console.log(typeof value === 'undefined' || value === null)
@@ -366,6 +394,8 @@ You may have noticed that a few of the expressions at the beginning of the post
 look almost identical to the expression we just evaluated. Interestingly enough
 the following four expressions share the same behavior:
 
+<!-- eslint-skip -->
+
 ```js
 console.log(typeof value === 'undefined' || value === null)
 console.log(typeof value === 'undefined' || value == null)
@@ -393,6 +423,8 @@ choice.
 Lastly, let's evaluate the rest of the expressions from the beginning of the
 post:
 
+<!-- eslint-skip -->
+
 ```js
 console.log(value === null) // doesn't account for undefined
 console.log(value === undefined) // doesn't account for null
@@ -408,6 +440,8 @@ When checking for the absence of a value in an object property, additional
 considerations must be made regarding the property itself. Consider the
 following example where we use `value == null` to check for the absence of a
 value in each object's `key` property:
+
+<!-- eslint-skip -->
 
 ```js
 var obj1 = {}
@@ -429,6 +463,8 @@ property is declared or not then a different method must be used.
 
 One way is to use the `in` operator:
 
+<!-- eslint-skip -->
+
 ```js
 var obj1 = {}
 var obj2 = {
@@ -442,6 +478,8 @@ console.log('key' in obj2) // true
 Note that a `string` or `Symbol` containing the property name must be used on
 the lefthand side of the `in` operator, not a token. This may seem like a good
 solution, but consider the following case:
+
+<!-- eslint-skip -->
 
 ```js
 var obj1 = {}
@@ -463,6 +501,8 @@ Fortunately, there is a way to check just the specific uninherited properties of
 the object using the `hasOwnProperty` method, which itself is inherited from the
 `Object` constructor, or class in object oriented terms:
 
+<!-- eslint-skip -->
+
 ```js
 var obj1 = {}
 var obj2 = {
@@ -476,6 +516,8 @@ console.log(obj2.hasOwnProperty('constructor')) // true
 Note that unlike the `in` operator, the `hasOwnProperty` method can only take a
 `string` argument. There is one caveat to using the `hasOwnProperty` method.
 Consider the following case:
+
+<!-- eslint-skip -->
 
 ```js
 var obj = {
@@ -497,6 +539,8 @@ a way around this. The `hasOwnProperty` method can be accessed directly from the
 of `this` as its first argument and the arguments to the called function as the
 rest of its arguments:
 
+<!-- eslint-skip -->
+
 ```js
 var obj = {
   hasOwnProperty: function () {
@@ -509,6 +553,8 @@ console.log(Object.prototype.hasOwnProperty.call(obj, 'wow')) // false
 
 If you find yourself using this method more than once I would recommend
 extracting it out as a function:
+
+<!-- eslint-skip -->
 
 ```js
 function hasOwnProperty(obj, property) {
@@ -530,6 +576,8 @@ To recap here are the optimal expressions.
 
 Checking if a variable is declared:
 
+<!-- eslint-skip -->
+
 ```js
 try {
   value
@@ -546,12 +594,16 @@ try {
 Checking for the absence of an uninherited property in an object when the object
 definitely doesn't have a shadowing `hasOwnProperty` property:
 
+<!-- eslint-skip -->
+
 ```js
 !obj.hasOwnProperty(key)
 ```
 
 Checking for the existence of an uninherited property in an object when the
 object definitely doesn't have a shadowing `hasOwnProperty` property:
+
+<!-- eslint-skip -->
 
 ```js
 obj.hasOwnProperty(key)
@@ -560,6 +612,8 @@ obj.hasOwnProperty(key)
 Checking for the absence of an uninherited property in an object when the object
 may have a shadowing `hasOwnProperty` property:
 
+<!-- eslint-skip -->
+
 ```js
 !Object.prototype.hasOwnProperty.call(obj, key)
 ```
@@ -567,11 +621,15 @@ may have a shadowing `hasOwnProperty` property:
 Checking for the existence of an uninherited property in an object when the
 object may have a shadowing `hasOwnProperty` property:
 
+<!-- eslint-skip -->
+
 ```js
 Object.prototype.hasOwnProperty.call(obj, key)
 ```
 
 Checking for the absence of an inherited or uninherited property in an object:
+
+<!-- eslint-skip -->
 
 ```js
 !(key in obj)
@@ -579,12 +637,16 @@ Checking for the absence of an inherited or uninherited property in an object:
 
 Checking for the existence of an inherited or uninherited property in an object:
 
+<!-- eslint-skip -->
+
 ```js
 key in obj
 ```
 
 Checking for the absence of a value when the value may be an undeclared
 variable:
+
+<!-- eslint-skip -->
 
 ```js
 typeof value === 'undefined' || value === null
@@ -594,11 +656,15 @@ Checking for the existence of a value when the value may be an undeclared
 variable (derived using
 [De Morgan's Law](https://en.wikipedia.org/wiki/De_Morgan%27s_laws#Negation_of_a_disjunction)):
 
+<!-- eslint-skip -->
+
 ```js
 typeof value !== 'undefined' && value !== null
 ```
 
 Checking for the absence of a value when the value is definitely declared:
+
+<!-- eslint-skip -->
 
 ```js
 value == null
@@ -606,12 +672,16 @@ value == null
 
 Checking for the existence of a value when the value is definitely declared:
 
+<!-- eslint-skip -->
+
 ```js
 value != null
 ```
 
 Checking for the absence of a value when the value is definitely declared and
 you want to avoid loose equality:
+
+<!-- eslint-skip -->
 
 ```js
 value === null || value === void 0
@@ -621,6 +691,8 @@ Checking for the existence of a value when the value is definitely declared and
 you want to avoid loose equality (derived using
 [De Morgan's Law](https://en.wikipedia.org/wiki/De_Morgan%27s_laws#Negation_of_a_disjunction)):
 
+<!-- eslint-skip -->
+
 ```js
 value !== null && value !== void 0
 ```
@@ -629,6 +701,8 @@ Feel free to use combinations of these to fit your needs. For example, here's
 how you would check if an object has an uninherited property which has an absent
 value such as `undefined` or `null` when the object definitely doesn't have a
 shadowing `hasOwnProperty` property:
+
+<!-- eslint-skip -->
 
 ```js
 obj.hasOwnProperty(key) && obj[key] == null

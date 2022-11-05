@@ -26,14 +26,8 @@
   "scripts": {
     "prepare": "tomer install",
     "format": "tomer format",
-    "lint:src": "tomer lint --parser-options '{ \"project\": \"src/tsconfig.json\" }' -- src",
-    "lint:test:unit": "tomer lint --parser-options '{ \"project\": \"test/tsconfig.json\" }' -- test",
-    "lint:test:e2e": "tomer lint --parser-options '{ \"project\": \"cypress/tsconfig.json\" }' -- cypress",
-    "lint": "run-p lint:**",
-    "typecheck:src": "tomer typecheck -p src/tsconfig.json",
-    "typecheck:test:unit": "tomer typecheck -p test/tsconfig.json",
-    "typecheck:test:e2e": "tomer typecheck -p cypress/tsconfig.json",
-    "typecheck": "run-p typecheck:**",
+    "lint": "tomer lint",
+    "typecheck": "tomer typecheck",
     "build:css": "postcss ./src/styles/index.css -o ./src/styles/build.css",
     "build:remix": "remix build",
     "build": "cross-env NODE_ENV=production run-s clean build:*",
@@ -41,7 +35,7 @@
     "dev:remix": "remix dev",
     "dev": "npm-run-all build:css -p dev:*",
     "cy": "cross-env NODE_ENV=test cypress run --browser chrome",
-    "test:unit": "cross-env NODE_ENV=test tomer test --no-watch",
+    "test:unit": "cross-env NODE_ENV=test tomer test --watchAll=false",
     "test:e2e": "cross-env NODE_ENV=test start-server-and-test dev http-get://localhost:3000 cy",
     "test": "run-p test:*",
     "start": "remix-serve build",
@@ -81,7 +75,6 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^1.7.2",
-    "@remix-run/eslint-config": "^1.7.2",
     "@tailwindcss/typography": "^0.5.7",
     "@testing-library/cypress": "^8.0.3",
     "@testing-library/jest-dom": "^5.16.5",
@@ -107,12 +100,7 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.8",
-    "tomer": "^0.2.10",
+    "tomer": "^1.0.3",
     "typescript": "^4.7.4"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@eslint/eslintrc@1.3.3": "patches/@eslint__eslintrc@1.3.3.patch"
-    }
   }
 }
