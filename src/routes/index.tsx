@@ -31,7 +31,7 @@ const HomePage = () => {
   const graphId = useId()
 
   return (
-    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-14'>
+    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-20'>
       <TagsFilterForm targetId={graphId} tags={tags} />
       <GraphWidget id={graphId} graph={graph} />
     </div>
@@ -482,13 +482,13 @@ const Vertices = ({
             }}
           >
             <div className='h-full w-full rounded-full bg-gray-500 group-hover:bg-gray-600' />
-            <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center font-medium'>
-              <span className='bg-gray-200 py-[0.30em] text-sm opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] shadow-gray-200 group-hover:bg-gray-300 group-hover:shadow-gray-300 group-focus-visible:bg-blue-200 group-focus-visible:shadow-blue-200 sm:py-[0.25em] sm:text-base'>
+            <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center text-sm font-medium sm:w-48 sm:text-base md:text-lg'>
+              <span className='bg-gray-200 py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] shadow-gray-200 group-hover:bg-gray-300 group-hover:shadow-gray-300 group-focus-visible:bg-blue-200 group-focus-visible:shadow-blue-200 sm:py-[0.25em]'>
                 <span className='opacity-0' aria-hidden='true'>
                   {label}
                 </span>
               </span>
-              <span className='absolute left-0 top-0 w-36'>{label}</span>
+              <span className='absolute left-0 top-0 w-full'>{label}</span>
             </div>
           </Link>
         )

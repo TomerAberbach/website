@@ -59,7 +59,7 @@ const ConditionalScrollRestoration = () => {
 }
 
 const Layout = ({ children }: { children: ReactNode }) => (
-  <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:p-12 md:gap-y-14 md:p-16'>
+  <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:p-12 md:gap-y-20 md:p-16'>
     <Header />
     <main className='flex flex-1 flex-col'>{children}</main>
     <Footer />
@@ -75,7 +75,7 @@ const Header = () => (
 )
 
 const Footer = () => (
-  <footer className='mx-auto flex flex-col items-center gap-y-3 text-sm text-gray-500'>
+  <footer className='mx-auto flex flex-col items-center gap-y-3 text-sm text-gray-500 sm:text-base'>
     <p className='text-center'>
       ©&nbsp;Tomer&nbsp;Aberbach. All&nbsp;rights&nbsp;reserved.
     </p>
@@ -137,7 +137,7 @@ const IconLink = ({
       role='img'
       viewBox='0 0 24 24'
       xmlns='http://www.w3.org/2000/svg'
-      className='w-7 fill-gray-500 hover:fill-gray-600'
+      className='w-7 fill-gray-500 hover:fill-gray-600 sm:w-8'
     >
       <title>{title}</title>
       {children}
