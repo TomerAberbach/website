@@ -134,6 +134,7 @@ const IconLink = ({
 }) => (
   <ExternalLink href={href} className='focus-ring inline-block'>
     <svg
+      aria-label={title}
       role='img'
       viewBox='0 0 24 24'
       xmlns='http://www.w3.org/2000/svg'
