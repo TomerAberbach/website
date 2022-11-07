@@ -18,13 +18,18 @@ import clsx from 'clsx'
 import cssesc from 'cssesc'
 import type { ChangeEventHandler } from 'react'
 import { useCallback, useId, useState } from 'react'
-import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
+import {
+  ArrowUturnLeftIcon,
+  MagnifyingGlassIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/24/solid'
 import { Form, useSearchParams } from '@remix-run/react'
 import { getTags } from '../services/posts.server'
 import { json, useLoaderData } from '../services/json.js'
 import { getGraph } from '../services/graph.server'
 import type { Graph, Position } from '../services/graph.server'
 import { Link } from '../components/link.js'
+import Tooltip from '../components/tooltip.js'
 
 const HomePage = () => {
   const { tags, graph } = useLoaderData<LoaderData>()
@@ -154,17 +159,17 @@ const LogicalOperatorRadioButtonGroup = ({
           })}
         </div>
       </fieldset>
-      <div className='relative'>
+      <Tooltip
+        content={
+          <>
+            <span className='font-mono'>||</span> and{` `}
+            <span className='font-mono'>&&</span> filter for posts matching{` `}
+            <em>any</em> and <em>all</em> of the tags, respectively
+          </>
+        }
+      >
         <QuestionMarkCircleIcon className='peer h-5 w-5' />
-        <div
-          id={tooltipId}
-          className="pointer-events-none absolute left-1/2 z-10 w-[20ch] translate-y-3 -translate-x-1/2 rounded-md bg-gray-800 p-2 text-center text-sm text-white opacity-0 transition-opacity duration-200 after:absolute after:top-0 after:left-1/2 after:-translate-y-full after:-translate-x-1/2 after:border-8 after:border-solid after:border-transparent after:border-b-gray-800 after:content-[''] hover:pointer-events-auto hover:opacity-100 peer-hover:pointer-events-auto peer-hover:opacity-100"
-        >
-          <span className='font-mono'>||</span> and{` `}
-          <span className='font-mono'>&&</span> filter for posts matching{` `}
-          <em>any</em> and <em>all</em> of the tags, respectively
-        </div>
-      </div>
+      </Tooltip>
     </div>
   )
 }
@@ -210,6 +215,8 @@ const TagsCheckboxGroup = ({
   selectedTags: Record<string, boolean>
   setSelectedTags: (newSelectedTags: Record<string, boolean>) => void
 }) => {
+  const resetTooltipId = useId()
+  const searchTooltipId = useId()
   const [recentlyReset, setRecentlyReset] = useState(false)
 
   const handleTagChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -232,7 +239,7 @@ const TagsCheckboxGroup = ({
   }, [selectedTags, setSelectedTags])
 
   return (
-    <div className='flex flex-col items-center gap-3'>
+    <div className='flex flex-wrap justify-center gap-2'>
       <fieldset className='flex flex-wrap justify-center gap-2'>
         <legend className='sr-only'>Tags</legend>
         {pipe(
@@ -253,27 +260,33 @@ const TagsCheckboxGroup = ({
             </label>
           )),
         )}
+        <div>
+          <Tooltip id={resetTooltipId} content='Reset'>
+            <button
+              aria-labelledby={resetTooltipId}
+              type='button'
+              className='focus-ring peer hidden rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:inline-block'
+              onClick={handleReset}
+            >
+              <ArrowUturnLeftIcon className='h-4 w-4 stroke-gray-500 stroke-[1.5]' />
+            </button>
+          </Tooltip>
+          <Tooltip id={searchTooltipId} content='Search'>
+            <button
+              aria-labelledby={searchTooltipId}
+              type='submit'
+              className='focus-ring peer rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:hidden'
+            >
+              <MagnifyingGlassIcon className='h-4 w-4 stroke-gray-500 stroke-[1.5]' />
+            </button>
+          </Tooltip>
+          {recentlyReset && (
+            <span role='alert' className='sr-only'>
+              Unchecked all tags
+            </span>
+          )}
+        </div>
       </fieldset>
-      <div className='flex gap-2'>
-        <button
-          type='button'
-          className='focus-ring hidden rounded-xl bg-gray-100 p-2 text-sm font-medium text-gray-600 hover:bg-blue-100 active:bg-blue-200 js:inline-block'
-          onClick={handleReset}
-        >
-          Reset
-        </button>
-        <button
-          type='submit'
-          className='focus-ring rounded-xl bg-gray-100 p-2 text-sm font-medium text-gray-600 hover:bg-blue-100 active:bg-blue-200 js:hidden'
-        >
-          Submit
-        </button>
-        {recentlyReset && (
-          <span role='alert' className='sr-only'>
-            Unchecked all tags
-          </span>
-        )}
-      </div>
     </div>
   )
 }
