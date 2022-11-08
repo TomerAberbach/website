@@ -7,7 +7,7 @@ module.exports = {
   content: [`./src/**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}`],
   theme: {
     fontFamily: {
-      sans: [`Ubuntu`, ...defaultTheme.fontFamily.sans],
+      sans: [`Kantumruy Pro`, ...defaultTheme.fontFamily.sans],
       mono: [`dm`, ...defaultTheme.fontFamily.mono],
     },
     colors: {
