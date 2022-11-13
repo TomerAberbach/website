@@ -1,14 +1,10 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
-import { unified } from 'unified'
-import { useHydrated } from 'remix-utils'
-import rehypeDomParse from 'rehype-dom-parse'
 import type { Post } from '../services/posts.server'
 import { getPosts } from '../services/posts.server'
 import { json, useLoaderData } from '../services/json.js'
-import { InternalLink, Link } from '../components/link.js'
-import renderHtml from '../services/html.js'
-import assert from '../services/assert.js'
+import { InternalLink } from '../components/link.js'
+import Prose from '../components/prose.js'
 
 const PostPage = () => {
   const { post } = useLoaderData<LoaderData>()
@@ -42,7 +38,7 @@ const PostPage = () => {
           )}
         </ul>
       </header>
-      <Render html={content} />
+      <Prose html={content} />
     </article>
   )
 }
@@ -56,29 +52,6 @@ const Tag = ({ tag }: { tag: string }) => (
     <span className='text-gray-600'>{tag}</span>
   </InternalLink>
 )
-
-const Render = ({ html }: { html: string }) => {
-  const hydrated = useHydrated()
-
-  if (!hydrated) {
-    return <div dangerouslySetInnerHTML={{ __html: html }} />
-  }
-
-  return renderHtml(htmlParser.parse(html), {
-    a: ({ ref, href, children, ...props }) => {
-      assert(href)
-      assert(children)
-
-      return (
-        <Link href={href} {...props}>
-          {children}
-        </Link>
-      )
-    },
-  })
-}
-
-const htmlParser = unified().use(rehypeDomParse, { fragment: true }).freeze()
 
 export const loader: LoaderFunction = async ({ params }) => {
   const postId = params.postId!
