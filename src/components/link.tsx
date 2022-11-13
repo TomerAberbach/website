@@ -17,7 +17,7 @@ export const InternalLink = ({ href, ...props }: LinkProps) => (
   <RemixLink to={href} {...props} />
 )
 
-type LinkProps = Omit<Parameters<typeof RemixLink>[0], `to`> &
+export type LinkProps = Omit<Parameters<typeof RemixLink>[0], `to`> &
   DetailedHTMLProps<
     AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
