@@ -56,7 +56,7 @@ const TagsFilterForm = ({
   return (
     <Form className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'>
       <div className='flex items-center gap-3'>
-        <h2 className='text-lg font-medium md:text-xl'>Filter by tags</h2>
+        <h2 className='text-lg font-medium'>Filter by tags</h2>
         {
           <LogicalOperatorRadioButtonGroup
             logicalOperator={logicalOperator}
@@ -141,7 +141,7 @@ const LogicalOperatorRadioButtonGroup = ({
             return (
               <label
                 key={currentLogicalOperator}
-                className='group relative text-center font-mono font-medium leading-none first:rounded-l-xl last:rounded-r-xl md:text-lg md:leading-none'
+                className='group relative text-center font-mono font-medium leading-none first:rounded-l-xl last:rounded-r-xl'
               >
                 <input
                   type='radio'
@@ -168,7 +168,7 @@ const LogicalOperatorRadioButtonGroup = ({
           </>
         }
       >
-        <QuestionMarkCircleIcon className='peer h-5 w-5' />
+        <QuestionMarkCircleIcon className='peer h-5 w-5 lg:h-6 lg:w-6' />
       </Tooltip>
     </div>
   )
@@ -238,46 +238,38 @@ const TagsCheckboxGroup = ({
     )
   }, [selectedTags, setSelectedTags])
 
+  const tagElements = pipe(
+    entries(selectedTags),
+    map(([tag, selected]) => (
+      <Tag key={tag} tag={tag} selected={selected} onChange={handleTagChange} />
+    )),
+    reduce(toArray()),
+  )
+
   return (
     <div className='flex flex-wrap justify-center gap-2'>
       <fieldset className='flex flex-wrap justify-center gap-2'>
         <legend className='sr-only'>Tags</legend>
-        {pipe(
-          entries(selectedTags),
-          map(([tag, selected]) => (
-            <label key={tag} className='group relative rounded-2xl'>
-              <input
-                type='checkbox'
-                name='tags'
-                value={tag}
-                checked={selected}
-                className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600'
-                onChange={handleTagChange}
-              />
-              <div className='rounded-2xl bg-white p-2.5 font-medium leading-none text-gray-500 transition peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
-                {tag}
-              </div>
-            </label>
-          )),
-        )}
-        <div>
-          <Tooltip id={resetTooltipId} content='Reset'>
+        {tagElements.slice(0, -1)}
+        <div className='flex gap-2'>
+          {tagElements.at(-1)}
+          <Tooltip id={resetTooltipId} className='h-full' content='Reset'>
             <button
               aria-labelledby={resetTooltipId}
               type='button'
-              className='focus-ring peer hidden rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:inline-block'
+              className='focus-ring peer hidden h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:block'
               onClick={handleReset}
             >
-              <ArrowUturnLeftIcon className='h-4 w-4 stroke-gray-500 stroke-[1.5]' />
+              <ArrowUturnLeftIcon className='h-full stroke-gray-500 stroke-[1.5]' />
             </button>
           </Tooltip>
           <Tooltip id={searchTooltipId} content='Search'>
             <button
               aria-labelledby={searchTooltipId}
               type='submit'
-              className='focus-ring peer rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:hidden'
+              className='focus-ring peer h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:hidden'
             >
-              <MagnifyingGlassIcon className='h-4 w-4 stroke-gray-500 stroke-[1.5]' />
+              <MagnifyingGlassIcon className='h-full stroke-gray-500 stroke-[1.5]' />
             </button>
           </Tooltip>
           {recentlyReset && (
@@ -339,6 +331,30 @@ const useSelectedTags = (
 
   return [selectedTags, setSelectedTags]
 }
+
+const Tag = ({
+  tag,
+  selected,
+  onChange,
+}: {
+  tag: string
+  selected: boolean
+  onChange: ChangeEventHandler<HTMLInputElement>
+}) => (
+  <label className='group relative rounded-2xl'>
+    <input
+      type='checkbox'
+      name='tags'
+      value={tag}
+      checked={selected}
+      className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600'
+      onChange={onChange}
+    />
+    <div className='rounded-2xl bg-white p-2.5 font-medium leading-none text-gray-500 transition peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
+      {tag}
+    </div>
+  </label>
+)
 
 const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
   const {
@@ -469,10 +485,10 @@ const Vertices = ({
 }: {
   graph: Graph
 }) => (
-  <>
+  <div>
     {pipe(
       vertices,
-      map(([id, { label, tags, href }]) => {
+      map(([id, { label, tags, href, external }]) => {
         const { x, y } = positions.get(id)!
 
         return (
@@ -495,8 +511,15 @@ const Vertices = ({
             }}
           >
             <div className='h-full w-full rounded-full bg-gray-500 group-hover:bg-gray-600' />
-            <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center text-sm font-medium sm:w-48 sm:text-base md:text-lg'>
-              <span className='bg-gray-200 py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] shadow-gray-200 group-hover:bg-gray-300 group-hover:shadow-gray-300 group-focus-visible:bg-blue-200 group-focus-visible:shadow-blue-200 sm:py-[0.25em]'>
+            <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center text-sm font-medium sm:w-48 sm:text-base'>
+              <span
+                className={clsx(
+                  `py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 sm:py-[0.25em]`,
+                  external
+                    ? `group-odd:bg-yellow-200 group-odd:shadow-yellow-200 group-even:bg-orange-200 group-even:shadow-orange-200 group-[:nth-child(even):hover]:bg-orange-300 group-[:nth-child(even):focus-visible]:bg-orange-300 group-[:nth-child(odd):hover]:bg-yellow-300 group-[:nth-child(odd):focus-visible]:bg-yellow-300 group-[:nth-child(even):hover]:shadow-orange-300 group-[:nth-child(even):focus-visible]:shadow-orange-300 group-[:nth-child(odd):hover]:shadow-yellow-300 group-[:nth-child(odd):focus-visible]:shadow-yellow-300`
+                    : `bg-blue-200 shadow-blue-200 group-hover:bg-blue-300 group-hover:shadow-blue-300 group-focus-visible:bg-blue-300 group-focus-visible:shadow-blue-300`,
+                )}
+              >
                 <span className='opacity-0' aria-hidden='true'>
                   {label}
                 </span>
@@ -508,7 +531,7 @@ const Vertices = ({
       }),
       reduce(toArray()),
     )}
-  </>
+  </div>
 )
 
 const VERTEX_RADIUS = 10

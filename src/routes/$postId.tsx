@@ -16,7 +16,7 @@ const PostPage = () => {
   const dateTime = new Date(timestamp)
 
   return (
-    <article className='prose mx-auto w-[80ch] max-w-full md:prose-lg'>
+    <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header className='mb-4 space-y-2'>
         <h1 className='m-0 md:m-0'>{title}</h1>
         <p className='space-y-2 whitespace-nowrap text-gray-500'>
@@ -27,10 +27,10 @@ const PostPage = () => {
               day: `numeric`,
             })}
           </time>
-          <span> · </span>
+          <span className='font-medium'> · </span>
           <time dateTime={`${minutesToRead}m`}>{minutesToRead} min read</time>
         </p>
-        <ul className='not-prose flex list-none flex-wrap gap-2 !pl-0 text-base'>
+        <ul className='not-prose flex list-none flex-wrap gap-2 !pl-0 text-sm'>
           {pipe(
             tags,
             map(tag => (

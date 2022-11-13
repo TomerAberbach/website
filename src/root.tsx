@@ -75,7 +75,7 @@ const Header = () => (
 )
 
 const Footer = () => (
-  <footer className='mx-auto flex flex-col items-center gap-y-3 text-sm text-gray-500 sm:text-base'>
+  <footer className='mx-auto flex flex-col items-center gap-y-3 text-xs text-gray-500'>
     <p className='text-center'>
       ©&nbsp;Tomer&nbsp;Aberbach. All&nbsp;rights&nbsp;reserved.
     </p>

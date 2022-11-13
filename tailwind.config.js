@@ -1,6 +1,29 @@
 const defaultTheme = require(`tailwindcss/defaultTheme`)
 const colors = require(`tailwindcss/colors`)
 const plugin = require(`tailwindcss/plugin`)
+const roundTo = require(`round-to`)
+
+const createFluidModularScale =
+  ({ value, ratio, viewport }) =>
+  step => {
+    const min = value.min * ratio.min ** step
+    const max = value.max * ratio.max ** step
+    const slope = (max - min) / (viewport.max - viewport.min)
+    const base = max - slope * viewport.max
+
+    const calc = `calc(${vw(100 * slope)} + ${rem(base)})`
+    return `clamp(${rem(min)}, ${calc}, ${rem(max)})`
+  }
+
+const rem = number => formatWithUnit(number, `rem`)
+const vw = number => formatWithUnit(number, `vw`)
+const formatWithUnit = (number, unit) => `${roundTo(number, 5)}${unit}`
+
+const fontSizeScale = createFluidModularScale({
+  value: { min: 1, max: 1.25 },
+  ratio: { min: 1.15, max: 1.175 },
+  viewport: { min: 20, max: 60 },
+})
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -9,6 +32,21 @@ module.exports = {
     fontFamily: {
       sans: [`Kantumruy Pro`, ...defaultTheme.fontFamily.sans],
       mono: [`dm`, ...defaultTheme.fontFamily.mono],
+    },
+    fontSize: {
+      xs: [fontSizeScale(-2), 1.6],
+      sm: [fontSizeScale(-1), 1.6],
+      base: [fontSizeScale(0), 1.6],
+      lg: [fontSizeScale(1), 1.6],
+      xl: [fontSizeScale(2), 1.2],
+      '2xl': [fontSizeScale(3), 1.2],
+      '3xl': [fontSizeScale(4), 1.2],
+      '4xl': [fontSizeScale(5), 1.1],
+      '5xl': [fontSizeScale(6), 1.1],
+      '6xl': [fontSizeScale(7), 1.1],
+      '7xl': [fontSizeScale(8), 1],
+      '8xl': [fontSizeScale(9), 1],
+      '9xl': [fontSizeScale(10), 1],
     },
     colors: {
       transparent: colors.transparent,

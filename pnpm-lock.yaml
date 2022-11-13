@@ -50,10 +50,11 @@ specifiers:
   remark-parse: ^10.0.1
   remark-rehype: ^10.1.0
   remix-utils: ^3.3.0
+  round-to: 5.0.0
   shiki: ^0.11.1
   start-server-and-test: ^1.14.0
   superjson: ^1.10.1
-  tailwindcss: ^3.1.8
+  tailwindcss: ^3.2.4
   tomer: ^1.0.3
   typescript: ^4.7.4
   unified: ^10.1.2
@@ -94,7 +95,7 @@ dependencies:
 
 devDependencies:
   '@remix-run/dev': 1.7.2_63cxfdg5f5bb4xpkk3vcjfcl3q
-  '@tailwindcss/typography': 0.5.7_tailwindcss@3.1.8
+  '@tailwindcss/typography': 0.5.7_tailwindcss@3.2.4
   '@testing-library/cypress': 8.0.3_cypress@10.10.0
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
@@ -117,8 +118,9 @@ devDependencies:
   postcss-cli: 10.0.0_postcss@8.4.18
   postcss-import: 15.0.0_postcss@8.4.18
   prettier-plugin-tailwindcss: 0.1.13
+  round-to: 5.0.0
   start-server-and-test: 1.14.0
-  tailwindcss: 3.1.8_postcss@8.4.18
+  tailwindcss: 3.2.4_postcss@8.4.18
   tomer: 1.0.3
   typescript: 4.8.4
 
@@ -5971,7 +5973,7 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@tailwindcss/typography/0.5.7_tailwindcss@3.1.8:
+  /@tailwindcss/typography/0.5.7_tailwindcss@3.2.4:
     resolution:
       {
         integrity: sha512-JTTSTrgZfp6Ki4svhPA4mkd9nmQ/j9EfE7SbHJ1cLtthKkpW2OxsFXzSmxbhYbEkfNIyAyhle5p4SYyKRbz/jg==,
@@ -5983,7 +5985,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.1.8_postcss@8.4.18
+      tailwindcss: 3.2.4_postcss@8.4.18
     dev: true
 
   /@testing-library/cypress/8.0.3_cypress@10.10.0:
@@ -12769,15 +12771,6 @@ packages:
       ci-info: 3.5.0
     dev: true
 
-  /is-core-module/2.10.0:
-    resolution:
-      {
-        integrity: sha512-Erxj2n/LDAZ7H8WNJXd9tw38GYM3dv8rk8Zcs+jJuxYTW7sozH+SS8NtrSjVL1/vpLvWi1hxy96IzjJ3EHTJJg==,
-      }
-    dependencies:
-      has: 1.0.3
-    dev: true
-
   /is-core-module/2.11.0:
     resolution:
       {
@@ -17071,10 +17064,10 @@ packages:
       postcss-selector-parser: 6.0.10
     dev: true
 
-  /postcss-nested/5.0.6_postcss@8.4.18:
+  /postcss-nested/6.0.0_postcss@8.4.18:
     resolution:
       {
-        integrity: sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA==,
+        integrity: sha512-0DkamqrPcmkBDsLn+vQDIrtkSbNkv5AD/M322ySo9kqFkCIYklym2xEmWkwo+Y3/qZo34tzEPNUw4y7yMCdv5w==,
       }
     engines: { node: '>=12.0' }
     peerDependencies:
@@ -18537,7 +18530,7 @@ packages:
       }
     hasBin: true
     dependencies:
-      is-core-module: 2.10.0
+      is-core-module: 2.11.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
@@ -18697,6 +18690,14 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /round-to/5.0.0:
+    resolution:
+      {
+        integrity: sha512-i4+Ntwmo5kY7UWWFSDEVN3RjT2PX1FqkZ9iCcAO3sKML3Ady9NgsjM/HLdYKUAnrxK4IlSvXzpBMDvMHZQALRQ==,
+      }
+    engines: { node: '>=10' }
     dev: true
 
   /run-async/2.4.1:
@@ -19731,10 +19732,10 @@ packages:
       }
     dev: true
 
-  /tailwindcss/3.1.8_postcss@8.4.18:
+  /tailwindcss/3.2.4_postcss@8.4.18:
     resolution:
       {
-        integrity: sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g==,
+        integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==,
       }
     engines: { node: '>=12.13.0' }
     hasBin: true
@@ -19751,6 +19752,7 @@ packages:
       glob-parent: 6.0.2
       is-glob: 4.0.3
       lilconfig: 2.0.6
+      micromatch: 4.0.5
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.0
@@ -19758,7 +19760,7 @@ packages:
       postcss-import: 14.1.0_postcss@8.4.18
       postcss-js: 4.0.0_postcss@8.4.18
       postcss-load-config: 3.1.4_postcss@8.4.18
-      postcss-nested: 5.0.6_postcss@8.4.18
+      postcss-nested: 6.0.0_postcss@8.4.18
       postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
       quick-lru: 5.1.1
