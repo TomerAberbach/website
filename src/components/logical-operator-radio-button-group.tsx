@@ -2,6 +2,7 @@ import type { ChangeEventHandler } from 'react'
 import { useCallback, useId } from 'react'
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
 import { useSearchParams } from '@remix-run/react'
+import { arrayIncludes } from 'ts-extras'
 import Tooltip from './tooltip.js'
 
 export const LogicalOperatorRadioButtonGroup = ({
@@ -16,7 +17,10 @@ export const LogicalOperatorRadioButtonGroup = ({
   const handleLogicalOperatorChange = useCallback<
     ChangeEventHandler<HTMLInputElement>
   >(
-    event => setLogicalOperator(event.target.value as LogicalOperator),
+    event => {
+      const { value } = event.target
+      setLogicalOperator(arrayIncludes(LOGICAL_OPERATORS, value) ? value : `||`)
+    },
     [setLogicalOperator],
   )
 
@@ -69,7 +73,7 @@ export const useLogicalOperator = (): [
 ] => {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const logicalOperator = parseLogicalOperator(searchParams.get(`op`))
+  const logicalOperator = searchParams.get(`op`) === `and` ? `&&` : `||`
   const setLogicalOperator = useCallback(
     (newLogicalOperator: LogicalOperator) => {
       const newSearchParams = new URLSearchParams(searchParams)
@@ -90,9 +94,6 @@ export const useLogicalOperator = (): [
 
   return [logicalOperator, setLogicalOperator]
 }
-
-const parseLogicalOperator = (operator: string | null): LogicalOperator =>
-  operator === `and` ? `&&` : `||`
 
 const LOGICAL_OPERATORS: readonly LogicalOperator[] = [`||`, `&&`]
 export type LogicalOperator = `||` | `&&`
