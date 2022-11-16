@@ -4,7 +4,7 @@ import { getTags } from '../services/posts.server'
 import { json, useLoaderData } from '../services/json.js'
 import { getGraph } from '../services/graph.server'
 import type { Graph } from '../services/graph.server'
-import TagsFilterForm from '../components/tags-filter-form.js'
+import { TagsFilterForm } from '../components/tags-filter-form.js'
 import GraphWidget from '../components/graph-widget.js'
 
 const HomePage = () => {
