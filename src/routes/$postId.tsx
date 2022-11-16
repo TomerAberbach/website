@@ -14,8 +14,8 @@ const PostPage = () => {
   return (
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header className='mb-4 space-y-2'>
-        <h1 className='m-0 md:m-0'>{title}</h1>
-        <p className='space-y-2 whitespace-nowrap text-gray-500'>
+        <h1 className='m-0'>{title}</h1>
+        <p className='whitespace-nowrap text-gray-500'>
           <time dateTime={dateTime.toISOString()}>
             {dateTime.toLocaleDateString(undefined, {
               year: `numeric`,
