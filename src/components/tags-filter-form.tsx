@@ -8,7 +8,7 @@ import {
 } from './logical-operator-radio-button-group.js'
 import { TagsCheckboxGroup, useSelectedTags } from './tags-checkbox-group.js'
 
-const TagsFilterForm = ({
+export const TagsFilterForm = ({
   targetId,
   tags,
 }: {
@@ -47,8 +47,6 @@ const TagsFilterForm = ({
   )
 }
 
-export default TagsFilterForm
-
 const TagsFilterStyle = ({
   targetId,
   logicalOperator,
@@ -58,25 +56,39 @@ const TagsFilterStyle = ({
   logicalOperator: LogicalOperator
   selectedTags: Record<string, boolean>
 }) => {
+  const escapedTargetId = cssesc(targetId, { isIdentifier: true })
+
   const tagClassSelectors = pipe(
     entries(selectedTags),
     filter(([, selected]) => selected),
-    map(([tag]) => `.${cssesc(`tag:${tag}`, { isIdentifier: true })}`),
+    map(
+      ([tag]) =>
+        `.${cssesc(`${TAG_CLASS_PREFIX}${tag}`, { isIdentifier: true })}`,
+    ),
   )
-
   const matchingTagsSelector =
     logicalOperator === `&&`
       ? join(``, tagClassSelectors)
       : `:is(${join(`,`, tagClassSelectors)})`
+  const selector = `#${escapedTargetId} :is([class^='${TAG_CLASS_PREFIX}'], [class*=' ${TAG_CLASS_PREFIX}']):not(${matchingTagsSelector})`
 
-  const escapedTargetId = cssesc(targetId, { isIdentifier: true })
   return (
     <style
       // Safe because all user inputted tags have been filtered to known tags
       // and the tags have been escaped for use in CSS identifiers
       dangerouslySetInnerHTML={{
-        __html: `#${escapedTargetId} :is(line,a):not(${matchingTagsSelector}){opacity:0.25;}`,
+        __html: `
+          ${selector} {
+            opacity: 0.25;
+          }
+
+          ${selector} a {
+            display: none;
+          }
+        `,
       }}
     />
   )
 }
+
+export const TAG_CLASS_PREFIX = `tag:`
