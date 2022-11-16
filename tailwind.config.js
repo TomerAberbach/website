@@ -24,6 +24,7 @@ const fontSizeScale = createFluidModularScale({
   ratio: { min: 1.15, max: 1.175 },
   viewport: { min: 20, max: 60 },
 })
+const gray100 = `hsl(201, 5%, 89%)`
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -55,7 +56,7 @@ module.exports = {
       white: colors.white,
       gray: {
         50: `hsl(201, 5%, 96%)`,
-        100: `hsl(201, 5%, 89%)`,
+        100: gray100,
         200: `hsl(201, 5%, 80%)`,
         300: `hsl(201, 5%, 70%)`,
         400: `hsl(201, 5%, 60%)`,
@@ -101,7 +102,25 @@ module.exports = {
         900: `hsl(29, 80%, 44%)`,
       },
     },
-    extend: {},
+    extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            'code::before': {
+              content: `none`,
+            },
+            'code::after': {
+              content: `none`,
+            },
+            ':not(pre) > code': {
+              backgroundColor: gray100,
+              padding: `.125em .25em`,
+              borderRadius: defaultTheme.borderRadius.md,
+            },
+          },
+        },
+      },
+    },
   },
   plugins: [
     require(`@tailwindcss/typography`),
