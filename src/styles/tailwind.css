@@ -46,7 +46,7 @@
   }
 
   .underlined:hover,
-  .underlined:focus {
+  .underlined:focus-visible {
     background-size: 0 0.2em, 100% 0.2em;
   }
 }
