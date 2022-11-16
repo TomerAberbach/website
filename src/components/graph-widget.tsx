@@ -190,7 +190,7 @@ const Vertex = ({
         height: getScaledCalc(VERTEX_SIZE, height),
       }}
     >
-      <div className='pointer-events-none absolute inset-0' aria-hidden='true'>
+      <div className='pointer-events-none absolute inset-0 hidden'>
         {contents}
       </div>
       <Link

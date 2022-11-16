@@ -82,8 +82,12 @@ const TagsFilterStyle = ({
             opacity: 0.25;
           }
 
-          ${selector} a {
+          ${selector} > a {
             display: none;
+          }
+
+          ${selector} > :not(a) {
+            display: initial;
           }
         `,
       }}
