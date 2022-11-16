@@ -75,8 +75,7 @@ const TagsFilterStyle = ({
       // Safe because all user inputted tags have been filtered to known tags
       // and the tags have been escaped for use in CSS identifiers
       dangerouslySetInnerHTML={{
-        __html: `
-          #${escapedTargetId} :is(line,a):not(${matchingTagsSelector}){opacity:0.25;}`,
+        __html: `#${escapedTargetId} :is(line,a):not(${matchingTagsSelector}){opacity:0.25;}`,
       }}
     />
   )
