@@ -13,9 +13,9 @@ const PostPage = () => {
 
   return (
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
-      <header className='mb-4 space-y-2'>
+      <header>
         <h1 className='m-0'>{title}</h1>
-        <p className='whitespace-nowrap text-gray-500'>
+        <p className='m-0 mt-1.5 whitespace-nowrap text-gray-500'>
           <time dateTime={dateTime.toISOString()}>
             {dateTime.toLocaleDateString(undefined, {
               year: `numeric`,
@@ -26,7 +26,7 @@ const PostPage = () => {
           <span className='font-medium'> · </span>
           <time dateTime={`${minutesToRead}m`}>{minutesToRead} min read</time>
         </p>
-        <ul className='not-prose flex list-none flex-wrap gap-2 !pl-0 text-sm'>
+        <ul className='not-prose m-0 mt-2 flex list-none flex-wrap gap-2 pl-0 text-sm'>
           {pipe(
             tags,
             map(tag => (
