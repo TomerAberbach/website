@@ -1,13 +1,17 @@
-import type { LoaderFunction } from '@remix-run/node'
+import type { LoaderArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
+import type { ThrownResponse } from '@remix-run/react'
 import type { Post } from '../services/posts.server'
 import { getPosts } from '../services/posts.server'
-import { json, useLoaderData } from '../services/json.js'
+import { json, useCatch, useLoaderData } from '../services/json.js'
 import { InternalLink } from '../components/link.js'
 import Prose from '../components/prose.js'
+import pick from '../services/pick.js'
+import assert from '../services/assert.js'
+import didYouMean from '../services/did-you-mean.js'
 
 const PostPage = () => {
-  const { post } = useLoaderData<LoaderData>()
+  const { post } = useLoaderData<typeof loader>()
   const { title, tags, timestamp, minutesToRead, content } = post
   const dateTime = new Date(timestamp)
 
@@ -53,14 +57,54 @@ const Tag = ({ tag }: { tag: string }) => (
   </InternalLink>
 )
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const postId = params.postId!
-  const post = (await getPosts()).get(postId)!
-  return json({ post })
+export const CatchBoundary = () => {
+  const {
+    data: { didYouMeanPost },
+  } = useCatch<ThrownResponse<404, CatchBoundaryData>>()
+
+  return (
+    <div className='flex flex-1 flex-col items-center justify-center gap-5 text-center'>
+      <h1 className='not-prose text-9xl font-semibold'>404</h1>
+      <p className='text-3xl'>
+        Oh no! It appears you’ve been{` `}
+        <strong>
+          <em>bamboozled!</em>
+        </strong>
+      </p>
+      <p className='prose text-lg italic'>
+        Did you mean{` `}
+        <InternalLink href={`/${didYouMeanPost.id}`}>
+          {didYouMeanPost.title}
+        </InternalLink>
+        ?
+      </p>
+    </div>
+  )
 }
 
-type LoaderData = {
-  post: Pick<Post, `title` | `tags` | `timestamp` | `minutesToRead` | `content`>
+export const loader = async ({ params }: LoaderArgs) => {
+  const { postId } = params
+  assert(postId, `Expected a non-empty postId in params: ${params}`)
+
+  const post = (await getPosts()).get(postId)
+  if (!post) {
+    throw json<CatchBoundaryData>(
+      { didYouMeanPost: pick(await didYouMean(postId), [`id`, `title`]) },
+      { status: 404 },
+    )
+  }
+
+  return json({
+    post: pick(post, [
+      `title`,
+      `tags`,
+      `timestamp`,
+      `minutesToRead`,
+      `content`,
+    ]),
+  })
 }
+
+type CatchBoundaryData = { didYouMeanPost: Pick<Post, `id` | `title`> }
 
 export default PostPage
