@@ -49,6 +49,15 @@ module.exports = {
       '8xl': [fontSizeScale(9), 1],
       '9xl': [fontSizeScale(10), 1],
     },
+    fontWeight: {
+      hairline: 100,
+      thin: 200,
+      light: 300,
+      normal: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+    },
     colors: {
       transparent: colors.transparent,
       current: colors.current,
