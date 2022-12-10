@@ -13,7 +13,7 @@ export default Layout
 
 const Header = () => (
   <header>
-    <InternalLink href='/' className='underlined focus:outline-none'>
+    <InternalLink href='/' className='underlined hover:ring focus:outline-none'>
       <h1 className='inline text-2xl font-bold'>Tomer Aberbach</h1>
     </InternalLink>
   </header>
@@ -77,7 +77,7 @@ const IconLink = ({
   href: string
   children: ReactNode
 }) => (
-  <ExternalLink href={href} className='focus-ring inline-block'>
+  <ExternalLink href={href} className='inline-block hover:ring'>
     <svg
       aria-label={title}
       role='img'

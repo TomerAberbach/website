@@ -50,7 +50,7 @@ const PostPage = () => {
 const Tag = ({ tag }: { tag: string }) => (
   <InternalLink
     href={`/?tags=${encodeURIComponent(tag)}`}
-    className='focus-ring relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50'
+    className='relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50 hover:ring'
   >
     <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-gray-300' />
     <span className='text-gray-600'>{tag}</span>

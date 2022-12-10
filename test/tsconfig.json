@@ -1,4 +1,4 @@
 {
   "extends": "../shared-tsconfig.json",
-  "include": ["../remix.env.d.ts", "../src/**/*", "**/*"]
+  "include": ["../types/*", "../src/**/*", "**/*"]
 }
