@@ -195,7 +195,7 @@ const Vertex = ({
       </div>
       <Link
         href={href}
-        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0'
+        className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring'
       >
         {contents}
       </Link>

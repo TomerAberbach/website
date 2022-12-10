@@ -68,7 +68,7 @@ export const TagsCheckboxGroup = ({
             <button
               aria-labelledby={resetTooltipId}
               type='button'
-              className='focus-ring peer hidden h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:block'
+              className='focus-ring peer hidden h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:block'
               onClick={handleReset}
             >
               <ArrowUturnLeftIcon className='h-full stroke-gray-500 stroke-[1.5]' />
@@ -78,7 +78,7 @@ export const TagsCheckboxGroup = ({
             <button
               aria-labelledby={searchTooltipId}
               type='submit'
-              className='focus-ring peer h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 active:bg-blue-200 js:hidden'
+              className='focus-ring peer h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:hidden'
             >
               <MagnifyingGlassIcon className='h-full stroke-gray-500 stroke-[1.5]' />
             </button>
@@ -158,7 +158,7 @@ const Tag = ({
       name='tags'
       value={tag}
       checked={selected}
-      className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600'
+      className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600 hover:ring'
       onChange={onChange}
     />
     <div className='rounded-2xl bg-white p-2.5 font-medium leading-none text-gray-500 transition peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
