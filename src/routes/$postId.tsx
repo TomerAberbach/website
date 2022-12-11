@@ -2,13 +2,12 @@ import type { LoaderArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
 import type { ThrownResponse } from '@remix-run/react'
 import type { Post } from '../services/posts.server'
-import { getPosts } from '../services/posts.server'
+import { findBestPostMatch, getPosts } from '../services/posts.server'
 import { json, useCatch, useLoaderData } from '../services/json.js'
 import { InternalLink } from '../components/link.js'
 import Prose from '../components/prose.js'
 import pick from '../services/pick.js'
 import assert from '../services/assert.js'
-import didYouMean from '../services/did-you-mean.js'
 
 const PostPage = () => {
   const { post } = useLoaderData<typeof loader>()
@@ -89,7 +88,9 @@ export const loader = async ({ params }: LoaderArgs) => {
   const post = (await getPosts()).get(postId)
   if (!post) {
     throw json<CatchBoundaryData>(
-      { didYouMeanPost: pick(await didYouMean(postId), [`id`, `title`]) },
+      {
+        didYouMeanPost: pick(await findBestPostMatch(postId), [`id`, `title`]),
+      },
       { status: 404 },
     )
   }
