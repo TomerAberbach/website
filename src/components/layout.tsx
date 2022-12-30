@@ -13,8 +13,11 @@ export default Layout
 
 const Header = () => (
   <header>
-    <InternalLink href='/' className='underlined hover:ring focus:outline-none'>
-      <h1 className='inline text-2xl font-bold'>Tomer Aberbach</h1>
+    <InternalLink
+      href='/'
+      className='underlined inline-block focus:outline-none'
+    >
+      <h1 className='inline text-2xl font-bold leading-none'>Tomer Aberbach</h1>
     </InternalLink>
   </header>
 )

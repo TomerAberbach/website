@@ -53,8 +53,6 @@
     background-size: 100% 0.2em, 0 0.2em;
     background-position: 100% 100%, 0 100%;
     background-repeat: no-repeat;
-    margin-bottom: -0.2em;
-    padding-bottom: 0.2em;
   }
 
   @media (prefers-reduced-motion: no-preference) {
