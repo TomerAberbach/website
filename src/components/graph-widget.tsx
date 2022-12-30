@@ -149,7 +149,7 @@ const Vertex = ({
     boundingBox: { width, height },
     positions,
   },
-  vertex: { id, label, tags, href, external },
+  vertex: { id, label, tags, href, reloadDocument, external },
 }: {
   layout: GraphLayout
   vertex: GraphVertex
@@ -195,6 +195,7 @@ const Vertex = ({
       </div>
       <Link
         href={href}
+        reloadDocument={reloadDocument}
         className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring'
       >
         {contents}

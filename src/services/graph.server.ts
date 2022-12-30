@@ -21,9 +21,16 @@ export const getGraph = cached(async (): Promise<Graph> => {
 
   const vertices = pipe(
     posts,
-    map(([id, { title, tags }]): [string, Vertex] => [
+    map(([id, { title, tags, ...rest }]): [string, Vertex] => [
       id,
-      { id, label: title, tags, href: `/${id}`, external: false },
+      {
+        id,
+        label: title,
+        tags,
+        href: rest.type === `href` ? rest.href : `/${id}`,
+        reloadDocument: rest.type === `href`,
+        external: false,
+      },
     ]),
     reduce(toMap()),
   )
@@ -83,6 +90,7 @@ export type Vertex = {
   label: string
   tags: Set<string>
   href: string
+  reloadDocument?: boolean
   external: boolean
 }
 
@@ -113,7 +121,7 @@ const layoutGraph = ({
   const layout = createLayout(ngraph, {
     springLength: SPRING_LENGTH,
     springCoefficient: 0.02,
-    gravity: -0.5,
+    gravity: -1.5,
     theta: 0.8,
     dragCoefficient: 0.02,
   })
