@@ -36,7 +36,7 @@ specifiers:
   hast-util-to-string: ^2.0.0
   hastscript: ^7.1.0
   is-ci: ^3.0.1
-  lfi: 2.0.0-beta.0
+  lfi: 2.0.0-beta.1
   mem: ^9.0.2
   ngraph.forcelayout: ^3.3.1
   ngraph.graph: ^20.0.1
@@ -92,7 +92,7 @@ dependencies:
   hast-util-select: 5.0.2
   hast-util-to-string: 2.0.0
   hastscript: 7.1.0
-  lfi: 2.0.0-beta.0
+  lfi: 2.0.0-beta.1
   mem: 9.0.2
   ngraph.forcelayout: 3.3.1
   ngraph.graph: 20.0.1
@@ -14795,6 +14795,15 @@ packages:
         integrity: sha512-u8h0M1UwxLWgFgra5L90Gwvw5ZghY21Z2ysTcdbp37rxZs4zGZ9ey4BnqeynBE0febUFUWRDHG2+gjA+D2qt/A==,
       }
     engines: { node: '>= 14.6' }
+    dev: true
+
+  /lfi/2.0.0-beta.1:
+    resolution:
+      {
+        integrity: sha512-o66/GWX6do1GkKjAOtrFf0//kyZeIMhkuLYV95oZykFnrgrmKyt9TzneSS9ugm8eBhXRFwC8mf4ppvTEM58oqA==,
+      }
+    engines: { node: '>= 14.6' }
+    dev: false
 
   /lilconfig/2.0.5:
     resolution:

@@ -31,8 +31,10 @@ import { cached } from './cache.server'
 import renderHtml from './html.js'
 import parseMarkdown from './markdown.server.js'
 
-export const findBestPostMatch = async (postId: string): Promise<Post> => {
-  const posts = await getPosts()
+export const findBestMarkdownPostMatch = async (
+  postId: string,
+): Promise<MarkdownPost> => {
+  const posts = await getMarkdownPosts()
   const postIds = [...posts.keys()]
   const { bestMatchIndex } = findBestMatch(postId.toLowerCase(), postIds)
   return posts.get(postIds[bestMatchIndex]!)!
@@ -48,6 +50,18 @@ export const getTags: () => Promise<Set<string>> = cached(
       ).sort(),
     ),
 )
+
+export const getMarkdownPosts: () => Promise<Map<string, MarkdownPost>> =
+  cached(async () =>
+    pipe(
+      await getPosts(),
+      filter(
+        (entry): entry is [string, MarkdownPost] =>
+          entry[1].type === `markdown`,
+      ),
+      reduce(toMap()),
+    ),
+  )
 
 export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
   const rawPosts = await (process.env.NODE_ENV === `production`
@@ -88,39 +102,73 @@ export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
 
 const parseRawPost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
+  return {
+    id: rawPost.id,
+    ...(content.trim().length > 0
+      ? await parseRawMarkdownPost(content, data)
+      : parseRawHrefPost(data)),
+    referencedBy: new Set(),
+  }
+}
+
+const parseRawMarkdownPost = async (
+  content: string,
+  metadata: Record<string, unknown>,
+): Promise<Omit<MarkdownPost, `id` | `referencedBy`>> => {
   const htmlAst = await parseMarkdown(content)
 
   return {
-    id: rawPost.id,
-    ...postMetadataSchema.parse(data),
+    type: `markdown`,
+    ...basePostMetadataSchema.parse(metadata),
     references: parseReferences(parseHrefs(htmlAst)),
-    referencedBy: new Set(),
     minutesToRead: Math.max(1, Math.round(readingTime(content).minutes)),
     content: renderToStaticMarkup(renderHtml(htmlAst)),
   }
 }
 
-export type Post = {
+const parseRawHrefPost = (
+  metadata: Record<string, unknown>,
+): Omit<HrefPost, `id` | `referencedBy`> => {
+  const { hrefs, ...rest } = hrefPostMetadataSchema.parse(metadata)
+  return { type: `href`, ...rest, references: parseReferences(hrefs) }
+}
+
+export type Post = MarkdownPost | HrefPost
+
+type MarkdownPost = BasePost & {
+  type: `markdown`
+  minutesToRead: number
+  content: string
+}
+
+type HrefPost = BasePost & { type: `href`; href: string }
+
+type BasePost = {
   id: string
   title: string
   tags: Set<string>
   timestamp: Date
   references: Map<string, Set<string>>
   referencedBy: Set<string>
-  minutesToRead: number
-  content: string
 }
 
-const postMetadataSchema = z.object({
+const stringSetSchema = z
+  .array(z.string())
+  .refine(strings => new Set(strings).size === strings.length)
+  .transform(strings => new Set(strings.sort()))
+
+const basePostMetadataSchema = z.object({
   title: z.string(),
-  tags: z
-    .array(z.string())
-    .refine(tags => new Set(tags).size === tags.length)
-    .transform(tags => new Set(tags.sort())),
+  tags: stringSetSchema,
   timestamp: z.preprocess(
     value => (typeof value === `string` ? new Date(value) : value),
     z.date(),
   ),
+})
+
+const hrefPostMetadataSchema = basePostMetadataSchema.extend({
+  href: z.string(),
+  hrefs: stringSetSchema,
 })
 
 const parseHrefs = (htmlAst: Root): Set<string> =>

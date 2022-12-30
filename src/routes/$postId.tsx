@@ -2,7 +2,10 @@ import type { LoaderArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
 import type { ThrownResponse } from '@remix-run/react'
 import type { Post } from '../services/posts.server'
-import { findBestPostMatch, getPosts } from '../services/posts.server'
+import {
+  findBestMarkdownPostMatch,
+  getMarkdownPosts,
+} from '../services/posts.server'
 import { json, useCatch, useLoaderData } from '../services/json.js'
 import { InternalLink } from '../components/link.js'
 import Prose from '../components/prose.js'
@@ -85,11 +88,14 @@ export const loader = async ({ params }: LoaderArgs) => {
   const { postId } = params
   assert(postId, `Expected a non-empty postId in params: ${params}`)
 
-  const post = (await getPosts()).get(postId)
+  const post = (await getMarkdownPosts()).get(postId)
   if (!post) {
     throw json<CatchBoundaryData>(
       {
-        didYouMeanPost: pick(await findBestPostMatch(postId), [`id`, `title`]),
+        didYouMeanPost: pick(await findBestMarkdownPostMatch(postId), [
+          `id`,
+          `title`,
+        ]),
       },
       { status: 404 },
     )

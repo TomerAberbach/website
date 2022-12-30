@@ -19,21 +19,25 @@ const isExternalUrl = (href: string): boolean => {
   }
 }
 
-export const ExternalLink = (props: LinkProps) => (
+export const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content
   <a
-    {...withFocusRingClassName(props)}
+    {...withFocusRingClassName(rest)}
     target='_blank'
     rel='noopener noreferrer'
   />
 )
 
-export const InternalLink = ({ href, ...props }: LinkProps) =>
+export const InternalLink = ({ href, reloadDocument, ...props }: LinkProps) =>
   typeof window === `undefined` || href.startsWith(`#`) ? (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
     <a href={href} {...withFocusRingClassName(props)} />
   ) : (
-    <RemixLink to={href} {...withFocusRingClassName(props)} />
+    <RemixLink
+      to={href}
+      reloadDocument={reloadDocument}
+      {...withFocusRingClassName(props)}
+    />
   )
 
 const withFocusRingClassName = <Props extends { className?: string }>({
