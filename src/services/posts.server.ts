@@ -28,7 +28,7 @@ import type { Root } from 'hast'
 import { findBestMatch } from 'string-similarity'
 import assert from './assert.js'
 import { cached } from './cache.server'
-import renderHtml from './html.js'
+import { renderHtml } from './html.js'
 import parseMarkdown from './markdown.server.js'
 
 export const findBestMarkdownPostMatch = async (
