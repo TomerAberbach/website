@@ -8,8 +8,10 @@ import {
 import { deserialize, serialize } from 'superjson'
 import type { SuperJSONResult } from 'superjson/dist/types'
 
-export const json: JsonFunction = (data, init) =>
-  remixJson(serialize(data), init)
+export const json: JsonFunction = <Data>(
+  data: Data,
+  init?: number | ResponseInit,
+) => remixJson<Data>(serialize(data) as Data, init)
 
 export const useLoaderData = <
   DataOrFunction = AppData,

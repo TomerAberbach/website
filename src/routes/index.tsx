@@ -1,11 +1,11 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { useId } from 'react'
-import { getTags } from '../services/posts/index.server'
-import { json, useLoaderData } from '../services/json.js'
-import { getGraph } from '../services/graph.server'
-import type { Graph } from '../services/graph.server'
-import { TagsFilterForm } from '../components/tags-filter-form.js'
-import GraphWidget from '../components/graph-widget.js'
+import { getTags } from '~/services/posts/index.server'
+import { json, useLoaderData } from '~/services/json.js'
+import { getGraph } from '~/services/graph.server'
+import type { Graph } from '~/services/graph.server'
+import { TagsFilterForm } from '~/components/tags-filter-form.js'
+import GraphWidget from '~/components/graph-widget.js'
 
 const HomePage = () => {
   const { tags, graph } = useLoaderData<LoaderData>()

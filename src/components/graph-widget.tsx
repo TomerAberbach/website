@@ -2,15 +2,15 @@ import { map, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
 import { useId } from 'react'
+import { Link } from './link.js'
+import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
 import type {
   Graph,
   Edge as GraphEdge,
   GraphLayout,
   Vertex as GraphVertex,
   Position,
-} from '../services/graph.server'
-import { Link } from './link.js'
-import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
+} from '~/services/graph.server'
 
 const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
   const {

@@ -3,7 +3,7 @@ import fs from 'fs/promises'
 import { asConcur, mapConcur, pipe } from 'lfi'
 import type { ConcurIterable } from 'lfi'
 import { Octokit } from 'octokit'
-import assert from '../assert.js'
+import assert from '~/services/assert.js'
 
 const fetchGitHubPosts = async (): Promise<ConcurIterable<RawPost>> =>
   pipe(

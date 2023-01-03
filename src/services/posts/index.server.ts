@@ -13,10 +13,10 @@ import {
   values,
 } from 'lfi'
 import { findBestMatch } from 'string-similarity'
-import { cached } from '../cache.server'
 import { fetchRawPosts } from './fetch.server.js'
 import parsePost from './parse/index.server.js'
 import type { MarkdownPost, Post } from './types.js'
+import { cached } from '~/services/cache.server'
 
 export const findBestMarkdownPostMatch = async (
   postId: string,

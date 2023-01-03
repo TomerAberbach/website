@@ -4,13 +4,13 @@ import type { ThrownResponse } from '@remix-run/react'
 import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
-} from '../services/posts/index.server'
-import { json, useCatch, useLoaderData } from '../services/json.js'
-import { InternalLink } from '../components/link.js'
-import Prose from '../components/prose.js'
-import pick from '../services/pick.js'
-import assert from '../services/assert.js'
-import type { Post } from '../services/posts/types.js'
+} from '~/services/posts/index.server'
+import { json, useCatch, useLoaderData } from '~/services/json.js'
+import { InternalLink } from '~/components/link.js'
+import Prose from '~/components/prose.js'
+import pick from '~/services/pick.js'
+import assert from '~/services/assert.js'
+import type { Post } from '~/services/posts/types.js'
 
 const PostPage = () => {
   const { post } = useLoaderData<typeof loader>()
