@@ -1,6 +1,6 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { useId } from 'react'
-import { getTags } from '../services/posts.server'
+import { getTags } from '../services/posts/index.server'
 import { json, useLoaderData } from '../services/json.js'
 import { getGraph } from '../services/graph.server'
 import type { Graph } from '../services/graph.server'

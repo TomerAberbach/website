@@ -129,6 +129,14 @@ module.exports = {
             },
           },
         },
+        base: {
+          css: {
+            'section[data-footnotes="true"] p': {
+              marginTop: `0.5em`,
+              marginBottom: `0.5em`,
+            },
+          },
+        },
       },
     },
   },
