@@ -1,16 +1,16 @@
 import type { LoaderArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
 import type { ThrownResponse } from '@remix-run/react'
-import type { Post } from '../services/posts.server'
 import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
-} from '../services/posts.server'
+} from '../services/posts/index.server'
 import { json, useCatch, useLoaderData } from '../services/json.js'
 import { InternalLink } from '../components/link.js'
 import Prose from '../components/prose.js'
 import pick from '../services/pick.js'
 import assert from '../services/assert.js'
+import type { Post } from '../services/posts/types.js'
 
 const PostPage = () => {
   const { post } = useLoaderData<typeof loader>()
