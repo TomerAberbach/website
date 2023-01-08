@@ -113,7 +113,10 @@ const Edge = ({
       y1={intersectedFromPosition.y}
       x2={intersectedToPosition.x}
       y2={intersectedToPosition.y}
-      className={clsx(`stroke-gray-500`, getTagClassNames(tags))}
+      className={clsx(
+        `stroke-gray-500 transition duration-200`,
+        getTagClassNames(tags),
+      )}
     />
   )
 }
