@@ -1,11 +1,11 @@
 ---
-title: 'Checking for the Absence of a Value in JavaScript'
+title: 'Checking for the absence of a value in JavaScript'
 tags: ['code', 'javascript', 'nodejs']
-timestamp: 2018-08-16T04:00:00.000Z
+timestamp: 2023-01-08T00:03:50.336Z
 ---
 
-When I first started learning JavaScript I was confused by the seemingly endless
-ways you can check for the absence of a value:
+JavaScript has a lot of similar-looking ways to check for the absence of a
+value:
 
 <!-- eslint-skip -->
 
@@ -26,15 +26,16 @@ console.log(!value)
 
 Which one is right?
 
-## The Absence of a Value
+## Absent values
 
-JavaScript has two ways of representing an absent value.
+JavaScript has two representations of an absent value.
 
 ### Undefined
 
-`undefined` is one of JavaScript's primitive types. Using the
-[`typeof` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof)
-on `undefined` returns the string `'undefined'`:
+[`undefined`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)
+is a JavaScript primitive type. The
+[`typeof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof)
+operator returns `'undefined'` for `undefined`:
 
 <!-- eslint-skip -->
 
@@ -43,7 +44,7 @@ console.log(typeof undefined)
 //=> undefined
 ```
 
-It is the default value of any declared, but unassigned variable:
+The value of a declared unassigned variable is `undefined`:
 
 <!-- eslint-skip -->
 
@@ -53,31 +54,29 @@ console.log(x)
 //=> undefined
 ```
 
-It is the value returned when trying to access a nonexistent object property:
+The access of an absent object property returns `undefined`:
 
 <!-- eslint-skip -->
 
 ```js
-let obj = {}
-console.log(obj.a)
+const object = {}
+console.log(object.absentProperty)
 //=> undefined
 ```
 
-It is the default return value of a function that doesn't explicitly return
-anything:
+The return value of a function that doesn't explicitly return is `undefined`:
 
 <!-- eslint-skip -->
 
 ```js
 function f() {}
-
 console.log(f())
 //=> undefined
 ```
 
-It is returned by the
-[`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void),
-which evaluates an expression and then returns `undefined`:
+The
+[`void`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void)
+operator always returns `undefined`[^1]:
 
 <!-- eslint-skip -->
 
@@ -95,18 +94,15 @@ console.log(void (/* any expression */))
 //=> undefined
 ```
 
-[MDN has some good examples](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void#examples)
-if you're wondering when this operator is useful.
-
-And lastly, `undefined` is not a literal! It is a property of the
+Lastly, `undefined` is not a literal! It is a property of the
 [global object](https://developer.mozilla.org/en-US/docs/Glossary/Global_object),
-which always exists in the global scope (accessible through the `window`
-property on browsers).
+which always exists in the global scope.
 
 ### Null
 
-`null` is also a JavaScript primitive type, but checking its type using the
-`typeof` operator doesn't return what you'd expect:
+[`null`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null)
+is also a JavaScript primitive type, but `typeof` returns something unexpected
+for `null`:
 
 <!-- eslint-skip -->
 
@@ -115,17 +111,14 @@ console.log(typeof null)
 //=> object
 ```
 
-There isn't a great reason for this behavior. `typeof null` _should_ return
-`'null'`, but because a lot of code has already been written with the assumption
-that `typeof null` returns `'object'`, it will not be changed to avoid breaking
-old code (i.e. for
-["legacy reasons"](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null#:~:text=typeof%20null%20%20%20%20%20%20%20%20%20%20//%20%22object%22%20(not%20%22null%22%20for%20legacy%20reasons)>)).
+Ideally `typeof null` would return `'null'`, but
+[`typeof null` has returned `'object'` since JavaScript's inception](https://2ality.com/2013/10/typeof-null.html)
+and it would
+[break existing code if the behavior were changed now](https://web.archive.org/web/20160331031419/http://wiki.ecmascript.org:80/doku.php?id=harmony:typeof_null).
 
-Unlike `undefined`, `null` does not show up as a default value anywhere.
-Instead, functions that usually return objects return `null` when an object
-couldn't be found or constructed.
-
-For example, in browsers
+`null` does not appear as a "default" value in JavaScript in the same way that
+`undefined` does. Instead, developers typically make functions return `null`
+when an object can't be found or constructed. For example, in browsers
 [`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById)
 returns `null` if there's no element in the document with the given ID:
 
@@ -136,26 +129,19 @@ console.log(document.getElementById('some-id-that-no-element-has'))
 //=> null
 ```
 
-Unlike `undefined`, `null` _is_ a literal (it is not the identifier of some
-property).
-
-Based on these characteristics it is safe to say that both `undefined` and
-`null` represent the absence of a value. So any code we write that checks for
-the absence of a value should account for both `undefined` and `null`.
+Unlike `undefined`, `null` _is_ a literal. It is not a property of the global
+object.
 
 ## Equality
 
-Now that we understand `undefined` and `null`, we need to briefly address the
-difference between `==` and `===`.
+Now that we've covered `undefined` and `null`, let's address the difference
+between `==` and `===`.
 
 ### Strict
 
-Strict equality is invoked using `===`. If two values, `a` and `b`, are of
-different types, then `a === b` evaluates to `false`. If they are of the same
-type and their values match, then the expression evaluates to `true`. Otherwise,
-it evaluates to `false`.
-
-Examples:
+Strict equality is invoked using `===`. For two values, `a` and `b`, `a === b`
+evaluates to `true` if `a` and `b` have the same type and their values are
+equal. Otherwise, `a === b` evaluates to `false`:
 
 <!-- eslint-skip -->
 
@@ -176,33 +162,29 @@ console.log(0 === 5)
 //=> false (same types, but different values)
 
 console.log(0 === '0')
-//=> false (they are different types)
+//=> false (different types)
 
 console.log(0 === 'hello!')
-//=> false (they are different types)
+//=> false (different types)
 
 console.log(null === undefined)
-//=> false (they are different types)
+//=> false (different types)
 
-const obj = {}
+const object = {}
 
-console.log(obj === {})
+console.log(object === {})
 //=> false (because objects are compared by reference)
 
-console.log(obj === obj)
-//=> true (because they are references to the same object)
+console.log(object === object)
+//=> true (because the object is referentially equal to itself)
 ```
 
 ### Loose
 
-Loose quality is invoked using `==` and often produces unexpected results. If
-two values, `a` and `b`, are of the same type, then `a == b` evaluates to
-`a === b`. If they are of different types, then JavaScript will attempt to
-coerce (i.e. convert) the two values to the same type and then strictly equate
-the two. This second case has prompted the JavaScript community to avoid loose
-equality somewhat.
-
-Examples:
+Loose quality is invoked using `==` and often produces unexpected results. For
+two values of the same type, `a` and `b`, `a == b` behaves like `a === b`. If
+`a` and `b` have different types, then JavaScript coerces the values to the same
+type and strictly equates them:
 
 <!-- eslint-skip -->
 
@@ -220,42 +202,42 @@ console.log(0 == false)
 //=> true (because the boolean was converted to a number)
 
 console.log(0 == null)
-//=> false (because absence of a value is never considered equal to a concrete value)
+//=> false (because absent values are not considered equal to non-absent values)
 
 console.log({} == {})
 //=> false (because objects are compared by reference)
 
 console.log(0 == undefined)
-//=> false (because absence of a value is never considered equal to a concrete value)
+//=> false (because absent values are not considered equal to non-absent values)
 
 console.log(null == undefined)
-//=> true (because both represent the absence of a value)
+//=> true (because both are absent values)
 
 console.log(undefined == null)
-//=> true (because both represent the absence of a value)
+//=> true (because both are absent values)
 
 console.log('hello!' == false)
 //=> false
 
 console.log('' == false)
-//=> true (because the string was converted to a boolean and an empty string kind of represents falsity in the realm of strings I guess?)
+//=> true (because the string was converted to a boolean and an empty string sort of represents false in the realm of strings I guess)
 
 console.log([] == false)
-// true (because the array was converted to a boolean and an empty array kind of represents falsity in the realm of arrays I guess?)
+// true (because the array was converted to a boolean and an empty array sort of represents false in the realm of arrays I guess)
 ```
 
-If you're feeling confused, then you wouldn't be the only one. Check out this
+If you're feeling confused, then you wouldn't be the only one. This
 [operand conversion table](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#Loose_equality_using)
-and this
-[article about "truthy" and "falsey" values](https://www.sitepoint.com/javascript-truthy-falsy)
-if you want to fully understand loose equality. Also, if you want a handy
-reference on how `==` and `===` behave, then look no further than this
+and
+[article about "truthy" and "falsy" values](https://www.sitepoint.com/javascript-truthy-falsy)
+explain loose equality more fully. For a handy reference on the behavior of `==`
+and `===`, look no further than this
 [JavaScript equality table](https://dorey.github.io/JavaScript-Equality-Table/unified).
 
-## Bringing It All Together
+## The right way to check for an absent value
 
-It's time to check which of the expressions from the beginning of the post work!
-Let's take a look at the first expression and write a checklist to evaluate it:
+Now we can check which expressions from the beginning of the post work! Let's
+take a look at the first expression:
 
 <!-- eslint-skip -->
 
@@ -263,96 +245,41 @@ Let's take a look at the first expression and write a checklist to evaluate it:
 console.log(value == null)
 ```
 
-- _Does it evaluate to `true` for `undefined`?_ Yes, because substituting
-  `undefined` for `value` yields `undefined == null` and as we saw in the loose
-  equality section, `undefined` and `null` are loosely equal because both
-  represent the absence of a value.
+- _Does it evaluate to `true` for `undefined`?_ Yes, because `undefined` and
+  `null` are loosely equal.
 
-- _Does it evaluate to `true` for `null`?_ Yes, because substituting `null` for
-  `value` yields `null == null`, which returns `true`.
+- _Does it evaluate to `true` for `null`?_ Yes, because `null` is equal to
+  itself.
 
-- _Does it evaluate to `false` for everything else?_ Yes, because as we saw in
-  the loose equality section, `null` is not loosely equal to anything other than
-  itself and `undefined` because the absence of a value is never considered
-  equal to a concrete value.
+- _Does it evaluate to `false` for everything else?_ Yes, because `null` is only
+  loosely equal to itself and `undefined`.
 
-You may have noticed that `value == undefined` would also work for almost the
-same reasons. `value == null` is a little safer because the value of `undefined`
-is not guaranteed to stay constant. Before JavaScript ES5, `undefined` could be
-reassigned because it's a global property. And even in the most recent versions
-of JavaScript `undefined` can be shadowed by a local variable. This can't happen
-with `null` because it is a literal.
+`value == undefined` would also work for roughly the same reasons, but
+`value == null` is safer because
+[`undefined` could be shadowed](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined#:~:text=Note%3A%20While%20you%20can%20use%20undefined%20as%20an%20identifier%20(variable%20name)%20in%20any%20scope%20other%20than%20the%20global%20scope%20(because%20undefined%20is%20not%20a%20reserved%20word)%2C%20doing%20so%20is%20a%20very%20bad%20idea%20that%20will%20make%20your%20code%20difficult%20to%20maintain%20and%20debug.>)
+or reassigned in pre-ES5 JavaScript environments. This can't happen with `null`
+because it is a literal.
 
-These methods work except for one lurking issue. All of our questions assume
-that `value` has been declared, but if `value` is undeclared, then our code will
-throw a `ReferenceError`.
+### Undeclared variables
 
-Many JavaScript libraries aim to be platform agnostic. They are made to run in
-the browser or in Node.js. In Node.js there is a global variable `module` which
-can be used to export methods for use in other modules, but in the browser this
-variable is never declared. If we execute `module == null` on Node.js, then it
-would return `false`, but in browsers it would throw a `ReferenceError`! One way
-to handle this issue is to use `try-catch` blocks to catch the `ReferenceError`
-and resume execution when case we're not running on Node.js:
+These methods work except for one lurking issue. If `value` is undeclared, then
+our code would throw a
+[`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError).
 
-<!-- eslint-skip -->
+That may sound like a nonissue, but consider that some JavaScript needs to be
+compatible with both the browser and Node.js, and that the two environments
+differ in which global variables are declared. For example, in the browser the
+global variable
+[`window`](https://developer.mozilla.org/en-US/docs/Web/API/Window) is declared,
+but there's no such variable in Node.js. Can we access the `window` variable
+only if it exists and avoid a `ReferenceError`?
 
-```js
-try {
-  // expression statement will throw a ReferenceError if value is an undeclared variable
-  value
-
-  // will log if the previous statement did not throw an error
-  console.log('value is declared')
-} catch (err) {
-  // will log if a ReferenceError was thrown
-  console.log('value is undeclared')
-}
-```
-
-Note that if any code following the first statement in the `try` block throws an
-error for some other reason then the `catch` block would be executed even though
-`value` was declared. This issue can be avoided by checking that the thrown
-error was specifically a `ReferenceError` using the `instanceof` operator:
-
-<!-- eslint-skip -->
-
-```js
-try {
-  value
-  console.log('value is declared')
-  /* some potentially error-throwing code */
-} catch (err) {
-  if (err instanceof ReferenceError) {
-    console.log('value is undeclared')
-  } else {
-    console.log('Some other error occurred')
-  }
-}
-```
-
-Note that this solution only works if the potentially error-throwing code does
-not also throw a `ReferenceError` because it would also match the if condition.
-I cannot think of any reason anyone would do this on purpose. This situation
-would likely arise due to misspelling the name of a declared variable. For this
-reason you should try to keep the code in the `try` `catch` blocks as short as
-possible. The if condition could also be altered to check the `ReferenceError`
-message `string` for our specific variable
-`err instanceof ReferenceError && err.message.split(' ')[0] === 'value'`, but I
-do not recommend it because it assumes your code has misspelled variables names
-which can and should be debugged and fixed.
-
-The code with the if condition kept the same is a good solution if you
-specifically want to check if a variable is declared or not. However, if you
-want to classify undeclared variables as absent values and lump them in with
-`undefined` and `null` then fortunately there is a better solution. It turns out
-that checking the type of an undeclared variable using the `typeof` operator
-will not throw a `ReferenceError`, but will return the string `'undefined'`
-instead. This is convenient because checking the type of a declared variable
-with a value of `undefined` using the `typeof` operator will also return the
-string `'undefined'`. So the expression `typeof value === 'undefined'` also
-checks off the first item on our checklist! However, it doesn't take into
-account if `value` is `null` so we must add an additional check in an or clause:
+It turns out that
+[the `typeof` operator returns `'undefined'` for an undeclared variable instead of throwing a `ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#interaction_with_undeclared_and_uninitialized_variables).
+This is convenient because `typeof undefined` also returns `'undefined'` so
+`typeof value === 'undefined'` checks for both undeclared variables and
+`undefined`. To check for `null` as well we can add an additional check using
+[logical "or"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR).
 
 <!-- eslint-skip -->
 
@@ -360,39 +287,28 @@ account if `value` is `null` so we must add an additional check in an or clause:
 console.log(typeof value === 'undefined' || value === null)
 ```
 
-- _Does it return `true` on when `value` is undeclared?_ Yes, because checking
-  the type of an undeclared variable using the `typeof` operator returns the
-  string `'undefined'` which after substituting gives us
-  `'undefined' === 'undefined'` in the first condition which obviously returns
-  `true`, and because the first condition is `true` the expression
-  short-circuits and allows us to avoid the `ReferenceError` which would have
-  been caused by `value === null`. The prevention of the error-throwing code's
-  execution by short-circuiting shows why the order of the two conditions cannot
-  be switched.
-- _Does it return `true` on `undefined`?_ Yes, because substituting `undefined`
-  for `value` yields `typeof undefined === 'undefined'` in the first condition,
-  which simplifies to `'undefined' === 'undefined'` and obviously returns
-  `true`.
-- _Does it return `true` on `null`?_ Yes, because although substituting `null`
-  for `value` in the first condition fails due to `typeof null === 'undefined'`
-  simplifying to `'object' === 'undefined'`, substituting `null` for `value` in
-  the second condition yields `null === null` which obviously returns `true`.
-- _Does it return `false` on everything else?_ Yes, because checking the type of
-  any concrete value using the `typeof` operator will not return `'undefined'`
-  so the first condition returns `false`, and substituting any concrete value in
-  the second condition will also return `false` because `null` is only strictly
-  equal to itself.
+- _Does it evaluate to `true` when `value` is undeclared?_ Yes, because the
+  `typeof` operator returns `'undefined'` for an undeclared variable.
 
-This method works in every situation, but it is slower than `value == null`. The
-optimal strategy is to use this method when you don't know if `value` has been
-declared and use the previous method when you do. This is the approach taken by
-CoffeeScript when transpiling its
-[existential operator](https://coffeescript.org/#existential-operator) to
-JavaScript.
+- _Does it evaluate to `true` for `undefined`?_ Yes, because `typeof undefined`
+  returns `'undefined'`.
 
-You may have noticed that a few of the expressions at the beginning of the post
-look almost identical to the expression we just evaluated. Interestingly enough
-the following four expressions share the same behavior:
+- _Does it evaluate to `true` for `null`?_ Yes, the first condition evaluates to
+  `false`, but the second condition evaluates to `true` because `null` is equal
+  to itself.
+
+- _Does it evaluate to `false` for everything else?_ Yes, the `typeof` operator
+  only returns `'undefined'` for undeclared variables and `undefined`, and
+  `null` is only strictly equal to itself.
+
+This method works in every situation, but it is only preferable over
+`value == null` when you don't know if `value` has been declared[^2].
+
+### The problems with the other expressions
+
+A few of the expressions at the beginning of the post look almost identical to
+the expression we just evaluated. In fact, the following expressions are
+equivalent to `typeof value === 'undefined' || value === null`:
 
 <!-- eslint-skip -->
 
@@ -403,266 +319,169 @@ console.log(typeof value == 'undefined' || value == null)
 console.log(typeof value == 'undefined' || value === null)
 ```
 
-So why did we choose the expression with strict equality in both conditions?
+So why choose the expression that uses strict equality for both conditions? I
+prefer to avoid loose equality because it's confusing and in this case it's not
+required for correct behavior.
 
-- Strict equality is no slower than loose equality because they both check the
-  operand types.
-- Strict equality is faster than loose equality when the types of the operands
-  differ because it can immediately return `false` without having to coerce the
-  operand types.
-- Loose equality often produces unexpected results and should be avoided if
-  possible.
-
-The second bullet point makes a strong argument for using strict equality for
-the second condition because `value` may not be the same type as `null`, but in
-the first condition both `typeof value` and `'undefined'` are guaranteed to be
-of type `string` so the decision to use strict equality is only supported by the
-first and third bullet points. This makes the first expression above the best
-choice.
-
-Lastly, let's evaluate the rest of the expressions from the beginning of the
-post:
+Let's evaluate the rest of the expressions from the beginning of the post:
 
 <!-- eslint-skip -->
 
 ```js
-console.log(value === null) // doesn't account for undefined
-console.log(value === undefined) // doesn't account for null
-console.log(value === undefined || value === null) // works, but is simply a slower version of value == null and value == undefined
-console.log(typeof value === 'undefined') // doesn't account for null
-console.log(typeof value == 'undefined') // doesn't account for null
-console.log(!value) // erroneously returns true for falsey values such as false, '', [], 0, etc.
+// Doesn't account for undefined
+console.log(value === null)
+
+// Doesn't account for null
+console.log(value === undefined)
+
+// Works, but is much more verbose than value == null
+console.log(value === undefined || value === null)
+
+// Doesn't account for null
+console.log(typeof value === 'undefined')
+
+// Doesn't account for null
+console.log(typeof value == 'undefined')
+
+// Erroneously evaluates to true for falsy values such as false, '', [], and 0
+console.log(!value)
 ```
 
-## Object Properties
+## Absent object properties
 
-When checking for the absence of a value in an object property, additional
-considerations must be made regarding the property itself. Consider the
-following example where we use `value == null` to check for the absence of a
-value in each object's `key` property:
+An object property can be set to an absent value, but the property itself can
+also be absent:
 
 <!-- eslint-skip -->
 
 ```js
-var obj1 = {}
-var obj2 = {
-  key: undefined,
-}
+const object1 = {}
+const object2 = { property: undefined }
 
-console.log(obj1.key == null) // true
-console.log(obj2.key == null) // true
+console.log(object1.property == null)
+//=> true
+
+console.log(object2.property == null)
+//=> true
 ```
 
-An object without a `key` property produces the same result as an object with
-its `key` property set to a value of `undefined`. This is because in contrast to
-undeclared variables, trying to access the value of an undeclared _property_
-always returns `undefined`. This means that `value == null` is a good solution
-if you want to classify undeclared properties as absent values and lump them in
-with `undefined` and `null`. However, if you specifically want to check if a
-property is declared or not then a different method must be used.
+The result for the two objects is the same because the access of an absent
+property returns `undefined`. This makes `value == null` a good solution when
+checking for `null`, `undefined`, _and_ absent properties. However, specifically
+checking for an absent property requires a different method.
 
-One way is to use the `in` operator:
+One way is to use the
+[`in`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in)
+operator:
 
 <!-- eslint-skip -->
 
 ```js
-var obj1 = {}
-var obj2 = {
-  key: undefined,
-}
+const object1 = {}
+const object2 = { property: undefined }
 
-console.log('key' in obj1) // false
-console.log('key' in obj2) // true
+console.log('property' in object1)
+//=> false
+
+console.log('property' in object2)
+//=> true
 ```
 
-Note that a `string` or `Symbol` containing the property name must be used on
-the lefthand side of the `in` operator, not a token. This may seem like a good
-solution, but consider the following case:
+Note that the left-hand side of the `in` operator must be a `string` or
+`Symbol`, not an identifier. This may seem like a good solution, but consider
+the following case:
 
 <!-- eslint-skip -->
 
 ```js
-var obj1 = {}
-var obj2 = {
-  constructor: undefined,
-}
+const object1 = {}
+const object2 = { constructor: undefined }
 
-console.log('constructor' in obj1) // true
-console.log('constructor' in obj2) // true
+console.log('constructor' in object1)
+//=> true
+
+console.log('constructor' in object2)
+//=> true
 ```
 
-Probably not what you expected right? The expression `'constructor' in obj1`
+Probably not what you expected right? The expression `'constructor' in object1`
 returns `true` because the `constructor` property was inherited from the
 [object's prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype).
-This means that the `in` operator considers both the specific properties of the
-object as well as inherited properties.
+The `in` operator considers both the specific properties of the object as well
+as its inherited properties.
 
-Fortunately, there is a way to check just the specific uninherited properties of
-the object using the `hasOwnProperty` method, which itself is inherited from the
-`Object` constructor, or class in object oriented terms:
+This a nonissue when the object has a
+[`null` prototype](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)
+because there are no inherited properties:
+
+```js
+const object = Object.create(null)
+console.log(`constructor` in object)
+//=> false
+```
+
+But most of the time we don't know whether the object has a `null` prototype. A
+more robust solution is to only check the uninherited properties using the
+[`hasOwnProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
+method, which is inherited from `Object`:
 
 <!-- eslint-skip -->
 
 ```js
-var obj1 = {}
-var obj2 = {
-  constructor: undefined,
-}
+const object1 = {}
+const object2 = { constructor: undefined }
 
-console.log(obj1.hasOwnProperty('constructor')) // false
-console.log(obj2.hasOwnProperty('constructor')) // true
+console.log(object1.hasOwnProperty('constructor'))
+//=> false
+
+console.log(object2.hasOwnProperty('constructor'))
+//=> true
 ```
 
-Note that unlike the `in` operator, the `hasOwnProperty` method can only take a
-`string` argument. There is one caveat to using the `hasOwnProperty` method.
-Consider the following case:
+There are a couple of pitfalls to using the `hasOwnProperty` method:
 
 <!-- eslint-skip -->
 
 ```js
-var obj = {
-  hasOwnProperty: function () {
-    return true
-  },
-}
+const object1 = { hasOwnProperty: () => true }
+const object2 = Object.create(null)
 
-console.log(obj.hasOwnProperty('wow')) // true
+console.log(object1.hasOwnProperty('property'))
+//=> true
+
+console.log(object2.hasOwnProperty('property'))
+//=> TypeError: object2.hasOwnProperty is not a function
 ```
 
-The `hasOwnProperty` method of the `Object` constructor was shadowed, or
-overridden in object oriented terms, by a method which always returns `true`.
-Accessing properties always prefers uninherited to inherited ones which is why
-`true` was returned for the name of an undeclared property. Fortunately there is
-a way around this. The `hasOwnProperty` method can be accessed directly from the
-`Object` constructor and called with `this` as a specified value using the
-`call` method of the `Function` constructor. The `call` method takes the value
-of `this` as its first argument and the arguments to the called function as the
-rest of its arguments:
+`object1`'s `hasOwnProperty` method was shadowed by a method that always returns
+`true`. `object2` was created with a `null` prototype so it does not inherit
+`hasOwnProperty` from `Object`. There are two ways around these pitfalls:
 
-<!-- eslint-skip -->
+- Access `Object`'s `hasOwnProperty` method directly:
 
-```js
-var obj = {
-  hasOwnProperty: function () {
-    return true
-  },
-}
+  ```js
+  const object = { hasOwnProperty: () => true }
+  console.log(Object.prototype.hasOwnProperty.call(object, `property`))
+  //=> false
+  ```
 
-console.log(Object.prototype.hasOwnProperty.call(obj, 'wow')) // false
-```
+- Use `Object`'s _static_
+  [`hasOwn`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)
+  method:
 
-If you find yourself using this method more than once I would recommend
-extracting it out as a function:
+  ```js
+  const object = { hasOwnProperty: () => true }
+  console.log(Object.hasOwn(object, `property`))
+  //=> false
+  ```
 
-<!-- eslint-skip -->
+  `hasOwn` was added to JavaScript to avoid `hasOwnProperty`'s pitfalls, but at
+  the time of writing it is
+  [relatively new](https://caniuse.com/mdn-javascript_builtins_object_hasown).
 
-```js
-function hasOwnProperty(obj, property) {
-  return Object.prototype.hasOwnProperty.call(obj, property)
-}
+## Recap
 
-var obj = {
-  hasOwnProperty: function () {
-    return true
-  },
-}
-
-console.log(hasOwnProperty(obj, 'wow')) // false
-```
-
-## Conclusion
-
-To recap here are the optimal expressions.
-
-Checking if a variable is declared:
-
-<!-- eslint-skip -->
-
-```js
-try {
-  value
-  // value is declared
-} catch (err) {
-  if (err instanceof ReferenceError) {
-    // value is undeclared
-  } else {
-    // some other error occurred
-  }
-}
-```
-
-Checking for the absence of an uninherited property in an object when the object
-definitely doesn't have a shadowing `hasOwnProperty` property:
-
-<!-- eslint-skip -->
-
-```js
-!obj.hasOwnProperty(key)
-```
-
-Checking for the existence of an uninherited property in an object when the
-object definitely doesn't have a shadowing `hasOwnProperty` property:
-
-<!-- eslint-skip -->
-
-```js
-obj.hasOwnProperty(key)
-```
-
-Checking for the absence of an uninherited property in an object when the object
-may have a shadowing `hasOwnProperty` property:
-
-<!-- eslint-skip -->
-
-```js
-!Object.prototype.hasOwnProperty.call(obj, key)
-```
-
-Checking for the existence of an uninherited property in an object when the
-object may have a shadowing `hasOwnProperty` property:
-
-<!-- eslint-skip -->
-
-```js
-Object.prototype.hasOwnProperty.call(obj, key)
-```
-
-Checking for the absence of an inherited or uninherited property in an object:
-
-<!-- eslint-skip -->
-
-```js
-!(key in obj)
-```
-
-Checking for the existence of an inherited or uninherited property in an object:
-
-<!-- eslint-skip -->
-
-```js
-key in obj
-```
-
-Checking for the absence of a value when the value may be an undeclared
-variable:
-
-<!-- eslint-skip -->
-
-```js
-typeof value === 'undefined' || value === null
-```
-
-Checking for the existence of a value when the value may be an undeclared
-variable (derived using
-[De Morgan's Law](https://en.wikipedia.org/wiki/De_Morgan%27s_laws#Negation_of_a_disjunction)):
-
-<!-- eslint-skip -->
-
-```js
-typeof value !== 'undefined' && value !== null
-```
-
-Checking for the absence of a value when the value is definitely declared:
+Checking if `value` is set to an absent value:
 
 <!-- eslint-skip -->
 
@@ -670,42 +489,44 @@ Checking for the absence of a value when the value is definitely declared:
 value == null
 ```
 
-Checking for the existence of a value when the value is definitely declared:
+Checking if `value` is undeclared or set to an absent value:
 
 <!-- eslint-skip -->
 
 ```js
-value != null
+typeof value === 'undefined' || value === null
 ```
 
-Checking for the absence of a value when the value is definitely declared and
-you want to avoid loose equality:
+Checking if `'property'` in `object` is absent or set to an absent value:
 
 <!-- eslint-skip -->
 
 ```js
-value === null || value === void 0
+object.property == null
 ```
 
-Checking for the existence of a value when the value is definitely declared and
-you want to avoid loose equality (derived using
-[De Morgan's Law](https://en.wikipedia.org/wiki/De_Morgan%27s_laws#Negation_of_a_disjunction)):
+Checking if `property` in `object` is absent:
 
 <!-- eslint-skip -->
 
 ```js
-value !== null && value !== void 0
+!Object.prototype.hasOwnProperty.call(object, 'property')
 ```
 
-Feel free to use combinations of these to fit your needs. For example, here's
-how you would check if an object has an uninherited property which has an absent
-value such as `undefined` or `null` when the object definitely doesn't have a
-shadowing `hasOwnProperty` property:
+Checking if `property` in `object` is absent in
+[modern browsers](https://caniuse.com/mdn-javascript_builtins_object_hasown):
 
 <!-- eslint-skip -->
 
 ```js
-obj.hasOwnProperty(key) && obj[key] == null
+!Object.hasOwn(object, 'property')
 ```
 
-Thank you for reading!
+[^1]:
+    [MDN has some examples](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void#examples)
+    of when the `void` operator is useful.
+
+[^2]:
+    CoffeeScript follows the same principle when transpiling its
+    [existential operator](https://coffeescript.org/#existential-operator) to
+    JavaScript.
