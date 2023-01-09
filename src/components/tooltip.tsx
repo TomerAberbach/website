@@ -12,7 +12,7 @@ const Tooltip = ({
   content: ReactNode
   children: ReactNode
 }) => (
-  <span className={clsx(`relative inline-block`, className)}>
+  <span className={clsx(`relative inline-block leading-[0]`, className)}>
     {children}
     <span
       id={id}
