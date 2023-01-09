@@ -420,8 +420,9 @@ console.log(`constructor` in object)
 //=> false
 ```
 
-But most of the time we don't know whether the object has a `null` prototype. A
-more robust solution is to only check the uninherited properties using the
+But most of the time the object doesn't have a `null` prototype or we don't know
+if it does. A more robust solution is to only check the uninherited properties
+using the
 [`hasOwnProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
 method, which is inherited from `Object`:
 
