@@ -127,6 +127,13 @@ module.exports = {
               padding: `.125em .25em`,
               borderRadius: defaultTheme.borderRadius.md,
             },
+            iframe: {
+              marginTop: `1.25em`,
+              marginBottom: `1.25em`,
+              width: `100%`,
+              height: `100%`,
+              aspectRatio: `16 / 9`,
+            },
           },
         },
         base: {
