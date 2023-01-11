@@ -1,7 +1,9 @@
 ---
 title: 'Checking for the absence of a value in JavaScript'
 tags: ['code', 'javascript', 'nodejs']
-timestamp: 2023-01-08T00:03:50.336Z
+dates:
+  published: 2018-08-16
+  updated: 2023-01-11
 ---
 
 JavaScript has a lot of similar-looking ways to check for the absence of a

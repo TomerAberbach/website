@@ -11,7 +11,7 @@ import {
   toSet,
 } from 'lfi'
 import type { ChangeEventHandler } from 'react'
-import { useCallback, useId, useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
   ArrowUturnLeftIcon,
   MagnifyingGlassIcon,
@@ -26,8 +26,6 @@ export const TagsCheckboxGroup = ({
   selectedTags: Record<string, boolean>
   setSelectedTags: (newSelectedTags: Record<string, boolean>) => void
 }) => {
-  const resetTooltipId = useId()
-  const searchTooltipId = useId()
   const [recentlyReset, setRecentlyReset] = useState(false)
 
   const handleTagChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -64,30 +62,36 @@ export const TagsCheckboxGroup = ({
         {tagElements.slice(0, -1)}
         <div className='flex gap-2'>
           {tagElements.at(-1)}
-          <Tooltip id={resetTooltipId} className='h-full' content='Reset'>
-            <button
-              aria-labelledby={resetTooltipId}
-              type='button'
-              className='focus-ring peer hidden h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:block'
-              onClick={handleReset}
-            >
-              <ArrowUturnLeftIcon className='h-full stroke-gray-500 stroke-[1.5]' />
-            </button>
-          </Tooltip>
-          <Tooltip id={searchTooltipId} content='Search'>
-            <button
-              aria-labelledby={searchTooltipId}
-              type='submit'
-              className='focus-ring peer h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:hidden'
-            >
-              <MagnifyingGlassIcon className='h-full stroke-gray-500 stroke-[1.5]' />
-            </button>
-          </Tooltip>
-          {recentlyReset && (
-            <span role='alert' className='sr-only'>
-              Unchecked all tags
-            </span>
-          )}
+          <span>
+            <Tooltip content='Reset'>
+              {tooltipId => (
+                <button
+                  aria-labelledby={tooltipId}
+                  type='button'
+                  className='focus-ring hidden h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:block'
+                  onClick={handleReset}
+                >
+                  <ArrowUturnLeftIcon className='h-full stroke-gray-500 stroke-[1.5]' />
+                </button>
+              )}
+            </Tooltip>
+            <Tooltip content='Search'>
+              {tooltipId => (
+                <button
+                  aria-labelledby={tooltipId}
+                  type='submit'
+                  className='focus-ring block h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:hidden'
+                >
+                  <MagnifyingGlassIcon className='h-full stroke-gray-500 stroke-[1.5]' />
+                </button>
+              )}
+            </Tooltip>
+            {recentlyReset && (
+              <span role='alert' className='sr-only'>
+                Unchecked all tags
+              </span>
+            )}
+          </span>
         </div>
       </fieldset>
     </div>

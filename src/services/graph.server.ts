@@ -120,7 +120,7 @@ const layoutGraph = ({
 
   const layout = createLayout(ngraph, {
     springLength: SPRING_LENGTH,
-    springCoefficient: 0.02,
+    springCoefficient: 0.001,
     gravity: -1.5,
     theta: 0.8,
     dragCoefficient: 0.02,

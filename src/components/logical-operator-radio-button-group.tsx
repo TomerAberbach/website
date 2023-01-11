@@ -54,14 +54,14 @@ export const LogicalOperatorRadioButtonGroup = ({
       </fieldset>
       <Tooltip
         content={
-          <>
+          <div className='max-w-[20ch]'>
             <span className='font-mono'>||</span> and{` `}
             <span className='font-mono'>&&</span> filter for posts matching{` `}
             <em>any</em> and <em>all</em> of the tags, respectively
-          </>
+          </div>
         }
       >
-        <QuestionMarkCircleIcon className='peer h-5 w-5 lg:h-6 lg:w-6' />
+        <QuestionMarkCircleIcon className='h-5 w-5 lg:h-6 lg:w-6' />
       </Tooltip>
     </div>
   )

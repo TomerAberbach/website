@@ -12,7 +12,10 @@ type BasePost = {
   id: string
   title: string
   tags: Set<string>
-  timestamp: Date
+  dates: {
+    published: Date
+    updated?: Date
+  }
   references: Map<string, Set<string>>
   referencedBy: Set<string>
 }

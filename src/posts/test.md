@@ -1,7 +1,8 @@
 ---
 title: 'sdfsdfsdf'
 tags: ['wow']
-timestamp: 2020-08-16T04:00:00.000Z
+dates:
+  published: 2020-08-16
 ---
 
 ```js

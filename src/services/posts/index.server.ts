@@ -64,7 +64,8 @@ export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
 
   const posts: Map<string, Post> = new Map(
     postEntries.sort(
-      ([, a], [, b]) => b.timestamp.getTime() - a.timestamp.getTime(),
+      ([, a], [, b]) =>
+        b.dates.published.getTime() - a.dates.published.getTime(),
     ),
   )
 

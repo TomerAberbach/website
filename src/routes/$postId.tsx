@@ -18,8 +18,7 @@ import Tooltip from '~/components/tooltip.js'
 const PostPage = () => {
   const suggestEditId = useId()
   const { post } = useLoaderData<typeof loader>()
-  const { id, title, tags, timestamp, minutesToRead, content } = post
-  const dateTime = new Date(timestamp)
+  const { id, title, tags, dates, minutesToRead, content } = post
 
   return (
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
@@ -27,19 +26,13 @@ const PostPage = () => {
         <h1 className='m-0'>{title}</h1>
         <div className='mt-1.5 flex items-center gap-2'>
           <p className='m-0 whitespace-nowrap text-gray-500'>
-            <time dateTime={dateTime.toISOString()}>
-              {dateTime.toLocaleDateString(undefined, {
-                year: `numeric`,
-                month: `long`,
-                day: `numeric`,
-              })}
-            </time>
+            <Dates dates={dates} />
             <span className='font-medium'> · </span>
             <time dateTime={`${minutesToRead}m`}>{minutesToRead} min read</time>
           </p>
           <Tooltip id={suggestEditId} content='Suggest an edit'>
             <ExternalLink
-              className='peer inline-block h-[1em] w-[1em] hover:ring'
+              className='inline-block h-[1em] w-[1em] hover:ring'
               href={`https://github.com/TomerAberbach/website/edit/main/src/posts/${id}.md`}
             >
               <PencilSquareIcon
@@ -66,6 +59,34 @@ const PostPage = () => {
     </article>
   )
 }
+
+const Dates = ({ dates: { published, updated } }: { dates: Post[`dates`] }) => {
+  const publishedDate = (
+    <>
+      Published <Date date={published} />
+    </>
+  )
+
+  if (!updated) {
+    return publishedDate
+  }
+
+  return (
+    <Tooltip content={publishedDate}>
+      Updated <Date date={updated} />
+    </Tooltip>
+  )
+}
+
+const Date = ({ date }: { date: Date }) => (
+  <time dateTime={date.toISOString()}>
+    {date.toLocaleDateString(undefined, {
+      year: `numeric`,
+      month: `long`,
+      day: `numeric`,
+    })}
+  </time>
+)
 
 const Tag = ({ tag }: { tag: string }) => (
   <InternalLink
@@ -124,7 +145,7 @@ export const loader = async ({ params }: LoaderArgs) => {
       `id`,
       `title`,
       `tags`,
-      `timestamp`,
+      `dates`,
       `minutesToRead`,
       `content`,
     ]),

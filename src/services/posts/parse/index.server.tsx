@@ -1,6 +1,6 @@
 import readingTime from 'reading-time'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
-import { createElement, useId } from 'react'
+import { createElement } from 'react'
 import clsx from 'clsx'
 import type { Root } from 'hast'
 import remarkParse from 'remark-parse'
@@ -147,22 +147,22 @@ const Anchor: Components[`a`] = ({
   children,
   ...props
 }) => {
-  const tooltipId = useId()
-
   if (!dataFootnoteBackref) {
     return <a {...props}>{children}</a>
   }
 
   const { 'aria-label': ariaLabel, ...rest } = props
   return (
-    <Tooltip id={tooltipId} className='h-full' content='Back to content'>
-      <a
-        {...rest}
-        aria-labelledby={tooltipId}
-        className='peer inline-block h-4 w-4 align-text-top no-underline hover:ring'
-      >
-        <ArrowUturnLeftIcon className='h-full stroke-gray-400' />
-      </a>
+    <Tooltip content='Back to content'>
+      {tooltipId => (
+        <a
+          {...rest}
+          aria-labelledby={tooltipId}
+          className='inline-block h-4 w-4 align-text-top no-underline hover:ring'
+        >
+          <ArrowUturnLeftIcon className='h-full stroke-gray-400' />
+        </a>
+      )}
     </Tooltip>
   )
 }
@@ -193,10 +193,10 @@ const stringSetSchema = z
 const basePostMetadataSchema = z.object({
   title: z.string(),
   tags: stringSetSchema,
-  timestamp: z.preprocess(
-    value => (typeof value === `string` ? new Date(value) : value),
-    z.date(),
-  ),
+  dates: z.object({
+    published: z.coerce.date(),
+    update: z.coerce.date().optional(),
+  }),
 })
 
 const hrefPostMetadataSchema = basePostMetadataSchema.extend({

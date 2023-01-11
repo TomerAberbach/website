@@ -1,7 +1,8 @@
 ---
 title: 'Resume'
 tags: ['resume']
-timestamp: 0001-00-00T00:00:00.000Z
+dates:
+  published: 0001-00-00
 href: '/resume.pdf'
 hrefs:
   [

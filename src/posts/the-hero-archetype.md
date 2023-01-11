@@ -1,7 +1,8 @@
 ---
 title: 'The Hero Archetype'
 tags: ['piano', 'track']
-timestamp: 2022-09-02T04:00:00.000Z
+dates:
+  published: 2022-09-02
 ---
 
 I composed, produced, and released an instrumental piano track!
