@@ -1,6 +1,6 @@
 ---
 title: 'The Hero Archetype'
-tags: ['track']
+tags: ['piano', 'track']
 timestamp: 2022-09-02T04:00:00.000Z
 ---
 
