@@ -119,13 +119,16 @@ const layoutGraph = ({
   }
 
   const layout = createLayout(ngraph, {
-    springLength: SPRING_LENGTH,
-    springCoefficient: 0.001,
     gravity: -1.5,
     theta: 0.8,
     dragCoefficient: 0.02,
+    springLength: SPRING_LENGTH,
+    // If the vertices overlap, then decrease this number to spread out the
+    // vertices by allowing the edges to grow more
+    springCoefficient: 0.001,
   })
 
+  // Position internal vertices in a vertical column
   pipe(
     vertices.values(),
     filter(({ external }) => !external),
@@ -133,7 +136,8 @@ const layoutGraph = ({
     forEach(([index, { id }]) => {
       layout.setNodePosition(
         id,
-        (index % 2 === 0 ? -1 : 1) * 10,
+        // Zig zag internal vertices from left and right in the vertical column
+        (index % 2 === 0 ? -1 : 1) * HORIZONTAL_OFFSET,
         index * SPRING_LENGTH,
       )
       layout.pinNode(ngraph.getNode(id)!, true)
@@ -171,6 +175,7 @@ const layoutGraph = ({
 }
 
 const SPRING_LENGTH = 30
+const HORIZONTAL_OFFSET = 10
 const SCALE = 10
 const PADDING = 50
 
