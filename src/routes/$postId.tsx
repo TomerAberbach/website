@@ -37,7 +37,7 @@ const PostPage = () => {
             >
               <PencilSquareIcon
                 aria-hidden={undefined}
-                className=' w-[1em] fill-gray-500'
+                className='w-[1em] fill-gray-500'
                 titleId={suggestEditId}
               />
             </ExternalLink>

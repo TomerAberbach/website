@@ -195,7 +195,7 @@ const basePostMetadataSchema = z.object({
   tags: stringSetSchema,
   dates: z.object({
     published: z.coerce.date(),
-    update: z.coerce.date().optional(),
+    updated: z.coerce.date().optional(),
   }),
 })
 
