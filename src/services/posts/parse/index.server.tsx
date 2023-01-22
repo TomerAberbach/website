@@ -1,5 +1,5 @@
 import readingTime from 'reading-time'
-import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
 import type { Root } from 'hast'
@@ -7,24 +7,28 @@ import remarkParse from 'remark-parse'
 import { z } from 'zod'
 import remarkRehype from 'remark-rehype'
 import rehypeExternalLinks from 'rehype-external-links'
+import remarkStringify from 'remark-stringify'
 import parseFrontMatter from 'gray-matter'
 import { unified } from 'unified'
 import { getHighlighter } from 'shiki'
 import rehypeShiki from '@leafac/rehype-shiki'
+import stripMarkdown from 'strip-markdown'
 import rehypePresetMinify from 'rehype-preset-minify'
 import { visit } from 'unist-util-visit'
 import remarkA11yEmoji from '@fec/remark-a11y-emoji'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
+import type { RemarkEmbedderOptions } from '@remark-embedder/core'
 import remarkEmbedder from '@remark-embedder/core'
 import remarkTransformerOembed from '@remark-embedder/transformer-oembed'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
 import { parseHrefs, parseReferences } from './references.server.js'
 import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.js'
-import type { RawPost } from '~/services/posts/fetch.server.js'
+import type { RawPost } from '~/services/posts/read.server.js'
 import { renderHtml } from '~/services/html.js'
 import type { Components } from '~/services/html.js'
 import { Link } from '~/components/link.js'
@@ -47,25 +51,31 @@ const parseMarkdownPost = async (
   content: string,
   metadata: Record<string, unknown>,
 ): Promise<Omit<MarkdownPost, `id` | `referencedBy`>> => {
-  const htmlAst = await parseMarkdown(content)
+  const htmlAst = await convertMarkdownToHtml(content)
 
   return {
     type: `markdown`,
     ...basePostMetadataSchema.parse(metadata),
     references: parseReferences(parseHrefs(htmlAst)),
     minutesToRead: Math.max(1, Math.round(readingTime(content).minutes)),
-    content: renderToStaticMarkup(renderHtml(htmlAst, components)),
+    content: {
+      html: renderToString(renderHtml(htmlAst, components)),
+      text: convertMarkdownToText(content),
+    },
   }
 }
 
-const parseMarkdown = async (markdown: string): Promise<Root> =>
+const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
   (
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
       .use(remarkSmartypants)
       .use(remarkA11yEmoji)
-      .use(remarkEmbedder, { transformers: [remarkTransformerOembed] })
+      .use(remarkEmbedder, {
+        cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+        transformers: [remarkTransformerOembed],
+      })
       .use(remarkMath)
       .use(remarkRehype, { clobberPrefix: `` })
       .use(rehypeExternalLinks)
@@ -82,7 +92,17 @@ const parseMarkdown = async (markdown: string): Promise<Root> =>
       .process(markdown)
   ).result as Root
 
+const remarkEmbedderCache = new RemarkEmbedderCache()
 const highlighterPromise = getHighlighter({ theme: `material-palenight` })
+
+const convertMarkdownToText = (markdown: string): string =>
+  String(
+    unified()
+      .use(remarkParse)
+      .use(stripMarkdown)
+      .use(remarkStringify)
+      .processSync(markdown),
+  )
 
 const rehypeRemoveShikiClasses = (tree: Root) => {
   visit(tree, { tagName: `pre` }, node => {

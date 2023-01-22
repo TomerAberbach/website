@@ -13,7 +13,7 @@ import {
   values,
 } from 'lfi'
 import { findBestMatch } from 'string-similarity'
-import { fetchRawPosts } from './fetch.server.js'
+import { readRawPosts } from './read.server.js'
 import parsePost from './parse/index.server.js'
 import type { MarkdownPost, Post } from './types.js'
 import { cached } from '~/services/cache.server'
@@ -52,7 +52,7 @@ export const getMarkdownPosts: () => Promise<Map<string, MarkdownPost>> =
 
 export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
   const postEntries = await pipe(
-    await fetchRawPosts(),
+    await readRawPosts(),
     mapConcur(
       async (rawPost): Promise<[string, Post]> => [
         rawPost.id,
