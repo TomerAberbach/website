@@ -1,6 +1,14 @@
-import type { AppData, JsonFunction, TypedResponse } from '@remix-run/node'
+/* eslint-disable camelcase */
+
+import type {
+  AppData,
+  JsonFunction,
+  TypedResponse,
+  V2_HtmlMetaDescriptor,
+  V2_MetaFunction,
+} from '@remix-run/node'
 import { json as remixJson } from '@remix-run/node'
-import type { ThrownResponse } from '@remix-run/react'
+import type { Location, Params, ThrownResponse } from '@remix-run/react'
 import {
   useCatch as useRemixCatch,
   useLoaderData as useRemixLoaderData,
@@ -16,11 +24,7 @@ export const json: JsonFunction = <Data>(
 export const useLoaderData = <
   DataOrFunction = AppData,
   // eslint-disable-next-line typescript/no-explicit-any
->(): DataOrFunction extends (...args: any[]) => infer Output
-  ? Awaited<Output> extends TypedResponse<infer ResponseData>
-    ? ResponseData
-    : Awaited<Output>
-  : Awaited<DataOrFunction> =>
+>(): InferData<DataOrFunction> =>
   deserialize(useRemixLoaderData() as SuperJSONResult)
 
 export const useCatch = <
@@ -37,3 +41,27 @@ export const useCatch = <
     data: deserialize<Result[`data`]>(caught.data as SuperJSONResult),
   }
 }
+
+export const createMeta =
+  <DataOrFunction>(
+    meta: (args: {
+      data?: InferData<DataOrFunction>
+      params: Params
+      location: Location
+    }) => V2_HtmlMetaDescriptor[],
+  ): V2_MetaFunction =>
+  ({ data, params, location }) =>
+    meta({
+      data: data ? deserialize(data as SuperJSONResult) : undefined,
+      params,
+      location,
+    })
+
+type InferData<DataOrFunction> = DataOrFunction extends (
+  // eslint-disable-next-line typescript/no-explicit-any
+  ...args: any[]
+) => infer Output
+  ? Awaited<Output> extends TypedResponse<infer ResponseData>
+    ? ResponseData
+    : Awaited<Output>
+  : Awaited<DataOrFunction>

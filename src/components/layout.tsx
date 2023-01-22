@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { ExternalLink, InternalLink } from './link.js'
+import { AUTHOR } from '~/services/meta.js'
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:p-12 md:gap-y-20 md:p-16'>
@@ -17,7 +18,7 @@ const Header = () => (
       href='/'
       className='underlined inline-block focus:outline-none'
     >
-      <h1 className='inline text-2xl font-bold leading-none'>Tomer Aberbach</h1>
+      <h1 className='inline text-2xl font-bold leading-none'>{AUTHOR}</h1>
     </InternalLink>
   </header>
 )

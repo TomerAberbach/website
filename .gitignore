@@ -5,7 +5,7 @@ node_modules
 /public/build
 .env
 
-/src/styles/build.css
+/src/styles/build
 
 **/*.tsbuildinfo
 

@@ -7,13 +7,15 @@ import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
 } from '~/services/posts/index.server'
-import { json, useCatch, useLoaderData } from '~/services/json.js'
+import { createMeta, json, useCatch, useLoaderData } from '~/services/json.js'
 import { ExternalLink, InternalLink } from '~/components/link.js'
 import Prose from '~/components/prose.js'
 import pick from '~/services/pick.js'
 import assert from '~/services/assert.js'
 import type { Post } from '~/services/posts/types.js'
 import Tooltip from '~/components/tooltip.js'
+import { formatDate, formatMinutesToRead } from '~/services/format.js'
+import { getMeta } from '~/services/meta.js'
 
 const PostPage = () => {
   const suggestEditId = useId()
@@ -28,7 +30,9 @@ const PostPage = () => {
           <p className='m-0 whitespace-nowrap text-gray-500'>
             <Dates dates={dates} />
             <span className='font-medium'> · </span>
-            <time dateTime={`${minutesToRead}m`}>{minutesToRead} min read</time>
+            <time dateTime={`${minutesToRead}m`}>
+              {formatMinutesToRead(minutesToRead)}
+            </time>
           </p>
           <Tooltip id={suggestEditId} content='Suggest an edit'>
             <ExternalLink
@@ -55,7 +59,7 @@ const PostPage = () => {
           )}
         </ul>
       </header>
-      <Prose html={content} />
+      <Prose html={content.html} />
     </article>
   )
 }
@@ -79,13 +83,7 @@ const Dates = ({ dates: { published, updated } }: { dates: Post[`dates`] }) => {
 }
 
 const Date = ({ date }: { date: Date }) => (
-  <time dateTime={date.toISOString()}>
-    {date.toLocaleDateString(undefined, {
-      year: `numeric`,
-      month: `long`,
-      day: `numeric`,
-    })}
-  </time>
+  <time dateTime={date.toISOString()}>{formatDate(date)}</time>
 )
 
 const Tag = ({ tag }: { tag: string }) => (
@@ -122,6 +120,41 @@ export const CatchBoundary = () => {
     </div>
   )
 }
+
+export const meta = createMeta<typeof loader>(({ location, data }) =>
+  getMeta(
+    location,
+    data
+      ? {
+          title: data.post.title,
+          description: truncate(data.post.content.text),
+          keywords: data.post.tags,
+          post: data.post,
+          type: `article`,
+        }
+      : {
+          title: `404`,
+          description: `Not found!`,
+          type: `website`,
+        },
+  ),
+)
+
+const truncate = (text: string): string => {
+  if (text.length <= MAX_LENGTH) {
+    return text
+  }
+
+  for (let offset = 0; offset < 15; offset++) {
+    if (/\s/u.test(text.charAt(MAX_LENGTH - offset))) {
+      return `${text.slice(0, Math.max(0, MAX_LENGTH - offset))}…`
+    }
+  }
+
+  return text.slice(0, Math.max(0, MAX_LENGTH))
+}
+
+const MAX_LENGTH = 200
 
 export const loader = async ({ params }: LoaderArgs) => {
   const { postId } = params
