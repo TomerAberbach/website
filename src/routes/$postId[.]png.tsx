@@ -12,7 +12,11 @@ export const loader = async ({ params }: LoaderArgs) => {
     return new Response(`Not found`, { status: 400 })
   }
 
-  return new Response(await renderThumbnail(post), {
-    headers: { 'Content-Type': `image/png` },
+  const image = await renderThumbnail(post)
+  return new Response(image, {
+    headers: {
+      'Content-Type': `image/png`,
+      'Content-Length': String(Buffer.byteLength(image)),
+    },
   })
 }
