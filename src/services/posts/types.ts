@@ -5,10 +5,8 @@ export type Post = MarkdownPost | HrefPost
 export type MarkdownPost = BasePost & {
   type: `markdown`
   minutesToRead: number
-  content: {
-    html: string
-    text: string
-  }
+  content: string
+  description: string
 }
 
 export type HrefPost = BasePost & { type: `href`; href: string }

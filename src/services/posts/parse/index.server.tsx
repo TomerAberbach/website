@@ -58,10 +58,8 @@ const parseMarkdownPost = async (
     ...basePostMetadataSchema.parse(metadata),
     references: parseReferences(parseHrefs(htmlAst)),
     minutesToRead: Math.max(1, Math.round(readingTime(content).minutes)),
-    content: {
-      html: renderToString(renderHtml(htmlAst, components)),
-      text: convertMarkdownToText(content),
-    },
+    content: renderToString(renderHtml(htmlAst, components)),
+    description: truncate(convertMarkdownToText(content)),
   }
 }
 
@@ -95,15 +93,6 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
 const remarkEmbedderCache = new RemarkEmbedderCache()
 const highlighterPromise = getHighlighter({ theme: `material-palenight` })
 
-const convertMarkdownToText = (markdown: string): string =>
-  String(
-    unified()
-      .use(remarkParse)
-      .use(stripMarkdown)
-      .use(remarkStringify)
-      .processSync(markdown),
-  )
-
 const rehypeRemoveShikiClasses = (tree: Root) => {
   visit(tree, { tagName: `pre` }, node => {
     const stack = [node]
@@ -121,6 +110,31 @@ const rehypeRemoveShikiClasses = (tree: Root) => {
 
   return tree
 }
+
+const convertMarkdownToText = (markdown: string): string =>
+  String(
+    unified()
+      .use(remarkParse)
+      .use(stripMarkdown)
+      .use(remarkStringify)
+      .processSync(markdown),
+  )
+
+const truncate = (text: string): string => {
+  if (text.length <= MAX_LENGTH) {
+    return text
+  }
+
+  for (let offset = 0; offset < 15; offset++) {
+    if (/\s/u.test(text.charAt(MAX_LENGTH - offset))) {
+      return `${text.slice(0, Math.max(0, MAX_LENGTH - offset))}…`
+    }
+  }
+
+  return text.slice(0, Math.max(0, MAX_LENGTH))
+}
+
+const MAX_LENGTH = 200
 
 const Section: Components[`section`] = props => {
   if (props[`data-footnotes`]) {

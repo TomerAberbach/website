@@ -4,9 +4,12 @@ import sharp from 'sharp'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
 import type { MarkdownPost } from '~/services/posts/types.js'
 import { privatePath } from '~/services/path.server.js'
-import { formatDates, formatMinutesToRead } from '~/services/format.js'
+import {
+  formatDatesForDisplay,
+  formatMinutesToRead,
+} from '~/services/format.js'
 import { cached } from '~/services/cache.server.js'
-import { AUTHOR } from '~/services/meta.js'
+import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
 
 export const renderThumbnail = async (
   post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,
@@ -75,7 +78,7 @@ const Thumbnail = ({
         {post.title}
       </tspan>
       <tspan x={1.5 * PADDING} dy={40} fontSize={24} fill='hsl(201, 5%, 49%)'>
-        {formatDates(post.dates)}
+        {formatDatesForDisplay(post.dates)}
         {` `}
         <tspan fontWeight={600}>·</tspan>
         {` `}
@@ -103,7 +106,7 @@ const Thumbnail = ({
       fontSize={24}
       fontWeight={500}
     >
-      {AUTHOR}
+      {SITE_TITLE_AND_AUTHOR}
     </text>
   </svg>
 )
