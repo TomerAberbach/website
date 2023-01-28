@@ -9,7 +9,7 @@ import { TagsFilterForm } from '~/components/tags-filter-form.js'
 import GraphWidget from '~/components/graph-widget.js'
 import pick from '~/services/pick.js'
 import type { MarkdownPost } from '~/services/posts/types.js'
-import { getMeta } from '~/services/meta.js'
+import { SITE_DESCRIPTION, getMeta } from '~/services/meta.js'
 
 const HomePage = () => {
   const { tags, graph } = useLoaderData<LoaderData>()
@@ -26,7 +26,7 @@ const HomePage = () => {
 export const meta = createMeta<LoaderData>(({ location, data }) =>
   getMeta(location, {
     title: `Home`,
-    description: `The portfolio website and blog of Tomer Aberbach, a New Jersey based software engineer, composer, and music producer.`,
+    description: SITE_DESCRIPTION,
     post: data?.latestPost,
     type: `website`,
   }),

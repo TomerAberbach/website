@@ -4,7 +4,7 @@ import { concat, join, map } from 'lfi'
 import type { Location } from '@remix-run/react'
 import type { V2_HtmlMetaDescriptor } from '@remix-run/node'
 import type { MarkdownPost } from './posts/types.js'
-import { formatDates, formatMinutesToRead } from './format.js'
+import { formatDatesForDisplay, formatMinutesToRead } from './format.js'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
 
 export const getMeta = (
@@ -31,9 +31,9 @@ export const getMeta = (
     { name: `description`, content: description },
     {
       name: `keywords`,
-      content: join(`, `, new Set(concat(DEFAULT_KEYWORDS, keywords))),
+      content: join(`, `, new Set(concat(SITE_KEYWORDS, keywords))),
     },
-    { name: `author`, author: AUTHOR },
+    { name: `author`, author: SITE_TITLE_AND_AUTHOR },
   ]
 
   if (!post) {
@@ -46,20 +46,20 @@ export const getMeta = (
     { property: `og:description`, content: description },
     {
       property: `og:url`,
-      content: removeTrailingSlash(
-        `https://tomeraberba.ch${location.pathname}`,
-      ),
+      content: removeTrailingSlash(SITE_URL + location.pathname),
     },
 
-    { property: `og:image`, content: `https://tomeraberba.ch/${post.id}.png` },
+    { property: `og:image`, content: `${SITE_URL}/${post.id}.png` },
     { property: `og:image:type`, content: `image/png` },
     { property: `og:image:width`, content: String(THUMBNAIL_WIDTH) },
     { property: `og:image:height`, content: String(THUMBNAIL_HEIGHT) },
     {
       property: `og:image:alt`,
-      content: `${post.title}. ${formatDates(
+      content: `${post.title}. ${formatDatesForDisplay(
         post.dates,
-      )}. ${formatMinutesToRead(post.minutesToRead)}. By ${AUTHOR}.`,
+      )}. ${formatMinutesToRead(
+        post.minutesToRead,
+      )}. By ${SITE_TITLE_AND_AUTHOR}.`,
     },
 
     { property: `og:type`, content: type },
@@ -85,7 +85,7 @@ const getArticleMeta = ({
     })
   }
 
-  baseMeta.push({ property: `article:author`, content: AUTHOR })
+  baseMeta.push({ property: `article:author`, content: SITE_TITLE_AND_AUTHOR })
 
   return concat(
     baseMeta,
@@ -93,9 +93,13 @@ const getArticleMeta = ({
   )
 }
 
-export const AUTHOR = `Tomer Aberbach`
+const removeTrailingSlash = (url: string) =>
+  url.endsWith(`/`) ? url.slice(0, -1) : url
 
-const DEFAULT_KEYWORDS: ReadonlySet<string> = new Set([
+export const SITE_URL = `https://tomeraberba.ch`
+export const SITE_TITLE_AND_AUTHOR = `Tomer Aberbach`
+export const SITE_DESCRIPTION = `The portfolio website and blog of Tomer Aberbach, a New Jersey based software engineer, composer, and music producer.`
+export const SITE_KEYWORDS: ReadonlySet<string> = new Set([
   `portfolio`,
   `blog`,
   `computer science`,
@@ -104,6 +108,3 @@ const DEFAULT_KEYWORDS: ReadonlySet<string> = new Set([
   `composition`,
   `music production`,
 ])
-
-const removeTrailingSlash = (url: string) =>
-  url.endsWith(`/`) ? url.slice(0, -1) : url
