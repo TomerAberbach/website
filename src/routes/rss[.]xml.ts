@@ -7,7 +7,7 @@ import {
 import { formatDateUTC, formatDatesUTC } from '~/services/format.js'
 import { getMarkdownPosts } from '~/services/posts/index.server.js'
 
-export const loader = async () => {
+export const loader = async (): Promise<Response> => {
   const posts = await getMarkdownPosts()
   const rss = `
     <rss version="2.0">

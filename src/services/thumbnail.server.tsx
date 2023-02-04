@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import sharp from 'sharp'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
 import type { MarkdownPost } from '~/services/posts/types.js'
-import { privatePath } from '~/services/path.server.js'
+import { publicPath } from '~/services/path.server.js'
 import {
   formatDatesForDisplay,
   formatMinutesToRead,
@@ -18,9 +18,9 @@ export const renderThumbnail = async (
     .png()
     .composite([
       {
-        input: await getCroppedProfileImage(),
+        input: await getCroppedAvatarImage(),
         left: 1.5 * PADDING,
-        top: THUMBNAIL_HEIGHT - 1.5 * PADDING - PROFILE_PICTURE_SIZE,
+        top: THUMBNAIL_HEIGHT - 1.5 * PADDING - AVATAR_PICTURE_SIZE,
       },
     ])
     .toBuffer()
@@ -87,21 +87,21 @@ const Thumbnail = ({
     </text>
 
     <circle
-      r={PROFILE_PICTURE_SIZE / 2}
-      cx={1.5 * PADDING + PROFILE_PICTURE_SIZE / 2}
+      r={AVATAR_PICTURE_SIZE / 2}
+      cx={1.5 * PADDING + AVATAR_PICTURE_SIZE / 2}
       cy={
         THUMBNAIL_HEIGHT -
         1.5 * PADDING -
-        PROFILE_PICTURE_SIZE +
-        PROFILE_PICTURE_SIZE / 2
+        AVATAR_PICTURE_SIZE +
+        AVATAR_PICTURE_SIZE / 2
       }
       fill='none'
       stroke='hsl(201, 97%, 67%)'
       strokeWidth={6}
     />
     <text
-      x={1.5 * PADDING + PROFILE_PICTURE_SIZE + 20}
-      y={THUMBNAIL_HEIGHT - 1.5 * PADDING - PROFILE_PICTURE_SIZE / 2}
+      x={1.5 * PADDING + AVATAR_PICTURE_SIZE + 20}
+      y={THUMBNAIL_HEIGHT - 1.5 * PADDING - AVATAR_PICTURE_SIZE / 2}
       dominantBaseline='middle'
       fontSize={24}
       fontWeight={500}
@@ -111,18 +111,18 @@ const Thumbnail = ({
   </svg>
 )
 
-const getCroppedProfileImage = cached(async () =>
-  sharp(await fs.readFile(privatePath(`profile.png`)))
-    .resize(PROFILE_PICTURE_SIZE, PROFILE_PICTURE_SIZE)
+const getCroppedAvatarImage = cached(async () =>
+  sharp(await fs.readFile(publicPath(`avatar.png`)))
+    .resize(AVATAR_PICTURE_SIZE, AVATAR_PICTURE_SIZE)
     .composite([
       {
         input: Buffer.from(
           renderToStaticMarkup(
             <svg>
               <circle
-                r={PROFILE_PICTURE_SIZE / 2}
-                cx={PROFILE_PICTURE_SIZE / 2}
-                cy={PROFILE_PICTURE_SIZE / 2}
+                r={AVATAR_PICTURE_SIZE / 2}
+                cx={AVATAR_PICTURE_SIZE / 2}
+                cy={AVATAR_PICTURE_SIZE / 2}
               />
             </svg>,
           ),
@@ -136,4 +136,4 @@ const getCroppedProfileImage = cached(async () =>
 const PADDING = 60
 const BORDER_RADIUS = 16
 const SHADOW_OFFSET = 10
-const PROFILE_PICTURE_SIZE = 100
+const AVATAR_PICTURE_SIZE = 100
