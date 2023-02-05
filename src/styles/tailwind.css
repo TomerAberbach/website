@@ -25,7 +25,7 @@
   }
 
   .underlined {
-    background: linear-gradient(to right, currentColor, currentColor),
+    background: linear-gradient(to right, #fbca07, #fbca07),
       linear-gradient(
         to right,
         theme('colors.blue.500'),
