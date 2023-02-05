@@ -4,8 +4,6 @@ import { Response } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import { renderToPipeableStream } from 'react-dom/server'
 
-process.env.UV_THREADPOOL_SIZE = `128`
-
 const handleRequest = (
   request: Request,
   responseStatusCode: number,

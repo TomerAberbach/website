@@ -1,5 +1,5 @@
 import readingTime from 'reading-time'
-import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
 import type { Root } from 'hast'
@@ -71,15 +71,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
       .use(remarkA11yEmoji)
       .use(remarkEmbedder, {
         cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
-        transformers: [remarkTransformerOembed],
-        handleError: isCI
-          ? ({ url }) =>
-              renderToStaticMarkup(
-                <p>
-                  Error embedding <a href={url}>{url}</a>
-                </p>,
-              )
-          : undefined,
+        transformers: isCI ? [] : [remarkTransformerOembed],
       })
       .use(remarkMath)
       .use(remarkRehype, { clobberPrefix: `` })
