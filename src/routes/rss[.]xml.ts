@@ -4,14 +4,15 @@ import {
   SITE_TITLE_AND_AUTHOR,
   SITE_URL,
 } from '~/services/meta.js'
-import { formatDateUTC, formatDatesUTC } from '~/services/format.js'
+import { formatDateISO, formatDatesISO } from '~/services/format.js'
 import { getMarkdownPosts } from '~/services/posts/index.server.js'
 
 export const loader = async (): Promise<Response> => {
   const posts = await getMarkdownPosts()
   const rss = `
-    <rss version="2.0">
+    <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
       <channel>
+        <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
         <title>${cdata(SITE_TITLE_AND_AUTHOR)}</title>
         <link>${SITE_URL}</link>
         <description>${cdata(SITE_DESCRIPTION)}</description>
@@ -19,7 +20,7 @@ export const loader = async (): Promise<Response> => {
         <copyright>${cdata(
           `© ${SITE_TITLE_AND_AUTHOR}. All rights reserved.`,
         )}</copyright>
-        <lastBuildDate>${formatDatesUTC(
+        <lastBuildDate>${formatDatesISO(
           pipe(values(posts), first, get).dates,
         )}</lastBuildDate>
         <ttl>40</ttl>
@@ -32,9 +33,9 @@ export const loader = async (): Promise<Response> => {
                 <title>${cdata(post.title)}</title>
                 <link>${url}</link>
                 <description>${cdata(post.description)}</description>
-                <author>${cdata(SITE_TITLE_AND_AUTHOR)}</author>
+                <dc:creator>${cdata(SITE_TITLE_AND_AUTHOR)}</dc:creator>
                 <guid isPermaLink="true">${url}</guid>
-                <pubDate>${formatDateUTC(post.dates.published)}</pubDate>
+                <pubDate>${formatDateISO(post.dates.published)}</pubDate>
               </item>
             `
           }),

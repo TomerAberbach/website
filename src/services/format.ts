@@ -1,7 +1,7 @@
-export const formatDatesUTC = ({ published, updated }: Dates): string =>
-  formatDateUTC(updated ?? published)
+export const formatDatesISO = ({ published, updated }: Dates): string =>
+  formatDateISO(updated ?? published)
 
-export const formatDateUTC = (date: Date): string => date.toUTCString()
+export const formatDateISO = (date: Date): string => date.toISOString()
 
 export const formatDatesForDisplay = ({ published, updated }: Dates): string =>
   updated

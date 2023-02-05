@@ -1,6 +1,6 @@
 import { json } from '@remix-run/server-runtime'
 import { map, pipe, reduce, toArray } from 'lfi'
-import { formatDateUTC } from '~/services/format.js'
+import { formatDateISO } from '~/services/format.js'
 import {
   SITE_DESCRIPTION,
   SITE_TITLE_AND_AUTHOR,
@@ -33,9 +33,9 @@ export const loader = async (): Promise<Response> =>
           title: post.title,
           content_html: post.content,
           image: `${SITE_URL}/${postId}.png`,
-          date_published: formatDateUTC(post.dates.published),
+          date_published: formatDateISO(post.dates.published),
           ...(post.dates.updated && {
-            date_modified: formatDateUTC(post.dates.updated),
+            date_modified: formatDateISO(post.dates.updated),
           }),
           tags: [...post.tags],
         })),

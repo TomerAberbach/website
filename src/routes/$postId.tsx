@@ -14,7 +14,11 @@ import pick from '~/services/pick.js'
 import assert from '~/services/assert.js'
 import type { Post } from '~/services/posts/types.js'
 import Tooltip from '~/components/tooltip.js'
-import { formatDateForDisplay, formatMinutesToRead } from '~/services/format.js'
+import {
+  formatDateForDisplay,
+  formatDateISO,
+  formatMinutesToRead,
+} from '~/services/format.js'
 import { getMeta } from '~/services/meta.js'
 
 const PostPage = () => {
@@ -83,7 +87,7 @@ const Dates = ({ dates: { published, updated } }: { dates: Post[`dates`] }) => {
 }
 
 const Date = ({ date }: { date: Date }) => (
-  <time dateTime={date.toISOString()}>{formatDateForDisplay(date)}</time>
+  <time dateTime={formatDateISO(date)}>{formatDateForDisplay(date)}</time>
 )
 
 const Tag = ({ tag }: { tag: string }) => (
