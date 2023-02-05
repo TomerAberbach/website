@@ -25,8 +25,6 @@ const Tooltip = ({
   )
 }
 
-export default Tooltip
-
 const TooltipWithGeneratedId = ({
   content,
   children,
@@ -62,3 +60,5 @@ const BaseTooltip = ({
     </span>
   </span>
 )
+
+export default Tooltip

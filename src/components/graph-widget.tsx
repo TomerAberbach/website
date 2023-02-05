@@ -39,8 +39,6 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
   )
 }
 
-export default GraphWidget
-
 const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
   const markerId = useId()
   const { width, height } = layout.boundingBox
@@ -219,3 +217,5 @@ const getTagClassNames = (tags: Set<string>) =>
     map(tag => `${TAG_CLASS_PREFIX}${tag}`),
     reduce(toArray()),
   )
+
+export default GraphWidget

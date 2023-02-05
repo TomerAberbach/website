@@ -45,8 +45,6 @@ const parsePost = async (rawPost: RawPost): Promise<Post> => {
   }
 }
 
-export default parsePost
-
 const parseMarkdownPost = async (
   content: string,
   metadata: Record<string, unknown>,
@@ -237,3 +235,5 @@ const hrefPostMetadataSchema = basePostMetadataSchema.extend({
   href: z.string(),
   hrefs: stringSetSchema,
 })
+
+export default parsePost
