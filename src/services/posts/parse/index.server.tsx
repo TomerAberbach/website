@@ -1,5 +1,5 @@
 import readingTime from 'reading-time'
-import { renderToString } from 'react-dom/server'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
 import type { Root } from 'hast'
@@ -26,6 +26,7 @@ import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
+import isCI from 'is-ci'
 import { parseHrefs, parseReferences } from './references.server.js'
 import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.js'
 import type { RawPost } from '~/services/posts/read.server.js'
@@ -71,6 +72,14 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
       .use(remarkEmbedder, {
         cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
         transformers: [remarkTransformerOembed],
+        handleError: isCI
+          ? ({ url }) =>
+              renderToStaticMarkup(
+                <p>
+                  Error embedding <a href={url}>{url}</a>
+                </p>,
+              )
+          : undefined,
       })
       .use(remarkMath)
       .use(remarkRehype, { clobberPrefix: `` })
