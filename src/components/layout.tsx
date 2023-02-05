@@ -3,7 +3,7 @@ import { InternalLink, Link } from './link.js'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
 
 const Layout = ({ children }: { children: ReactNode }) => (
-  <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:px-12 md:gap-y-20 md:px-16'>
+  <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-10 sm:px-10 md:gap-y-16 md:px-16'>
     <Header />
     <main className='flex flex-1 flex-col'>{children}</main>
     <Footer />
@@ -13,12 +13,16 @@ const Layout = ({ children }: { children: ReactNode }) => (
 export default Layout
 
 const Header = () => (
-  <header className='relative self-start'>
+  <header className='relative self-center'>
     <img
       src='/favicon.svg'
       aria-label='Palm tree'
       className='-z-10 w-32 sm:w-40'
     />
+    {/* Ensures that the width of the `header` element matches its contents. */}
+    <div className='invisible h-0 pl-2 text-2xl font-bold'>
+      {SITE_TITLE_AND_AUTHOR}
+    </div>
     <InternalLink
       href='/'
       className='underlined absolute bottom-0 left-2 inline-block text-gray-800 text-opacity-90 focus:outline-none'
