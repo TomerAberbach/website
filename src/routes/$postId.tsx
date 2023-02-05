@@ -41,7 +41,7 @@ const PostPage = () => {
           <Tooltip id={suggestEditId} content='Suggest an edit'>
             <ExternalLink
               className='inline-block h-[1em] w-[1em] hover:ring'
-              href={`https://github.com/TomerAberbach/website/edit/main/src/posts/${id}.md`}
+              href={`https://github.com/TomerAberbach/website/edit/main/private/posts/${id}.md`}
             >
               <PencilSquareIcon
                 aria-hidden={undefined}
