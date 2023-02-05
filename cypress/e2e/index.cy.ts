@@ -1,5 +1,5 @@
 it(`testing`, () => {
-  cy.visit(`/`)
+  cy.visit(`/`, { headers: { 'Accept-Encoding': `gzip, deflate` } })
 
   expect(true).to.equal(true)
 })

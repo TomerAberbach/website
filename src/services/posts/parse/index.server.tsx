@@ -71,6 +71,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
       .use(remarkA11yEmoji)
       .use(remarkEmbedder, {
         cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+        // Oembed.com requests fail on GitHub Actions
         transformers: isCI ? [] : [remarkTransformerOembed],
       })
       .use(remarkMath)
