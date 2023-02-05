@@ -3,7 +3,7 @@ import { InternalLink, Link } from './link.js'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
 
 const Layout = ({ children }: { children: ReactNode }) => (
-  <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:p-12 md:gap-y-20 md:p-16'>
+  <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-12 sm:px-12 md:gap-y-20 md:px-16'>
     <Header />
     <main className='flex flex-1 flex-col'>{children}</main>
     <Footer />
@@ -13,12 +13,17 @@ const Layout = ({ children }: { children: ReactNode }) => (
 export default Layout
 
 const Header = () => (
-  <header>
+  <header className='relative self-start'>
+    <img
+      src='/favicon.svg'
+      aria-label='Palm tree'
+      className='-z-10 w-32 sm:w-40'
+    />
     <InternalLink
       href='/'
-      className='underlined inline-block focus:outline-none'
+      className='underlined absolute bottom-0 left-2 inline-block text-gray-800 text-opacity-90 focus:outline-none'
     >
-      <h1 className='inline text-2xl font-bold leading-none'>
+      <h1 className='inline whitespace-nowrap text-2xl font-bold leading-none'>
         {SITE_TITLE_AND_AUTHOR}
       </h1>
     </InternalLink>
@@ -109,8 +114,8 @@ const IconLink = ({
     className='inline-block hover:ring'
   >
     <svg
-      aria-label={title}
       role='img'
+      aria-label={title}
       viewBox='0 0 24 24'
       xmlns='http://www.w3.org/2000/svg'
       className='w-7 fill-gray-500 hover:fill-gray-600 sm:w-8'
