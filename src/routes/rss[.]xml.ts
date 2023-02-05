@@ -1,18 +1,20 @@
 import { first, get, join, map, pipe, values } from 'lfi'
+import type { LoaderArgs } from '@remix-run/server-runtime'
 import {
   SITE_DESCRIPTION,
   SITE_TITLE_AND_AUTHOR,
   SITE_URL,
 } from '~/services/meta.js'
-import { formatDateISO, formatDatesISO } from '~/services/format.js'
+import { formatDateUTC, formatDatesUTC } from '~/services/format.js'
 import { getMarkdownPosts } from '~/services/posts/index.server.js'
 
-export const loader = async (): Promise<Response> => {
+export const loader = async ({ request }: LoaderArgs): Promise<Response> => {
+  const rssXmlUrl = String(new URL(`rss.xml`, request.url))
   const posts = await getMarkdownPosts()
   const rss = `
     <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
       <channel>
-        <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="${rssXmlUrl}" rel="self" type="application/rss+xml" />
         <title>${cdata(SITE_TITLE_AND_AUTHOR)}</title>
         <link>${SITE_URL}</link>
         <description>${cdata(SITE_DESCRIPTION)}</description>
@@ -20,7 +22,7 @@ export const loader = async (): Promise<Response> => {
         <copyright>${cdata(
           `© ${SITE_TITLE_AND_AUTHOR}. All rights reserved.`,
         )}</copyright>
-        <lastBuildDate>${formatDatesISO(
+        <lastBuildDate>${formatDatesUTC(
           pipe(values(posts), first, get).dates,
         )}</lastBuildDate>
         <ttl>40</ttl>
@@ -33,9 +35,8 @@ export const loader = async (): Promise<Response> => {
                 <title>${cdata(post.title)}</title>
                 <link>${url}</link>
                 <description>${cdata(post.description)}</description>
-                <dc:creator>${cdata(SITE_TITLE_AND_AUTHOR)}</dc:creator>
                 <guid isPermaLink="true">${url}</guid>
-                <pubDate>${formatDateISO(post.dates.published)}</pubDate>
+                <pubDate>${formatDateUTC(post.dates.published)}</pubDate>
               </item>
             `
           }),
