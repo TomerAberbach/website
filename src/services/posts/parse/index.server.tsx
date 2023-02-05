@@ -91,7 +91,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
   ).result as Root
 
 const remarkEmbedderCache = new RemarkEmbedderCache()
-const highlighterPromise = getHighlighter({ theme: `material-palenight` })
+const highlighterPromise = getHighlighter({ theme: `material-theme-palenight` })
 
 const rehypeRemoveShikiClasses = (tree: Root) => {
   visit(tree, { tagName: `pre` }, node => {
