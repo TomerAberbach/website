@@ -1,5 +1,5 @@
 ---
-title: 'Checking for the absence of a value in JavaScript'
+title: 'Checking for the Absence of a Value in JavaScript'
 tags: ['code', 'javascript', 'nodejs']
 dates:
   published: 2018-08-16
