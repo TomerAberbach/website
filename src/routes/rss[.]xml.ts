@@ -7,14 +7,17 @@ import {
 } from '~/services/meta.js'
 import { formatDateUTC, formatDatesUTC } from '~/services/format.js'
 import { getMarkdownPosts } from '~/services/posts/index.server.js'
+import getUrlAtPath from '~/services/url.server.js'
 
 export const loader = async ({ request }: LoaderArgs): Promise<Response> => {
-  const rssXmlUrl = String(new URL(`rss.xml`, request.url))
   const posts = await getMarkdownPosts()
   const rss = `
     <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
       <channel>
-        <atom:link href="${rssXmlUrl}" rel="self" type="application/rss+xml" />
+        <atom:link href="${getUrlAtPath(
+          request,
+          `rss.xml`,
+        )}" rel="self" type="application/rss+xml" />
         <title>${cdata(SITE_TITLE_AND_AUTHOR)}</title>
         <link>${SITE_URL}</link>
         <description>${cdata(SITE_DESCRIPTION)}</description>
