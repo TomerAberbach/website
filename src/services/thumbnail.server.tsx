@@ -8,7 +8,7 @@ import {
   formatDatesForDisplay,
   formatMinutesToRead,
 } from '~/services/format.js'
-import { cached } from '~/services/cache.server.js'
+import { cache } from '~/services/cache.server.js'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
 
 export const renderThumbnail = async (
@@ -111,7 +111,7 @@ const Thumbnail = ({
   </svg>
 )
 
-const getCroppedAvatarImage = cached(async () =>
+const getCroppedAvatarImage = cache(async () =>
   sharp(await fs.readFile(publicPath(`avatar.png`)))
     .resize(AVATAR_PICTURE_SIZE, AVATAR_PICTURE_SIZE)
     .composite([

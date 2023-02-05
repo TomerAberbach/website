@@ -16,7 +16,7 @@ import { findBestMatch } from 'string-similarity'
 import { readRawPosts } from './read.server.js'
 import parsePost from './parse/index.server.js'
 import type { MarkdownPost, Post } from './types.js'
-import { cached } from '~/services/cache.server'
+import { cache } from '~/services/cache.server'
 
 export const findBestMarkdownPostMatch = async (
   postId: string,
@@ -27,7 +27,7 @@ export const findBestMarkdownPostMatch = async (
   return posts.get(postIds[bestMatchIndex]!)!
 }
 
-export const getTags: () => Promise<Set<string>> = cached(
+export const getTags: () => Promise<Set<string>> = cache(
   async () =>
     new Set(
       pipe(
@@ -38,8 +38,8 @@ export const getTags: () => Promise<Set<string>> = cached(
     ),
 )
 
-export const getMarkdownPosts: () => Promise<Map<string, MarkdownPost>> =
-  cached(async () =>
+export const getMarkdownPosts: () => Promise<Map<string, MarkdownPost>> = cache(
+  async () =>
     pipe(
       await getPosts(),
       filter(
@@ -48,9 +48,9 @@ export const getMarkdownPosts: () => Promise<Map<string, MarkdownPost>> =
       ),
       reduce(toMap()),
     ),
-  )
+)
 
-export const getPosts: () => Promise<Map<string, Post>> = cached(async () => {
+export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
   const postEntries = await pipe(
     await readRawPosts(),
     mapConcur(

@@ -13,10 +13,10 @@ import {
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
-import { cached } from './cache.server.js'
+import { cache } from './cache.server.js'
 import { getPosts } from './posts/index.server.js'
 
-export const getGraph = cached(async (): Promise<Graph> => {
+export const getGraph = cache(async (): Promise<Graph> => {
   const posts = await getPosts()
 
   const vertices = pipe(
