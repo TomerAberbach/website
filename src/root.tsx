@@ -37,11 +37,7 @@ const App = () => (
 )
 
 export const links: LinksFunction = () => [
-  {
-    rel: `preload stylesheet`,
-    href: fontsStylesPath,
-    as: `style`,
-  },
+  { rel: `stylesheet`, href: fontsStylesPath },
   { rel: `stylesheet`, href: tailwindStylesPath },
   { rel: `icon`, href: `/favicon.ico`, sizes: `any` },
   { rel: `icon`, href: `/favicon.svg`, type: `image/svg+xml` },
