@@ -18,7 +18,7 @@ const Header = () => (
     <img
       src={faviconSvgUrl}
       aria-label='Palm tree'
-      className='-z-10 w-32 sm:w-40'
+      className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40'
     />
     {/* Ensures that the width of the `header` element matches its contents. */}
     <div className='invisible h-0 pl-2 text-2xl font-bold'>
