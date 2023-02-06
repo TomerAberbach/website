@@ -6,12 +6,12 @@ module.exports = {
     require(`postcss-url`)({
       url: `copy`,
       basePath: join(__dirname, `private`),
-      assetsPath: join(__dirname, `public/build/_assets`),
+      assetsPath: join(__dirname, `public/fonts`),
       useHash: true,
       hashOptions: { append: true },
     }),
     require(`postcss-url`)({
-      url: ({ url }) => url.slice(Math.max(0, url.indexOf(`/build`))),
+      url: ({ url }) => url.slice(Math.max(0, url.indexOf(`/fonts`))),
     }),
     require(`tailwindcss`),
     require(`autoprefixer`),
