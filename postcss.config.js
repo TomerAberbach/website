@@ -8,6 +8,10 @@ module.exports = {
       basePath: join(__dirname, `private`),
       assetsPath: join(__dirname, `public/build/_assets`),
       useHash: true,
+      hashOptions: { append: true },
+    }),
+    require(`postcss-url`)({
+      url: ({ url }) => url.slice(Math.max(0, url.indexOf(`/build`))),
     }),
     require(`tailwindcss`),
     require(`autoprefixer`),
