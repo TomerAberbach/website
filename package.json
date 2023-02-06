@@ -28,7 +28,7 @@
     "format": "tomer format",
     "lint": "tomer lint",
     "typecheck": "tomer typecheck",
-    "build:clean": "tomer clean build public/build",
+    "build:clean": "tomer clean src/styles/build build public/build",
     "build:css:tailwind": "postcss ./src/styles/tailwind.css -o ./src/styles/build/tailwind.css",
     "build:css:fonts": "postcss ./src/styles/fonts.css -o ./src/styles/build/fonts.css",
     "build:css": "run-p build:css:*",
