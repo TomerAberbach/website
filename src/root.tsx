@@ -18,6 +18,20 @@ const App = () => (
       <meta charSet='utf-8' />
       <meta name='viewport' content='width=device-width,initial-scale=1' />
       <Meta />
+      <link
+        suppressHydrationWarning
+        rel='preload'
+        href={fontsStylesPath}
+        as='style'
+      />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.currentScript.previousElementSibling.setAttribute('onload','this.onload=null;this.rel="stylesheet"')`,
+        }}
+      />
+      <noscript>
+        <link rel='stylesheet' href={fontsStylesPath} />
+      </noscript>
       <Links />
       <script
         dangerouslySetInnerHTML={{
@@ -37,7 +51,6 @@ const App = () => (
 )
 
 export const links: LinksFunction = () => [
-  { rel: `stylesheet`, href: fontsStylesPath },
   { rel: `stylesheet`, href: tailwindStylesPath },
   { rel: `icon`, href: `/favicon.ico`, sizes: `any` },
   { rel: `icon`, href: `/favicon.svg`, type: `image/svg+xml` },
