@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import sharp from 'sharp'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
 import type { MarkdownPost } from '~/services/posts/types.js'
-import { publicPath } from '~/services/path.server.js'
+import { privatePath } from '~/services/path.server.js'
 import {
   formatDatesForDisplay,
   formatMinutesToRead,
@@ -112,7 +112,7 @@ const Thumbnail = ({
 )
 
 const getCroppedAvatarImage = cache(async () =>
-  sharp(await fs.readFile(publicPath(`avatar.png`)))
+  sharp(await fs.readFile(privatePath(`avatar.png`)))
     .resize(AVATAR_PICTURE_SIZE, AVATAR_PICTURE_SIZE)
     .composite([
       {

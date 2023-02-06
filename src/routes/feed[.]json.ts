@@ -1,5 +1,6 @@
 import { json } from '@remix-run/server-runtime'
 import { map, pipe, reduce, toArray } from 'lfi'
+import avatarUrl from '../../private/avatar.png'
 import { formatDateISO } from '~/services/format.js'
 import {
   SITE_DESCRIPTION,
@@ -21,7 +22,7 @@ export const loader = async (): Promise<Response> =>
         {
           name: SITE_TITLE_AND_AUTHOR,
           url: SITE_URL,
-          avatar: `${SITE_URL}/avatar.png`,
+          avatar: `${SITE_URL}${avatarUrl}`,
         },
       ],
       language: `en-US`,

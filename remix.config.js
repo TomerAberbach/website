@@ -10,4 +10,5 @@ module.exports = {
   serverBuildPath: `build/index.js`,
   serverDependenciesToBundle: [/^(?!(?:shiki|uglify-js|sharp)$).*/u],
   ignoredRouteFiles: [`**/.*`],
+  watchPaths: `private/**/*`,
 }

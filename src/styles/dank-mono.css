@@ -10,8 +10,8 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-  src: url(/fonts/DankMono-Regular-subset.woff2) format('woff2'),
-    url(/fonts/DankMono-Regular-subset.woff) format('woff');
+  src: url(fonts-subset/DankMono-Regular-subset.woff2) format('woff2'),
+    url(fonts-subset/DankMono-Regular-subset.woff) format('woff');
 }
 
 @font-face {
@@ -19,8 +19,8 @@
   font-weight: normal;
   font-style: italic;
   font-display: swap;
-  src: url(/fonts/DankMono-Italic-subset.woff2) format('woff2'),
-    url(/fonts/DankMono-Italic-subset.woff) format('woff');
+  src: url(fonts-subset/DankMono-Italic-subset.woff2) format('woff2'),
+    url(fonts-subset/DankMono-Italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -28,6 +28,6 @@
   font-weight: bold;
   font-style: normal;
   font-display: swap;
-  src: url(/fonts/DankMono-Bold-subset.woff2) format('woff2'),
-    url(/fonts/DankMono-Bold-subset.woff) format('woff');
+  src: url(fonts-subset/DankMono-Bold-subset.woff2) format('woff2'),
+    url(fonts-subset/DankMono-Bold-subset.woff) format('woff');
 }
