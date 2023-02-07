@@ -1,7 +1,7 @@
 import { map, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
-import { useId } from 'react'
+import { useEffect, useId, useRef } from 'react'
 import { Link } from './link.js'
 import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
 import type {
@@ -19,9 +19,23 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
     },
   } = graph
 
+  const scrollElementRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const scrollElement = scrollElementRef.current!
+    if (scrollElement.scrollLeft !== 0) {
+      // The user scrolled the element in the time between the page loading and
+      // hydrating. Don't center the scrollbar in this case
+      return
+    }
+
+    // Center the scrollbar
+    scrollElement.scrollLeft =
+      (scrollElement.scrollWidth - scrollElement.clientWidth) / 2
+  }, [])
+
   return (
     <div className='flex w-full flex-grow items-center justify-center'>
-      <div className='w-full overflow-x-auto px-16 py-3'>
+      <div ref={scrollElementRef} className='w-full overflow-x-auto px-16 py-3'>
         <div
           id={id}
           className='relative m-auto w-full overflow-visible'
