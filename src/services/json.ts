@@ -1,11 +1,11 @@
-/* eslint-disable camelcase */
-
 import type {
   AppData,
+  // eslint-disable-next-line camelcase
+  V2_HtmlMetaDescriptor as HtmlMetaDescriptor,
   JsonFunction,
+  // eslint-disable-next-line camelcase
+  V2_MetaFunction as MetaFunction,
   TypedResponse,
-  V2_HtmlMetaDescriptor,
-  V2_MetaFunction,
 } from '@remix-run/node'
 import { json as remixJson } from '@remix-run/node'
 import type { Location, Params, ThrownResponse } from '@remix-run/react'
@@ -48,8 +48,8 @@ export const createMeta =
       data?: InferData<DataOrFunction>
       params: Params
       location: Location
-    }) => V2_HtmlMetaDescriptor[],
-  ): V2_MetaFunction =>
+    }) => HtmlMetaDescriptor[],
+  ): MetaFunction =>
   ({ data, params, location }) =>
     meta({
       data: data ? deserialize(data as SuperJSONResult) : undefined,

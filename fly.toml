@@ -4,6 +4,7 @@ kill_timeout = 5
 processes = []
 
 [env]
+  SITE_URL = "https://tomeraberbach.fly.dev"
   FONTCONFIG_PATH = "private/fonts"
   PANGOCAIRO_BACKEND = "fontconfig"
 

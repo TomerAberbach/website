@@ -1,11 +1,13 @@
-/* eslint-disable camelcase */
-
 import { concat, join, map } from 'lfi'
 import type { Location } from '@remix-run/react'
-import type { V2_HtmlMetaDescriptor } from '@remix-run/node'
+import type {
+  // eslint-disable-next-line camelcase
+  V2_HtmlMetaDescriptor as HtmlMetaDescriptor,
+} from '@remix-run/node'
 import type { MarkdownPost } from './posts/types.js'
 import { formatDatesForDisplay, formatMinutesToRead } from './format.js'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
+import { getSiteUrl } from './url.js'
 
 export const getMeta = (
   location: Location,
@@ -25,8 +27,8 @@ export const getMeta = (
     >
     type: `website` | `article`
   },
-): V2_HtmlMetaDescriptor[] => {
-  const baseMeta: V2_HtmlMetaDescriptor[] = [
+): HtmlMetaDescriptor[] => {
+  const baseMeta: HtmlMetaDescriptor[] = [
     { title },
     { name: `description`, content: description },
     {
@@ -46,10 +48,10 @@ export const getMeta = (
     { property: `og:description`, content: description },
     {
       property: `og:url`,
-      content: removeTrailingSlash(SITE_URL + location.pathname),
+      content: getSiteUrl(location.pathname),
     },
 
-    { property: `og:image`, content: `${SITE_URL}/${post.id}.png` },
+    { property: `og:image`, content: getSiteUrl(`${post.id}.png`) },
     { property: `og:image:type`, content: `image/png` },
     { property: `og:image:width`, content: String(THUMBNAIL_WIDTH) },
     { property: `og:image:height`, content: String(THUMBNAIL_HEIGHT) },
@@ -70,8 +72,8 @@ export const getMeta = (
 const getArticleMeta = ({
   tags,
   dates,
-}: Pick<MarkdownPost, `tags` | `dates`>): Iterable<V2_HtmlMetaDescriptor> => {
-  const baseMeta: V2_HtmlMetaDescriptor[] = [
+}: Pick<MarkdownPost, `tags` | `dates`>): Iterable<HtmlMetaDescriptor> => {
+  const baseMeta: HtmlMetaDescriptor[] = [
     {
       property: `article:published_time`,
       content: dates.published.toISOString(),
@@ -93,10 +95,6 @@ const getArticleMeta = ({
   )
 }
 
-const removeTrailingSlash = (url: string) =>
-  url.endsWith(`/`) ? url.slice(0, -1) : url
-
-export const SITE_URL = `https://tomeraberba.ch`
 export const SITE_TITLE_AND_AUTHOR = `Tomer Aberbach`
 export const SITE_DESCRIPTION = `The portfolio website and blog of Tomer Aberbach, a New Jersey based software engineer, composer, and music producer.`
 export const SITE_KEYWORDS: ReadonlySet<string> = new Set([

@@ -1,21 +1,15 @@
 import { first, get, join, map, pipe, values } from 'lfi'
-import type { LoaderArgs } from '@remix-run/server-runtime'
-import {
-  SITE_DESCRIPTION,
-  SITE_TITLE_AND_AUTHOR,
-  SITE_URL,
-} from '~/services/meta.js'
+import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
 import { formatDateUTC, formatDatesUTC } from '~/services/format.js'
 import { getMarkdownPosts } from '~/services/posts/index.server.js'
-import getUrlAtPath from '~/services/url.server.js'
+import { SITE_URL, getSiteUrl } from '~/services/url.js'
 
-export const loader = async ({ request }: LoaderArgs): Promise<Response> => {
+export const loader = async (): Promise<Response> => {
   const posts = await getMarkdownPosts()
   const rss = `
     <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
       <channel>
-        <atom:link href="${getUrlAtPath(
-          request,
+        <atom:link href="${getSiteUrl(
           `rss.xml`,
         )}" rel="self" type="application/rss+xml" />
         <title>${cdata(SITE_TITLE_AND_AUTHOR)}</title>
@@ -32,7 +26,7 @@ export const loader = async ({ request }: LoaderArgs): Promise<Response> => {
         ${pipe(
           posts,
           map(([postId, post]) => {
-            const url = `${SITE_URL}/${postId}`
+            const url = getSiteUrl(postId)
             return `
               <item>
                 <title>${cdata(post.title)}</title>
