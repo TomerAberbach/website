@@ -28,7 +28,7 @@ import remarkSmartypants from 'remark-smartypants'
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
 import isCI from 'is-ci'
 import { parseHrefs, parseReferences } from './references.server.js'
-import linkSvgUrl from './link.svg'
+import linkSvgPath from './link.svg'
 import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.js'
 import type { RawPost } from '~/services/posts/read.server.js'
 import { renderHtml } from '~/services/html.js'
@@ -167,7 +167,7 @@ const createHeading =
         className='absolute top-1/2 h-6 w-6 -translate-x-[1.85rem] -translate-y-1/2 opacity-0 focus:opacity-100 group-hover:opacity-100'
       >
         <img
-          src={linkSvgUrl}
+          src={linkSvgPath}
           className='m-0'
           // eslint-disable-next-line react/jsx-no-useless-fragment
           alt={`${renderToString(<>{children}</>)} permalink`}

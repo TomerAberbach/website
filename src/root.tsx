@@ -4,8 +4,8 @@ import tailwindStylesPath from './styles/build/tailwind.css'
 import fontsStylesPath from './styles/build/fonts.css'
 import Layout from './components/layout.js'
 import ScrollRestoration from './components/scroll-restoration.js'
-import faviconIcoUrl from '~/assets/favicon.ico'
-import faviconSvgUrl from '~/assets/favicon.svg'
+import logoIcoPath from '~/private/logo.ico'
+import logoSvgPath from '~/private/logo.svg'
 
 const App = () => (
   <html
@@ -42,8 +42,8 @@ export const links: LinksFunction = () => [
   { rel: `preload`, href: fontsStylesPath, as: `style` },
   { rel: `stylesheet`, href: fontsStylesPath },
   { rel: `stylesheet`, href: tailwindStylesPath },
-  { rel: `icon`, href: faviconIcoUrl, sizes: `any` },
-  { rel: `icon`, href: faviconSvgUrl, type: `image/svg+xml` },
+  { rel: `icon`, href: logoIcoPath, sizes: `any` },
+  { rel: `icon`, href: logoSvgPath, type: `image/svg+xml` },
 ]
 
 export default App

@@ -32,6 +32,7 @@ specifiers:
   cssesc: ^3.0.0
   cssnano: ^5.1.14
   cypress: ^12.5.1
+  escape-goat: ^4.0.0
   eslint: ^8.33.0
   glyphhanger: ^5.0.0
   gray-matter: ^4.0.3
@@ -91,6 +92,7 @@ dependencies:
   '@remix-run/server-runtime': 1.12.0
   clsx: 1.2.1
   cssesc: 3.0.0
+  escape-goat: 4.0.0
   gray-matter: 4.0.3
   hast-util-select: 5.0.5
   lfi: 2.0.0-beta.1
@@ -8678,6 +8680,14 @@ packages:
       }
     engines: { node: '>=6' }
     dev: true
+
+  /escape-goat/4.0.0:
+    resolution:
+      {
+        integrity: sha512-2Sd4ShcWxbx6OY1IHyla/CVNwvg7XwZVoXZHcSu9w9SReNP1EzzD5T8NWKIR38fIqEns9kDWKUQTXXAmlDrdPg==,
+      }
+    engines: { node: '>=12' }
+    dev: false
 
   /escape-html/1.0.3:
     resolution:

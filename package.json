@@ -63,6 +63,7 @@
     "@remix-run/server-runtime": "^1.12.0",
     "clsx": "^1.2.1",
     "cssesc": "^3.0.0",
+    "escape-goat": "^4.0.0",
     "gray-matter": "^4.0.3",
     "hast-util-select": "^5.0.5",
     "lfi": "2.0.0-beta.1",

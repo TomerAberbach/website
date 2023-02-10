@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { InternalLink, Link } from './link.js'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
-import faviconSvgUrl from '~/assets/favicon.svg'
+import logoSvgPath from '~/private/logo.svg'
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-10 sm:px-10 md:gap-y-16 md:px-16'>
@@ -16,7 +16,7 @@ export default Layout
 const Header = () => (
   <header className='relative self-center'>
     <img
-      src={faviconSvgUrl}
+      src={logoSvgPath}
       aria-label='Palm tree'
       className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40'
     />
