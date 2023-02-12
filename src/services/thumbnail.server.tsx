@@ -79,7 +79,7 @@ const ThumbnailFrame = () => (
 const renderThumbnailContent = async (
   post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,
 ) => {
-  const [header, croppedAvatarImage] = await Promise.all([
+  const [header, avatarAndAuthorText] = await Promise.all([
     renderHeader(post),
     getAvatarAndAuthorText(),
   ])
@@ -96,7 +96,7 @@ const renderThumbnailContent = async (
       {
         left: 0,
         top: header.info.height + PADDING,
-        input: croppedAvatarImage,
+        input: avatarAndAuthorText,
       },
     ]),
   )
