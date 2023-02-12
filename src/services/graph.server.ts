@@ -119,13 +119,16 @@ const layoutGraph = ({
   }
 
   const layout = createLayout(ngraph, {
-    gravity: -1.5,
-    theta: 0.8,
-    dragCoefficient: 0.02,
+    theta: 1,
     springLength: SPRING_LENGTH,
-    // If the vertices overlap, then decrease this number to spread out the
-    // vertices by allowing the edges to grow more
-    springCoefficient: 0.001,
+    dragCoefficient: 0.25,
+
+    // Decrease this number to spread out the vertices by making them repel each
+    // other more
+    gravity: -5,
+    // Decrease this number to spread out the vertices by allowing the edges to
+    // grow more
+    springCoefficient: 0.005,
   })
 
   // Position internal vertices in a vertical column
@@ -175,9 +178,9 @@ const layoutGraph = ({
 }
 
 const SPRING_LENGTH = 30
-const HORIZONTAL_OFFSET = 10
+const HORIZONTAL_OFFSET = 20
 const SCALE = 10
-const PADDING = 50
+const PADDING = 75
 
 export type GraphLayout = {
   boundingBox: BoundingBox

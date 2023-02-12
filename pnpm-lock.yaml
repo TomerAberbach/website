@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  glyphhanger@5.0.0:
+    hash: ihfg7h2asl665bulpbv4j7dtmq
+    path: patches/glyphhanger@5.0.0.patch
+
 specifiers:
   '@fec/remark-a11y-emoji': ^3.1.0
   '@leafac/rehype-shiki': ^2.2.1
@@ -38,6 +43,7 @@ specifiers:
   hast-util-select: ^5.0.5
   is-ci: ^3.0.1
   lfi: 2.0.0-beta.1
+  make-dir-cli: ^3.0.0
   mem: ^9.0.2
   ngraph.forcelayout: ^3.3.1
   ngraph.graph: ^20.0.1
@@ -49,6 +55,7 @@ specifiers:
   prettier-plugin-tailwindcss: ^0.2.2
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-wrap-balancer: ^0.4.0
   reading-time: ^1.5.0
   rehype-dom-parse: ^4.0.2
   rehype-external-links: ^2.0.1
@@ -71,6 +78,7 @@ specifiers:
   strip-markdown: ^5.0.0
   superjson: ^1.12.2
   tailwindcss: ^3.2.4
+  terser: ^5.16.3
   tomer: ^1.2.0
   ts-extras: ^0.11.0
   typescript: ^4.9.5
@@ -99,6 +107,7 @@ dependencies:
   ngraph.graph: 20.0.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-wrap-balancer: 0.4.0_react@18.2.0
   reading-time: 1.5.0
   rehype-dom-parse: 4.0.2
   rehype-external-links: 2.0.1
@@ -144,8 +153,9 @@ devDependencies:
   cssnano: 5.1.14_postcss@8.4.21
   cypress: 12.5.1
   eslint: 8.33.0
-  glyphhanger: 5.0.0
+  glyphhanger: 5.0.0_ihfg7h2asl665bulpbv4j7dtmq
   is-ci: 3.0.1
+  make-dir-cli: 3.0.0
   npm-run-all: 4.1.5
   postcss: 8.4.21
   postcss-cli: 10.1.0_postcss@8.4.21
@@ -155,6 +165,7 @@ devDependencies:
   round-to: 5.0.0
   start-server-and-test: 1.15.3
   tailwindcss: 3.2.4_postcss@8.4.21
+  terser: 5.16.3
   tomer: 1.2.0
   typescript: 4.9.5
 
@@ -6782,6 +6793,19 @@ packages:
       quick-lru: 4.0.1
     dev: true
 
+  /camelcase-keys/7.0.2:
+    resolution:
+      {
+        integrity: sha512-Rjs1H+A9R+Ig+4E/9oyB66UC5Mj9Xq3N//vcLf2WzgdTi/3gUu3Z9KoqmlrEG4VuuLK8wJHofxzdQXz/knhiYg==,
+      }
+    engines: { node: '>=12' }
+    dependencies:
+      camelcase: 6.3.0
+      map-obj: 4.3.0
+      quick-lru: 5.1.1
+      type-fest: 1.4.0
+    dev: true
+
   /camelcase/5.3.1:
     resolution:
       {
@@ -7995,6 +8019,14 @@ packages:
         integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==,
       }
     engines: { node: '>=0.10.0' }
+    dev: true
+
+  /decamelize/5.0.1:
+    resolution:
+      {
+        integrity: sha512-VfxadyCECXgQlkoEAjeghAr5gY3Hf+IKjKb+X8tGVDtveCjN+USwprd2q3QXBR9T1+x2DG0XZF5/w+7HAtSaXA==,
+      }
+    engines: { node: '>=10' }
     dev: true
 
   /decimal.js/10.4.3:
@@ -10396,7 +10428,7 @@ packages:
       slash: 4.0.0
     dev: true
 
-  /glyphhanger/5.0.0:
+  /glyphhanger/5.0.0_ihfg7h2asl665bulpbv4j7dtmq:
     resolution:
       {
         integrity: sha512-I8eKMWXAx4w8DJMX9QrH9P6pL5npI2geWQ9HLy2Ed1JGT/hkjJCiFJiAVu9Kj5jXdFM5EqDUMjYb3Xb2rWB/kA==,
@@ -10422,6 +10454,7 @@ packages:
       - supports-color
       - utf-8-validate
     dev: true
+    patched: true
 
   /gopd/1.0.1:
     resolution:
@@ -11111,6 +11144,14 @@ packages:
         integrity: sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==,
       }
     engines: { node: '>=8' }
+
+  /indent-string/5.0.0:
+    resolution:
+      {
+        integrity: sha512-m6FAo/spmsW2Ab2fU35JTYwtOKa2yAwXSwgjSv1TJzh4Mh7mC3lzAOVLBprb72XsTrgkEIsl7YrFNAiDiRhIGg==,
+      }
+    engines: { node: '>=12' }
+    dev: true
 
   /infer-owner/1.0.4:
     resolution:
@@ -13341,6 +13382,18 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /make-dir-cli/3.0.0:
+    resolution:
+      {
+        integrity: sha512-8yCjIAOQ8tezWRJWUG3tbvN2I19hiVr8K5DPDVl8fECS3qz0ZbeL194ZGRdf8K3LgvbjDCTadge6NrN/I4XrNw==,
+      }
+    engines: { node: '>=12.17' }
+    hasBin: true
+    dependencies:
+      make-dir: 3.1.0
+      meow: 10.1.5
+    dev: true
+
   /make-dir/3.1.0:
     resolution:
       {
@@ -13802,6 +13855,27 @@ packages:
         integrity: sha512-S3UwM3yj5mtUSEfP41UZmt/0SCoVYUcU1rkXv+BQ5Ig8ndL4sPoJNBUJERafdPb5jjHJGuMgytgKvKIf58XNBw==,
       }
     engines: { node: '>= 0.10.0' }
+    dev: true
+
+  /meow/10.1.5:
+    resolution:
+      {
+        integrity: sha512-/d+PQ4GKmGvM9Bee/DPa8z3mXs/pkvJE2KEThngVNOqtmljC6K7NMPxtc2JeZYTmpWb9k/TmxjeL18ez3h7vCw==,
+      }
+    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
+    dependencies:
+      '@types/minimist': 1.2.2
+      camelcase-keys: 7.0.2
+      decamelize: 5.0.1
+      decamelize-keys: 1.1.1
+      hard-rejection: 2.1.0
+      minimist-options: 4.1.0
+      normalize-package-data: 3.0.3
+      read-pkg-up: 8.0.0
+      redent: 4.0.0
+      trim-newlines: 4.0.2
+      type-fest: 1.4.0
+      yargs-parser: 20.2.9
     dev: true
 
   /meow/8.1.2:
@@ -16809,6 +16883,17 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-wrap-balancer/0.4.0_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-MUsROihHd7bFHCo9kCOifKDYBEZPgKTyGvfa8RcwRQKtT2cL7Um9Cc8A7GvuT8t3np7LAGsEkzdEyJdKrr5lVQ==,
+      }
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react/18.2.0:
     resolution:
       {
@@ -16837,6 +16922,18 @@ packages:
       find-up: 4.1.0
       read-pkg: 5.2.0
       type-fest: 0.8.1
+    dev: true
+
+  /read-pkg-up/8.0.0:
+    resolution:
+      {
+        integrity: sha512-snVCqPczksT0HS2EC+SxUndvSzn6LRCwpfSvLrIfR5BKDQQZMaI6jPRC9dYvYFDRAuFEAnkwww8kBBNE/3VvzQ==,
+      }
+    engines: { node: '>=12' }
+    dependencies:
+      find-up: 5.0.0
+      read-pkg: 6.0.0
+      type-fest: 1.4.0
     dev: true
 
   /read-pkg-up/9.1.0:
@@ -16874,6 +16971,19 @@ packages:
       normalize-package-data: 2.5.0
       parse-json: 5.2.0
       type-fest: 0.6.0
+    dev: true
+
+  /read-pkg/6.0.0:
+    resolution:
+      {
+        integrity: sha512-X1Fu3dPuk/8ZLsMhEj5f4wFAF0DWoK7qhGJvgaijocXxBmSToKfbFtqbxMO7bVjNA1dmE5huAzjXj/ey86iw9Q==,
+      }
+    engines: { node: '>=12' }
+    dependencies:
+      '@types/normalize-package-data': 2.4.1
+      normalize-package-data: 3.0.3
+      parse-json: 5.2.0
+      type-fest: 1.4.0
     dev: true
 
   /read-pkg/7.1.0:
@@ -16976,6 +17086,17 @@ packages:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
+    dev: true
+
+  /redent/4.0.0:
+    resolution:
+      {
+        integrity: sha512-tYkDkVVtYkSVhuQ4zBgfvciymHaeuel+zFKXShfDnFP5SyVEP7qo70Rf1jTOTCx3vGNAbnEi/xFkcfQVMIBWag==,
+      }
+    engines: { node: '>=12' }
+    dependencies:
+      indent-string: 5.0.0
+      strip-indent: 4.0.0
     dev: true
 
   /regenerate-unicode-properties/10.1.0:
@@ -18989,6 +19110,16 @@ packages:
       min-indent: 1.0.1
     dev: true
 
+  /strip-indent/4.0.0:
+    resolution:
+      {
+        integrity: sha512-mnVSV2l+Zv6BLpSD/8V87CW/y9EmmbYzGCIavsnsI6/nwn26DwffM/yztm30Z/I2DY9wdS3vXVCMnHDgZaVNoA==,
+      }
+    engines: { node: '>=12' }
+    dependencies:
+      min-indent: 1.0.1
+    dev: true
+
   /strip-json-comments/2.0.1:
     resolution:
       {
@@ -19491,6 +19622,14 @@ packages:
     engines: { node: '>=8' }
     dev: true
 
+  /trim-newlines/4.0.2:
+    resolution:
+      {
+        integrity: sha512-GJtWyq9InR/2HRiLZgpIKv+ufIKrVrvjQWEj7PxAXNc5dwbNJkqhAUoAGgzRmULAnoOM5EIpveYd3J2VeSAIew==,
+      }
+    engines: { node: '>=12' }
+    dev: true
+
   /trough/2.1.0:
     resolution:
       {
@@ -19675,6 +19814,14 @@ packages:
         integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==,
       }
     engines: { node: '>=8' }
+    dev: true
+
+  /type-fest/1.4.0:
+    resolution:
+      {
+        integrity: sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==,
+      }
+    engines: { node: '>=10' }
     dev: true
 
   /type-fest/2.19.0:

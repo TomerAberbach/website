@@ -1,0 +1,91 @@
+diff --git a/src/GlyphHanger.js b/src/GlyphHanger.js
+index 41c952100d9f76a78d491d8b960656ea0c75deea..45dba61a90e4b0b0a19ce3680317eec5329c9695 100644
+--- a/src/GlyphHanger.js
++++ b/src/GlyphHanger.js
+@@ -128,7 +128,7 @@ class GlyphHanger {
+ 			return false;
+ 		}
+ 		let options = this.getOptions();
+-		let json = await this.env.getResults(page, options);
++    let json = await this.env.getResults(page, options);
+ 
+ 		debug("Adding to set for %o: %o", url, json);
+ 		this.addToSets(json);
+@@ -140,10 +140,11 @@ class GlyphHanger {
+ 			if( !this.env.isJSDOM() ) {
+ 				throw new Error("Standard input mode requires using --jsdom");
+ 			}
+-			let result = await this._fetchUrl();
+-			if( result === false ) {
+-				failCount++;
+-			}
++      try {
++        await this._fetchUrl();
++      } catch {
++        failCount++;
++      }
+ 		} else {
+ 			for( let url of urls ) {
+ 				debug("WebServer.isValidUrl(%o)", url);
+@@ -160,10 +161,11 @@ class GlyphHanger {
+ 					urlStr = WebServer.getUrl(url);
+ 				}
+ 
+-				let result = await this._fetchUrl(urlStr);
+-				if( result === false ) {
+-					failCount++;
+-				}
++        try {
++          await this._fetchUrl(urlStr);
++        } catch {
++          failCount++;
++        }
+ 			}
+ 		}
+ 
+@@ -221,7 +223,7 @@ class GlyphHanger {
+ 			outputStr.push( this.getOutputForSet( activeSet ) );
+ 		}
+ 
+-		console.log( outputStr.join("\n") );	
++		console.log( outputStr.join("\n") );
+ 	}
+ 
+ 	outputHelp() {
+diff --git a/src/GlyphHangerEnvironment.js b/src/GlyphHangerEnvironment.js
+index 83815413a6b4f6eff2f019ea33c7bc53969f0680..0087faa0e2b0c0f2ad8da3eeb78ec4153f826574 100644
+--- a/src/GlyphHangerEnvironment.js
++++ b/src/GlyphHangerEnvironment.js
+@@ -124,6 +124,11 @@ class PuppeteerEnvironment {
+ 				timeout: this.timeout
+ 			});
+ 
++      const contentType = response.headers()[`content-type`];
++      if (!contentType || !contentType.startsWith(`text/html`)) {
++        return null;
++      }
++
+ 			let statusCode = response.status();
+ 
+ 			if ( statusCode !== 200 ) {
+@@ -145,6 +150,7 @@ class PuppeteerEnvironment {
+ 			return page;
+ 		} catch(e) {
+ 			console.log(chalk.red(`Error with ${url}:`), e);
++      throw e;
+ 		}
+ 	}
+ 
+diff --git a/src/WebServer.js b/src/WebServer.js
+index 466ba057c7eead28e0177459f9904b3958d95cfe..da19847985062bcadb124e51fd5fe766b7e516a4 100644
+--- a/src/WebServer.js
++++ b/src/WebServer.js
+@@ -11,7 +11,7 @@ class WebServer {
+ 	static isValidUrl(url) {
+ 		try {
+ 			new URL(url);
+-			return true;
++			return !url.endsWidth(".pdf");
+ 		} catch(e) {
+ 			return false;
+ 		}

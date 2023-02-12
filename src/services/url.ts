@@ -14,3 +14,4 @@ export const SITE_URL = removeTrailingSlash(
     ),
   ),
 )
+export const SITE_HOSTNAME = new URL(SITE_URL).hostname

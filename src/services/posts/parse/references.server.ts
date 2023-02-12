@@ -10,6 +10,7 @@ import {
 } from 'lfi'
 import { selectAll } from 'hast-util-select'
 import type { Root } from 'hast'
+import { SITE_HOSTNAME, SITE_URL } from '~/services/url.js'
 
 export const parseReferences = (
   hrefs: Iterable<string>,
@@ -22,16 +23,22 @@ export const parseReferences = (
   )
 
 const parseReference = (href: string): string => {
-  const url = new URL(href, `https://${HOSTNAME}`)
+  const url = new URL(href, SITE_URL)
+  let { hostname, pathname } = url
 
-  if (url.hostname === HOSTNAME) {
-    return removePrefix(url.pathname, `/`)
+  if (hostname === SITE_HOSTNAME) {
+    return removePrefix(pathname, `/`)
   }
 
-  return removePrefix(url.hostname, `www.`)
+  hostname = removePrefix(hostname, `www.`)
+  return NORMALIZED_HOSTNAMES.get(hostname) ?? hostname
 }
 
-const HOSTNAME = `tomeraberba.ch`
+const NORMALIZED_HOSTNAMES: ReadonlyMap<string, string> = new Map([
+  [`open.spotify.com`, `spotify.com`],
+  [`t.co`, `twitter.com`],
+  [`workspaceupdates.googleblog.com`, `googleblog.com`],
+])
 
 const removePrefix = (string: string, prefix: string): string =>
   string.startsWith(prefix) ? string.slice(prefix.length) : string
