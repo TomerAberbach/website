@@ -154,7 +154,7 @@ const renderSubtitle = (dates: Dates, minutesToRead: number) => {
 
 const getLogo = cache(async () =>
   renderPngWithInfo(
-    sharp(await fs.readFile(privatePath(`logo.svg`))).resize({
+    sharp(await fs.readFile(privatePath(`images/logo.svg`))).resize({
       width: LOGO_WIDTH,
     }),
   ),
@@ -182,7 +182,7 @@ const getAvatarAndAuthorText = cache(async () => {
         left: 0,
         top: 0,
         input: await renderPng(
-          sharp(await fs.readFile(privatePath(`avatar.png`)))
+          sharp(await fs.readFile(privatePath(`images/avatar.png`)))
             .resize({ width: AVATAR_SIZE, height: AVATAR_SIZE })
             .composite([
               // Make the avatar rounded

@@ -2,9 +2,9 @@ import { nextTick } from 'process'
 import mem from 'mem'
 
 export const cache = <Value>(fn: () => Value): (() => Value) => {
-  if (process.env.NODE_ENV === `development`) {
-    return fn
-  }
+  // If (process.env.NODE_ENV === `development`) {
+  //   return fn
+  // }
 
   const cachedFn = mem(fn)
 

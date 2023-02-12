@@ -2,7 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@fec/remark-a11y-emoji': ^3.1.0
-  '@heroicons/react': ^2.0.14
   '@leafac/rehype-shiki': ^2.2.1
   '@remark-embedder/cache': ^2.1.0
   '@remark-embedder/core': ^3.0.1
@@ -81,7 +80,6 @@ specifiers:
 
 dependencies:
   '@fec/remark-a11y-emoji': 3.1.0
-  '@heroicons/react': 2.0.14_react@18.2.0
   '@leafac/rehype-shiki': 2.2.1_shiki@0.14.0
   '@remark-embedder/cache': 2.1.0
   '@remark-embedder/core': 3.0.1
@@ -3552,17 +3550,6 @@ packages:
     dependencies:
       '@hapi/hoek': 9.3.0
     dev: true
-
-  /@heroicons/react/2.0.14_react@18.2.0:
-    resolution:
-      {
-        integrity: sha512-eFL4if6L7woL1fUvk/jjXx4z9NxVESHHrQnEd2qKVelTFTIr/3VLGWdPb0biia9ZVe26P0JSs/xmOlRNur3SrQ==,
-      }
-    peerDependencies:
-      react: '>= 16'
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /@humanwhocodes/config-array/0.11.8:
     resolution:

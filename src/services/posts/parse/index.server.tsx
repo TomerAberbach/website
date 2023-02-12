@@ -25,7 +25,6 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
-import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
 import isCI from 'is-ci'
 import { parseHrefs, parseReferences } from './references.server.js'
 import linkSvgPath from './link.svg'
@@ -35,6 +34,7 @@ import { renderHtml } from '~/services/html.js'
 import type { Components } from '~/services/html.js'
 import { Link } from '~/components/link.js'
 import Tooltip from '~/components/tooltip.js'
+import backToContentSvgPath from '~/private/images/back-to-content.svg'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
@@ -195,7 +195,7 @@ const Anchor: Components[`a`] = ({
           aria-labelledby={tooltipId}
           className='inline-block h-4 w-4 align-text-top no-underline hover:ring'
         >
-          <ArrowUturnLeftIcon className='h-full stroke-gray-400' />
+          <img src={backToContentSvgPath} alt='' className='m-0' />
         </a>
       )}
     </Tooltip>

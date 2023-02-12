@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { InternalLink, Link } from './link.js'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
-import logoSvgPath from '~/private/logo.svg'
+import logoSvgPath from '~/private/images/logo.svg'
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-10 sm:px-10 md:gap-y-16 md:px-16'>
