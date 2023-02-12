@@ -2,10 +2,6 @@ import { nextTick } from 'process'
 import mem from 'mem'
 
 export const cache = <Value>(fn: () => Value): (() => Value) => {
-  // If (process.env.NODE_ENV === `development`) {
-  //   return fn
-  // }
-
   const cachedFn = mem(fn)
 
   // Call and cache asynchronously to ensure dependencies are initialized
