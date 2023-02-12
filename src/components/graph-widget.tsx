@@ -174,20 +174,17 @@ const Vertex = ({
   const contents = (
     <>
       <div className='h-full w-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
-      <div className='absolute left-1/2 bottom-[150%] w-36 -translate-x-1/2 text-center text-sm font-medium sm:w-48 sm:text-base'>
+      <div className='absolute left-1/2 bottom-[150%] z-10 w-36 -translate-x-1/2 text-center text-sm font-medium sm:w-48 sm:text-base'>
         <span
           className={clsx(
-            `box-decoration-clone py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 sm:py-[0.25em]`,
+            `break-words box-decoration-clone py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 sm:py-[0.25em]`,
             external
               ? `group-odd/vertex:bg-yellow-100 group-odd/vertex:shadow-yellow-100 group-even/vertex:bg-orange-200 group-even/vertex:shadow-orange-200 group-odd/vertex:group-hover/link:bg-yellow-200 group-odd/vertex:group-hover/link:shadow-yellow-200 group-even/vertex:group-hover/link:bg-orange-300 group-even/vertex:group-hover/link:shadow-orange-300 group-odd/vertex:group-focus-visible/link:bg-yellow-200 group-odd/vertex:group-focus-visible/link:shadow-yellow-200 group-even/vertex:group-focus-visible/link:bg-orange-300 group-even/vertex:group-focus-visible/link:shadow-orange-300`
               : `bg-blue-200 shadow-blue-200 group-hover/link:bg-blue-300 group-hover/link:shadow-blue-300 group-focus-visible/link:bg-blue-300 group-focus-visible/link:shadow-blue-300`,
           )}
         >
-          <span className='opacity-0' aria-hidden='true'>
-            {label}
-          </span>
+          {label}
         </span>
-        <span className='absolute left-0 top-0 w-full'>{label}</span>
       </div>
     </>
   )
