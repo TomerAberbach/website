@@ -1,8 +1,11 @@
 lockfileVersion: 5.4
 
 patchedDependencies:
+  '@zachleat/spider-pig@3.0.0':
+    hash: dl7ekihkku46p6otfnv7t3lfzq
+    path: patches/@zachleat__spider-pig@3.0.0.patch
   glyphhanger@5.0.0:
-    hash: ihfg7h2asl665bulpbv4j7dtmq
+    hash: ktlnajiffqjphag5c52f24g44q
     path: patches/glyphhanger@5.0.0.patch
 
 specifiers:
@@ -153,7 +156,7 @@ devDependencies:
   cssnano: 5.1.14_postcss@8.4.21
   cypress: 12.5.1
   eslint: 8.33.0
-  glyphhanger: 5.0.0_ihfg7h2asl665bulpbv4j7dtmq
+  glyphhanger: 5.0.0_ktlnajiffqjphag5c52f24g44q
   is-ci: 3.0.1
   make-dir-cli: 3.0.0
   npm-run-all: 4.1.5
@@ -5555,7 +5558,7 @@ packages:
         integrity: sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==,
       }
 
-  /@zachleat/spider-pig/3.0.0:
+  /@zachleat/spider-pig/3.0.0_dl7ekihkku46p6otfnv7t3lfzq:
     resolution:
       {
         integrity: sha512-5dvGEgSkZ8vg6cmep9E5WHakyW6xwSRisCcSauhzZyAI7QpYaAJxZs4pZWyQCRSj/T4IbbCiUYxdZQbwTzJhvA==,
@@ -5572,6 +5575,7 @@ packages:
       - supports-color
       - utf-8-validate
     dev: true
+    patched: true
 
   /@zxing/text-encoding/0.9.0:
     resolution:
@@ -10428,14 +10432,14 @@ packages:
       slash: 4.0.0
     dev: true
 
-  /glyphhanger/5.0.0_ihfg7h2asl665bulpbv4j7dtmq:
+  /glyphhanger/5.0.0_ktlnajiffqjphag5c52f24g44q:
     resolution:
       {
         integrity: sha512-I8eKMWXAx4w8DJMX9QrH9P6pL5npI2geWQ9HLy2Ed1JGT/hkjJCiFJiAVu9Kj5jXdFM5EqDUMjYb3Xb2rWB/kA==,
       }
     hasBin: true
     dependencies:
-      '@zachleat/spider-pig': 3.0.0
+      '@zachleat/spider-pig': 3.0.0_dl7ekihkku46p6otfnv7t3lfzq
       chalk: 4.1.2
       characterset: 1.3.0
       connect: 3.7.0
@@ -16696,7 +16700,7 @@ packages:
         integrity: sha512-YQ3GRiyZW0ddxTW+iiQcv2/8TT5c3+FcRUCg7F8q2gHqxd5akZN400VRXr9cHQKLWGukmJLDiE72MrcLK9tFHQ==,
       }
     engines: { node: '>=10.18.1' }
-    deprecated: < 18.1.0 is no longer supported
+    deprecated: < 19.2.0 is no longer supported
     requiresBuild: true
     dependencies:
       debug: 4.3.2

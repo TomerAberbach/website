@@ -53,10 +53,21 @@ index 41c952100d9f76a78d491d8b960656ea0c75deea..45dba61a90e4b0b0a19ce3680317eec5
  
  	outputHelp() {
 diff --git a/src/GlyphHangerEnvironment.js b/src/GlyphHangerEnvironment.js
-index 83815413a6b4f6eff2f019ea33c7bc53969f0680..0087faa0e2b0c0f2ad8da3eeb78ec4153f826574 100644
+index 83815413a6b4f6eff2f019ea33c7bc53969f0680..cf7c52011f28d1f9f991ddf601023f59539a3956 100644
 --- a/src/GlyphHangerEnvironment.js
 +++ b/src/GlyphHangerEnvironment.js
-@@ -124,6 +124,11 @@ class PuppeteerEnvironment {
+@@ -107,7 +107,9 @@ class PuppeteerEnvironment {
+ 
+ 	async getBrowser() {
+ 		if( !this.browser ) {
+-			this.browser = await puppeteer.launch();
++			this.browser = await puppeteer.launch({
++        args: ['--no-sandbox', '--disable-setuid-sandbox'],
++      });
+ 		}
+ 
+ 		return this.browser;
+@@ -124,6 +126,11 @@ class PuppeteerEnvironment {
  				timeout: this.timeout
  			});
  
@@ -68,7 +79,7 @@ index 83815413a6b4f6eff2f019ea33c7bc53969f0680..0087faa0e2b0c0f2ad8da3eeb78ec415
  			let statusCode = response.status();
  
  			if ( statusCode !== 200 ) {
-@@ -145,6 +150,7 @@ class PuppeteerEnvironment {
+@@ -145,6 +152,7 @@ class PuppeteerEnvironment {
  			return page;
  		} catch(e) {
  			console.log(chalk.red(`Error with ${url}:`), e);

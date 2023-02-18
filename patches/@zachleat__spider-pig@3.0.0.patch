@@ -1,0 +1,33 @@
+diff --git a/SpiderPig.js b/SpiderPig.js
+index 1c07059acd4b8d2d942023996c2707fa73c1e2a7..389829fa723cf456ea8a501f72d473ee342dc279 100644
+--- a/SpiderPig.js
++++ b/SpiderPig.js
+@@ -38,7 +38,7 @@ class SpiderPig {
+ 
+ 	isValidToAdd(url, origin, fullUrl) {
+ 		url = this.cleanupHref(url, origin);
+-		
++
+ 		if( fullUrl && url === this.cleanupHref(fullUrl)) {
+ 			return false;
+ 		}
+@@ -60,7 +60,9 @@ class SpiderPig {
+ 	}
+ 
+ 	async start() {
+-		this.browser = await puppeteer.launch();
++		this.browser = await puppeteer.launch({
++      args: ['--no-sandbox', '--disable-setuid-sandbox'],
++    });
+ 	}
+ 
+ 	async getPage(url) {
+@@ -122,7 +124,7 @@ class SpiderPig {
+ 				urls.push(href);
+ 			}
+ 		}
+-		
++
+ 		return urls;
+ 	}
+ 
