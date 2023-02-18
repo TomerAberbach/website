@@ -27,14 +27,14 @@ import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import isCI from 'is-ci'
 import { parseHrefs, parseReferences } from './references.server.js'
-import linkSvgPath from './link.svg'
+import linkSvgPath from './images/link.svg'
+import backToContentSvgPath from './images/back-to-content.svg'
 import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.js'
 import type { RawPost } from '~/services/posts/read.server.js'
 import { renderHtml } from '~/services/html.js'
 import type { Components } from '~/services/html.js'
 import { Link } from '~/components/link.js'
 import Tooltip from '~/components/tooltip.js'
-import backToContentSvgPath from '~/private/images/back-to-content.svg'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)

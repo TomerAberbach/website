@@ -4,7 +4,7 @@ import tailwindStylesPath from './styles/build/tailwind.css'
 import fontsStylesPath from './styles/build/fonts.css'
 import Layout from './components/layout.js'
 import ScrollRestoration from './components/scroll-restoration.js'
-import logoIcoPath from '~/private/images/logo.ico'
+import logoIcoPath from './logo.ico'
 import logoSvgPath from '~/private/images/logo.svg'
 
 const App = () => (
