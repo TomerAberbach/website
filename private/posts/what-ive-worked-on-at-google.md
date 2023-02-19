@@ -20,8 +20,7 @@ from most to least recent.
 
 - I implemented
   [edit notifications for Docs](https://workspaceupdates.googleblog.com/2022/07/edit-notifications-for-document-content-changes.html).
-  While working on the feature, I also made various miscellaneous improvements
-  to the existing comment notifications and added a UI for updating a document's
+  While working on the feature, I also added a UI for updating a document's
   comment and edit notification settings directly from the emails using
   [dynamic mail](https://blog.google/products/gmail/take-action-and-stay-up-to-date-with-dynamic-email-in-gmail).
 
@@ -46,6 +45,12 @@ from most to least recent.
 - I
   [increased the width of comment threads in Docs](https://workspaceupdates.googleblog.com/2021/09/comment-size-increasing-in-google-docs.html).
   They were _way_ too narrow and it was bothering me! 😅
+
+- I made [Drive sharing emails](https://support.google.com/drive/answer/2494822)
+  show the most recent file thumbnail, owner, and edit when opening the emails,
+  and added a UI for starring and unstarring the files directly from the emails,
+  all using
+  [dynamic mail](https://blog.google/products/gmail/take-action-and-stay-up-to-date-with-dynamic-email-in-gmail).
 
 - I added
   [link previews for links in Docs, Sheets, Slides, and Drawings comment threads](https://9to5google.com/2019/09/18/google-docs-link-previews).
