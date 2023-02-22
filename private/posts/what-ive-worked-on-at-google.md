@@ -33,14 +33,11 @@ from most to least recent.
   - [The Verge: "# Google Docs is getting more Markdown support"](https://www.theverge.com/2022/3/29/23002138/google-docs-markdown-support-formatting-update)
   - [TechCrunch: "Google adds limited Markdown support to Google Docs"](https://techcrunch.com/2022/03/30/google-adds-limited-markdown-support-to-google-docs)
 
-  And tech Twitter _definitely_ noticed:
+  And
+  [tech Twitter _definitely_ noticed](https://twitter.com/TomerAberbach/status/1508895335200043021).
 
-  https://twitter.com/TomerAberbach/status/1508895335200043021
-
-- I added en- and em-dash autocorrection/substitution to Docs, Slides, and
-  Drawings:
-
-  https://twitter.com/googledocs/status/1471555730364846083
+- I added
+  [en- and em-dash autocorrection/substitution to Docs, Slides, and Drawings](https://twitter.com/googledocs/status/1471555730364846083).
 
 - I
   [increased the width of comment threads in Docs](https://workspaceupdates.googleblog.com/2021/09/comment-size-increasing-in-google-docs.html).
