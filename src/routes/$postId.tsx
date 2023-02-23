@@ -29,23 +29,27 @@ const PostPage = () => {
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header>
         <h1 className='m-0'>{title}</h1>
-        <div className='mt-1.5 flex items-center gap-2'>
-          <p className='m-0 whitespace-nowrap text-gray-500'>
+        <p className='m-0 mt-1.5 overflow-hidden text-gray-500'>
+          <span className='mr-[1ch]'>
             <Dates dates={dates} />
+          </span>
+          <span className='-ml-[1ch] whitespace-nowrap'>
             <span className='font-medium'> · </span>
-            <time dateTime={`${minutesToRead}m`}>
-              {formatMinutesToRead(minutesToRead)}
-            </time>
-          </p>
-          <Tooltip id={suggestEditId} content='Suggest an edit'>
-            <ExternalLink
-              className='inline-block h-[1em] w-[1em] hover:ring'
-              href={`https://github.com/TomerAberbach/website/edit/main/private/posts/${id}.md`}
-            >
-              <PencilSquareIcon titleId={suggestEditId} />
-            </ExternalLink>
-          </Tooltip>
-        </div>
+            <span className='inline-flex items-center gap-2'>
+              <time dateTime={`${minutesToRead}m`}>
+                {formatMinutesToRead(minutesToRead)}
+              </time>
+              <Tooltip id={suggestEditId} content='Suggest an edit'>
+                <ExternalLink
+                  className='inline-block h-[1em] w-[1em] hover:ring'
+                  href={`https://github.com/TomerAberbach/website/edit/main/private/posts/${id}.md`}
+                >
+                  <PencilSquareIcon titleId={suggestEditId} />
+                </ExternalLink>
+              </Tooltip>
+            </span>
+          </span>
+        </p>
         <ul className='not-prose m-0 mt-2 flex list-none flex-wrap gap-2 pl-0 text-sm'>
           {pipe(
             tags,
