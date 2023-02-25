@@ -164,7 +164,7 @@ export const useSelectedTags = (
 
       setSearchParams(newSearchParams, {
         replace: true,
-        state: { scroll: false },
+        preventScrollReset: true,
       })
     },
     [searchParams, setSearchParams],

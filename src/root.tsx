@@ -1,9 +1,15 @@
 import type { LinksFunction } from '@remix-run/node'
-import { Links, LiveReload, Meta, Outlet, Scripts } from '@remix-run/react'
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react'
 import tailwindStylesPath from './styles/build/tailwind.css'
 import fontsStylesPath from './styles/build/fonts.css'
 import Layout from './components/layout.js'
-import ScrollRestoration from './components/scroll-restoration.js'
 import logoIcoPath from './logo.ico'
 import logoSvgPath from '~/private/images/logo.svg'
 

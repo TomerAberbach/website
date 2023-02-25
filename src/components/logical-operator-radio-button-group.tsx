@@ -100,7 +100,7 @@ export const useLogicalOperator = (): [
 
       setSearchParams(newSearchParams, {
         replace: true,
-        state: { scroll: false },
+        preventScrollReset: true,
       })
     },
     [searchParams, setSearchParams],
