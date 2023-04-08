@@ -1,12 +1,17 @@
 import type { LoaderArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
-import type { ThrownResponse } from '@remix-run/react'
+import { isRouteErrorResponse } from '@remix-run/react'
 import { useId } from 'react'
 import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
 } from '~/services/posts/index.server'
-import { createMeta, json, useCatch, useLoaderData } from '~/services/json.js'
+import {
+  createMeta,
+  json,
+  useLoaderData,
+  useRouteError,
+} from '~/services/json.js'
 import { ExternalLink, InternalLink } from '~/components/link.js'
 import Prose from '~/components/prose.js'
 import pick from '~/services/pick.js'
@@ -112,10 +117,13 @@ const Tag = ({ tag }: { tag: string }) => (
   </InternalLink>
 )
 
-export const CatchBoundary = () => {
-  const {
-    data: { didYouMeanPost },
-  } = useCatch<ThrownResponse<404, CatchBoundaryData>>()
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+  if (!isRouteErrorResponse(error)) {
+    return null
+  }
+
+  const { didYouMeanPost } = error.data as ErrorBoundaryData
 
   return (
     <div className='flex flex-1 flex-col items-center justify-center gap-5 text-center'>
@@ -178,7 +186,7 @@ export const loader = async ({ params }: LoaderArgs) => {
 
   const post = (await getMarkdownPosts()).get(postId)
   if (!post) {
-    throw json<CatchBoundaryData>(
+    throw json<ErrorBoundaryData>(
       {
         didYouMeanPost: pick(await findBestMarkdownPostMatch(postId), [
           `id`,
@@ -202,6 +210,6 @@ export const loader = async ({ params }: LoaderArgs) => {
   })
 }
 
-type CatchBoundaryData = { didYouMeanPost: Pick<Post, `id` | `title`> }
+type ErrorBoundaryData = { didYouMeanPost: Pick<Post, `id` | `title`> }
 
 export default PostPage

@@ -1,11 +1,23 @@
-const defaultTheme = require(`tailwindcss/defaultTheme`)
-const colors = require(`tailwindcss/colors`)
-const plugin = require(`tailwindcss/plugin`)
-const roundTo = require(`round-to`)
+import defaultTheme from 'tailwindcss/defaultTheme'
+import colors from 'tailwindcss/colors'
+import plugin from 'tailwindcss/plugin'
+import roundTo from 'round-to'
+import type { Config } from 'tailwindcss'
+import typography from '@tailwindcss/typography'
+
+type MinMax = { min: number; max: number }
 
 const createFluidModularScale =
-  ({ value, ratio, viewport }) =>
-  step => {
+  ({
+    value,
+    ratio,
+    viewport,
+  }: {
+    value: MinMax
+    ratio: MinMax
+    viewport: MinMax
+  }) =>
+  (step: number): string => {
     const min = value.min * ratio.min ** step
     const max = value.max * ratio.max ** step
     const slope = (max - min) / (viewport.max - viewport.min)
@@ -15,9 +27,10 @@ const createFluidModularScale =
     return `clamp(${rem(min)}, ${calc}, ${rem(max)})`
   }
 
-const rem = number => formatWithUnit(number, `rem`)
-const vw = number => formatWithUnit(number, `vw`)
-const formatWithUnit = (number, unit) => `${roundTo(number, 5)}${unit}`
+const rem = (number: number): string => formatWithUnit(number, `rem`)
+const vw = (number: number): string => formatWithUnit(number, `vw`)
+const formatWithUnit = (number: number, unit: string) =>
+  `${roundTo(number, 5)}${unit}`
 
 const fontSizeScale = createFluidModularScale({
   value: { min: 1, max: 1.25 },
@@ -26,8 +39,7 @@ const fontSizeScale = createFluidModularScale({
 })
 const gray100 = `hsl(201, 5%, 89%)`
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config: Config = {
   content: [`./src/**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}`],
   theme: {
     fontFamily: {
@@ -35,28 +47,28 @@ module.exports = {
       mono: [`dm`, ...defaultTheme.fontFamily.mono],
     },
     fontSize: {
-      xs: [fontSizeScale(-2), 1.6],
-      sm: [fontSizeScale(-1), 1.6],
-      base: [fontSizeScale(0), 1.6],
-      lg: [fontSizeScale(1), 1.6],
-      xl: [fontSizeScale(2), 1.2],
-      '2xl': [fontSizeScale(3), 1.2],
-      '3xl': [fontSizeScale(4), 1.2],
-      '4xl': [fontSizeScale(5), 1.1],
-      '5xl': [fontSizeScale(6), 1.1],
-      '6xl': [fontSizeScale(7), 1.1],
-      '7xl': [fontSizeScale(8), 1],
-      '8xl': [fontSizeScale(9), 1],
-      '9xl': [fontSizeScale(10), 1],
+      xs: [fontSizeScale(-2), `1.6`],
+      sm: [fontSizeScale(-1), `1.6`],
+      base: [fontSizeScale(0), `1.6`],
+      lg: [fontSizeScale(1), `1.6`],
+      xl: [fontSizeScale(2), `1.2`],
+      '2xl': [fontSizeScale(3), `1.2`],
+      '3xl': [fontSizeScale(4), `1.2`],
+      '4xl': [fontSizeScale(5), `1.1`],
+      '5xl': [fontSizeScale(6), `1.1`],
+      '6xl': [fontSizeScale(7), `1.1`],
+      '7xl': [fontSizeScale(8), `1`],
+      '8xl': [fontSizeScale(9), `1`],
+      '9xl': [fontSizeScale(10), `1`],
     },
     fontWeight: {
-      hairline: 100,
-      thin: 200,
-      light: 300,
-      normal: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
+      hairline: `100`,
+      thin: `200`,
+      light: `300`,
+      normal: `400`,
+      medium: `500`,
+      semibold: `600`,
+      bold: `700`,
     },
     colors: {
       transparent: colors.transparent,
@@ -148,9 +160,10 @@ module.exports = {
     },
   },
   plugins: [
-    require(`@tailwindcss/typography`),
+    typography,
     plugin(({ addVariant }) => {
       addVariant(`js`, `.js &`)
     }),
   ],
 }
+export default config

@@ -1,8 +1,12 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   future: {
-    // eslint-disable-next-line camelcase
+    /* eslint-disable camelcase */
+    v2_errorBoundary: true,
     v2_meta: true,
+    v2_normalizeFormMethod: true,
+    v2_routeConvention: true,
+    /* eslint-enable camelcase */
   },
   appDirectory: `src`,
   assetsBuildDirectory: `public/build`,

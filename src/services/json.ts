@@ -8,10 +8,11 @@ import type {
   TypedResponse,
 } from '@remix-run/node'
 import { json as remixJson } from '@remix-run/node'
-import type { Location, Params, ThrownResponse } from '@remix-run/react'
+import type { Location, Params } from '@remix-run/react'
 import {
-  useCatch as useRemixCatch,
+  isRouteErrorResponse,
   useLoaderData as useRemixLoaderData,
+  useRouteError as useRemixRouteError,
 } from '@remix-run/react'
 import { deserialize, serialize } from 'superjson'
 import type { SuperJSONResult } from 'superjson/dist/types'
@@ -27,19 +28,13 @@ export const useLoaderData = <
 >(): InferData<DataOrFunction> =>
   deserialize(useRemixLoaderData() as SuperJSONResult)
 
-export const useCatch = <
-  Result extends ThrownResponse = ThrownResponse,
->(): Result => {
-  const caught = useRemixCatch<Result>()
-
-  if (!(`data` in caught)) {
-    return caught
+export const useRouteError = (): unknown => {
+  const error = useRemixRouteError()
+  if (!isRouteErrorResponse(error)) {
+    return error
   }
 
-  return {
-    ...caught,
-    data: deserialize<Result[`data`]>(caught.data as SuperJSONResult),
-  }
+  return { ...error, data: deserialize(error.data as SuperJSONResult) }
 }
 
 export const createMeta =
