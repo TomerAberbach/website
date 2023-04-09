@@ -1,7 +1,7 @@
 import { map, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import Balancer, { Provider as BalanceProvider } from 'react-wrap-balancer'
 import { Link } from './link.js'
 import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
@@ -20,26 +20,31 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
     },
   } = graph
 
+  const [hasMounted, setHasMounted] = useState(false)
   const scrollElementRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const scrollElement = scrollElementRef.current!
-    if (scrollElement.scrollLeft !== 0) {
-      // The user scrolled the element in the time between the page loading and
-      // hydrating. Don't center the scrollbar in this case
-      return
-    }
 
-    // Center the scrollbar
-    scrollElement.scrollLeft =
-      (scrollElement.scrollWidth - scrollElement.clientWidth) / 2
+  useIsomorphicLayoutEffect(() => {
+    setHasMounted(true)
+    const scrollElement = scrollElementRef.current!
+    const { scrollWidth, clientWidth } = scrollElement
+    scrollElement.scrollLeft = (scrollWidth - clientWidth) / 2
   }, [])
 
   return (
     <div className='flex w-full flex-grow items-center justify-center'>
-      <div ref={scrollElementRef} className='w-full overflow-x-auto px-16 py-3'>
+      <div
+        ref={scrollElementRef}
+        className={clsx(
+          `w-full overflow-x-auto px-16 py-3`,
+          !hasMounted && `js:overflow-x-hidden`,
+        )}
+      >
         <div
           id={id}
-          className='relative m-auto w-full overflow-visible'
+          className={clsx(
+            `relative m-auto w-full overflow-visible`,
+            !hasMounted && `js:left-1/2 js:m-0 js:-translate-x-1/2`,
+          )}
           style={{
             minWidth: width / 2,
             maxWidth: width,
@@ -53,6 +58,9 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
     </div>
   )
 }
+
+const useIsomorphicLayoutEffect =
+  typeof window === `undefined` ? useEffect : useLayoutEffect
 
 const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
   const markerId = useId()
@@ -189,7 +197,7 @@ const Vertex = ({
   const vertexNode = (
     <>
       <div className='h-full w-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
-      <div className='absolute left-1/2 bottom-[150%] z-10 -translate-x-1/2 text-center text-sm font-medium sm:text-base'>
+      <div className='absolute bottom-[150%] left-1/2 z-10 -translate-x-1/2 text-center text-sm font-medium sm:text-base'>
         {external ? (
           labelNode
         ) : (
