@@ -1,5 +1,5 @@
 {
-  "extends": "tomer/tsconfig.json",
+  "extends": "tomer/tsconfig",
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "ES2020",

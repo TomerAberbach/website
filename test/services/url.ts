@@ -1,3 +1,5 @@
+import { jest } from 'tomer'
+
 const originalWindow = window
 beforeEach(() => {
   // @ts-expect-error Simulating the server
@@ -30,7 +32,3 @@ test(`SITE_URL is set based on the current href in the browser`, async () => {
 
   expect(SITE_URL).toBe(BASE_URL)
 })
-
-// Workaround for --isolatedModules error due to lack of non-dynamic imports
-// eslint-disable-next-line jest/no-export
-export {}
