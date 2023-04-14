@@ -19,7 +19,7 @@ export const TagsFilterForm = ({
   const [logicalOperator, setLogicalOperator] = useLogicalOperator()
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
-  // Prevent form submission when JavaScript is enabled.
+  // Prevent form submission when JavaScript is enabled
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     e => e.preventDefault(),
     [],
