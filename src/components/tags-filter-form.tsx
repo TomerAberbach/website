@@ -1,6 +1,7 @@
 import { any, entries, filter, join, map, pipe, values } from 'lfi'
 import cssesc from 'cssesc'
 import { Form } from '@remix-run/react'
+import { type FormEventHandler, useCallback } from 'react'
 import type { LogicalOperator } from './logical-operator-radio-button-group.js'
 import {
   LogicalOperatorRadioButtonGroup,
@@ -18,8 +19,17 @@ export const TagsFilterForm = ({
   const [logicalOperator, setLogicalOperator] = useLogicalOperator()
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
+  // Prevent form submission when JavaScript is enabled.
+  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+    e => e.preventDefault(),
+    [],
+  )
+
   return (
-    <Form className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'>
+    <Form
+      className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'
+      onSubmit={handleSubmit}
+    >
       <div className='flex items-center gap-3'>
         <h2 className='text-lg font-medium'>Filter by tags</h2>
         {
