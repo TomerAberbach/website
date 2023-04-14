@@ -36,9 +36,12 @@ test(`SITE_URL is set based on the current href in the browser`, async () => {
   expect(SITE_URL).toBe(BASE_URL)
 })
 
-test(`getSiteUrl returns the SITE_URL with the given path appended with trailing slash removed`, async () => {
-  const { getSiteUrl } = await import(`~/services/url.js`)
-  const url = getSiteUrl(`/some/path/`)
+test.each([`/some/path`, `/some/path/`])(
+  `getSiteUrl returns the SITE_URL with the given path appended with any trailing slash removed`,
+  async path => {
+    const { getSiteUrl } = await import(`~/services/url.js`)
+    const url = getSiteUrl(path)
 
-  expect(url).toBe(`http://localhost:3000/some/path`)
-})
+    expect(url).toBe(`http://localhost:3000/some/path`)
+  },
+)
