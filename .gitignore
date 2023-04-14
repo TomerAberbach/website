@@ -5,6 +5,4 @@ node_modules
 **/build/
 
 **/*.tsbuildinfo
-
-/cypress/videos
-/cypress/screenshots
+coverage
