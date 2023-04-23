@@ -294,34 +294,37 @@ const DialogVertex = ({
       </button>
       <dialog
         ref={dialogElementRef}
-        className='overflow-hidden rounded-lg bg-white p-6 shadow-xl'
+        className='rounded-lg bg-white p-0 shadow-xl'
       >
-        <div className='flex items-center justify-between'>
-          <h3 className='font-medium'>
-            Links to <em>{label}</em>:
-          </h3>
-          <form method='dialog' className='ml-8 inline-flex'>
-            <button type='submit' className='focus-ring hover:ring'>
-              <img src={closeSvgPath} alt='Close' className='h-6 w-6' />
-            </button>
-          </form>
+        <div className='m-6 inline-block'>
+          <div className='flex justify-between'>
+            <h3 className='font-medium'>
+              Links to <em>{label}</em>:
+            </h3>
+            <div className='ml-6 w-6' />
+            <form method='dialog' className='sticky right-6 top-0'>
+              <button type='submit' className='focus-ring hover:ring'>
+                <img src={closeSvgPath} alt='Close' className='h-6 w-6' />
+              </button>
+            </form>
+          </div>
+          <ul className='list-inside list-["→_"] whitespace-nowrap'>
+            {pipe(
+              hrefs,
+              map(href => {
+                const url = new URL(href)
+                return (
+                  <li key={href}>
+                    <Link href={href} className='underline'>
+                      {url.pathname + url.search + url.hash}
+                    </Link>
+                  </li>
+                )
+              }),
+              reduce(toArray()),
+            )}
+          </ul>
         </div>
-        <ul className='list-inside list-["→_"] whitespace-nowrap marker:mr-3'>
-          {pipe(
-            hrefs,
-            map(href => {
-              const url = new URL(href)
-              return (
-                <li key={href} className='overflow-hidden text-ellipsis'>
-                  <Link href={href} className='underline'>
-                    {url.pathname + url.search + url.hash}
-                  </Link>
-                </li>
-              )
-            }),
-            reduce(toArray()),
-          )}
-        </ul>
       </dialog>
     </>
   )
