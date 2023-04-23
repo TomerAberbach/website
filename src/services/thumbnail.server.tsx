@@ -3,6 +3,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import type { Sharp } from 'sharp'
 import sharp from 'sharp'
 import { htmlEscape } from 'escape-goat'
+import { ColorTranslator } from 'colortranslator'
+import tailwindConfig from '../../tailwind.config.js'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
 import type { MarkdownPost } from '~/services/posts/types.js'
 import { privatePath } from '~/services/path.server.js'
@@ -13,6 +15,10 @@ import {
 } from '~/services/format.js'
 import { cache } from '~/services/cache.server.js'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
+
+const { colors } = tailwindConfig.theme
+const blue400 = new ColorTranslator(colors.blue[400]).HEX
+const gray600 = new ColorTranslator(colors.gray[600]).HEX
 
 export const renderThumbnail = async (
   post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,
@@ -57,7 +63,7 @@ const ThumbnailFrame = () => (
         `h${-PADDING_BOX_WIDTH}`,
         `z`,
       ].join(``)}
-      fill='hsl(201, 97%, 67%)'
+      fill={blue400}
     />
     <path
       d={[
@@ -69,7 +75,7 @@ const ThumbnailFrame = () => (
         `h${-PADDING_BOX_WIDTH}`,
         `z`,
       ].join(``)}
-      stroke='hsl(201, 97%, 67%)'
+      stroke={blue400}
       strokeWidth={3}
       fill='#fff'
     />
@@ -147,7 +153,7 @@ const renderSubtitle = (dates: Dates, minutesToRead: number) => {
   const datesDisplay = formatDatesForDisplay(dates)
   const minutesToReadDisplay = formatMinutesToRead(minutesToRead)
   return renderText(
-    pango`<span foreground="#777F83" line_height="0.8">${datesDisplay} <span weight="600">·</span> ${minutesToReadDisplay}</span>`,
+    pango`<span foreground="${gray600}" line_height="0.8">${datesDisplay} <span weight="600">·</span> ${minutesToReadDisplay}</span>`,
     { width: CONTENT_BOX_WIDTH, height: MAX_SUBTITLE_HEIGHT },
   )
 }
@@ -210,7 +216,7 @@ const getAvatarAndAuthorText = cache(async () => {
                         cx={AVATAR_SIZE / 2}
                         cy={AVATAR_SIZE / 2}
                         fill='none'
-                        stroke='hsl(201, 97%, 67%)'
+                        stroke={blue400}
                         strokeWidth={4}
                       />
                     </svg>,

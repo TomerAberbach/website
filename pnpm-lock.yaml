@@ -39,6 +39,9 @@ dependencies:
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
+  colortranslator:
+    specifier: ^1.10.2
+    version: 1.10.2
   cssesc:
     specifier: ^3.0.0
     version: 3.0.0
@@ -7673,6 +7676,13 @@ packages:
         integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==,
       }
     dev: true
+
+  /colortranslator@1.10.2:
+    resolution:
+      {
+        integrity: sha512-+vAnjWTdI0Vh6fT3I+dA6DAtnLfo91TzYKjewYeZ2dHdhF8Yo5OMo47inNJdJOXwjJ9lPD0LkNeQOLU/8yyfZA==,
+      }
+    dev: false
 
   /combined-stream@1.0.8:
     resolution:

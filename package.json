@@ -66,6 +66,7 @@
     "@remix-run/serve": "^1.15.0",
     "@remix-run/server-runtime": "^1.15.0",
     "clsx": "^1.2.1",
+    "colortranslator": "^1.10.2",
     "cssesc": "^3.0.0",
     "escape-goat": "^4.0.0",
     "gray-matter": "^4.0.3",

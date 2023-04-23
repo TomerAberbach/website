@@ -2,7 +2,6 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 import colors from 'tailwindcss/colors'
 import plugin from 'tailwindcss/plugin'
 import roundTo from 'round-to'
-import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography'
 
 type MinMax = { min: number; max: number }
@@ -39,7 +38,7 @@ const fontSizeScale = createFluidModularScale({
 })
 const gray100 = `hsl(201, 5%, 89%)`
 
-const config: Config = {
+export default {
   content: [`./src/**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}`],
   theme: {
     fontFamily: {
@@ -165,5 +164,4 @@ const config: Config = {
       addVariant(`js`, `.js &`)
     }),
   ],
-}
-export default config
+} as const
