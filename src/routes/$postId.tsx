@@ -34,7 +34,7 @@ const PostPage = () => {
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header>
         <h1 className='m-0'>{title}</h1>
-        <p className='m-0 mt-1.5 overflow-hidden text-gray-600'>
+        <p className='m-0 mt-1.5 text-gray-600'>
           <span className='mr-[1ch]'>
             <Dates dates={dates} />
           </span>
