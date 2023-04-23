@@ -168,7 +168,7 @@ const createHeading =
       >
         <img
           src={linkSvgPath}
-          className='m-0'
+          className='m-0 h-6 w-6'
           // eslint-disable-next-line react/jsx-no-useless-fragment
           alt={`${renderToString(<>{children}</>)} permalink`}
         />
@@ -195,7 +195,7 @@ const Anchor: Components[`a`] = ({
           aria-labelledby={tooltipId}
           className='inline-block h-4 w-4 align-text-top no-underline hover:ring'
         >
-          <img src={backToContentSvgPath} alt='' className='m-0' />
+          <img src={backToContentSvgPath} alt='' className='m-0 h-4 w-4' />
         </a>
       )}
     </Tooltip>
