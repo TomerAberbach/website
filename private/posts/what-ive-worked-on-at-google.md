@@ -3,12 +3,24 @@ title: 'What I’ve Worked On at Google'
 tags:
   ['code', 'docs', 'drawings', 'google', 'resume', 'sheets', 'sites', 'slides']
 dates:
-  published: 2023-02-05
+  published: 2023-04-23
 ---
 
 Naturally this list only includes projects I'm allowed to talk about! For many
 projects I was not the only person who worked on it. The projects are ordered
 from most to least recent.
+
+- I worked on
+  [integrating generative AI with Docs](https://workspace.google.com/blog/product-announcements/generative-ai)!
+
+  _Many_ news outlets took note:
+
+  - [Forbes: Google Stock Jumps As It Puts Artificial Intelligence Into Google Docs](https://www.forbes.com/sites/qai/2023/03/15/google-stock-jumps-as-it-unveils-new-ai-powered-tools-for-workspace)
+  - [Fortune: GPT-4 debuts and Google beats Microsoft in race to add generative A.I. to consumer office tools](https://fortune.com/2023/03/14/gpt-4-debuts-and-google-beats-microsoft-in-race-to-add-generative-a-i-to-consumer-office-tools)
+  - [Reuters: Google unveils 'magic wand' to draft documents as AI race tightens](https://www.reuters.com/technology/google-unveils-magic-wand-draft-documents-ai-race-tightens-2023-03-14)
+  - [The Verge: Google announces AI features in Gmail, Docs, and more to rival Microsoft](https://www.theverge.com/2023/3/14/23639273/google-ai-features-docs-gmail-slides-sheets-workspace)
+  - [USA Today: Google unveils new features for Docs, Gmail and more amid AI race](https://www.usatoday.com/story/tech/2023/03/14/google-ai-announcement-gmail-docs/11470811002)
+  - [The Washington Post: Google is adding AI to its work apps. Here’s what that means.](https://www.washingtonpost.com/technology/2023/03/14/google-workspace-ai)
 
 - I worked on
   [code blocks for Docs, including the Markdown support](https://workspaceupdates.googleblog.com/2022/12/format-display-code-google-docs.html).
