@@ -58,13 +58,13 @@ export const TagsCheckboxGroup = ({
         {tagElements.slice(0, -1)}
         <div className='flex gap-2'>
           {tagElements.at(-1)}
-          <span>
+          <div className='aspect-square'>
             <Tooltip content='Reset'>
               {tooltipId => (
                 <button
                   aria-labelledby={tooltipId}
                   type='button'
-                  className='focus-ring hidden h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:block'
+                  className='focus-ring hidden aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:block'
                   onClick={handleReset}
                 >
                   <ResetIcon />
@@ -76,7 +76,7 @@ export const TagsCheckboxGroup = ({
                 <button
                   aria-labelledby={tooltipId}
                   type='submit'
-                  className='focus-ring block h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:hidden'
+                  className='focus-ring block aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:hidden'
                 >
                   <SearchIcon />
                 </button>
@@ -87,7 +87,7 @@ export const TagsCheckboxGroup = ({
                 Unchecked all tags
               </span>
             )}
-          </span>
+          </div>
         </div>
       </fieldset>
     </div>
