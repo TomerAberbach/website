@@ -42,8 +42,12 @@ export const getMeta = (
     return baseMeta
   }
 
-  // https://ogp.me
+  const postImageAlt = `${post.title}. ${formatDatesForDisplay(
+    post.dates,
+  )}. ${formatMinutesToRead(post.minutesToRead)}. By ${SITE_TITLE_AND_AUTHOR}.`
+
   return baseMeta.concat([
+    // https://ogp.me
     { property: `og:title`, content: title },
     { property: `og:description`, content: description },
     {
@@ -55,17 +59,16 @@ export const getMeta = (
     { property: `og:image:type`, content: `image/png` },
     { property: `og:image:width`, content: String(THUMBNAIL_WIDTH) },
     { property: `og:image:height`, content: String(THUMBNAIL_HEIGHT) },
-    {
-      property: `og:image:alt`,
-      content: `${post.title}. ${formatDatesForDisplay(
-        post.dates,
-      )}. ${formatMinutesToRead(
-        post.minutesToRead,
-      )}. By ${SITE_TITLE_AND_AUTHOR}.`,
-    },
+    { property: `og:image:alt`, content: postImageAlt },
 
     { property: `og:type`, content: type },
     ...(type === `article` ? getArticleMeta(post) : []),
+
+    // Twitter
+    { name: `twitter:card`, content: `summary_large_image` },
+    { name: `twitter:site`, content: `@TomerAberbach` },
+    { name: `twitter:title`, content: title },
+    { name: `twitter:description`, content: description },
   ])
 }
 
