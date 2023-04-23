@@ -301,7 +301,7 @@ const DialogVertex = ({
             Links to <em>{label}</em>:
           </h3>
           <form method='dialog' className='ml-8 inline-flex'>
-            <button type='submit' className='focus-ring'>
+            <button type='submit' className='focus-ring hover:ring'>
               <img src={closeSvgPath} alt='Close' className='h-6 w-6' />
             </button>
           </form>
