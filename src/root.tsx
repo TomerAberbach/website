@@ -39,6 +39,12 @@ const App = () => (
       </Layout>
       <ScrollRestoration />
       <Scripts />
+      <script
+        src='https://cdn.usefathom.com/script.js'
+        data-spa='auto'
+        data-site='RAOMNART'
+        defer
+      />
       <LiveReload />
     </body>
   </html>
