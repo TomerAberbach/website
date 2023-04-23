@@ -92,11 +92,11 @@ const TagsFilterStyle = ({
             opacity: 0.25;
           }
 
-          ${selector} > a {
+          ${selector} > :is(a, button) {
             display: none;
           }
 
-          ${selector} > :not(a) {
+          ${selector} > :not(:is(a, button, dialog)) {
             display: initial;
           }
         `,

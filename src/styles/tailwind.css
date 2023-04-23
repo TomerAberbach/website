@@ -8,6 +8,11 @@
     @apply flex min-h-full flex-col;
   }
 
+  html:has(dialog[open]:modal) {
+    @apply overflow-hidden;
+    scrollbar-gutter: stable both-edges;
+  }
+
   body {
     @apply text-base;
     @apply flex-1 subpixel-antialiased;

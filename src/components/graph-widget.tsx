@@ -1,10 +1,19 @@
-import { map, pipe, reduce, toArray, values } from 'lfi'
+import { first, get, map, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import Balancer, { Provider as BalanceProvider } from 'react-wrap-balancer'
 import { Link } from './link.js'
 import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
+import closeSvgPath from './close.svg'
 import type {
   Graph,
   Edge as GraphEdge,
@@ -175,35 +184,35 @@ const Vertex = ({
     boundingBox: { width, height },
     positions,
   },
-  vertex: { id, label, tags, href, reloadDocument, external },
+  vertex,
 }: {
   layout: GraphLayout
   vertex: GraphVertex
 }) => {
-  const { x, y } = positions.get(id)!
+  const { x, y } = positions.get(vertex.id)!
 
   const labelNode = (
     <span
       className={clsx(
         `break-words box-decoration-clone py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 sm:py-[0.25em]`,
-        external
-          ? `group-odd/vertex:bg-yellow-100 group-odd/vertex:shadow-yellow-100 group-even/vertex:bg-orange-200 group-even/vertex:shadow-orange-200 group-odd/vertex:group-hover/link:bg-yellow-200 group-odd/vertex:group-hover/link:shadow-yellow-200 group-even/vertex:group-hover/link:bg-orange-300 group-even/vertex:group-hover/link:shadow-orange-300 group-odd/vertex:group-focus-visible/link:bg-yellow-200 group-odd/vertex:group-focus-visible/link:shadow-yellow-200 group-even/vertex:group-focus-visible/link:bg-orange-300 group-even/vertex:group-focus-visible/link:shadow-orange-300`
-          : `bg-blue-200 shadow-blue-200 group-hover/link:bg-blue-300 group-hover/link:shadow-blue-300 group-focus-visible/link:bg-blue-300 group-focus-visible/link:shadow-blue-300`,
+        vertex.type === `internal`
+          ? `bg-blue-200 shadow-blue-200 group-hover/link:bg-blue-300 group-hover/link:shadow-blue-300 group-focus-visible/link:bg-blue-300 group-focus-visible/link:shadow-blue-300`
+          : `group-odd/vertex:bg-yellow-100 group-odd/vertex:shadow-yellow-100 group-even/vertex:bg-orange-200 group-even/vertex:shadow-orange-200 group-odd/vertex:group-hover/link:bg-yellow-200 group-odd/vertex:group-hover/link:shadow-yellow-200 group-even/vertex:group-hover/link:bg-orange-300 group-even/vertex:group-hover/link:shadow-orange-300 group-odd/vertex:group-focus-visible/link:bg-yellow-200 group-odd/vertex:group-focus-visible/link:shadow-yellow-200 group-even/vertex:group-focus-visible/link:bg-orange-300 group-even/vertex:group-focus-visible/link:shadow-orange-300`,
       )}
     >
-      {label}
+      {vertex.label}
     </span>
   )
   const vertexNode = (
     <>
       <div className='h-full w-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
       <div className='absolute bottom-[150%] left-1/2 z-10 -translate-x-1/2 text-center text-sm font-medium sm:text-base'>
-        {external ? (
-          labelNode
-        ) : (
+        {vertex.type === `internal` ? (
           <div className='inline-block w-52'>
             <Balancer>{labelNode}</Balancer>
           </div>
+        ) : (
+          labelNode
         )}
       </div>
     </>
@@ -213,7 +222,7 @@ const Vertex = ({
     <div
       className={clsx(
         `group/vertex absolute rounded-full transition duration-200`,
-        getTagClassNames(tags),
+        getTagClassNames(vertex.tags),
       )}
       style={{
         left: getScaledCalc(x - VERTEX_RADIUS, width),
@@ -225,14 +234,96 @@ const Vertex = ({
       <div className='pointer-events-none absolute inset-0 hidden'>
         {vertexNode}
       </div>
-      <Link
-        href={href}
-        reloadDocument={reloadDocument}
-        className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring'
-      >
-        {vertexNode}
-      </Link>
+      {vertex.type === `internal` ? (
+        <LinkVertex href={vertex.href} reloadDocument={vertex.reloadDocument}>
+          {vertexNode}
+        </LinkVertex>
+      ) : vertex.hrefs.size === 1 ? (
+        <LinkVertex href={get(first(vertex.hrefs))}>{vertexNode}</LinkVertex>
+      ) : (
+        <DialogVertex label={vertex.label} hrefs={vertex.hrefs}>
+          {vertexNode}
+        </DialogVertex>
+      )}
     </div>
+  )
+}
+
+const LinkVertex = ({
+  href,
+  reloadDocument,
+  children,
+}: {
+  href: string
+  reloadDocument?: boolean
+  children: ReactNode
+}) => (
+  <Link
+    href={href}
+    reloadDocument={reloadDocument}
+    className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring'
+  >
+    {children}
+  </Link>
+)
+
+const DialogVertex = ({
+  label,
+  hrefs,
+  children,
+}: {
+  label: string
+  hrefs: Set<string>
+  children: ReactNode
+}) => {
+  const dialogElementRef = useRef<HTMLDialogElement | null>(null)
+
+  const handleClick = useCallback(
+    () => dialogElementRef.current!.showModal(),
+    [],
+  )
+
+  return (
+    <>
+      <button
+        type='button'
+        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0 hover:ring'
+        onClick={handleClick}
+      >
+        {children}
+      </button>
+      <dialog
+        ref={dialogElementRef}
+        className='overflow-hidden rounded-lg bg-white p-6 shadow-xl'
+      >
+        <div className='flex items-center justify-between'>
+          <h3 className='font-medium'>
+            Links to <em>{label}</em>:
+          </h3>
+          <form method='dialog' className='ml-8 inline-flex'>
+            <button type='submit' className='focus-ring'>
+              <img src={closeSvgPath} alt='Close' className='h-6 w-6' />
+            </button>
+          </form>
+        </div>
+        <ul className='list-inside list-["→_"] whitespace-nowrap marker:mr-3'>
+          {pipe(
+            hrefs,
+            map(href => {
+              const url = new URL(href)
+              return (
+                <li key={href} className='overflow-hidden text-ellipsis'>
+                  <Link href={href} className='underline'>
+                    {url.pathname + url.search + url.hash}
+                  </Link>
+                </li>
+              )
+            }),
+            reduce(toArray()),
+          )}
+        </ul>
+      </dialog>
+    </>
   )
 }
 

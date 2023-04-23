@@ -24,12 +24,12 @@ export const getGraph = cache(async (): Promise<Graph> => {
     map(([id, { title, tags, ...rest }]): [string, Vertex] => [
       id,
       {
+        type: `internal`,
         id,
         label: title,
         tags,
         href: rest.type === `href` ? rest.href : `/${id}`,
         reloadDocument: rest.type === `href`,
-        external: false,
       },
     ]),
     reduce(toMap()),
@@ -55,15 +55,14 @@ export const getGraph = cache(async (): Promise<Graph> => {
       let vertex = vertices.get(toId)
 
       if (!vertex) {
-        const url = new URL(hrefs.values().next().value)
         vertices.set(
           toId,
           (vertex = {
+            type: `external`,
             id: toId,
             label: toId,
             tags: new Set(),
-            href: url.origin,
-            external: true,
+            hrefs: new Set(),
           }),
         )
       }
@@ -71,8 +70,20 @@ export const getGraph = cache(async (): Promise<Graph> => {
       for (const tag of tags) {
         vertex.tags.add(tag)
       }
+
+      if (vertex.type === `external`) {
+        for (const href of hrefs) {
+          vertex.hrefs.add(href)
+        }
+      }
     }),
   )
+
+  for (const vertex of vertices.values()) {
+    if (vertex.type === `external`) {
+      vertex.hrefs = new Set([...vertex.hrefs].sort())
+    }
+  }
 
   const layout = layoutGraph({ vertices, edges })
 
@@ -85,13 +96,23 @@ export type Graph = {
   layout: GraphLayout
 }
 
-export type Vertex = {
+export type Vertex = InternalVertex | ExternalVertex
+
+export type InternalVertex = BaseVertex & {
+  type: `internal`
+  href: string
+  reloadDocument: boolean
+}
+
+export type ExternalVertex = BaseVertex & {
+  type: `external`
+  hrefs: Set<string>
+}
+
+type BaseVertex = {
   id: string
   label: string
   tags: Set<string>
-  href: string
-  reloadDocument?: boolean
-  external: boolean
 }
 
 export type Edge = {
@@ -134,7 +155,7 @@ const layoutGraph = ({
   // Position internal vertices in a vertical column
   pipe(
     vertices.values(),
-    filter(({ external }) => !external),
+    filter(({ type }) => type === `internal`),
     index,
     forEach(([index, { id }]) => {
       layout.setNodePosition(
