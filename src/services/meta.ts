@@ -42,6 +42,7 @@ export const getMeta = (
     return baseMeta
   }
 
+  const postImageUrl = getSiteUrl(`${post.id}.png`)
   const postImageAlt = `${post.title}. ${formatDatesForDisplay(
     post.dates,
   )}. ${formatMinutesToRead(post.minutesToRead)}. By ${SITE_TITLE_AND_AUTHOR}.`
@@ -55,7 +56,7 @@ export const getMeta = (
       content: getSiteUrl(location.pathname),
     },
 
-    { property: `og:image`, content: getSiteUrl(`${post.id}.png`) },
+    { property: `og:image`, content: postImageUrl },
     { property: `og:image:type`, content: `image/png` },
     { property: `og:image:width`, content: String(THUMBNAIL_WIDTH) },
     { property: `og:image:height`, content: String(THUMBNAIL_HEIGHT) },
@@ -69,6 +70,8 @@ export const getMeta = (
     { name: `twitter:site`, content: `@TomerAberbach` },
     { name: `twitter:title`, content: title },
     { name: `twitter:description`, content: description },
+    { name: `twitter:image`, content: postImageUrl },
+    { name: `twitter:image:alt`, content: postImageAlt },
   ])
 }
 
