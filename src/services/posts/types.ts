@@ -7,7 +7,11 @@ export type MarkdownPost = BasePost & {
   minutesToRead: number
   content: string
   description: string
+  previousPost?: AdjacentMarkdownPost
+  nextPost?: AdjacentMarkdownPost
 }
+
+export type AdjacentMarkdownPost = { id: string; title: string }
 
 export type HrefPost = BasePost & { type: `href`; href: string }
 
