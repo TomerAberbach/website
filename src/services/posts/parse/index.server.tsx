@@ -10,8 +10,9 @@ import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
 import parseFrontMatter from 'gray-matter'
 import { unified } from 'unified'
-import { getHighlighter } from 'shiki'
-import rehypeShiki from '@leafac/rehype-shiki'
+import rehypeParse from 'rehype-parse'
+import { type Highlighter, getHighlighter } from 'shiki'
+import { toText } from 'hast-util-to-text'
 import stripMarkdown from 'strip-markdown'
 import rehypePresetMinify from 'rehype-preset-minify'
 import { visit } from 'unist-util-visit'
@@ -77,7 +78,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
       .use(remarkRehype, { clobberPrefix: `` })
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
-      .use(rehypeShiki, { highlighter: await highlighterPromise })
+      .use(rehypeShiki, await highlighterPromise)
       .use(() => rehypeRemoveShikiClasses)
       .use(rehypeKatex)
       .use(rehypePresetMinify)
@@ -90,13 +91,75 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
   ).result as Root
 
 const remarkEmbedderCache = new RemarkEmbedderCache()
+
+const rehypeShiki = (highlighter: Highlighter) => (tree: Root) => {
+  visit(tree, { tagName: `pre` }, (node, index, parent): number | undefined => {
+    if (!parent) {
+      return undefined
+    }
+    index ??= 0
+
+    const { children } = node
+    if (children.length !== 1) {
+      return undefined
+    }
+
+    const child = children[0]!
+    if (child.type !== `element` || child.tagName !== `code`) {
+      return undefined
+    }
+
+    const language = extractLanguageFromClassName(child.properties?.className)
+    if (!language) {
+      return undefined
+    }
+
+    const code = toText(node).slice(0, -1)
+    let highlightedCode
+    try {
+      highlightedCode = highlighter.codeToHtml(code, { lang: language })
+    } catch {
+      return undefined
+    }
+
+    const codeAst = unified()
+      .use(rehypeParse, { fragment: true })
+      .parse(highlightedCode)
+    codeAst.children.find(child => child.type === `element`)!.position =
+      // eslint-disable-next-line unicorn/consistent-destructuring
+      node.position
+    parent.children.splice(index, 1, ...codeAst.children)
+    return index + codeAst.children.length
+  })
+}
+
 const highlighterPromise = getHighlighter({ theme: `material-theme-palenight` })
+
+const extractLanguageFromClassName = (
+  className: string | number | boolean | (string | number)[] | null | undefined,
+): string | null => {
+  if (!Array.isArray(className)) {
+    return null
+  }
+
+  const languageClassName = className
+    .map(String)
+    .find(className => className.startsWith(LANGUAGE_PREFIX))
+  if (!languageClassName) {
+    return null
+  }
+
+  return languageClassName.slice(LANGUAGE_PREFIX.length)
+}
+
+const LANGUAGE_PREFIX = `language-`
 
 const rehypeRemoveShikiClasses = (tree: Root) => {
   visit(tree, { tagName: `pre` }, node => {
     const stack = [node]
     do {
       const node = stack.pop()!
+      delete node.properties?.tabIndex
       delete node.properties?.className
 
       for (const child of node.children) {

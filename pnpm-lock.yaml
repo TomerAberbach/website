@@ -12,9 +12,6 @@ dependencies:
   '@fec/remark-a11y-emoji':
     specifier: ^3.1.0
     version: 3.1.0
-  '@leafac/rehype-shiki':
-    specifier: ^2.2.1
-    version: 2.2.1(shiki@0.14.1)
   '@remark-embedder/cache':
     specifier: ^2.1.0
     version: 2.1.0
@@ -54,6 +51,9 @@ dependencies:
   hast-util-select:
     specifier: ^5.0.5
     version: 5.0.5
+  hast-util-to-text:
+    specifier: ^3.1.2
+    version: 3.1.2
   lfi:
     specifier: 2.0.0-beta.1
     version: 2.0.0-beta.1
@@ -87,6 +87,9 @@ dependencies:
   rehype-katex:
     specifier: ^6.0.2
     version: 6.0.2
+  rehype-parse:
+    specifier: ^8.0.4
+    version: 8.0.4
   rehype-preset-minify:
     specifier: ^6.0.0
     version: 6.0.0
@@ -4340,32 +4343,6 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
-
-  /@leafac/html@3.0.3:
-    resolution:
-      {
-        integrity: sha512-/98cnqmt4WztcEG7VAs19Bsebp1PldgV4prnkL5oB9xtRMnc1JbupbD0oFSfmAqxgyU8fiJbk2B/AioNPVzkHg==,
-      }
-    dependencies:
-      he: 1.2.0
-      sanitize-xml-string: 1.1.0
-    dev: false
-
-  /@leafac/rehype-shiki@2.2.1(shiki@0.14.1):
-    resolution:
-      {
-        integrity: sha512-rN2r98YDdy1q61TppykZmk1np01K6jFBC/3FsLHbDYhMu0wpJ+1XW8LjrjotpBSoyy0MOzrnlVf74nUT6RJ4jA==,
-      }
-    peerDependencies:
-      shiki: ^0.11.1
-    dependencies:
-      '@leafac/html': 3.0.3
-      hast-util-to-text: 3.1.2
-      rehype-parse: 8.0.4
-      shiki: 0.14.1
-      unified: 10.1.2
-      unist-util-modify-children: 3.1.1
-    dev: false
 
   /@mapbox/hast-util-table-cell-style@0.2.0:
     resolution:
@@ -11281,14 +11258,6 @@ packages:
       hast-util-parse-selector: 3.1.1
       property-information: 6.2.0
       space-separated-tokens: 2.0.2
-    dev: false
-
-  /he@1.2.0:
-    resolution:
-      {
-        integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==,
-      }
-    hasBin: true
     dev: false
 
   /hosted-git-info@2.8.9:
@@ -18757,14 +18726,6 @@ packages:
       {
         integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==,
       }
-
-  /sanitize-xml-string@1.1.0:
-    resolution:
-      {
-        integrity: sha512-RzX25K64YtZm9FvdZr/Ac7Eeq0va1YX0xmpOkjWoREhgKXXldrJRVJhBel83nS8omIcaKcNTdLY8XzOIK920HA==,
-      }
-    engines: { node: '>=7.0.0' }
-    dev: false
 
   /saxes@3.1.11:
     resolution:
