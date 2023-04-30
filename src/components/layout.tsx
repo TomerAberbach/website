@@ -40,7 +40,7 @@ const Footer = () => (
           <Logo className='absolute -left-[0.125rem] bottom-[0.3125rem] -z-10 h-[70px] w-14' />
           <InternalLink
             href='/'
-            className='font-semibold text-gray-800 underline'
+            className='underlined font-semibold text-gray-800'
           >
             Tomer&nbsp;Aberbach
           </InternalLink>
