@@ -15,11 +15,7 @@ export default Layout
 
 const Header = () => (
   <header className='relative self-center'>
-    <img
-      src={logoSvgPath}
-      aria-label='Palm tree'
-      className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40'
-    />
+    <Logo className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40' />
     {/* Ensures that the width of the `header` element matches its contents. */}
     <div className='invisible h-0 pl-2 text-2xl font-bold'>
       {SITE_TITLE_AND_AUTHOR}
@@ -37,9 +33,21 @@ const Header = () => (
 
 const Footer = () => (
   <footer className='mx-auto flex flex-col items-center gap-y-3 text-xs text-gray-600'>
-    <p className='text-center'>
-      ©&nbsp;Tomer&nbsp;Aberbach. All&nbsp;rights&nbsp;reserved.
-    </p>
+    <div className='flex h-[70px] items-end'>
+      <p className='text-center'>
+        ©&nbsp;
+        <span className='relative inline-block'>
+          <Logo className='absolute -left-[0.125rem] bottom-[0.3125rem] -z-10 h-[70px] w-14' />
+          <InternalLink
+            href='/'
+            className='font-semibold text-gray-800 underline'
+          >
+            Tomer&nbsp;Aberbach
+          </InternalLink>
+        </span>
+        . All&nbsp;rights&nbsp;reserved.
+      </p>
+    </div>
     <ul className='flex items-center gap-x-3'>
       <li>
         <GitHubIcon />
@@ -61,6 +69,10 @@ const Footer = () => (
       </li>
     </ul>
   </footer>
+)
+
+const Logo = ({ className }: { className: string }) => (
+  <img src={logoSvgPath} aria-label='Palm tree' className={className} />
 )
 
 const GitHubIcon = () => (
