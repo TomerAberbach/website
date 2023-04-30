@@ -462,9 +462,11 @@ console.log(object2.hasOwnProperty('property'))
 
 - Access `Object`'s `hasOwnProperty` method directly:
 
+  <!-- eslint-skip -->
+
   ```js
   const object = { hasOwnProperty: () => true }
-  console.log(Object.prototype.hasOwnProperty.call(object, `property`))
+  console.log(Object.prototype.hasOwnProperty.call(object, 'property'))
   //=> false
   ```
 
@@ -472,9 +474,11 @@ console.log(object2.hasOwnProperty('property'))
   [`hasOwn`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)
   method:
 
+  <!-- eslint-skip -->
+
   ```js
   const object = { hasOwnProperty: () => true }
-  console.log(Object.hasOwn(object, `property`))
+  console.log(Object.hasOwn(object, 'property'))
   //=> false
   ```
 
