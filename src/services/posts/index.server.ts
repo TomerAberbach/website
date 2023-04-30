@@ -14,6 +14,7 @@ import {
   window,
 } from 'lfi'
 import { findBestMatch } from 'string-similarity'
+import pick from '../pick.js'
 import { readRawPosts } from './read.server.js'
 import parsePost from './parse/index.server.js'
 import type { MarkdownPost, Post } from './types.js'
@@ -73,19 +74,12 @@ export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
   pipe(
     values(posts),
     filter((post): post is MarkdownPost => post.type === `markdown`),
-    window({ size: 3, partialStart: true, partialEnd: true }),
+    window(3),
     forEach(([nextPost, post, previousPost]) => {
-      if (!post) {
-        return
-      }
-
-      if (previousPost) {
-        post.previousPost = { id: previousPost.id, title: previousPost.title }
-      }
-
-      if (nextPost) {
-        post.nextPost = { id: nextPost.id, title: nextPost.title }
-      }
+      nextPost!.previousPost = pick(post!, [`id`, `title`])
+      post!.nextPost = pick(nextPost!, [`id`, `title`])
+      post!.previousPost = pick(previousPost!, [`id`, `title`])
+      previousPost!.nextPost = pick(post!, [`id`, `title`])
     }),
   )
 
