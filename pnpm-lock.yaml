@@ -206,9 +206,6 @@ devDependencies:
   glyphhanger:
     specifier: ^5.0.0
     version: 5.0.0(patch_hash=ktlnajiffqjphag5c52f24g44q)
-  is-ci:
-    specifier: ^3.0.1
-    version: 3.0.1
   jest:
     specifier: ^29.5.0
     version: 29.5.0(@types/node@18.15.11)(ts-node@10.9.1)

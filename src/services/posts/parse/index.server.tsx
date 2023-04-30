@@ -25,7 +25,6 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
-import isCI from 'is-ci'
 import { parseHrefs, parseReferences } from './references.server.js'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -72,8 +71,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
       .use(remarkA11yEmoji)
       .use(remarkEmbedder, {
         cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
-        // Oembed.com requests fail on GitHub Actions
-        transformers: isCI ? [] : [remarkTransformerOembed],
+        transformers: [remarkTransformerOembed],
       })
       .use(remarkMath)
       .use(remarkRehype, { clobberPrefix: `` })
