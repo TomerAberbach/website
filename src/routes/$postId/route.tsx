@@ -45,12 +45,12 @@ const PostPage = () => {
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header>
         <h1 className='m-0'>{title}</h1>
-        <p className='m-0 mt-1.5 text-gray-600'>
-          <span className='mr-[1ch]'>
+        <p className='m-0 -ml-[1ch] mt-1.5 border-l-[1ch] border-white text-gray-600'>
+          <span className='mr-[1ch] inline-block whitespace-nowrap'>
             <Dates dates={dates} />
           </span>
           <span className='-ml-[1ch] whitespace-nowrap'>
-            <span className='font-medium'> · </span>
+            <span className='relative -z-10 font-medium'> · </span>
             <span className='inline-flex items-center gap-2'>
               <time dateTime={`${minutesToRead}m`}>
                 {formatMinutesToRead(minutesToRead)}
