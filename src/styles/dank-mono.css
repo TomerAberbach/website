@@ -13,6 +13,16 @@
   src: url(DankMono-Regular-subset.woff2) format('woff2'),
     url(DankMono-Regular-subset.woff) format('woff');
 }
+@font-face {
+  font-family: 'dm Fallback';
+  font-weight: normal;
+  font-style: normal;
+  src: local('Courier New');
+  ascent-override: 87.74%;
+  descent-override: 24.09%;
+  line-gap-override: 12.73%;
+  size-adjust: 91.65%;
+}
 
 @font-face {
   font-family: 'dm';
@@ -22,6 +32,16 @@
   src: url(DankMono-Italic-subset.woff2) format('woff2'),
     url(DankMono-Italic-subset.woff) format('woff');
 }
+@font-face {
+  font-family: 'dm Fallback';
+  font-weight: normal;
+  font-style: italic;
+  src: local('Courier New Italic');
+  ascent-override: 87.74%;
+  descent-override: 24.09%;
+  line-gap-override: 12.73%;
+  size-adjust: 91.65%;
+}
 
 @font-face {
   font-family: 'dm';
@@ -30,4 +50,14 @@
   font-display: swap;
   src: url(DankMono-Bold-subset.woff2) format('woff2'),
     url(DankMono-Bold-subset.woff) format('woff');
+}
+@font-face {
+  font-family: 'dm Fallback';
+  font-weight: bold;
+  font-style: normal;
+  src: local('Courier New Bold');
+  ascent-override: 87.74%;
+  descent-override: 24.09%;
+  line-gap-override: 12.73%;
+  size-adjust: 91.65%;
 }

@@ -42,8 +42,12 @@ export default {
   content: [`./src/**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}`],
   theme: {
     fontFamily: {
-      sans: [`Kantumruy Pro`, ...defaultTheme.fontFamily.sans],
-      mono: [`dm`, ...defaultTheme.fontFamily.mono],
+      sans: [
+        `Kantumruy Pro`,
+        `Kantumruy Pro Fallback`,
+        ...defaultTheme.fontFamily.sans,
+      ],
+      mono: [`dm`, `dm Fallback`, ...defaultTheme.fontFamily.mono],
     },
     fontSize: {
       xs: [fontSizeScale(-2), `1.6`],
