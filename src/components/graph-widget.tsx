@@ -10,7 +10,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import Balancer, { Provider as BalanceProvider } from 'react-wrap-balancer'
+import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { Link } from './link.js'
 import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
 import closeSvgPath from './close.svg'

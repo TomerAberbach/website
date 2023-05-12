@@ -2,7 +2,7 @@ import type { LoaderArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
 import { isRouteErrorResponse } from '@remix-run/react'
 import { useId } from 'react'
-import Balancer, { Provider as BalanceProvider } from 'react-wrap-balancer'
+import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import arrowRightSvgPath from './arrow-right.svg'
 import {
   findBestMarkdownPostMatch,
@@ -93,9 +93,7 @@ const PostPage = () => {
                   alt='Previous'
                   className='h-6 w-6 -scale-x-100'
                 />
-                <Balancer as='div' className='min-w-min'>
-                  {previousPost.title}
-                </Balancer>
+                <Balancer as='div'>{previousPost.title}</Balancer>
               </InternalLink>
             )}
             {nextPost && (
@@ -104,9 +102,7 @@ const PostPage = () => {
                 rel='next'
                 className='ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring'
               >
-                <Balancer as='div' className='min-w-min'>
-                  {nextPost.title}
-                </Balancer>
+                <Balancer as='div'>{nextPost.title}</Balancer>
                 <img src={arrowRightSvgPath} alt='Next' className='h-6 w-6' />
               </InternalLink>
             )}
