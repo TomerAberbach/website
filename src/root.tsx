@@ -7,8 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
-import tailwindStylesPath from './styles/build/tailwind.css'
-import fontsStylesPath from './styles/build/fonts.css'
+import tailwindStylesPath from './styles/tailwind.css'
+import fontsStylesPath from './styles/fonts.css'
 import Layout from './components/layout.js'
 import logoIcoPath from './logo.ico'
 import logoSvgPath from '~/private/images/logo.svg'

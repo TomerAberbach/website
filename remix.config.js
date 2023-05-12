@@ -10,9 +10,10 @@ module.exports = {
   },
   appDirectory: `src`,
   assetsBuildDirectory: `public/build`,
+  ignoredRouteFiles: [`**/.*`],
+  postcss: true,
   publicPath: `/build`,
   serverBuildPath: `build/index.js`,
   serverDependenciesToBundle: [/^(?!(?:shiki|uglify-js|sharp)$).*/u],
-  ignoredRouteFiles: [`**/.*`],
   watchPaths: `private/**/*`,
 }

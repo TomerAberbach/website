@@ -7,7 +7,7 @@ module.exports = {
       filter: `**/*.{woff,woff2}`,
       url: `copy`,
       basePath: join(__dirname, `private/fonts/build`),
-      assetsPath: `.`,
+      assetsPath: `build`,
       useHash: true,
       hashOptions: { append: true },
     }),
