@@ -2,6 +2,7 @@
 module.exports = {
   future: {
     /* eslint-disable camelcase */
+    unstable_dev: true,
     v2_errorBoundary: true,
     v2_meta: true,
     v2_normalizeFormMethod: true,
@@ -15,5 +16,6 @@ module.exports = {
   publicPath: `/build`,
   serverBuildPath: `build/index.js`,
   serverDependenciesToBundle: [/^(?!(?:shiki|uglify-js|sharp)$).*/u],
+  serverModuleFormat: `cjs`,
   watchPaths: `private/**/*`,
 }
