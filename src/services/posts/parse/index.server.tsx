@@ -2,12 +2,14 @@ import readingTime from 'reading-time'
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
-import type { Root } from 'hast'
+import type { Element, Root as HtmlRoot } from 'hast'
+import type { Root as MdRoot } from 'mdast'
 import remarkParse from 'remark-parse'
 import { z } from 'zod'
 import remarkRehype from 'remark-rehype'
 import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
+import escapeStringRegExp from 'escape-string-regexp'
 import parseFrontMatter from 'gray-matter'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
@@ -26,6 +28,7 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
+import { forEach, join, map, pipe } from 'lfi'
 import { parseHrefs, parseReferences } from './references.server.js'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -35,6 +38,8 @@ import { renderHtml } from '~/services/html.js'
 import type { Components } from '~/services/html.js'
 import { Link } from '~/components/link.js'
 import Tooltip from '~/components/tooltip.js'
+import assert from '~/services/assert.js'
+import fontsStylesPath from '~/styles/fonts.css'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
@@ -63,21 +68,24 @@ const parseMarkdownPost = async (
   }
 }
 
-const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
+const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
   (
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
+      .use(remarkReplace)
       .use(remarkSmartypants)
       .use(remarkA11yEmoji)
       .use(remarkEmbedder, {
-        cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+        cache:
+          new RemarkEmbedderCache() as unknown as RemarkEmbedderOptions[`cache`],
         transformers: [remarkTransformerOembed],
       })
       .use(remarkMath)
       .use(remarkRehype, { clobberPrefix: `` })
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
+      .use(() => rehypeCodeMetadata)
       .use(rehypeShiki, await highlighterPromise)
       .use(() => rehypeRemoveShikiClasses)
       .use(rehypeKatex)
@@ -88,28 +96,94 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
         this.Compiler = htmlAst => htmlAst
       })
       .process(markdown)
-  ).result as Root
+  ).result as HtmlRoot
 
-const remarkEmbedderCache = new RemarkEmbedderCache()
+const remarkReplace = () => {
+  const regExp = new RegExp(
+    `(${pipe(
+      REPLACEMENTS.keys(),
+      map(replacement => escapeStringRegExp(`$${replacement}`)),
+      join(`|`),
+    )})`,
+    `gu`,
+  )
+  const replacer = (_: unknown, name: string): string =>
+    REPLACEMENTS.get(name.slice(1))!
 
-const rehypeShiki = (highlighter: Highlighter) => (tree: Root) => {
+  return (tree: MdRoot) => {
+    visit(
+      tree,
+      [`text`, `code`, `inlineCode`, `html`, `yaml`, `link`],
+      node => {
+        switch (node.type) {
+          case `text`:
+          case `code`:
+          case `inlineCode`:
+          case `html`:
+          case `yaml`:
+            node.value = node.value.replace(regExp, replacer)
+            break
+
+          case `link`:
+            node.url = node.url.replace(regExp, replacer)
+            break
+
+          default:
+            throw new Error(`Bad node type`)
+        }
+      },
+    )
+
+    return tree
+  }
+}
+
+const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
+  [`fonts.css`, fontsStylesPath],
+])
+
+const rehypeCodeMetadata = (tree: HtmlRoot) => {
+  visit(tree, { tagName: `pre` }, node => {
+    const codeElement = extractSingleCodeElement(node)
+    if (!codeElement) {
+      return
+    }
+
+    const { data: { meta } = {} } = codeElement
+    if (!meta) {
+      return
+    }
+
+    node.properties ??= {}
+    pipe(
+      String(meta).split(`,`),
+      map(value => {
+        const values = value.split(`=`)
+        assert(values.length === 2)
+        return values as [string, string]
+      }),
+      forEach(([key, value]) => (node.properties![`data-${key}`] = value)),
+    )
+  })
+
+  return tree
+}
+
+const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
   visit(tree, { tagName: `pre` }, (node, index, parent): number | undefined => {
     if (!parent) {
       return undefined
     }
     index ??= 0
 
-    const { children } = node
-    if (children.length !== 1) {
+    const codeElement = extractSingleCodeElement(node)
+    if (!codeElement) {
       return undefined
     }
 
-    const child = children[0]!
-    if (child.type !== `element` || child.tagName !== `code`) {
-      return undefined
-    }
-
-    const language = extractLanguageFromClassName(child.properties?.className)
+    const language = extractLanguageFromClassName(
+      codeElement.properties?.className,
+    )
     if (!language) {
       return undefined
     }
@@ -125,12 +199,36 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: Root) => {
     const codeAst = unified()
       .use(rehypeParse, { fragment: true })
       .parse(highlightedCode)
-    codeAst.children.find(child => child.type === `element`)!.position =
-      // eslint-disable-next-line unicorn/consistent-destructuring
-      node.position
-    parent.children.splice(index, 1, ...codeAst.children)
+
+    assert(codeAst.children.length === 1)
+    const preElement = codeAst.children[0]!
+    assert(preElement.type === `element` && preElement.tagName === `pre`)
+
+    const { position, data, properties } = node
+    Object.assign(preElement, {
+      position,
+      data,
+      properties: { ...properties, ...preElement.properties },
+    })
+
+    parent.children.splice(index, 1, preElement)
     return index + codeAst.children.length
   })
+
+  return tree
+}
+
+const extractSingleCodeElement = ({ children }: Element): Element | null => {
+  if (children.length !== 1) {
+    return null
+  }
+
+  const child = children[0]!
+  if (child.type !== `element` || child.tagName !== `code`) {
+    return null
+  }
+
+  return child
 }
 
 const highlighterPromise = getHighlighter({ theme: `material-theme-palenight` })
@@ -154,7 +252,7 @@ const extractLanguageFromClassName = (
 
 const LANGUAGE_PREFIX = `language-`
 
-const rehypeRemoveShikiClasses = (tree: Root) => {
+const rehypeRemoveShikiClasses = (tree: HtmlRoot) => {
   visit(tree, { tagName: `pre` }, node => {
     const stack = [node]
     do {
@@ -272,6 +370,25 @@ const components: Components = {
   h5: createHeading(`h5`),
   h6: createHeading(`h6`),
   a: Anchor,
+  pre: ({ [`data-title`]: title, style, ...props }) => {
+    if (title == null) {
+      return <pre style={style} {...props} />
+    }
+
+    return (
+      <>
+        <div
+          role='heading'
+          aria-level={2}
+          style={style}
+          className='ml-5 inline-block translate-y-1 rounded-t-md px-3 pt-2 font-mono text-sm text-gray-100'
+        >
+          {String(title)}
+        </div>
+        <pre style={style} className='mt-0' {...props} />
+      </>
+    )
+  },
 }
 
 const parseHrefPost = (

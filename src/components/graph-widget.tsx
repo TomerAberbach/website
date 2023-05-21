@@ -55,7 +55,7 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
             !hasMounted && `js:left-1/2 js:m-0 js:-translate-x-1/2`,
           )}
           style={{
-            minWidth: width / 2,
+            minWidth: 0.75 * width,
             maxWidth: width,
             aspectRatio: `${width} / ${height}`,
           }}

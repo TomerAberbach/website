@@ -11,16 +11,19 @@ import {
 import { selectAll } from 'hast-util-select'
 import type { Root } from 'hast'
 import { SITE_URL } from '~/services/url.js'
+import fontsStylesPath from '~/styles/fonts.css'
 
 export const parseReferences = (
   hrefs: Iterable<string>,
 ): Map<string, Set<string>> =>
   pipe(
     hrefs,
-    filter(href => !href.startsWith(`#`)),
+    filter(href => !href.startsWith(`#`) && !IGNORED_HREFS.has(href)),
     map((href): [string, string] => [parseReference(href), href]),
     reduce(toGrouped(toSet(), toMap())),
   )
+
+const IGNORED_HREFS: ReadonlySet<string> = new Set([fontsStylesPath])
 
 const parseReference = (href: string): string => {
   const url = new URL(href, SITE_URL)
