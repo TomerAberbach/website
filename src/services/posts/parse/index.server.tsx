@@ -361,6 +361,26 @@ const Anchor: Components[`a`] = ({
   )
 }
 
+const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
+  if (title == null) {
+    return <pre style={style} {...props} />
+  }
+
+  return (
+    <>
+      <div
+        role='heading'
+        aria-level={2}
+        style={style}
+        className='ml-5 inline-block translate-y-1 rounded-t-md px-3 pt-2 font-mono text-sm text-gray-100'
+      >
+        {String(title)}
+      </div>
+      <pre style={style} className='mt-0' {...props} />
+    </>
+  )
+}
+
 const components: Components = {
   section: Section,
   h1: createHeading(`h1`),
@@ -370,25 +390,7 @@ const components: Components = {
   h5: createHeading(`h5`),
   h6: createHeading(`h6`),
   a: Anchor,
-  pre: ({ [`data-title`]: title, style, ...props }) => {
-    if (title == null) {
-      return <pre style={style} {...props} />
-    }
-
-    return (
-      <>
-        <div
-          role='heading'
-          aria-level={2}
-          style={style}
-          className='ml-5 inline-block translate-y-1 rounded-t-md px-3 pt-2 font-mono text-sm text-gray-100'
-        >
-          {String(title)}
-        </div>
-        <pre style={style} className='mt-0' {...props} />
-      </>
-    )
-  },
+  pre: Pre,
 }
 
 const parseHrefPost = (
