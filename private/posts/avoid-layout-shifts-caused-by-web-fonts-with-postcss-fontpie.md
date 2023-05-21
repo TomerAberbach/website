@@ -24,7 +24,7 @@ Part of what makes Fontpie great is that it's framework agnostic, but that also
 means it's a bit manual to use and I wanted something I could easily integrate
 into this website's build. I was already using
 [PostCSS](https://github.com/postcss/postcss) so I decided to make a Fontpie
-PostCSS plugin. The result was
+PostCSS plugin. The result is
 [`postcss-fontpie`](https://github.com/TomerAberbach/postcss-fontpie). And now
 generating fallback font metrics for my web fonts is as easy as adding the
 following to my
