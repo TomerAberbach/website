@@ -1,6 +1,6 @@
 import { json } from '@remix-run/server-runtime'
 import { map, pipe, reduce, toArray } from 'lfi'
-import avatarPath from '~/private/images/avatar.png'
+import avatarPath from '~/private/media/avatar.png'
 import { formatDateISO } from '~/services/format.js'
 import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
 import { getMarkdownPosts } from '~/services/posts/index.server.js'

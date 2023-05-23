@@ -40,6 +40,10 @@ import { Link } from '~/components/link.js'
 import Tooltip from '~/components/tooltip.js'
 import assert from '~/services/assert.js'
 import fontsStylesPath from '~/styles/fonts.css'
+import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
+import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
+import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
+import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
@@ -82,7 +86,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
         transformers: [remarkTransformerOembed],
       })
       .use(remarkMath)
-      .use(remarkRehype, { clobberPrefix: `` })
+      .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: `` })
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
       .use(() => rehypeCodeMetadata)
@@ -140,6 +144,10 @@ const remarkReplace = () => {
 
 const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`fonts.css`, fontsStylesPath],
+  [`with-postcss-fontpie.mp4`, withPostcssFontpieMp4Path],
+  [`with-postcss-fontpie.webmb`, withPostcssFontpieWebmPath],
+  [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
+  [`without-postcss-fontpie.webmb`, withoutPostcssFontpieWebmPath],
 ])
 
 const rehypeCodeMetadata = (tree: HtmlRoot) => {
