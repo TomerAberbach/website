@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --font-sans: Kantumruy Pro, Kantumruy Pro Fallback;
+    --font-mono: dm, dm Fallback;
+  }
+
+  .js:not(.fonts) {
+    --font-sans: Kantumruy Pro Fallback;
+    --font-mono: dm Fallback;
+  }
+
   html,
   body {
     @apply flex min-h-full flex-col;
