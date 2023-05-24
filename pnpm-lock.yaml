@@ -240,8 +240,8 @@ devDependencies:
     specifier: ^10.1.0
     version: 10.1.0(postcss@8.4.23)(ts-node@10.9.1)
   postcss-fontpie:
-    specifier: link:/Users/tomer/Documents/work/code/postcss-fontpie
-    version: link:../postcss-fontpie
+    specifier: ^1.0.0
+    version: 1.0.0(fontkit@2.0.2)(postcss@8.4.23)
   postcss-import:
     specifier: ^15.1.0
     version: 15.1.0(postcss@8.4.23)
@@ -3553,6 +3553,15 @@ packages:
       '@sinonjs/commons': 2.0.0
     dev: true
 
+  /@swc/helpers@0.4.14:
+    resolution:
+      {
+        integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==,
+      }
+    dependencies:
+      tslib: 2.5.0
+    dev: true
+
   /@szmarczak/http-timer@4.0.6:
     resolution:
       {
@@ -5530,6 +5539,15 @@ packages:
       fill-range: 7.0.1
     dev: true
 
+  /brotli@1.3.3:
+    resolution:
+      {
+        integrity: sha512-oTKjJdShmDuGW94SyyaoQvAjf30dZaHnjJ8uAF+u2/vGJkJbJPJAT1gDiOJP5v1Zb6f9KEyW/1HpuaWIXtGHPg==,
+      }
+    dependencies:
+      base64-js: 1.5.1
+    dev: true
+
   /browser-process-hrtime@1.0.0:
     resolution:
       {
@@ -6124,6 +6142,14 @@ packages:
     resolution:
       {
         integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==,
+      }
+    engines: { node: '>=0.8' }
+    dev: true
+
+  /clone@2.1.2:
+    resolution:
+      {
+        integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==,
       }
     engines: { node: '>=0.8' }
     dev: true
@@ -7195,6 +7221,13 @@ packages:
     resolution:
       {
         integrity: sha512-daj+rzR3QSxsPRy5vjjthn58axO8c11j58uY0lG5vvlJk/EiOdCWOptGdkXDjtuRHr78emKq0udHCXM4trhoDQ==,
+      }
+    dev: true
+
+  /dfa@1.2.0:
+    resolution:
+      {
+        integrity: sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q==,
       }
     dev: true
 
@@ -8777,6 +8810,34 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4(supports-color@8.1.1)
+    dev: true
+
+  /fontkit@2.0.2:
+    resolution:
+      {
+        integrity: sha512-jc4k5Yr8iov8QfS6u8w2CnHWVmbOGtdBtOXMze5Y+QD966Rx6PEVWXSEGwXlsDlKtu1G12cJjcsybnqhSk/+LA==,
+      }
+    dependencies:
+      '@swc/helpers': 0.4.14
+      brotli: 1.3.3
+      clone: 2.1.2
+      dfa: 1.2.0
+      fast-deep-equal: 3.1.3
+      restructure: 3.0.0
+      tiny-inflate: 1.0.3
+      unicode-properties: 1.4.1
+      unicode-trie: 2.0.0
+    dev: true
+
+  /fontpie-calc@0.2.0(fontkit@2.0.2):
+    resolution:
+      {
+        integrity: sha512-FuO1CLiK0cGQI3te1W7SfIJONSfpHXLGmEv661UPsEIdM1xxl5Yd+z9DBYvnHW36QlOkMmutwG1hF2BP15pV6Q==,
+      }
+    peerDependencies:
+      fontkit: ^2.0.2
+    dependencies:
+      fontkit: 2.0.2
     dev: true
 
   /for-each@0.3.3:
@@ -10836,6 +10897,14 @@ packages:
         integrity: sha512-43r2mRvz+8JRIKnWJ+3j8JtjRKZ6GmjzfaE/qiBJnikNnYv/6bagRJ1kUhNk8R5EX/GkobD+r+sfxCPJsiKBLQ==,
       }
     engines: { node: '>=12' }
+    dev: true
+
+  /is-url-superb@4.0.0:
+    resolution:
+      {
+        integrity: sha512-GI+WjezhPPcbM+tqE9LnmsY5qqjwHzTvjJ36wxYX5ujNXefSUJ/T17r5bqDV8yLhcgB59KTPNOc9O9cmHTPWsA==,
+      }
+    engines: { node: '>=10' }
     dev: true
 
   /is-weakmap@2.0.1:
@@ -14945,6 +15014,23 @@ packages:
       postcss: 8.4.23
     dev: true
 
+  /postcss-fontpie@1.0.0(fontkit@2.0.2)(postcss@8.4.23):
+    resolution:
+      {
+        integrity: sha512-0PihBPltC966ObBrS0bw4XKMmY5odPz4IoiSX3HfWHz5jByFLFitHW7VUVWyZ1Ks0jtXqqQArOfS36dbJ1XlKw==,
+      }
+    engines: { node: '>= 16' }
+    peerDependencies:
+      postcss: ^8.0.0
+    dependencies:
+      fontpie-calc: 0.2.0(fontkit@2.0.2)
+      postcss: 8.4.23
+      postcss-values-parser: 6.0.2(postcss@8.4.23)
+      slashes: 3.0.12
+    transitivePeerDependencies:
+      - fontkit
+    dev: true
+
   /postcss-import@15.1.0(postcss@8.4.23):
     resolution:
       {
@@ -15409,6 +15495,21 @@ packages:
       }
     dev: true
 
+  /postcss-values-parser@6.0.2(postcss@8.4.23):
+    resolution:
+      {
+        integrity: sha512-YLJpK0N1brcNJrs9WatuJFtHaV9q5aAOj+S4DI5S7jgHlRfm0PIbDCAFRYMQD5SHq7Fy6xsDhyutgS0QOAs0qw==,
+      }
+    engines: { node: '>=10' }
+    peerDependencies:
+      postcss: ^8.2.9
+    dependencies:
+      color-name: 1.1.4
+      is-url-superb: 4.0.0
+      postcss: 8.4.23
+      quote-unquote: 1.0.0
+    dev: true
+
   /postcss@8.4.23:
     resolution:
       {
@@ -15850,6 +15951,13 @@ packages:
         integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==,
       }
     engines: { node: '>=10' }
+    dev: true
+
+  /quote-unquote@1.0.0:
+    resolution:
+      {
+        integrity: sha512-twwRO/ilhlG/FIgYeKGFqyHhoEhqgnKVkcmqMKi2r524gz3ZbDTcyFt38E9xjJI2vT+KbRNHVbnJ/e0I25Azwg==,
+      }
     dev: true
 
   /randombytes@2.1.0:
@@ -16890,10 +16998,7 @@ packages:
         integrity: sha512-wcW+sIUiWnKgNY0dqCpOZkUbF/I+YPi+f09JZIDa39Ec+q82CpSYniDp+ISgTTbKmnpJWASeJBPZmoxH84wt3g==,
       }
     engines: { node: '>=0.12.0' }
-    deprecated:
-      request-promise-native has been deprecated because it extends the now
-      deprecated request package, see
-      https://github.com/request/request/issues/3142
+    deprecated: request-promise-native has been deprecated because it extends the now deprecated request package, see https://github.com/request/request/issues/3142
     peerDependencies:
       request: ^2.34
     dependencies:
@@ -16909,8 +17014,7 @@ packages:
         integrity: sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==,
       }
     engines: { node: '>= 6' }
-    deprecated: request has been deprecated, see
-      https://github.com/request/request/issues/3142
+    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
     dependencies:
       aws-sign2: 0.7.0
       aws4: 1.12.0
@@ -17075,6 +17179,13 @@ packages:
     dependencies:
       onetime: 5.1.2
       signal-exit: 3.0.7
+    dev: true
+
+  /restructure@3.0.0:
+    resolution:
+      {
+        integrity: sha512-Xj8/MEIhhfj9X2rmD9iJ4Gga9EFqVlpMj3vfLnV2r/Mh5jRMryNV+6lWh9GdJtDBcBSPIqzRdfBQ3wDtNFv/uw==,
+      }
     dev: true
 
   /retext-latin@3.1.0:
@@ -17621,6 +17732,13 @@ packages:
     engines: { node: '>=14.16' }
     dev: true
 
+  /slashes@3.0.12:
+    resolution:
+      {
+        integrity: sha512-Q9VME8WyGkc7pJf6QEkj3wE+2CnvZMI+XJhwdTPR8Z/kWQRXi7boAWLDibRPyHRTUTPx5FaU7MsyrjI3yLB4HA==,
+      }
+    dev: true
+
   /slice-ansi@3.0.0:
     resolution:
       {
@@ -18001,8 +18119,7 @@ packages:
       {
         integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==,
       }
-    deprecated: Package no longer supported. Contact Support at
-      https://www.npmjs.com/support for more info.
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     dev: false
 
   /string-width@4.2.3:
@@ -18524,6 +18641,13 @@ packages:
       }
     dev: true
 
+  /tiny-inflate@1.0.3:
+    resolution:
+      {
+        integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==,
+      }
+    dev: true
+
   /tmp@0.0.33:
     resolution:
       {
@@ -18853,9 +18977,7 @@ packages:
       }
     engines: { node: '>= 6' }
     peerDependencies:
-      typescript:
-        '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev
-        || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+      typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
     dependencies:
       tslib: 1.14.1
       typescript: 5.0.4
@@ -19080,12 +19202,32 @@ packages:
     engines: { node: '>=4' }
     dev: true
 
+  /unicode-properties@1.4.1:
+    resolution:
+      {
+        integrity: sha512-CLjCCLQ6UuMxWnbIylkisbRj31qxHPAurvena/0iwSVbQ2G1VY5/HjV0IRabOEbDHlzZlRdCrD4NhB0JtU40Pg==,
+      }
+    dependencies:
+      base64-js: 1.5.1
+      unicode-trie: 2.0.0
+    dev: true
+
   /unicode-property-aliases-ecmascript@2.1.0:
     resolution:
       {
         integrity: sha512-6t3foTQI9qne+OZoVQB/8x8rk2k1eVy1gRXhV3oFQ5T6R1dqQ1xtin3XqSlx3+ATBkliTaR/hHyJBm+LVPNM8w==,
       }
     engines: { node: '>=4' }
+    dev: true
+
+  /unicode-trie@2.0.0:
+    resolution:
+      {
+        integrity: sha512-x7bc76x0bm4prf1VLg79uhAzKw8DVboClSN5VxJuQ+LKDOVEW9CdH+VY7SP+vX7xCYQqzzgQpFqz15zeLvAtZQ==,
+      }
+    dependencies:
+      pako: 0.2.9
+      tiny-inflate: 1.0.3
     dev: true
 
   /unified@10.1.2:
@@ -19416,9 +19558,7 @@ packages:
       {
         integrity: sha512-FULf7fayPdpASncVy4DLh3xydlXEJJpvIELjYjNeQWYUZ9pclcpvCZSr2gkmN2FrrGcI7G/cJsIEwk5/8vfXpg==,
       }
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use
-      Math.random() in certain circumstances, which is known to be
-      problematic.  See https://v8.dev/blog/math-random for details.
+    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     dev: false
 
   /uuid@3.4.0:
@@ -19426,9 +19566,7 @@ packages:
       {
         integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==,
       }
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use
-      Math.random() in certain circumstances, which is known to be
-      problematic.  See https://v8.dev/blog/math-random for details.
+    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
     dev: true
 
