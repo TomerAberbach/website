@@ -206,7 +206,12 @@ const Vertex = ({
   const vertexNode = (
     <>
       <div className='h-full w-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
-      <div className='absolute bottom-[150%] left-1/2 z-10 -translate-x-1/2 text-center text-sm font-medium sm:text-base'>
+      <div
+        className={clsx(
+          `absolute bottom-[150%] left-1/2 -translate-x-1/2 text-center text-sm font-medium md:text-base`,
+          vertex.type === `internal` ? `z-20` : `z-10`,
+        )}
+      >
         {vertex.type === `internal` ? (
           <div className='inline-block w-52'>
             <Balancer>{labelNode}</Balancer>

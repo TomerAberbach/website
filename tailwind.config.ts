@@ -138,6 +138,10 @@ export default {
               padding: `.125em .25em`,
               borderRadius: defaultTheme.borderRadius.md,
             },
+            '.gif': {
+              marginTop: `1.25em`,
+              marginBottom: `1.25em`,
+            },
             iframe: {
               marginTop: `1.25em`,
               marginBottom: `1.25em`,
@@ -161,6 +165,7 @@ export default {
   plugins: [
     typography,
     plugin(({ addVariant }) => {
+      addVariant(`child`, `& > *`)
       addVariant(`js`, `.js &`)
     }),
   ],

@@ -142,7 +142,7 @@ const layoutGraph = ({
   const layout = createLayout(ngraph, {
     theta: 1,
     springLength: SPRING_LENGTH,
-    dragCoefficient: 0.25,
+    dragCoefficient: 0.2,
 
     // Decrease this number to spread out the vertices by making them repel each
     // other more

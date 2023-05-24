@@ -2,7 +2,7 @@
 title: 'Avoid Layout Shifts Caused by Web Fonts With PostCSS Fontpie'
 tags: ['code', 'fonts', 'javascript', 'performance', 'postcss']
 dates:
-  published: 2023-05-14
+  published: 2023-05-24
 ---
 
 When your CSS references a web font before it finishes downloading, the browser
@@ -49,7 +49,16 @@ module.exports = {
 ```
 
 You can see the generated fallback font metrics in
-[this website's CSS]($fonts.css).
+[this website's CSS]($fonts.css) and their effects in the following
+before-and-after GIFs:
+
+:::horizontal
+
+::gif[without-postcss-fontpie]{alt="This website's web font loading and causing a layout shift"}
+
+::gif[with-postcss-fontpie]{alt="This website's web font loading without causing a layout shift"}
+
+:::
 
 Check out
 [`postcss-fontpie`'s usage example](https://github.com/TomerAberbach/postcss-fontpie#usage)

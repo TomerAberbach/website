@@ -13,12 +13,16 @@ import escapeStringRegExp from 'escape-string-regexp'
 import parseFrontMatter from 'gray-matter'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
+import remarkDirective from 'remark-directive'
 import { type Highlighter, getHighlighter } from 'shiki'
-import { toText } from 'hast-util-to-text'
+import { toText as htmlToText } from 'hast-util-to-text'
 import stripMarkdown from 'strip-markdown'
+import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
 import { visit } from 'unist-util-visit'
 import remarkA11yEmoji from '@fec/remark-a11y-emoji'
+import { toString as mdToText } from 'mdast-util-to-string'
+import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import type { RemarkEmbedderOptions } from '@remark-embedder/core'
@@ -77,6 +81,9 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
+      .use(remarkDirective)
+      .use(() => remarkFlex)
+      .use(() => remarkGif)
       .use(remarkReplace)
       .use(remarkSmartypants)
       .use(remarkA11yEmoji)
@@ -87,6 +94,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       })
       .use(remarkMath)
       .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: `` })
+      .use(rehypeRaw)
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
       .use(() => rehypeCodeMetadata)
@@ -101,6 +109,80 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       })
       .process(markdown)
   ).result as HtmlRoot
+
+const remarkFlex = (tree: MdRoot) => {
+  visit(tree, `containerDirective`, node => {
+    if (node.name !== `horizontal`) {
+      return
+    }
+
+    node.data ??= {}
+    const { data } = node
+    data.hName = `div`
+    data.hProperties = { class: `flex max-w-full flex-wrap child:flex-1` }
+  })
+
+  return tree
+}
+
+const remarkGif = (tree: MdRoot) => {
+  visit(tree, `leafDirective`, node => {
+    if (node.name !== `gif`) {
+      return
+    }
+
+    const paths = GIF_PATHS.get(pipe(node.children, map(mdToText), join(``)))
+    assert(paths)
+
+    const alt = node.attributes?.alt
+
+    node.data ??= {}
+    const { data } = node
+    data.hName = `div`
+    data.hProperties = { class: `gif min-w-[min(400px,100%)] max-w-full` }
+    data.hChildren = [
+      h(
+        `video`,
+        {
+          role: `img`,
+          'aria-roledescription': `gif`,
+          ...(alt ? { 'aria-label': alt } : {}),
+          class: `m-0`,
+          autoplay: true,
+          loop: true,
+          muted: true,
+          playsinline: true,
+        },
+        h(`source`, { src: paths.webm, type: `video/webm` }),
+        h(`source`, { src: paths.mp4, type: `video/mp4` }),
+      ),
+    ]
+  })
+
+  return tree
+}
+
+const GIF_PATHS: ReadonlyMap<string, VideoPaths> = new Map([
+  [
+    `with-postcss-fontpie`,
+    {
+      mp4: withPostcssFontpieMp4Path,
+      webm: withPostcssFontpieWebmPath,
+    },
+  ],
+  [
+    `without-postcss-fontpie`,
+    {
+      mp4: withoutPostcssFontpieMp4Path,
+      webm: withoutPostcssFontpieWebmPath,
+    },
+  ],
+])
+
+type VideoPaths = {
+  mp4: string
+  webm: string
+}
 
 const remarkReplace = () => {
   const regExp = new RegExp(
@@ -145,9 +227,9 @@ const remarkReplace = () => {
 const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`fonts.css`, fontsStylesPath],
   [`with-postcss-fontpie.mp4`, withPostcssFontpieMp4Path],
-  [`with-postcss-fontpie.webmb`, withPostcssFontpieWebmPath],
+  [`with-postcss-fontpie.webm`, withPostcssFontpieWebmPath],
   [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
-  [`without-postcss-fontpie.webmb`, withoutPostcssFontpieWebmPath],
+  [`without-postcss-fontpie.webm`, withoutPostcssFontpieWebmPath],
 ])
 
 const rehypeCodeMetadata = (tree: HtmlRoot) => {
@@ -196,7 +278,7 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
       return undefined
     }
 
-    const code = toText(node).slice(0, -1)
+    const code = htmlToText(node).slice(0, -1)
     let highlightedCode
     try {
       highlightedCode = highlighter.codeToHtml(code, { lang: language })
