@@ -11,6 +11,13 @@ module.exports = {
       useHash: true,
       hashOptions: { append: true },
     }),
+    require(`postcss-fontpie`)({
+      fontTypes: {
+        dm: `mono`,
+        'Kantumruy Pro': `sans-serif`,
+      },
+      srcUrlToFilename: url => join(__dirname, `src/styles`, url),
+    }),
     require(`tailwindcss`),
     require(`autoprefixer`),
     ...(process.env.NODE_ENV === `production` ? [require(`cssnano`)] : []),

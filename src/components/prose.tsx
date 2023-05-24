@@ -24,7 +24,7 @@ const components: Components = {
     assert(children)
 
     return (
-      <Link href={href} {...props}>
+      <Link href={href} {...props} reloadDocument={href.endsWith(`.css`)}>
         {children}
       </Link>
     )

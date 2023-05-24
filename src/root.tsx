@@ -7,11 +7,21 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+import {
+  entries,
+  flatMap,
+  join,
+  map,
+  pipe,
+  rangeTo,
+  reduce,
+  toArray,
+} from 'lfi'
 import tailwindStylesPath from './styles/tailwind.css'
 import fontsStylesPath from './styles/fonts.css'
 import Layout from './components/layout.js'
 import logoIcoPath from './logo.ico'
-import logoSvgPath from '~/private/images/logo.svg'
+import logoSvgPath from '~/private/media/logo.svg'
 
 const App = () => (
   <html
@@ -27,11 +37,7 @@ const App = () => (
       <meta name='viewport' content='width=device-width,initial-scale=1' />
       <Meta />
       <Links />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `document.documentElement.className='js'`,
-        }}
-      />
+      <HeadInlineScript />
     </head>
     <body>
       <Layout>
@@ -51,6 +57,34 @@ const App = () => (
     </body>
   </html>
 )
+
+const HeadInlineScript = () => {
+  const fonts = {
+    'Kantumruy Pro': pipe(
+      rangeTo(100, 700).step(100),
+      flatMap(weight => [String(weight), `italic ${weight}`]),
+      reduce(toArray()),
+    ),
+    dm: [``, `italic`, `bold`],
+  }
+
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html:
+          `document.documentElement.className='js';` +
+          `Promise.all([${pipe(
+            entries(fonts),
+            flatMap(([fontFamily, styles]) =>
+              map(style => `${style} 1rem ${fontFamily}`.trim(), styles),
+            ),
+            map(font => `document.fonts.load('${font}')`),
+            join(`,`),
+          )}]).then(()=>document.documentElement.className+=' fonts')`,
+      }}
+    />
+  )
+}
 
 export const links: LinksFunction = () => [
   { rel: `preload`, href: fontsStylesPath, as: `style` },

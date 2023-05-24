@@ -42,12 +42,8 @@ export default {
   content: [`./src/**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}`],
   theme: {
     fontFamily: {
-      sans: [
-        `Kantumruy Pro`,
-        `Kantumruy Pro Fallback`,
-        ...defaultTheme.fontFamily.sans,
-      ],
-      mono: [`dm`, `dm Fallback`, ...defaultTheme.fontFamily.mono],
+      sans: [`var(--font-sans)`, ...defaultTheme.fontFamily.sans],
+      mono: [`var(--font-mono)`, ...defaultTheme.fontFamily.mono],
     },
     fontSize: {
       xs: [fontSizeScale(-2), `1.6`],
@@ -142,6 +138,10 @@ export default {
               padding: `.125em .25em`,
               borderRadius: defaultTheme.borderRadius.md,
             },
+            '.gif': {
+              marginTop: `1.25em`,
+              marginBottom: `1.25em`,
+            },
             iframe: {
               marginTop: `1.25em`,
               marginBottom: `1.25em`,
@@ -165,6 +165,7 @@ export default {
   plugins: [
     typography,
     plugin(({ addVariant }) => {
+      addVariant(`child`, `& > *`)
       addVariant(`js`, `.js &`)
     }),
   ],

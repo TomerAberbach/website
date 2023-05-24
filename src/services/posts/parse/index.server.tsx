@@ -2,21 +2,27 @@ import readingTime from 'reading-time'
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
-import type { Root } from 'hast'
+import type { Element, Root as HtmlRoot } from 'hast'
+import type { Root as MdRoot } from 'mdast'
 import remarkParse from 'remark-parse'
 import { z } from 'zod'
 import remarkRehype from 'remark-rehype'
 import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
+import escapeStringRegExp from 'escape-string-regexp'
 import parseFrontMatter from 'gray-matter'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
+import remarkDirective from 'remark-directive'
 import { type Highlighter, getHighlighter } from 'shiki'
-import { toText } from 'hast-util-to-text'
+import { toText as htmlToText } from 'hast-util-to-text'
 import stripMarkdown from 'strip-markdown'
+import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
 import { visit } from 'unist-util-visit'
 import remarkA11yEmoji from '@fec/remark-a11y-emoji'
+import { toString as mdToText } from 'mdast-util-to-string'
+import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import type { RemarkEmbedderOptions } from '@remark-embedder/core'
@@ -26,6 +32,7 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
+import { forEach, join, map, pipe } from 'lfi'
 import { parseHrefs, parseReferences } from './references.server.js'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -35,6 +42,12 @@ import { renderHtml } from '~/services/html.js'
 import type { Components } from '~/services/html.js'
 import { Link } from '~/components/link.js'
 import Tooltip from '~/components/tooltip.js'
+import assert from '~/services/assert.js'
+import fontsStylesPath from '~/styles/fonts.css'
+import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
+import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
+import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
+import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
@@ -63,21 +76,28 @@ const parseMarkdownPost = async (
   }
 }
 
-const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
+const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
   (
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
+      .use(remarkDirective)
+      .use(() => remarkFlex)
+      .use(() => remarkGif)
+      .use(remarkReplace)
       .use(remarkSmartypants)
       .use(remarkA11yEmoji)
       .use(remarkEmbedder, {
-        cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+        cache:
+          new RemarkEmbedderCache() as unknown as RemarkEmbedderOptions[`cache`],
         transformers: [remarkTransformerOembed],
       })
       .use(remarkMath)
-      .use(remarkRehype, { clobberPrefix: `` })
+      .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: `` })
+      .use(rehypeRaw)
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
+      .use(() => rehypeCodeMetadata)
       .use(rehypeShiki, await highlighterPromise)
       .use(() => rehypeRemoveShikiClasses)
       .use(rehypeKatex)
@@ -88,33 +108,177 @@ const convertMarkdownToHtml = async (markdown: string): Promise<Root> =>
         this.Compiler = htmlAst => htmlAst
       })
       .process(markdown)
-  ).result as Root
+  ).result as HtmlRoot
 
-const remarkEmbedderCache = new RemarkEmbedderCache()
+const remarkFlex = (tree: MdRoot) => {
+  visit(tree, `containerDirective`, node => {
+    if (node.name !== `horizontal`) {
+      return
+    }
 
-const rehypeShiki = (highlighter: Highlighter) => (tree: Root) => {
+    node.data ??= {}
+    const { data } = node
+    data.hName = `div`
+    data.hProperties = { class: `flex max-w-full flex-wrap child:flex-1` }
+  })
+
+  return tree
+}
+
+const remarkGif = (tree: MdRoot) => {
+  visit(tree, `leafDirective`, node => {
+    if (node.name !== `gif`) {
+      return
+    }
+
+    const paths = GIF_PATHS.get(pipe(node.children, map(mdToText), join(``)))
+    assert(paths)
+
+    const alt = node.attributes?.alt
+
+    node.data ??= {}
+    const { data } = node
+    data.hName = `div`
+    data.hProperties = { class: `gif min-w-[min(400px,100%)] max-w-full` }
+    data.hChildren = [
+      h(
+        `video`,
+        {
+          role: `img`,
+          'aria-roledescription': `gif`,
+          ...(alt ? { 'aria-label': alt } : {}),
+          class: `m-0`,
+          autoplay: true,
+          loop: true,
+          muted: true,
+          playsinline: true,
+        },
+        h(`source`, { src: paths.webm, type: `video/webm` }),
+        h(`source`, { src: paths.mp4, type: `video/mp4` }),
+      ),
+    ]
+  })
+
+  return tree
+}
+
+const GIF_PATHS: ReadonlyMap<string, VideoPaths> = new Map([
+  [
+    `with-postcss-fontpie`,
+    {
+      mp4: withPostcssFontpieMp4Path,
+      webm: withPostcssFontpieWebmPath,
+    },
+  ],
+  [
+    `without-postcss-fontpie`,
+    {
+      mp4: withoutPostcssFontpieMp4Path,
+      webm: withoutPostcssFontpieWebmPath,
+    },
+  ],
+])
+
+type VideoPaths = {
+  mp4: string
+  webm: string
+}
+
+const remarkReplace = () => {
+  const regExp = new RegExp(
+    `(${pipe(
+      REPLACEMENTS.keys(),
+      map(replacement => escapeStringRegExp(`$${replacement}`)),
+      join(`|`),
+    )})`,
+    `gu`,
+  )
+  const replacer = (_: unknown, name: string): string =>
+    REPLACEMENTS.get(name.slice(1))!
+
+  return (tree: MdRoot) => {
+    visit(
+      tree,
+      [`text`, `code`, `inlineCode`, `html`, `yaml`, `link`],
+      node => {
+        switch (node.type) {
+          case `text`:
+          case `code`:
+          case `inlineCode`:
+          case `html`:
+          case `yaml`:
+            node.value = node.value.replace(regExp, replacer)
+            break
+
+          case `link`:
+            node.url = node.url.replace(regExp, replacer)
+            break
+
+          default:
+            throw new Error(`Bad node type`)
+        }
+      },
+    )
+
+    return tree
+  }
+}
+
+const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
+  [`fonts.css`, fontsStylesPath],
+  [`with-postcss-fontpie.mp4`, withPostcssFontpieMp4Path],
+  [`with-postcss-fontpie.webm`, withPostcssFontpieWebmPath],
+  [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
+  [`without-postcss-fontpie.webm`, withoutPostcssFontpieWebmPath],
+])
+
+const rehypeCodeMetadata = (tree: HtmlRoot) => {
+  visit(tree, { tagName: `pre` }, node => {
+    const codeElement = extractSingleCodeElement(node)
+    if (!codeElement) {
+      return
+    }
+
+    const { data: { meta } = {} } = codeElement
+    if (!meta) {
+      return
+    }
+
+    node.properties ??= {}
+    pipe(
+      String(meta).split(`,`),
+      map(value => {
+        const values = value.split(`=`)
+        assert(values.length === 2)
+        return values as [string, string]
+      }),
+      forEach(([key, value]) => (node.properties![`data-${key}`] = value)),
+    )
+  })
+
+  return tree
+}
+
+const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
   visit(tree, { tagName: `pre` }, (node, index, parent): number | undefined => {
     if (!parent) {
       return undefined
     }
     index ??= 0
 
-    const { children } = node
-    if (children.length !== 1) {
+    const codeElement = extractSingleCodeElement(node)
+    if (!codeElement) {
       return undefined
     }
 
-    const child = children[0]!
-    if (child.type !== `element` || child.tagName !== `code`) {
-      return undefined
-    }
-
-    const language = extractLanguageFromClassName(child.properties?.className)
+    const language = extractLanguageFromClassName(
+      codeElement.properties?.className,
+    )
     if (!language) {
       return undefined
     }
 
-    const code = toText(node).slice(0, -1)
+    const code = htmlToText(node).slice(0, -1)
     let highlightedCode
     try {
       highlightedCode = highlighter.codeToHtml(code, { lang: language })
@@ -125,12 +289,36 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: Root) => {
     const codeAst = unified()
       .use(rehypeParse, { fragment: true })
       .parse(highlightedCode)
-    codeAst.children.find(child => child.type === `element`)!.position =
-      // eslint-disable-next-line unicorn/consistent-destructuring
-      node.position
-    parent.children.splice(index, 1, ...codeAst.children)
+
+    assert(codeAst.children.length === 1)
+    const preElement = codeAst.children[0]!
+    assert(preElement.type === `element` && preElement.tagName === `pre`)
+
+    const { position, data, properties } = node
+    Object.assign(preElement, {
+      position,
+      data,
+      properties: { ...properties, ...preElement.properties },
+    })
+
+    parent.children.splice(index, 1, preElement)
     return index + codeAst.children.length
   })
+
+  return tree
+}
+
+const extractSingleCodeElement = ({ children }: Element): Element | null => {
+  if (children.length !== 1) {
+    return null
+  }
+
+  const child = children[0]!
+  if (child.type !== `element` || child.tagName !== `code`) {
+    return null
+  }
+
+  return child
 }
 
 const highlighterPromise = getHighlighter({ theme: `material-theme-palenight` })
@@ -154,7 +342,7 @@ const extractLanguageFromClassName = (
 
 const LANGUAGE_PREFIX = `language-`
 
-const rehypeRemoveShikiClasses = (tree: Root) => {
+const rehypeRemoveShikiClasses = (tree: HtmlRoot) => {
   visit(tree, { tagName: `pre` }, node => {
     const stack = [node]
     do {
@@ -263,6 +451,26 @@ const Anchor: Components[`a`] = ({
   )
 }
 
+const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
+  if (title == null) {
+    return <pre style={style} {...props} />
+  }
+
+  return (
+    <>
+      <div
+        role='heading'
+        aria-level={2}
+        style={style}
+        className='ml-5 inline-block translate-y-1 rounded-t-md px-3 pt-2 font-mono text-sm text-gray-100'
+      >
+        {String(title)}
+      </div>
+      <pre style={style} className='mt-0' {...props} />
+    </>
+  )
+}
+
 const components: Components = {
   section: Section,
   h1: createHeading(`h1`),
@@ -272,6 +480,7 @@ const components: Components = {
   h5: createHeading(`h5`),
   h6: createHeading(`h6`),
   a: Anchor,
+  pre: Pre,
 }
 
 const parseHrefPost = (
