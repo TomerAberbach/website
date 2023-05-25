@@ -22,7 +22,6 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import { visit } from 'unist-util-visit'
 import remarkA11yEmoji from '@fec/remark-a11y-emoji'
 import { toString as mdToText } from 'mdast-util-to-string'
-import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import type { RemarkEmbedderOptions } from '@remark-embedder/core'
@@ -93,8 +92,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
         transformers: [remarkTransformerOembed],
       })
       .use(remarkMath)
-      .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: `` })
-      .use(rehypeRaw)
+      .use(remarkRehype, { clobberPrefix: `` })
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
       .use(() => rehypeCodeMetadata)
