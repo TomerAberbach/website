@@ -87,8 +87,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       .use(remarkSmartypants)
       .use(remarkA11yEmoji)
       .use(remarkEmbedder, {
-        cache:
-          new RemarkEmbedderCache() as unknown as RemarkEmbedderOptions[`cache`],
+        cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
         transformers: [remarkTransformerOembed],
       })
       .use(remarkMath)
@@ -107,6 +106,8 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       })
       .process(markdown)
   ).result as HtmlRoot
+
+const remarkEmbedderCache = new RemarkEmbedderCache()
 
 const remarkFlex = (tree: MdRoot) => {
   visit(tree, `containerDirective`, node => {
