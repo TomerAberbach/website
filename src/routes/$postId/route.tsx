@@ -80,7 +80,7 @@ const PostPage = () => {
       </header>
       <Prose html={content} />
       {(previousPost || nextPost) && (
-        <footer className='not-prose mt-8 flex items-center gap-16 font-medium text-gray-700'>
+        <footer className='not-prose mt-8 flex items-center font-medium text-gray-700'>
           <BalanceProvider>
             {previousPost && (
               <InternalLink
