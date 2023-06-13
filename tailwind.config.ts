@@ -1,7 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme'
 import colors from 'tailwindcss/colors'
 import plugin from 'tailwindcss/plugin'
-import roundTo from 'round-to'
+import { roundTo } from 'round-to'
 import typography from '@tailwindcss/typography'
 
 type MinMax = { min: number; max: number }
