@@ -246,6 +246,9 @@ devDependencies:
   npm-run-all:
     specifier: ^4.1.5
     version: 4.1.5
+  playwright:
+    specifier: ^1.35.1
+    version: 1.35.1
   postcss:
     specifier: ^8.4.24
     version: 8.4.24
@@ -16299,7 +16302,18 @@ packages:
       }
     engines: { node: '>=16' }
     hasBin: true
-    dev: false
+
+  /playwright@1.35.1:
+    resolution:
+      {
+        integrity: sha512-NbwBeGJLu5m7VGM0+xtlmLAH9VUfWwYOhUi/lSEDyGg46r1CA9RWlvoc5yywxR9AzQb0mOCm7bWtOXV7/w43ZA==,
+      }
+    engines: { node: '>=16' }
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      playwright-core: 1.35.1
+    dev: true
 
   /plur@4.0.0:
     resolution:
