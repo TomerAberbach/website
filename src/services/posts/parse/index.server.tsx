@@ -35,6 +35,7 @@ import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import { forEach, join, map, pipe } from 'lfi'
 import rehypeMermaid from 'rehype-mermaidjs'
+import { firefox } from 'playwright'
 import { parseHrefs, parseReferences } from './references.server.js'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -100,6 +101,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
       .use(rehypeMermaid, {
+        browser: firefox,
         css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
         mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
       })
