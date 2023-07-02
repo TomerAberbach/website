@@ -1,5 +1,5 @@
 ---
-title: 'The Making of Polykey'
+title: 'The Making of Keyalesce'
 tags: ['code', 'data structures', 'gc', 'javascript', 'performance', 'tries']
 dates:
   published: 2023-06-19
@@ -88,9 +88,9 @@ console.log(salaryApplications.get(JSON.stringify([person2, Number.MAX_VALUE])))
 
 Surely there's a better way!
 
-## The solution: `polykey`
+## The solution: `keyalesce`
 
-[`polykey`](https://github.com/TomerAberbach/polykey) is a module that returns the same unique key for the same value sequence[^1]. It's perfect for this use case:
+[`keyalesce`](https://github.com/TomerAberbach/keyalesce) is a module that returns the same unique key for the same value sequence[^1]. It's perfect for this use case:
 
 <!-- eslint-skip -->
 
@@ -99,48 +99,48 @@ const person1 = { name: `Tomer`, occupation: `Software Engineer` }
 const person2 = { name: `Tomer`, occupation: `Software Engineer` }
 
 const map = new Map()
-map.set(polykey([1, 2]), 3)
-map.set(polykey([2, `b`, 3]), 4)
-map.set(polykey([person1, Number.MAX_VALUE]), `approved`)
-map.set(polykey([person2, Number.MAX_VALUE]), `totally approved`)
+map.set(keyalesce([1, 2]), 3)
+map.set(keyalesce([2, `b`, 3]), 4)
+map.set(keyalesce([person1, Number.MAX_VALUE]), `approved`)
+map.set(keyalesce([person2, Number.MAX_VALUE]), `totally approved`)
 
-console.log(map.get(polykey([1, 2])))
+console.log(map.get(keyalesce([1, 2])))
 //=> 3
 
-console.log(map.get(polykey([2, `b`, 3])))
+console.log(map.get(keyalesce([2, `b`, 3])))
 //=> 4
 
-console.log(map.get(polykey([person1, Number.MAX_VALUE])))
+console.log(map.get(keyalesce([person1, Number.MAX_VALUE])))
 //=> approved
 
-console.log(map.get(polykey([person2, Number.MAX_VALUE])))
+console.log(map.get(keyalesce([person2, Number.MAX_VALUE])))
 //=> totally approved
 
 const set = new Set()
-set.add(polykey([1, 2, 3, 4, 5]))
-set.add(polykey([3, 3, 2, 2, 1]))
+set.add(keyalesce([1, 2, 3, 4, 5]))
+set.add(keyalesce([3, 3, 2, 2, 1]))
 
-console.log(set.has(polykey([1, 2, 3, 4, 5])))
+console.log(set.has(keyalesce([1, 2, 3, 4, 5])))
 //=> true
 
-console.log(set.has(polykey([3, 3, 2, 2, 1])))
+console.log(set.has(keyalesce([3, 3, 2, 2, 1])))
 //=> true
 
-console.log(polykey([1, 2, 3, 4, 5]) === polykey([1, 2, 3, 4, 5]))
+console.log(keyalesce([1, 2, 3, 4, 5]) === keyalesce([1, 2, 3, 4, 5]))
 //=> true
 ```
 
 ## How does it work?
 
-`polykey` internally maintains a [trie](https://en.wikipedia.org/wiki/Trie) containing the sequences of values it has been called with. It creates and returns new keys for new sequences and returns previously created keys for known sequences!
+`keyalesce` internally maintains a [trie](https://en.wikipedia.org/wiki/Trie) containing the sequences of values it has been called with. It creates and returns new keys for new sequences and returns previously created keys for known sequences!
 
 For example, the following code:
 
 ```js
-const key1 = polykey([1, 2, 3, 4])
-const key2 = polykey([1, 2, 3])
-const key3 = polykey([1, 2, 7, 8])
-const key4 = polykey([`a`, `b`, `c`])
+const key1 = keyalesce([1, 2, 3, 4])
+const key2 = keyalesce([1, 2, 3])
+const key3 = keyalesce([1, 2, 7, 8])
+const key4 = keyalesce([`a`, `b`, `c`])
 ```
 
 Would result in the following trie:
@@ -171,11 +171,11 @@ graph LR
     a --> b --> c --> K4
 ```
 
-And calling `polykey([1, 2, 3, 4])` again would return `key1` after traversing nodes `1`, `2`, `3`, and `4` in the trie.
+And calling `keyalesce([1, 2, 3, 4])` again would return `key1` after traversing nodes `1`, `2`, `3`, and `4` in the trie.
 
-### Does `polykey` cause memory leaks?
+### Does `keyalesce` cause memory leaks?
 
-A long running program using a naive implementation of `polykey` would have a [memory leak](https://en.wikipedia.org/wiki/Memory_leak) due to unbounded growth of the trie. How are [unreachable](https://en.wikipedia.org/wiki/Unreachable_memory) nodes pruned?
+A long running program using a naive implementation of `keyalesce` would have a [memory leak](https://en.wikipedia.org/wiki/Memory_leak) due to unbounded growth of the trie. How are [unreachable](https://en.wikipedia.org/wiki/Unreachable_memory) nodes pruned?
 
 #### Sequence value reachability
 
@@ -185,8 +185,8 @@ Consider the following code:
 const object1 = {}
 const object2 = {}
 
-const key1 = polykey([1, object1, 4])
-const key2 = polykey([1, 2, object2, 3])
+const key1 = keyalesce([1, object1, 4])
+const key2 = keyalesce([1, 2, object2, 3])
 
 // ...
 ```
@@ -217,9 +217,9 @@ If the code continues like so:
 object2 = null
 ```
 
-Then `object2`'s original value is only reachable from the trie. `polykey` can now prune the associated sequence and its key from the trie because it has become _impossible_ for `polykey` to be called with that sequence ever again.
+Then `object2`'s original value is only reachable from the trie. `keyalesce` can now prune the associated sequence and its key from the trie because it has become _impossible_ for `keyalesce` to be called with that sequence ever again.
 
-I made the trie hold only [weak references](https://en.wikipedia.org/wiki/Weak_reference) to objects passed to `polykey` and pruned the trie when the objects are [garbage-collected](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>) using [`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry).
+I made the trie hold only [weak references](https://en.wikipedia.org/wiki/Weak_reference) to objects passed to `keyalesce` and pruned the trie when the objects are [garbage-collected](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>) using [`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry).
 
 After pruning in this case the trie would look like so:
 
@@ -244,8 +244,8 @@ Although `1` was in the sequence it was not pruned because it is still needed fo
 Consider the following code:
 
 ```js
-const key1 = polykey([1, 2, 4])
-const key2 = polykey([1, 2, 5, 7])
+const key1 = keyalesce([1, 2, 4])
+const key2 = keyalesce([1, 2, 5, 7])
 
 // ...
 ```
@@ -277,7 +277,7 @@ If the code continues like so:
 key2 = null
 ```
 
-Then `key2`'s original value is only reachable from the trie. Although it's still possible to call `polykey` with `[1, 2, 5, 7]`, `polykey` can actually prune the key and its associated value sequence because there isn't any code that depends on receiving that specific key anymore. `polykey` doesn't need to return the same unique key
+Then `key2`'s original value is only reachable from the trie. Although it's still possible to call `keyalesce` with `[1, 2, 5, 7]`, `keyalesce` can actually prune the key and its associated value sequence because there isn't any code that depends on receiving that specific key anymore. `keyalesce` doesn't need to return the same unique key
 for a given value sequence. It only needs to prevent multiple keys existing _simultaneously_ for the same value sequence.
 
 Similarly to the handling of object sequence values, I made the trie hold only weak references to created keys and pruned the trie when the keys are garbage-collected using `FinalizationRegistry`.
