@@ -1,23 +1,23 @@
-name: Deploy
+name: Deploy Development
 
 on:
   push:
     branches:
-      - main
+      - development
 
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
 concurrency:
   # Ensure only a single deployment occurs at any given time.
-  group: deploy
+  group: deploy-development
   cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy Development
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - run: flyctl deploy -a tomeraberbach-dev --remote-only

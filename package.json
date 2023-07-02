@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "prepare": "tomer install",
+    "install-playwright": "playwright install",
     "format": "tomer format",
     "lint": "tomer lint",
     "typecheck": "tomer typecheck",
@@ -65,6 +66,7 @@
     "escape-string-regexp": "^5.0.0",
     "gray-matter": "^4.0.3",
     "hast-util-select": "^5.0.5",
+    "hast-util-to-html": "^8.0.4",
     "hast-util-to-text": "^3.1.2",
     "hastscript": "^7.2.0",
     "isbot": "^3.6.10",
@@ -80,6 +82,7 @@
     "rehype-dom-parse": "^4.0.2",
     "rehype-external-links": "^2.1.0",
     "rehype-katex": "^6.0.3",
+    "rehype-mermaidjs": "^1.0.1",
     "rehype-parse": "^8.0.4",
     "rehype-preset-minify": "^6.0.0",
     "rehype-react": "^7.2.0",
@@ -97,6 +100,7 @@
     "string-similarity": "^4.0.4",
     "strip-markdown": "^5.0.1",
     "superjson": "^1.12.3",
+    "svgo": "^3.0.2",
     "ts-extras": "^0.11.0",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.2",
@@ -125,6 +129,7 @@
     "jest": "^29.5.0",
     "make-dir-cli": "^3.0.0",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.35.1",
     "postcss": "^8.4.24",
     "postcss-cli": "^10.1.0",
     "postcss-fontpie": "^1.0.1",
@@ -142,7 +147,8 @@
   "pnpm": {
     "patchedDependencies": {
       "glyphhanger@5.0.0": "patches/glyphhanger@5.0.0.patch",
-      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch"
+      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch",
+      "mermaid-isomorphic@2.1.0": "patches/mermaid-isomorphic@2.1.0.patch"
     }
   }
 }

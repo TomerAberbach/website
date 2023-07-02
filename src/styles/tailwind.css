@@ -32,6 +32,14 @@
   code {
     font-variant-ligatures: no-common-ligatures;
   }
+
+  svg[id^='mermaid-'] foreignObject {
+    @apply visible flex;
+
+    & * {
+      @apply flex h-full items-center;
+    }
+  }
 }
 
 @layer utilities {

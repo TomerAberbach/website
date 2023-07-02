@@ -11,11 +11,13 @@ import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
 import escapeStringRegExp from 'escape-string-regexp'
 import parseFrontMatter from 'gray-matter'
+import { optimize } from 'svgo'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import remarkDirective from 'remark-directive'
 import { type Highlighter, getHighlighter } from 'shiki'
 import { toText as htmlToText } from 'hast-util-to-text'
+import { toHtml } from 'hast-util-to-html'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
@@ -32,9 +34,11 @@ import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import { forEach, join, map, pipe } from 'lfi'
+import rehypeMermaid from 'rehype-mermaidjs'
 import { parseHrefs, parseReferences } from './references.server.js'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
+import infoSvgPath from './images/info.svg'
 import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.js'
 import type { RawPost } from '~/services/posts/read.server.js'
 import { renderHtml } from '~/services/html.js'
@@ -83,6 +87,7 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       .use(remarkDirective)
       .use(() => remarkFlex)
       .use(() => remarkGif)
+      .use(() => remarkNote)
       .use(remarkReplace)
       .use(remarkSmartypants)
       .use(remarkA11yEmoji)
@@ -94,6 +99,11 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       .use(remarkRehype, { clobberPrefix: `` })
       .use(rehypeExternalLinks)
       .use(rehypeSlug)
+      .use(rehypeMermaid, {
+        css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
+        mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
+      })
+      .use(() => rehypeOptimizeSvg)
       .use(() => rehypeCodeMetadata)
       .use(rehypeShiki, await highlighterPromise)
       .use(() => rehypeRemoveShikiClasses)
@@ -183,6 +193,20 @@ type VideoPaths = {
   webm: string
 }
 
+const remarkNote = (tree: MdRoot) => {
+  visit(tree, `containerDirective`, node => {
+    if (node.name !== `note`) {
+      return
+    }
+
+    node.data ??= {}
+    const { data } = node
+    data.hName = `aside`
+  })
+
+  return tree
+}
+
 const remarkReplace = () => {
   const regExp = new RegExp(
     `(${pipe(
@@ -230,6 +254,30 @@ const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
   [`without-postcss-fontpie.webm`, withoutPostcssFontpieWebmPath],
 ])
+
+const rehypeOptimizeSvg = (tree: HtmlRoot) => {
+  visit(tree, { tagName: `svg` }, (node, index, parent) => {
+    const optimizedSvgAst = unified()
+      .use(rehypeParse, { space: `svg` })
+      .parse(
+        optimize(toHtml(node), {
+          multipass: true,
+          plugins: [
+            {
+              name: `preset-default`,
+              params: { overrides: { inlineStyles: false } },
+            },
+          ],
+        }).data,
+      )
+
+    assert(optimizedSvgAst.children.length === 1)
+    const svgElement = optimizedSvgAst.children[0]!
+    parent!.children.splice(index!, 1, svgElement)
+  })
+
+  return tree
+}
 
 const rehypeCodeMetadata = (tree: HtmlRoot) => {
   visit(tree, { tagName: `pre` }, node => {
@@ -470,6 +518,17 @@ const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
   )
 }
 
+const Aside: Components[`aside`] = ({ children }) => (
+  <aside className='relative rounded-md border-l-4 border-l-blue-500 bg-blue-50 p-8'>
+    <img
+      src={infoSvgPath}
+      alt='Note'
+      className='absolute left-0 top-0 m-0 box-content h-9 w-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4 border-blue-50 bg-blue-50'
+    />
+    <div>{children}</div>
+  </aside>
+)
+
 const components: Components = {
   section: Section,
   h1: createHeading(`h1`),
@@ -480,6 +539,7 @@ const components: Components = {
   h6: createHeading(`h6`),
   a: Anchor,
   pre: Pre,
+  aside: Aside,
 }
 
 const parseHrefPost = (
