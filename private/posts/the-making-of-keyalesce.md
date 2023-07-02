@@ -2,7 +2,7 @@
 title: 'The Making of Keyalesce'
 tags: ['code', 'data structures', 'gc', 'javascript', 'performance', 'tries']
 dates:
-  published: 2023-06-19
+  published: 2023-07-02
 ---
 
 Have you ever wanted to use [tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types) or objects for the keys of a [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) or the values of a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)? It's a [very](https://stackoverflow.com/questions/43592760/typescript-javascript-using-tuple-as-key-of-map) [common](https://stackoverflow.com/questions/21838436/map-using-tuples-or-objects) [question](https://stackoverflow.com/questions/63179867/set-of-tuples-in-javascript) because the following code doesn't do what you might expect:
