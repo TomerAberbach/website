@@ -49,7 +49,7 @@ But that isn't particularly useful because typically you're constructing tuples 
 
 ```js
 const f = (x, y) => {
-  // This will return undefined because and `[x, y]` is a new array!
+  // This will return undefined because `[x, y]` is a new array!
   const value = map.get([x, y])
 
   // ...
@@ -301,5 +301,46 @@ Although `1` was in the sequence it was not pruned because it is still needed fo
 :::
 
 In summary, the trie is pruned whenever object sequence values or keys have only weak references to them.
+
+## Go use it!
+
+Install [`keyalesce`](https://github.com/TomerAberbach/keyalesce):
+
+```sh
+$ npm i keyalesce
+```
+
+And import it:
+
+```js
+import keyalesce from 'keyalesce'
+
+const hangOuts = new Set()
+
+const createHangoutKey = (person1, person2) =>
+  keyalesce([person1, person2].sort())
+const hangOut = (person1, person2) =>
+  hangOuts.add(createHangoutKey(person1, person2))
+const didTheyHangOut = (person1, person2) =>
+  hangOuts.has(createHangoutKey(person1, person2))
+
+hangOut(`Tomer`, `Sam`)
+hangOut(`Tomer`, `Amanda`)
+
+console.log(didTheyHangOut(`Tomer`, `Sam`))
+console.log(didTheyHangOut(`Sam`, `Tomer`))
+//=> true
+//=> true
+
+console.log(didTheyHangOut(`Tomer`, `Amanda`))
+console.log(didTheyHangOut(`Amanda`, `Tomer`))
+//=> true
+//=> true
+
+console.log(didTheyHangOut(`Sam`, `Amanda`))
+console.log(didTheyHangOut(`Amanda`, `Sam`))
+//=> false
+//=> false
+```
 
 [^1]: Two value sequences are considered equal if each of their values are equal using the [SameValueZero algorithm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality).
