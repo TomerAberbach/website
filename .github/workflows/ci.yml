@@ -2,24 +2,13 @@ name: CI
 
 on: [push, pull_request]
 
-jobs:
-  skip_check:
-    name: Skip Check
-    runs-on: ubuntu-latest
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v5
-        with:
-          cancel_others: 'true'
-          skip_after_successful_duplicate: 'true'
-          concurrent_skipping: 'same_content_newer'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+jobs:
   test:
     name: Node.js v${{ matrix.nodejs }} (${{ matrix.os }})
-    needs: skip_check
-    if: needs.skip_check.outputs.should_skip != 'true'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
