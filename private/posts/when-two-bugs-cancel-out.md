@@ -1,8 +1,8 @@
 ---
 title: 'When Two Bugs Cancel Out'
-tags: ['bug', 'code']
+tags: ['bug', 'code', 'docs']
 dates:
-  published: 2023-07-30
+  published: 2023-08-05
 ---
 
 I encountered a perplexing bug while implementing [table cell splitting in Google Docs](https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html).
