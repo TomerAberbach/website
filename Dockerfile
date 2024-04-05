@@ -42,8 +42,7 @@ ADD . .
 
 # For glyphhanger
 RUN apt-get update
-RUN apt-get --yes install python3-pip
-RUN pip3 install fonttools[woff]
+RUN apt-get --yes install python3-fonttools
 
 ENV NODE_ENV=production
 RUN pnpm run build
