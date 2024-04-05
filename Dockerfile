@@ -1,5 +1,12 @@
-FROM node:16 as node
-RUN npm install -g pnpm
+# syntax = docker/dockerfile:1
+
+ARG NODE_VERSION=21.7.1
+FROM node:${NODE_VERSION} as node
+
+LABEL fly_launch_runtime="Remix"
+
+ARG PNPM_VERSION=8.15.4
+RUN npm install -g pnpm@$PNPM_VERSION
 
 # For puppeteer and playwright
 RUN apt-get update
