@@ -2,7 +2,7 @@ import type { ChangeEventHandler } from 'react'
 import { useCallback, useId } from 'react'
 import { useSearchParams } from '@remix-run/react'
 import { arrayIncludes } from 'ts-extras'
-import Tooltip from './tooltip.js'
+import Tooltip from './tooltip.tsx'
 
 export const LogicalOperatorRadioButtonGroup = ({
   logicalOperator,

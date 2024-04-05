@@ -1,8 +1,8 @@
 import { first, get, join, map, pipe, values } from 'lfi'
-import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
-import { formatDateUTC, formatDatesUTC } from '~/services/format.js'
-import { getMarkdownPosts } from '~/services/posts/index.server.js'
-import { SITE_URL, getSiteUrl } from '~/services/url.js'
+import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
+import { formatDateUTC, formatDatesUTC } from '~/services/format.ts'
+import { getMarkdownPosts } from '~/services/posts/index.server.ts'
+import { SITE_URL, getSiteUrl } from '~/services/url.ts'
 
 export const loader = async (): Promise<Response> => {
   const posts = await getMarkdownPosts()

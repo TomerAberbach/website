@@ -19,7 +19,7 @@ import {
 } from 'lfi'
 import tailwindStylesPath from './styles/tailwind.css'
 import fontsStylesPath from './styles/fonts.css'
-import Layout from './components/layout.js'
+import Layout from './components/layout.tsx'
 import logoIcoPath from './logo.ico'
 import logoSvgPath from '~/private/media/logo.svg'
 

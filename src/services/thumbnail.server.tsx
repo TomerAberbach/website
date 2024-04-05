@@ -1,20 +1,20 @@
-import fs from 'fs/promises'
+import fs from 'node:fs/promises'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { Sharp } from 'sharp'
 import sharp from 'sharp'
 import { htmlEscape } from 'escape-goat'
 import { ColorTranslator } from 'colortranslator'
-import tailwindConfig from '../../tailwind.config.js'
-import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
-import type { MarkdownPost } from '~/services/posts/types.js'
-import { privatePath } from '~/services/path.server.js'
-import type { Dates } from '~/services/format.js'
+import tailwindConfig from '../../tailwind.config.ts'
+import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.ts'
+import type { MarkdownPost } from '~/services/posts/types.ts'
+import { privatePath } from '~/services/path.server.ts'
+import type { Dates } from '~/services/format.ts'
 import {
   formatDatesForDisplay,
   formatMinutesToRead,
-} from '~/services/format.js'
-import { cache } from '~/services/cache.server.js'
-import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
+} from '~/services/format.ts'
+import { cache } from '~/services/cache.server.ts'
+import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 
 const { colors } = tailwindConfig.theme
 const blue400 = new ColorTranslator(colors.blue[400]).HEX

@@ -1,10 +1,10 @@
 import { unified } from 'unified'
-import { useHydrated } from 'remix-utils'
+import { useHydrated } from 'remix-utils/use-hydrated'
 import rehypeDomParse from 'rehype-dom-parse'
-import { renderHtml } from '~/services/html.js'
-import type { Components } from '~/services/html.js'
-import { Link } from '~/components/link.js'
-import assert from '~/services/assert.js'
+import { renderHtml } from '~/services/html.tsx'
+import type { Components } from '~/services/html.tsx'
+import { Link } from '~/components/link.tsx'
+import assert from '~/services/assert.ts'
 
 const Prose = ({ html }: { html: string }) => {
   const hydrated = useHydrated()

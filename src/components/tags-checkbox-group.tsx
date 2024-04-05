@@ -13,7 +13,7 @@ import {
 import type { ChangeEventHandler } from 'react'
 import { useCallback, useState } from 'react'
 import { useSearchParams } from '@remix-run/react'
-import Tooltip from './tooltip.js'
+import Tooltip from './tooltip.tsx'
 
 export const TagsCheckboxGroup = ({
   selectedTags,
@@ -82,11 +82,11 @@ export const TagsCheckboxGroup = ({
                 </button>
               )}
             </Tooltip>
-            {recentlyReset && (
+            {recentlyReset ? (
               <span role='alert' className='sr-only'>
                 Unchecked all tags
               </span>
-            )}
+            ) : null}
           </div>
         </div>
       </fieldset>

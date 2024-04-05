@@ -1,4 +1,4 @@
-import assert from '~/services/assert.js'
+import assert from '~/services/assert.ts'
 
 test.each([false, 0, -0, ``, null, undefined, NaN])(
   `assert throws for a falsy condition`,

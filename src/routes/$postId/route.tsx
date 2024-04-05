@@ -1,4 +1,4 @@
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderFunctionArgs } from '@remix-run/node'
 import { map, pipe, reduce, toArray } from 'lfi'
 import { isRouteErrorResponse } from '@remix-run/react'
 import { useId } from 'react'
@@ -7,25 +7,25 @@ import arrowRightSvgPath from './arrow-right.svg'
 import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
-} from '~/services/posts/index.server'
+} from '~/services/posts/index.server.ts'
 import {
   createMeta,
   json,
   useLoaderData,
   useRouteError,
-} from '~/services/json.js'
-import { ExternalLink, InternalLink } from '~/components/link.js'
-import Prose from '~/components/prose.js'
-import pick from '~/services/pick.js'
-import assert from '~/services/assert.js'
-import type { Post } from '~/services/posts/types.js'
-import Tooltip from '~/components/tooltip.js'
+} from '~/services/json.ts'
+import { ExternalLink, InternalLink } from '~/components/link.tsx'
+import Prose from '~/components/prose.tsx'
+import pick from '~/services/pick.ts'
+import assert from '~/services/assert.ts'
+import type { Post } from '~/services/posts/types.ts'
+import Tooltip from '~/components/tooltip.tsx'
 import {
   formatDateForDisplay,
   formatDateISO,
   formatMinutesToRead,
-} from '~/services/format.js'
-import { getMeta } from '~/services/meta.js'
+} from '~/services/format.ts'
+import { getMeta } from '~/services/meta.ts'
 
 const PostPage = () => {
   const suggestEditId = useId()
@@ -81,10 +81,10 @@ const PostPage = () => {
         </ul>
       </header>
       <Prose html={content} />
-      {(previousPost || nextPost) && (
+      {previousPost ?? nextPost ? (
         <footer className='not-prose mt-8 flex items-center font-medium text-gray-700'>
           <BalanceProvider>
-            {previousPost && (
+            {previousPost ? (
               <InternalLink
                 href={`/${previousPost.id}`}
                 rel='prev'
@@ -97,8 +97,8 @@ const PostPage = () => {
                 />
                 <Balancer as='div'>{previousPost.title}</Balancer>
               </InternalLink>
-            )}
-            {nextPost && (
+            ) : null}
+            {nextPost ? (
               <InternalLink
                 href={`/${nextPost.id}`}
                 rel='next'
@@ -107,10 +107,10 @@ const PostPage = () => {
                 <Balancer as='div'>{nextPost.title}</Balancer>
                 <img src={arrowRightSvgPath} alt='Next' className='h-6 w-6' />
               </InternalLink>
-            )}
+            ) : null}
           </BalanceProvider>
         </footer>
-      )}
+      ) : null}
     </article>
   )
 }
@@ -223,9 +223,12 @@ const truncate = (text: string): string => {
 
 const MAX_LENGTH = 200
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { postId } = params
-  assert(postId, `Expected a non-empty postId in params: ${params}`)
+  assert(
+    postId,
+    `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
+  )
 
   const post = (await getMarkdownPosts()).get(postId)
   if (!post) {

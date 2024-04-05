@@ -13,8 +13,8 @@ import {
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
-import { cache } from './cache.server.js'
-import { getPosts } from './posts/index.server.js'
+import { cache } from './cache.server.ts'
+import { getPosts } from './posts/index.server.ts'
 
 export const getGraph = cache(async (): Promise<Graph> => {
   const posts = await getPosts()

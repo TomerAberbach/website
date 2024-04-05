@@ -2,7 +2,6 @@ import { first, get, map, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
 import {
-  type ReactNode,
   useCallback,
   useEffect,
   useId,
@@ -10,9 +9,10 @@ import {
   useRef,
   useState,
 } from 'react'
+import type { ReactNode } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
-import { Link } from './link.js'
-import { TAG_CLASS_PREFIX } from './tags-filter-form.js'
+import { Link } from './link.tsx'
+import { TAG_CLASS_PREFIX } from './tags-filter-form.tsx'
 import closeSvgPath from './close.svg'
 import type {
   Graph,
@@ -20,7 +20,7 @@ import type {
   GraphLayout,
   Vertex as GraphVertex,
   Position,
-} from '~/services/graph.server'
+} from '~/services/graph.server.ts'
 
 const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
   const {

@@ -1,5 +1,5 @@
-import { nextTick } from 'process'
-import { cache } from '~/services/cache.server.js'
+import { nextTick } from 'node:process'
+import { cache } from '~/services/cache.server.ts'
 
 test(`cache calls the given function on the next tick`, async () => {
   let called = false

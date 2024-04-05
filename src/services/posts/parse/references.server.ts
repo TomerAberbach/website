@@ -10,7 +10,7 @@ import {
 } from 'lfi'
 import { selectAll } from 'hast-util-select'
 import type { Root } from 'hast'
-import { SITE_URL } from '~/services/url.js'
+import { SITE_URL } from '~/services/url.ts'
 import fontsStylesPath from '~/styles/fonts.css'
 
 export const parseReferences = (
@@ -52,7 +52,7 @@ export const parseHrefs = (htmlAst: Root): Set<string> =>
   pipe(
     selectAll(`a`, htmlAst),
     flatMap(element => {
-      const href = element.properties?.href
+      const { href } = element.properties
       return typeof href === `string` ? [href] : []
     }),
     reduce(toSet()),

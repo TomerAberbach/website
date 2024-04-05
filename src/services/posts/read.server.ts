@@ -1,9 +1,9 @@
-import { basename, join } from 'path'
-import fs from 'fs/promises'
+import { basename, join } from 'node:path'
+import fs from 'node:fs/promises'
 import { asConcur, mapConcur, pipe } from 'lfi'
 import type { ConcurIterable } from 'lfi'
-import { privatePath } from '../path.server.js'
-import assert from '~/services/assert.js'
+import { privatePath } from '~/services/path.server.ts'
+import assert from '~/services/assert.ts'
 
 export const readRawPosts = async (): Promise<ConcurIterable<RawPost>> => {
   const postsDirectory = privatePath(`posts`)

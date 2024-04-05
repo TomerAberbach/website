@@ -1,13 +1,14 @@
 import { any, entries, filter, join, map, pipe, values } from 'lfi'
 import cssesc from 'cssesc'
 import { Form } from '@remix-run/react'
-import { type FormEventHandler, useCallback } from 'react'
-import type { LogicalOperator } from './logical-operator-radio-button-group.js'
+import { useCallback } from 'react'
+import type { FormEventHandler } from 'react'
+import type { LogicalOperator } from './logical-operator-radio-button-group.ts'
 import {
   LogicalOperatorRadioButtonGroup,
   useLogicalOperator,
-} from './logical-operator-radio-button-group.js'
-import { TagsCheckboxGroup, useSelectedTags } from './tags-checkbox-group.js'
+} from './logical-operator-radio-button-group.tsx'
+import { TagsCheckboxGroup, useSelectedTags } from './tags-checkbox-group.tsx'
 
 export const TagsFilterForm = ({
   targetId,

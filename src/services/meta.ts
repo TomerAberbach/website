@@ -1,13 +1,10 @@
 import { concat, join, map } from 'lfi'
 import type { Location } from '@remix-run/react'
-import type {
-  // eslint-disable-next-line camelcase
-  V2_HtmlMetaDescriptor as HtmlMetaDescriptor,
-} from '@remix-run/node'
-import type { MarkdownPost } from './posts/types.js'
-import { formatDatesForDisplay, formatMinutesToRead } from './format.js'
-import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.js'
-import { getSiteUrl } from './url.js'
+import type { MetaDescriptor } from '@remix-run/node'
+import type { MarkdownPost } from './posts/types.ts'
+import { formatDatesForDisplay, formatMinutesToRead } from './format.ts'
+import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.ts'
+import { getSiteUrl } from './url.ts'
 
 export const getMeta = (
   location: Location,
@@ -27,8 +24,8 @@ export const getMeta = (
     >
     type: `website` | `article`
   },
-): HtmlMetaDescriptor[] => {
-  const baseMeta: HtmlMetaDescriptor[] = [
+): MetaDescriptor[] => {
+  const baseMeta: MetaDescriptor[] = [
     { title },
     { name: `description`, content: description },
     {
@@ -78,8 +75,8 @@ export const getMeta = (
 const getArticleMeta = ({
   tags,
   dates,
-}: Pick<MarkdownPost, `tags` | `dates`>): Iterable<HtmlMetaDescriptor> => {
-  const baseMeta: HtmlMetaDescriptor[] = [
+}: Pick<MarkdownPost, `tags` | `dates`>): Iterable<MetaDescriptor> => {
+  const baseMeta: MetaDescriptor[] = [
     {
       property: `article:published_time`,
       content: dates.published.toISOString(),

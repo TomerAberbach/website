@@ -3,7 +3,8 @@
   font-weight: 100;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-Thin-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-Thin-subset.woff2) format('woff2'),
     url(KantumruyPro-Thin-subset.woff) format('woff');
 }
 
@@ -12,7 +13,8 @@
   font-weight: 100;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-ThinItalic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-ThinItalic-subset.woff2) format('woff2'),
     url(KantumruyPro-ThinItalic-subset.woff) format('woff');
 }
 
@@ -21,7 +23,8 @@
   font-weight: 200;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-ExtraLight-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-ExtraLight-subset.woff2) format('woff2'),
     url(KantumruyPro-ExtraLight-subset.woff) format('woff');
 }
 
@@ -30,7 +33,8 @@
   font-weight: 200;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-ExtraLightItalic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-ExtraLightItalic-subset.woff2) format('woff2'),
     url(KantumruyPro-ExtraLightItalic-subset.woff) format('woff');
 }
 
@@ -39,7 +43,8 @@
   font-weight: 300;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-Light-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-Light-subset.woff2) format('woff2'),
     url(KantumruyPro-Light-subset.woff) format('woff');
 }
 
@@ -48,7 +53,8 @@
   font-weight: 300;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-LightItalic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-LightItalic-subset.woff2) format('woff2'),
     url(KantumruyPro-LightItalic-subset.woff) format('woff');
 }
 
@@ -57,7 +63,8 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-Regular-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-Regular-subset.woff2) format('woff2'),
     url(KantumruyPro-Regular-subset.woff) format('woff');
 }
 
@@ -66,7 +73,8 @@
   font-weight: 400;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-Italic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-Italic-subset.woff2) format('woff2'),
     url(KantumruyPro-Italic-subset.woff) format('woff');
 }
 
@@ -75,7 +83,8 @@
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-Medium-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-Medium-subset.woff2) format('woff2'),
     url(KantumruyPro-Medium-subset.woff) format('woff');
 }
 
@@ -84,7 +93,8 @@
   font-weight: 500;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-MediumItalic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-MediumItalic-subset.woff2) format('woff2'),
     url(KantumruyPro-MediumItalic-subset.woff) format('woff');
 }
 
@@ -93,7 +103,8 @@
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-SemiBold-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-SemiBold-subset.woff2) format('woff2'),
     url(KantumruyPro-SemiBold-subset.woff) format('woff');
 }
 
@@ -102,7 +113,8 @@
   font-weight: 600;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-SemiBoldItalic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-SemiBoldItalic-subset.woff2) format('woff2'),
     url(KantumruyPro-SemiBoldItalic-subset.woff) format('woff');
 }
 
@@ -111,7 +123,8 @@
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url(KantumruyPro-Bold-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-Bold-subset.woff2) format('woff2'),
     url(KantumruyPro-Bold-subset.woff) format('woff');
 }
 
@@ -120,6 +133,7 @@
   font-weight: 700;
   font-style: italic;
   font-display: swap;
-  src: url(KantumruyPro-BoldItalic-subset.woff2) format('woff2'),
+  src:
+    url(KantumruyPro-BoldItalic-subset.woff2) format('woff2'),
     url(KantumruyPro-BoldItalic-subset.woff) format('woff');
 }

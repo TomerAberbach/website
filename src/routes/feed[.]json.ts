@@ -1,10 +1,10 @@
 import { json } from '@remix-run/server-runtime'
 import { map, pipe, reduce, toArray } from 'lfi'
 import avatarPath from '~/private/media/avatar.png'
-import { formatDateISO } from '~/services/format.js'
-import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
-import { getMarkdownPosts } from '~/services/posts/index.server.js'
-import { SITE_URL, getSiteUrl } from '~/services/url.js'
+import { formatDateISO } from '~/services/format.ts'
+import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
+import { getMarkdownPosts } from '~/services/posts/index.server.ts'
+import { SITE_URL, getSiteUrl } from '~/services/url.ts'
 
 export const loader = async (): Promise<Response> =>
   json(

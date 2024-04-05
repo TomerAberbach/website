@@ -2,8 +2,8 @@ import readingTime from 'reading-time'
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
+import type { Root as MdRoot, Node } from 'mdast'
 import type { Element, Root as HtmlRoot } from 'hast'
-import type { Root as MdRoot } from 'mdast'
 import remarkParse from 'remark-parse'
 import { z } from 'zod'
 import remarkRehype from 'remark-rehype'
@@ -15,7 +15,8 @@ import { optimize } from 'svgo'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import remarkDirective from 'remark-directive'
-import { type Highlighter, getHighlighter } from 'shiki'
+import { bundledLanguages, getHighlighter } from 'shiki'
+import type { Highlighter } from 'shiki'
 import { toText as htmlToText } from 'hast-util-to-text'
 import { toHtml } from 'hast-util-to-html'
 import stripMarkdown from 'strip-markdown'
@@ -34,23 +35,24 @@ import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import { forEach, join, map, pipe } from 'lfi'
-import rehypeMermaid from 'rehype-mermaidjs'
-import { parseHrefs, parseReferences } from './references.server.js'
+import rehypeMermaid from 'rehype-mermaid'
+import { parseHrefs, parseReferences } from './references.server.ts'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
 import infoSvgPath from './images/info.svg'
-import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.js'
-import type { RawPost } from '~/services/posts/read.server.js'
-import { renderHtml } from '~/services/html.js'
-import type { Components } from '~/services/html.js'
-import { Link } from '~/components/link.js'
-import Tooltip from '~/components/tooltip.js'
-import assert from '~/services/assert.js'
+import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.ts'
+import type { RawPost } from '~/services/posts/read.server.ts'
+import { renderHtml } from '~/services/html.tsx'
+import type { Components } from '~/services/html.tsx'
+import { Link } from '~/components/link.tsx'
+import Tooltip from '~/components/tooltip.tsx'
+import assert from '~/services/assert.ts'
 import fontsStylesPath from '~/styles/fonts.css'
 import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
 import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
 import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
+import 'mdast-util-directive'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
@@ -79,6 +81,19 @@ const parseMarkdownPost = async (
   }
 }
 
+/* eslint-disable typescript/consistent-type-definitions */
+declare module 'unified' {
+  interface CompileResultMap {
+    node: Node
+  }
+}
+declare module 'hast' {
+  interface ElementData {
+    meta?: string
+  }
+}
+/* eslint-enable typescript/consistent-type-definitions */
+
 const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
   (
     await unified()
@@ -89,12 +104,20 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       .use(() => remarkGif)
       .use(() => remarkNote)
       .use(remarkReplace)
-      .use(remarkSmartypants)
+      .use(remarkSmartypants as () => void)
       .use(remarkA11yEmoji)
-      .use(remarkEmbedder, {
-        cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
-        transformers: [remarkTransformerOembed],
-      })
+      .use(
+        // @ts-expect-error Type definitions are wrong.
+        remarkEmbedder.default as unknown,
+        {
+          cache:
+            remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+          transformers: [
+            // @ts-expect-error Type definitions are wrong.
+            remarkTransformerOembed.default,
+          ],
+        },
+      )
       .use(remarkMath)
       .use(remarkRehype, { clobberPrefix: `` })
       .use(rehypeExternalLinks)
@@ -112,14 +135,16 @@ const convertMarkdownToHtml = async (markdown: string): Promise<HtmlRoot> =>
       // eslint-disable-next-line no-restricted-syntax
       .use(function () {
         // eslint-disable-next-line typescript/no-invalid-this
-        this.Compiler = htmlAst => htmlAst
+        this.compiler = htmlAst => htmlAst
       })
       .process(markdown)
   ).result as HtmlRoot
 
-const remarkEmbedderCache = new RemarkEmbedderCache()
+const remarkEmbedderCache =
+  // @ts-expect-error Type definitions are wrong.
+  new (RemarkEmbedderCache.default as unknown)() as RemarkEmbedderCache
 
-const remarkFlex = (tree: MdRoot) => {
+const remarkFlex = (tree: MdRoot) =>
   visit(tree, `containerDirective`, node => {
     if (node.name !== `horizontal`) {
       return
@@ -131,10 +156,7 @@ const remarkFlex = (tree: MdRoot) => {
     data.hProperties = { class: `flex max-w-full flex-wrap child:flex-1` }
   })
 
-  return tree
-}
-
-const remarkGif = (tree: MdRoot) => {
+const remarkGif = (tree: MdRoot) =>
   visit(tree, `leafDirective`, node => {
     if (node.name !== `gif`) {
       return
@@ -168,9 +190,6 @@ const remarkGif = (tree: MdRoot) => {
     ]
   })
 
-  return tree
-}
-
 const GIF_PATHS: ReadonlyMap<string, VideoPaths> = new Map([
   [
     `with-postcss-fontpie`,
@@ -193,7 +212,7 @@ type VideoPaths = {
   webm: string
 }
 
-const remarkNote = (tree: MdRoot) => {
+const remarkNote = (tree: MdRoot) =>
   visit(tree, `containerDirective`, node => {
     if (node.name !== `note`) {
       return
@@ -203,9 +222,6 @@ const remarkNote = (tree: MdRoot) => {
     const { data } = node
     data.hName = `aside`
   })
-
-  return tree
-}
 
 const remarkReplace = () => {
   const regExp = new RegExp(
@@ -219,7 +235,7 @@ const remarkReplace = () => {
   const replacer = (_: unknown, name: string): string =>
     REPLACEMENTS.get(name.slice(1))!
 
-  return (tree: MdRoot) => {
+  return (tree: MdRoot) =>
     visit(
       tree,
       [`text`, `code`, `inlineCode`, `html`, `yaml`, `link`],
@@ -242,9 +258,6 @@ const remarkReplace = () => {
         }
       },
     )
-
-    return tree
-  }
 }
 
 const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
@@ -291,7 +304,6 @@ const rehypeCodeMetadata = (tree: HtmlRoot) => {
       return
     }
 
-    node.properties ??= {}
     pipe(
       String(meta).split(`,`),
       map(value => {
@@ -299,7 +311,7 @@ const rehypeCodeMetadata = (tree: HtmlRoot) => {
         assert(values.length === 2)
         return values as [string, string]
       }),
-      forEach(([key, value]) => (node.properties![`data-${key}`] = value)),
+      forEach(([key, value]) => (node.properties[`data-${key}`] = value)),
     )
   })
 
@@ -319,7 +331,7 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
     }
 
     const language = extractLanguageFromClassName(
-      codeElement.properties?.className,
+      codeElement.properties.className,
     )
     if (!language) {
       return undefined
@@ -328,7 +340,10 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
     const code = htmlToText(node).slice(0, -1)
     let highlightedCode
     try {
-      highlightedCode = highlighter.codeToHtml(code, { lang: language })
+      highlightedCode = highlighter.codeToHtml(code, {
+        theme: THEME,
+        lang: language,
+      })
     } catch {
       return undefined
     }
@@ -368,7 +383,11 @@ const extractSingleCodeElement = ({ children }: Element): Element | null => {
   return child
 }
 
-const highlighterPromise = getHighlighter({ theme: `material-theme-palenight` })
+const THEME = `material-theme-palenight`
+const highlighterPromise = getHighlighter({
+  themes: [THEME],
+  langs: Object.keys(bundledLanguages),
+})
 
 const extractLanguageFromClassName = (
   className: string | number | boolean | (string | number)[] | null | undefined,
@@ -394,8 +413,8 @@ const rehypeRemoveShikiClasses = (tree: HtmlRoot) => {
     const stack = [node]
     do {
       const node = stack.pop()!
-      delete node.properties?.tabIndex
-      delete node.properties?.className
+      delete node.properties.tabIndex
+      delete node.properties.className
 
       for (const child of node.children) {
         if (child.type === `element`) {
@@ -412,7 +431,7 @@ const convertMarkdownToText = (markdown: string): string =>
   String(
     unified()
       .use(remarkParse)
-      .use(stripMarkdown)
+      .use(stripMarkdown as () => void)
       .use(remarkStringify)
       .processSync(markdown),
   )

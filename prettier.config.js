@@ -1,5 +1,7 @@
-module.exports = {
-  ...require(`tomer/prettier`),
+import config from 'tomer/prettier'
+
+export default {
+  ...config,
   proseWrap: `preserve`,
-  plugins: [require(`prettier-plugin-tailwindcss`)],
+  plugins: [`prettier-plugin-tailwindcss`],
 }

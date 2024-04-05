@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { InternalLink, Link } from './link.js'
-import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.js'
+import { InternalLink, Link } from './link.tsx'
+import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import logoSvgPath from '~/private/media/logo.svg'
 
 const Layout = ({ children }: { children: ReactNode }) => (

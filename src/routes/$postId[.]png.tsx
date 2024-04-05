@@ -1,11 +1,14 @@
-import type { LoaderArgs } from '@remix-run/server-runtime'
-import assert from '~/services/assert.js'
-import { getMarkdownPosts } from '~/services/posts/index.server.js'
-import { renderThumbnail } from '~/services/thumbnail.server.js'
+import type { LoaderFunctionArgs } from '@remix-run/server-runtime'
+import assert from '~/services/assert.ts'
+import { getMarkdownPosts } from '~/services/posts/index.server.ts'
+import { renderThumbnail } from '~/services/thumbnail.server.tsx'
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { postId } = params
-  assert(postId, `Expected a non-empty postId in params: ${params}`)
+  assert(
+    postId,
+    `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
+  )
 
   const post = (await getMarkdownPosts()).get(postId)
   if (!post) {

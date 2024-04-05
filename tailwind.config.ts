@@ -1,6 +1,6 @@
-import defaultTheme from 'tailwindcss/defaultTheme'
-import colors from 'tailwindcss/colors'
-import plugin from 'tailwindcss/plugin'
+import defaultTheme from 'tailwindcss/defaultTheme.js'
+import colors from 'tailwindcss/colors.js'
+import plugin from 'tailwindcss/plugin.js'
 import { roundTo } from 'round-to'
 import typography from '@tailwindcss/typography'
 

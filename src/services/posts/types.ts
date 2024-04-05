@@ -1,4 +1,4 @@
-import type { Dates } from '../format.js'
+import type { Dates } from '~/services/format.ts'
 
 export type Post = MarkdownPost | HrefPost
 

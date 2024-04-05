@@ -55,8 +55,12 @@
         theme('colors.blue.500'),
         theme('colors.blue.500')
       );
-    background-size: 100% 0.2em, 0 0.2em;
-    background-position: 100% 100%, 0 100%;
+    background-size:
+      100% 0.2em,
+      0 0.2em;
+    background-position:
+      100% 100%,
+      0 100%;
     background-repeat: no-repeat;
   }
 
@@ -68,6 +72,8 @@
 
   .underlined:hover,
   .underlined:focus-visible {
-    background-size: 0 0.2em, 100% 0.2em;
+    background-size:
+      0 0.2em,
+      100% 0.2em;
   }
 }

@@ -14,11 +14,11 @@ import {
   window,
 } from 'lfi'
 import { findBestMatch } from 'string-similarity'
-import pick from '../pick.js'
-import { readRawPosts } from './read.server.js'
-import parsePost from './parse/index.server.js'
-import type { MarkdownPost, Post } from './types.js'
-import { cache } from '~/services/cache.server'
+import { readRawPosts } from './read.server.ts'
+import parsePost from './parse/index.server.tsx'
+import type { MarkdownPost, Post } from './types.ts'
+import pick from '~/services/pick.ts'
+import { cache } from '~/services/cache.server.ts'
 
 export const findBestMarkdownPostMatch = async (
   postId: string,
@@ -64,7 +64,7 @@ export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
     reduceConcur(toArray()),
   )
 
-  const posts: Map<string, Post> = new Map(
+  const posts = new Map<string, Post>(
     postEntries.sort(
       ([, a], [, b]) =>
         b.dates.published.getTime() - a.dates.published.getTime(),

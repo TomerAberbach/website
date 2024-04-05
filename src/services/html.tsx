@@ -1,8 +1,9 @@
 import type { Root } from 'hast'
 import rehypeReact from 'rehype-react'
+import type { Options } from 'rehype-react'
 import type { ComponentType, ReactElement } from 'react'
-import { Fragment, createElement } from 'react'
 import { unified } from 'unified'
+import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 
 export const renderHtml = (
   htmlAst: Root,
@@ -10,14 +11,12 @@ export const renderHtml = (
 ): ReactElement =>
   unified()
     .use(rehypeReact, {
-      createElement,
       Fragment,
-      components: components as Partial<{
-        [TagName in keyof JSX.IntrinsicElements]:
-          | keyof JSX.IntrinsicElements
-          | ComponentType<JSX.IntrinsicElements[TagName]>
-      }>,
-    })
+      development: false,
+      jsx,
+      jsxs,
+      components,
+    } as Options)
     .stringify(htmlAst)
 
 export type Components = Partial<{
