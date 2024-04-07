@@ -20,10 +20,10 @@ dates:
 ---
 
 Naturally this list only includes projects I'm allowed to talk about! For many
-projects I was not the only person who worked on it. The projects are ordered
+projects I was not the only person who worked on it. Projects I worked on as part of my [20% time](https://builtin.com/software-engineering-perspectives/20-percent-time) are labeled with **_20%_**. The projects are ordered
 from most to least recent.
 
-- I delighted users with some easter eggs in Docs. Try typing [`@tictactoe`](https://www.instagram.com/reel/Cx3jQFbL072) or [`@fourinarow`](https://www.instagram.com/p/C2g0I3dt3LV)!
+- I delighted users with some easter eggs in Docs. Try typing [`@tictactoe`](https://www.instagram.com/reel/Cx3jQFbL072) or [`@fourinarow`](https://www.instagram.com/p/C2g0I3dt3LV)!&nbsp;**_20%_**
 
 - I [integrated generative AI into Docs](https://workspace.google.com/blog/product-announcements/generative-ai)!
 
@@ -42,7 +42,7 @@ from most to least recent.
   note:&nbsp;["Google’s making code formatting a breeze in Docs"](https://www.theverge.com/2022/12/14/23509936/google-docs-code-blocks-smart-canvas).
 
 - I made it possible to
-  [split table cells in Docs](https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html).
+  [split table cells in Docs](https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html).&nbsp;**_20%_**
 
 - I implemented
   [edit notifications for Docs](https://workspaceupdates.googleblog.com/2022/07/edit-notifications-for-document-content-changes.html).
@@ -51,7 +51,7 @@ from most to least recent.
   [dynamic mail](https://blog.google/products/gmail/take-action-and-stay-up-to-date-with-dynamic-email-in-gmail).
 
 - I added
-  [Markdown autocorrection/substitution to Docs, Slides, and Drawings](https://workspaceupdates.googleblog.com/2022/03/compose-with-markdown-in-google-docs-on.html)[^1].
+  [Markdown autocorrection/substitution to Docs, Slides, and Drawings](https://workspaceupdates.googleblog.com/2022/03/compose-with-markdown-in-google-docs-on.html)[^1].&nbsp;**_20%_**
 
   Several news outlets took note:
 
@@ -63,11 +63,11 @@ from most to least recent.
   [tech Twitter _definitely_ noticed](https://twitter.com/TomerAberbach/status/1508895335200043021).
 
 - I enhanced the autocorrection/substitution capabilities of Docs, Slides, and Drawings, and followed up by adding
-  [en- and em-dash autocorrection/substitution](https://twitter.com/googledocs/status/1471555730364846083).
+  [en- and em-dash autocorrection/substitution](https://twitter.com/googledocs/status/1471555730364846083).&nbsp;**_20%_**
 
 - I
   [increased the width of comment threads in Docs](https://workspaceupdates.googleblog.com/2021/09/comment-size-increasing-in-google-docs.html).
-  They were _way_ too narrow and it was bothering me! 😅
+  They were _way_ too narrow and it was bothering me!&nbsp;😅&nbsp;**_20%_**
 
 - I updated [Drive sharing emails](https://support.google.com/drive/answer/2494822)
   to show the file's most recent thumbnail, owner, and edit when opening the emails,
@@ -77,7 +77,7 @@ from most to least recent.
 
 - I expanded
   [link previews in Docs, Sheets, Slides, and Drawings to links in comment threads](https://9to5google.com/2019/09/18/google-docs-link-previews).
-  Previously, they only appeared for links in the editor itself.
+  Previously, they only appeared for links in the editor itself.&nbsp;**_20%_**
 
 - I [simplified finding new or important comment threads in Docs](https://workspaceupdates.googleblog.com/2021/02/improvements-for-locating-new-comments-important-conversations-google-docs.html).
   USA TODAY took
