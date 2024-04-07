@@ -62,7 +62,7 @@ export const getMeta = (
     { property: `og:type`, content: type },
     ...(type === `article` ? getArticleMeta(post) : []),
 
-    // Twitter
+    // X
     { name: `twitter:card`, content: `summary_large_image` },
     { name: `twitter:site`, content: `@TomerAberbach` },
     { name: `twitter:title`, content: title },
