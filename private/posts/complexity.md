@@ -1,6 +1,6 @@
 ---
 title: 'Complexity'
-tags: ['piano', 'track']
+tags: ['piano', 'tracks']
 dates:
   published: 2023-01-14
 ---

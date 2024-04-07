@@ -1,6 +1,6 @@
 ---
 title: 'The Hero Archetype'
-tags: ['piano', 'track']
+tags: ['piano', 'tracks']
 dates:
   published: 2022-09-02
 ---

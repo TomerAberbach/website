@@ -1,6 +1,6 @@
 ---
 title: 'When Two Bugs Cancel Out'
-tags: ['bug', 'code', 'docs', 'google']
+tags: ['bugs', 'code', 'docs', 'google']
 dates:
   published: 2023-09-18
 ---
