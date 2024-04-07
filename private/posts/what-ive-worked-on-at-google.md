@@ -1,17 +1,31 @@
 ---
 title: 'What I’ve Worked On at Google'
 tags:
-  ['code', 'docs', 'drawings', 'google', 'resume', 'sheets', 'sites', 'slides']
+  [
+    'ai',
+    'code',
+    'docs',
+    'drawings',
+    'drive',
+    'google',
+    'markdown',
+    'resume',
+    'sheets',
+    'sites',
+    'slides',
+  ]
 dates:
   published: 2023-04-23
+  updated: 2024-04-07
 ---
 
 Naturally this list only includes projects I'm allowed to talk about! For many
 projects I was not the only person who worked on it. The projects are ordered
 from most to least recent.
 
-- I worked on
-  [integrating generative AI with Docs](https://workspace.google.com/blog/product-announcements/generative-ai)!
+- I delighted users with some easter eggs in Docs. Try typing [`@tictactoe`](https://www.instagram.com/reel/Cx3jQFbL072) or [`@fourinarow`](https://www.instagram.com/p/C2g0I3dt3LV)!
+
+- I [integrated generative AI into Docs](https://workspace.google.com/blog/product-announcements/generative-ai)!
 
   _Many_ news outlets took note:
 
@@ -32,7 +46,7 @@ from most to least recent.
 
 - I implemented
   [edit notifications for Docs](https://workspaceupdates.googleblog.com/2022/07/edit-notifications-for-document-content-changes.html).
-  While working on the feature, I also added a UI for updating a document's
+  While working on the feature, I also implemented a UI for updating a document's
   comment and edit notification settings directly from the emails using
   [dynamic mail](https://blog.google/products/gmail/take-action-and-stay-up-to-date-with-dynamic-email-in-gmail).
 
@@ -48,30 +62,29 @@ from most to least recent.
   And
   [tech Twitter _definitely_ noticed](https://twitter.com/TomerAberbach/status/1508895335200043021).
 
-- I added
-  [en- and em-dash autocorrection/substitution to Docs, Slides, and Drawings](https://twitter.com/googledocs/status/1471555730364846083).
+- I enhanced the autocorrection/substitution capabilities of Docs, Slides, and Drawings, and followed up by adding
+  [en- and em-dash autocorrection/substitution](https://twitter.com/googledocs/status/1471555730364846083).
 
 - I
   [increased the width of comment threads in Docs](https://workspaceupdates.googleblog.com/2021/09/comment-size-increasing-in-google-docs.html).
   They were _way_ too narrow and it was bothering me! 😅
 
-- I made [Drive sharing emails](https://support.google.com/drive/answer/2494822)
-  show the most recent file thumbnail, owner, and edit when opening the emails,
-  and added a UI for starring and unstarring the files directly from the emails,
+- I updated [Drive sharing emails](https://support.google.com/drive/answer/2494822)
+  to show the file's most recent thumbnail, owner, and edit when opening the emails,
+  and implemented a UI for starring and unstarring the files directly from the emails,
   all using
   [dynamic mail](https://blog.google/products/gmail/take-action-and-stay-up-to-date-with-dynamic-email-in-gmail).
 
-- I added
-  [link previews for links in Docs, Sheets, Slides, and Drawings comment threads](https://9to5google.com/2019/09/18/google-docs-link-previews).
+- I expanded
+  [link previews in Docs, Sheets, Slides, and Drawings to links in comment threads](https://9to5google.com/2019/09/18/google-docs-link-previews).
   Previously, they only appeared for links in the editor itself.
 
-- I made it
-  [easier to find new or important comment threads in Docs](https://workspaceupdates.googleblog.com/2021/02/improvements-for-locating-new-comments-important-conversations-google-docs.html).
+- I [simplified finding new or important comment threads in Docs](https://workspaceupdates.googleblog.com/2021/02/improvements-for-locating-new-comments-important-conversations-google-docs.html).
   USA TODAY took
   note:&nbsp;["Google Docs upgrades comments feature to make collaboration easier"](https://www.usatoday.com/story/tech/2021/02/23/google-docs-comments-feature-make-collaboration-easier/4554035001).
 
 - In the Summer of 2019 I interned on the [Sites](https://sites.google.com) team
   and
-  [allowed site viewers to provide feedback on published Sites](https://workspaceupdates.googleblog.com/2019/11/feedback-google-sites.html).
+  [enabled site viewers to provide feedback on published Sites](https://workspaceupdates.googleblog.com/2019/11/feedback-google-sites.html).
 
 [^1]: Yes, Google has an editor called [Drawings](https://drawings.google.com).
