@@ -224,38 +224,38 @@ const truncate = (text: string): string => {
 const MAX_LENGTH = 200
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const { postId } = params
+  const postId = params[`*`]
   assert(
     postId,
     `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
   )
 
   const post = (await getMarkdownPosts()).get(postId)
-  if (!post) {
-    throw json<ErrorBoundaryData>(
-      {
-        didYouMeanPost: pick(await findBestMarkdownPostMatch(postId), [
-          `id`,
-          `title`,
-        ]),
-      },
-      { status: 404 },
-    )
+  if (post) {
+    return json({
+      post: pick(post, [
+        `id`,
+        `title`,
+        `tags`,
+        `dates`,
+        `minutesToRead`,
+        `content`,
+        `description`,
+        `previousPost`,
+        `nextPost`,
+      ]),
+    })
   }
 
-  return json({
-    post: pick(post, [
-      `id`,
-      `title`,
-      `tags`,
-      `dates`,
-      `minutesToRead`,
-      `content`,
-      `description`,
-      `previousPost`,
-      `nextPost`,
-    ]),
-  })
+  throw json<ErrorBoundaryData>(
+    {
+      didYouMeanPost: pick(await findBestMarkdownPostMatch(postId), [
+        `id`,
+        `title`,
+      ]),
+    },
+    { status: 404 },
+  )
 }
 
 type ErrorBoundaryData = { didYouMeanPost: Pick<Post, `id` | `title`> }

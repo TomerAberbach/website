@@ -1,0 +1,6 @@
+# Previous website post URL format (https://github.com/TomerAberbach/tomeraberbach.github.io)
+/html/post/:splat*(\.html)?   /:splat*
+
+# GitHub Pages redirects
+/mano-simulator               https://tomeraberbach.github.io/mano-simulator
+/spotify-true-random          https://tomeraberbach.github.io/spotify-true-random
