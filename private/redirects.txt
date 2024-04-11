@@ -5,6 +5,7 @@
 /github/:splat*               https://github.com/TomerAberbach/:splat*
 /npm/:splat*                  https://www.npmjs.com/~tomeraberbach/:splat*
 /twitter/:splat*              https://twitter.com/TomerAberbach/:splat*
+/edin/:splat*                 https://www.linkedin.com/in/tomer-a/:splat*
 
 # Convenience redirects
 /resume                       /resume.pdf
