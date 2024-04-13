@@ -5,12 +5,9 @@ import remarkRehype from 'remark-rehype'
 import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
 import escapeStringRegExp from 'escape-string-regexp'
-import { optimize } from 'svgo'
 import { unified } from 'unified'
-import rehypeParse from 'rehype-parse'
 import remarkDirective from 'remark-directive'
 import rehypeShiki from '@shikijs/rehype'
-import { toHtml } from 'hast-util-to-html'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
@@ -29,6 +26,7 @@ import remarkSmartypants from 'remark-smartypants'
 import { forEach, join, map, pipe } from 'lfi'
 import rehypeMermaid from 'rehype-mermaid'
 import { invariant } from '@epic-web/invariant'
+import rehypeSvgo from 'rehype-svgo'
 import fontsStylesPath from '~/styles/fonts.css'
 import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
@@ -83,8 +81,17 @@ export const convertMarkdownToHtml = async (
         css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
         mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
       })
-      .use(rehypeOptimizeSvg)
-      // .use(rehypeCodeMetadata)
+      .use(rehypeSvgo, {
+        svgoConfig: {
+          multipass: true,
+          plugins: [
+            {
+              name: `preset-default`,
+              params: { overrides: { inlineStyles: false } },
+            },
+          ],
+        },
+      })
       .use(rehypeShiki, {
         theme: `material-theme-palenight`,
         transformers: [
@@ -262,31 +269,6 @@ const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
   [`without-postcss-fontpie.webm`, withoutPostcssFontpieWebmPath],
 ])
-
-// eslint-disable-next-line unicorn/consistent-function-scoping
-const rehypeOptimizeSvg = () => (tree: HtmlRoot) =>
-  visit(tree, { tagName: `svg` }, (node, index, parent) => {
-    const optimizedSvgAst = unified()
-      .use(rehypeParse, { space: `svg` })
-      .parse(
-        optimize(toHtml(node), {
-          multipass: true,
-          plugins: [
-            {
-              name: `preset-default`,
-              params: { overrides: { inlineStyles: false } },
-            },
-          ],
-        }).data,
-      )
-
-    invariant(
-      optimizedSvgAst.children.length === 1,
-      `Expected exactly one child`,
-    )
-    const svgElement = optimizedSvgAst.children[0]!
-    parent!.children.splice(index!, 1, svgElement)
-  })
 
 export const convertMarkdownToText = (markdown: string): string =>
   String(
