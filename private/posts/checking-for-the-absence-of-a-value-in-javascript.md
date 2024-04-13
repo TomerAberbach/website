@@ -183,7 +183,7 @@ console.log(object === object)
 
 ### Loose
 
-Loose quality is invoked using `==` and often produces unexpected results. For
+Loose equality is invoked using `==` and often produces unexpected results. For
 two values of the same type, `a` and `b`, `a == b` behaves like `a === b`. If
 `a` and `b` have different types, then JavaScript coerces the values to the same
 type and strictly equates them:
