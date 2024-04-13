@@ -1,5 +1,5 @@
 import type { Root as MdRoot, Node } from 'mdast'
-import type { Element, Root as HtmlRoot } from 'hast'
+import type { Root as HtmlRoot } from 'hast'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeExternalLinks from 'rehype-external-links'
@@ -84,9 +84,44 @@ export const convertMarkdownToHtml = async (
         mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
       })
       .use(rehypeOptimizeSvg)
-      .use(rehypeCodeMetadata)
-      .use(rehypeShiki, { theme: `material-theme-palenight` })
-      .use(rehypeRemoveShikiClasses)
+      // .use(rehypeCodeMetadata)
+      .use(rehypeShiki, {
+        theme: `material-theme-palenight`,
+        transformers: [
+          // Remove unnecessary attributes.
+          {
+            pre: node => {
+              delete node.properties.tabindex
+              delete node.properties.class
+            },
+            span: node => {
+              delete node.properties.class
+            },
+          },
+          // Extract meta.
+          {
+            // eslint-disable-next-line no-restricted-syntax
+            pre(node) {
+              const meta = this.options.meta?.__raw ?? ``
+              if (!meta) {
+                return
+              }
+
+              pipe(
+                String(meta).split(`,`),
+                map(value => {
+                  const values = value.split(`=`)
+                  invariant(values.length === 2, `Expected a pair`)
+                  return values as [string, string]
+                }),
+                forEach(
+                  ([key, value]) => (node.properties[`data-${key}`] = value),
+                ),
+              )
+            },
+          },
+        ],
+      })
       .use(rehypeKatex)
       .use(rehypePresetMinify)
       // eslint-disable-next-line no-restricted-syntax
@@ -251,60 +286,6 @@ const rehypeOptimizeSvg = () => (tree: HtmlRoot) =>
     )
     const svgElement = optimizedSvgAst.children[0]!
     parent!.children.splice(index!, 1, svgElement)
-  })
-
-// eslint-disable-next-line unicorn/consistent-function-scoping
-const rehypeCodeMetadata = () => (tree: HtmlRoot) =>
-  visit(tree, { tagName: `pre` }, node => {
-    const codeElement = extractSingleCodeElement(node)
-    if (!codeElement) {
-      return
-    }
-
-    const { data: { meta } = {} } = codeElement
-    if (!meta) {
-      return
-    }
-
-    pipe(
-      String(meta).split(`,`),
-      map(value => {
-        const values = value.split(`=`)
-        invariant(values.length === 2, `Expected a pair`)
-        return values as [string, string]
-      }),
-      forEach(([key, value]) => (node.properties[`data-${key}`] = value)),
-    )
-  })
-
-const extractSingleCodeElement = ({ children }: Element): Element | null => {
-  if (children.length !== 1) {
-    return null
-  }
-
-  const child = children[0]!
-  if (child.type !== `element` || child.tagName !== `code`) {
-    return null
-  }
-
-  return child
-}
-
-// eslint-disable-next-line unicorn/consistent-function-scoping
-const rehypeRemoveShikiClasses = () => (tree: HtmlRoot) =>
-  visit(tree, { tagName: `pre` }, node => {
-    const stack = [node]
-    do {
-      const node = stack.pop()!
-      delete node.properties.tabIndex
-      delete node.properties.className
-
-      for (const child of node.children) {
-        if (child.type === `element`) {
-          stack.push(child)
-        }
-      }
-    } while (stack.length > 0)
   })
 
 export const convertMarkdownToText = (markdown: string): string =>
