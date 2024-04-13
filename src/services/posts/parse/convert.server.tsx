@@ -40,11 +40,6 @@ declare module 'unified' {
     node: Node
   }
 }
-declare module 'hast' {
-  interface ElementData {
-    meta?: string
-  }
-}
 /* eslint-enable typescript/consistent-type-definitions */
 
 export const convertMarkdownToHtml = async (
