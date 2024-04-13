@@ -231,7 +231,7 @@ const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
 ])
 
 // eslint-disable-next-line unicorn/consistent-function-scoping
-const rehypeOptimizeSvg = () => (tree: HtmlRoot) => {
+const rehypeOptimizeSvg = () => (tree: HtmlRoot) =>
   visit(tree, { tagName: `svg` }, (node, index, parent) => {
     const optimizedSvgAst = unified()
       .use(rehypeParse, { space: `svg` })
@@ -255,11 +255,8 @@ const rehypeOptimizeSvg = () => (tree: HtmlRoot) => {
     parent!.children.splice(index!, 1, svgElement)
   })
 
-  return tree
-}
-
 // eslint-disable-next-line unicorn/consistent-function-scoping
-const rehypeCodeMetadata = () => (tree: HtmlRoot) => {
+const rehypeCodeMetadata = () => (tree: HtmlRoot) =>
   visit(tree, { tagName: `pre` }, node => {
     const codeElement = extractSingleCodeElement(node)
     if (!codeElement) {
@@ -282,10 +279,7 @@ const rehypeCodeMetadata = () => (tree: HtmlRoot) => {
     )
   })
 
-  return tree
-}
-
-const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
+const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) =>
   visit(tree, { tagName: `pre` }, (node, index, parent): number | undefined => {
     if (!parent) {
       return undefined
@@ -337,9 +331,6 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
     return index + codeAst.children.length
   })
 
-  return tree
-}
-
 const extractSingleCodeElement = ({ children }: Element): Element | null => {
   if (children.length !== 1) {
     return null
@@ -379,7 +370,7 @@ const extractLanguageFromClassName = (
 const LANGUAGE_PREFIX = `language-`
 
 // eslint-disable-next-line unicorn/consistent-function-scoping
-const rehypeRemoveShikiClasses = () => (tree: HtmlRoot) => {
+const rehypeRemoveShikiClasses = () => (tree: HtmlRoot) =>
   visit(tree, { tagName: `pre` }, node => {
     const stack = [node]
     do {
@@ -394,9 +385,6 @@ const rehypeRemoveShikiClasses = () => (tree: HtmlRoot) => {
       }
     } while (stack.length > 0)
   })
-
-  return tree
-}
 
 export const convertMarkdownToText = (markdown: string): string =>
   String(
