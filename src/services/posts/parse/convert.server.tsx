@@ -9,9 +9,7 @@ import { optimize } from 'svgo'
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 import remarkDirective from 'remark-directive'
-import { bundledLanguages, getHighlighter } from 'shiki'
-import type { Highlighter } from 'shiki'
-import { toText as htmlToText } from 'hast-util-to-text'
+import rehypeShiki from '@shikijs/rehype'
 import { toHtml } from 'hast-util-to-html'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
@@ -87,7 +85,7 @@ export const convertMarkdownToHtml = async (
       })
       .use(rehypeOptimizeSvg)
       .use(rehypeCodeMetadata)
-      .use(rehypeShiki, await highlighterPromise)
+      .use(rehypeShiki, { theme: `material-theme-palenight` })
       .use(rehypeRemoveShikiClasses)
       .use(rehypeKatex)
       .use(rehypePresetMinify)
@@ -279,58 +277,6 @@ const rehypeCodeMetadata = () => (tree: HtmlRoot) =>
     )
   })
 
-const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) =>
-  visit(tree, { tagName: `pre` }, (node, index, parent): number | undefined => {
-    if (!parent) {
-      return undefined
-    }
-    index ??= 0
-
-    const codeElement = extractSingleCodeElement(node)
-    if (!codeElement) {
-      return undefined
-    }
-
-    const language = extractLanguageFromClassName(
-      codeElement.properties.className,
-    )
-    if (!language) {
-      return undefined
-    }
-
-    const code = htmlToText(node).slice(0, -1)
-    let highlightedCode
-    try {
-      highlightedCode = highlighter.codeToHtml(code, {
-        theme: THEME,
-        lang: language,
-      })
-    } catch {
-      return undefined
-    }
-
-    const codeAst = unified()
-      .use(rehypeParse, { fragment: true })
-      .parse(highlightedCode)
-
-    invariant(codeAst.children.length === 1, `Expected exactly one child`)
-    const preElement = codeAst.children[0]!
-    invariant(
-      preElement.type === `element` && preElement.tagName === `pre`,
-      `Expected a pre element`,
-    )
-
-    const { position, data, properties } = node
-    Object.assign(preElement, {
-      position,
-      data,
-      properties: { ...properties, ...preElement.properties },
-    })
-
-    parent.children.splice(index, 1, preElement)
-    return index + codeAst.children.length
-  })
-
 const extractSingleCodeElement = ({ children }: Element): Element | null => {
   if (children.length !== 1) {
     return null
@@ -343,31 +289,6 @@ const extractSingleCodeElement = ({ children }: Element): Element | null => {
 
   return child
 }
-
-const THEME = `material-theme-palenight`
-const highlighterPromise = getHighlighter({
-  themes: [THEME],
-  langs: Object.keys(bundledLanguages),
-})
-
-const extractLanguageFromClassName = (
-  className: string | number | boolean | (string | number)[] | null | undefined,
-): string | null => {
-  if (!Array.isArray(className)) {
-    return null
-  }
-
-  const languageClassName = className
-    .map(String)
-    .find(className => className.startsWith(LANGUAGE_PREFIX))
-  if (!languageClassName) {
-    return null
-  }
-
-  return languageClassName.slice(LANGUAGE_PREFIX.length)
-}
-
-const LANGUAGE_PREFIX = `language-`
 
 // eslint-disable-next-line unicorn/consistent-function-scoping
 const rehypeRemoveShikiClasses = () => (tree: HtmlRoot) =>
