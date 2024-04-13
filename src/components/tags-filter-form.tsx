@@ -20,8 +20,8 @@ export const TagsFilterForm = ({
   const [logicalOperator, setLogicalOperator] = useLogicalOperator()
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
-  // Prevent form submission when JavaScript is enabled
-  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  // Prevent form submission when JavaScript is enabled.
+  const preventFormSubmission = useCallback<FormEventHandler<HTMLFormElement>>(
     e => e.preventDefault(),
     [],
   )
@@ -29,7 +29,7 @@ export const TagsFilterForm = ({
   return (
     <Form
       className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'
-      onSubmit={handleSubmit}
+      onSubmit={preventFormSubmission}
     >
       <div className='flex items-center gap-3'>
         <h2 className='text-lg font-medium'>Filter by tags</h2>
@@ -86,7 +86,7 @@ const TagsFilterStyle = ({
   return (
     <style
       // Safe because all user inputted tags have been filtered to known tags
-      // and the tags have been escaped for use in CSS identifiers
+      // and the tags have been escaped for use in CSS identifiers.
       dangerouslySetInnerHTML={{
         __html: `
           ${selector} {

@@ -145,14 +145,14 @@ const layoutGraph = ({
     dragCoefficient: 0.2,
 
     // Decrease this number to spread out the vertices by making them repel each
-    // other more
+    // other more.
     gravity: -5,
     // Decrease this number to spread out the vertices by allowing the edges to
-    // grow more
+    // grow more.
     springCoefficient: 0.005,
   })
 
-  // Position internal vertices in a vertical column
+  // Position internal vertices in a vertical column.
   pipe(
     vertices.values(),
     filter(({ type }) => type === `internal`),
@@ -160,7 +160,7 @@ const layoutGraph = ({
     forEach(([index, { id }]) => {
       layout.setNodePosition(
         id,
-        // Zig zag internal vertices from left and right in the vertical column
+        // Zig zag internal vertices from left and right in the vertical column.
         (index % 2 === 0 ? -1 : 1) * HORIZONTAL_OFFSET,
         index * SPRING_LENGTH,
       )

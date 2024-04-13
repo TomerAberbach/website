@@ -191,7 +191,7 @@ const getAvatarAndAuthorText = cache(async () => {
           sharp(await fs.readFile(privatePath(`media/avatar.png`)))
             .resize({ width: AVATAR_SIZE, height: AVATAR_SIZE })
             .composite([
-              // Make the avatar rounded
+              // Make the avatar rounded.
               {
                 input: Buffer.from(
                   renderToStaticMarkup(
@@ -206,7 +206,7 @@ const getAvatarAndAuthorText = cache(async () => {
                 ),
                 blend: `dest-in`,
               },
-              // Surround the rounded avatar with a blue border
+              // Surround the rounded avatar with a blue border.
               {
                 input: Buffer.from(
                   renderToStaticMarkup(
@@ -226,13 +226,13 @@ const getAvatarAndAuthorText = cache(async () => {
             ]),
         ),
       },
-      // Place the author text to the right of the avatar
+      // Place the author text to the right of the avatar.
       {
         left: AVATAR_SIZE + SPACING,
         top: 0,
         input: await renderPng(
           sharp(authorText.data)
-            // Vertically center the author text with respect to the avatar
+            // Vertically center the author text with respect to the avatar.
             .resize({
               width: authorText.info.width,
               height: AVATAR_SIZE,
