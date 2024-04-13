@@ -52,6 +52,7 @@
     ]
   },
   "dependencies": {
+    "@epic-web/invariant": "^1.0.0",
     "@fec/remark-a11y-emoji": "^4.0.2",
     "@remark-embedder/cache": "^2.1.0",
     "@remark-embedder/core": "^3.0.2",

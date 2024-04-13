@@ -36,6 +36,7 @@ import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
 import { forEach, join, map, pipe } from 'lfi'
 import rehypeMermaid from 'rehype-mermaid'
+import { invariant } from '@epic-web/invariant'
 import { parseHrefs, parseReferences } from './references.server.ts'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -46,7 +47,6 @@ import { renderHtml } from '~/services/html.tsx'
 import type { Components } from '~/services/html.tsx'
 import { Link } from '~/components/link.tsx'
 import Tooltip from '~/components/tooltip.tsx'
-import assert from '~/services/assert.ts'
 import fontsStylesPath from '~/styles/fonts.css'
 import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
@@ -163,7 +163,7 @@ const remarkGif = (tree: MdRoot) =>
     }
 
     const paths = GIF_PATHS.get(pipe(node.children, map(mdToText), join(``)))
-    assert(paths)
+    invariant(paths, `Expected GIF to exist`)
 
     const alt = node.attributes?.alt
 
@@ -284,7 +284,10 @@ const rehypeOptimizeSvg = (tree: HtmlRoot) => {
         }).data,
       )
 
-    assert(optimizedSvgAst.children.length === 1)
+    invariant(
+      optimizedSvgAst.children.length === 1,
+      `Expected exactly one child`,
+    )
     const svgElement = optimizedSvgAst.children[0]!
     parent!.children.splice(index!, 1, svgElement)
   })
@@ -308,7 +311,7 @@ const rehypeCodeMetadata = (tree: HtmlRoot) => {
       String(meta).split(`,`),
       map(value => {
         const values = value.split(`=`)
-        assert(values.length === 2)
+        invariant(values.length === 2, `Expected a pair`)
         return values as [string, string]
       }),
       forEach(([key, value]) => (node.properties[`data-${key}`] = value)),
@@ -352,9 +355,12 @@ const rehypeShiki = (highlighter: Highlighter) => (tree: HtmlRoot) => {
       .use(rehypeParse, { fragment: true })
       .parse(highlightedCode)
 
-    assert(codeAst.children.length === 1)
+    invariant(codeAst.children.length === 1, `Expected exactly one child`)
     const preElement = codeAst.children[0]!
-    assert(preElement.type === `element` && preElement.tagName === `pre`)
+    invariant(
+      preElement.type === `element` && preElement.tagName === `pre`,
+      `Expected a pre element`,
+    )
 
     const { position, data, properties } = node
     Object.assign(preElement, {

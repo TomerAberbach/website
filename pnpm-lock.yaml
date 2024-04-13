@@ -13,6 +13,9 @@ patchedDependencies:
     path: patches/glyphhanger@5.0.0.patch
 
 dependencies:
+  '@epic-web/invariant':
+    specifier: ^1.0.0
+    version: 1.0.0
   '@fec/remark-a11y-emoji':
     specifier: ^4.0.2
     version: 4.0.2
@@ -3488,6 +3491,13 @@ packages:
         integrity: sha512-gJB6HLm5rYwSLI6PQa+X1t5CFGrv1J1TWG+sOyMCeKz2ojaj6Fnl/rZEspogG+cvqbt4AE/2eIyD2QfLKTBNlQ==,
       }
     dev: true
+
+  /@epic-web/invariant@1.0.0:
+    resolution:
+      {
+        integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==,
+      }
+    dev: false
 
   /@esbuild/aix-ppc64@0.20.2:
     resolution:

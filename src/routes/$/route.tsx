@@ -3,6 +3,7 @@ import { map, pipe, reduce, toArray } from 'lfi'
 import { isRouteErrorResponse } from '@remix-run/react'
 import { useId } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
+import { invariant } from '@epic-web/invariant'
 import arrowRightSvgPath from './arrow-right.svg'
 import {
   findBestMarkdownPostMatch,
@@ -17,7 +18,6 @@ import {
 import { ExternalLink, InternalLink } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
 import pick from '~/services/pick.ts'
-import assert from '~/services/assert.ts'
 import type { Post } from '~/services/posts/types.ts'
 import Tooltip from '~/components/tooltip.tsx'
 import {
@@ -225,7 +225,7 @@ const MAX_LENGTH = 200
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const postId = params[`*`]
-  assert(
+  invariant(
     postId,
     `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
   )

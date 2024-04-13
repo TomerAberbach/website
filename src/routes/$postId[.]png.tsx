@@ -1,11 +1,11 @@
+import { invariant } from '@epic-web/invariant'
 import type { LoaderFunctionArgs } from '@remix-run/server-runtime'
-import assert from '~/services/assert.ts'
 import { getMarkdownPosts } from '~/services/posts/index.server.ts'
 import { renderThumbnail } from '~/services/thumbnail.server.tsx'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { postId } = params
-  assert(
+  invariant(
     postId,
     `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
   )
