@@ -6,6 +6,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
 import escapeStringRegExp from 'escape-string-regexp'
 import { unified } from 'unified'
+import type { Plugin } from 'unified'
 import remarkDirective from 'remark-directive'
 import rehypeShiki from '@shikijs/rehype'
 import stripMarkdown from 'strip-markdown'
@@ -54,7 +55,7 @@ export const convertMarkdownToHtml = async (
       .use(remarkGif)
       .use(remarkNote)
       .use(remarkReplace)
-      .use(remarkSmartypants as () => void)
+      .use(remarkSmartypants as Plugin)
       .use(remarkA11yEmoji)
       .use(
         // @ts-expect-error Type definitions are wrong.
@@ -269,7 +270,7 @@ export const convertMarkdownToText = (markdown: string): string =>
   String(
     unified()
       .use(remarkParse)
-      .use(stripMarkdown as () => void)
+      .use(stripMarkdown as unknown as Plugin)
       .use(remarkStringify)
       .processSync(markdown),
   )
