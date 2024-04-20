@@ -1,22 +1,14 @@
 import { unified } from 'unified'
-import { useHydrated } from 'remix-utils/use-hydrated'
-import rehypeDomParse from 'rehype-dom-parse'
+import rehypeParse from 'rehype-parse-isomorphic'
 import { invariant } from '@epic-web/invariant'
 import { renderHtml } from '~/services/html.tsx'
 import type { Components } from '~/services/html.tsx'
 import { Link } from '~/components/link.tsx'
 
-const Prose = ({ html }: { html: string }) => {
-  const hydrated = useHydrated()
+const Prose = ({ html }: { html: string }) =>
+  renderHtml(htmlParser.parse(html), components)
 
-  if (!hydrated) {
-    return <div dangerouslySetInnerHTML={{ __html: html }} />
-  }
-
-  return renderHtml(htmlParser.parse(html), components)
-}
-
-const htmlParser = unified().use(rehypeDomParse, { fragment: true }).freeze()
+const htmlParser = unified().use(rehypeParse, { fragment: true }).freeze()
 
 const components: Components = {
   a: ({ ref, href, children, ...props }) => {

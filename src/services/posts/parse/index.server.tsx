@@ -127,6 +127,36 @@ const Anchor: Components[`a`] = ({
   )
 }
 
+const Div: Components[`div`] = ({
+  [`data-admonition-name`]: admonitionName,
+  [`data-admonition-label`]: admonitionLabel,
+  children,
+  ...props
+}) => {
+  if (!admonitionName) {
+    return <div {...props}>{children}</div>
+  }
+
+  return (
+    <div
+      className='relative my-10 rounded-md border-l-4 border-l-blue-500 bg-blue-50 p-8'
+      {...props}
+    >
+      <img
+        src={infoSvgPath}
+        alt=''
+        className='not-prose absolute left-0 top-0 m-0  box-content h-9 w-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4 border-blue-50 bg-blue-50'
+      />
+      {admonitionLabel ? (
+        <header className='pb-2 text-base font-semibold uppercase'>
+          {String(admonitionLabel)}
+        </header>
+      ) : null}
+      <div className='first:*:mt-0 last:*:mb-0'>{children}</div>
+    </div>
+  )
+}
+
 const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
   if (title == null) {
     return <pre style={style} {...props} />
@@ -147,17 +177,6 @@ const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
   )
 }
 
-const Aside: Components[`aside`] = ({ children }) => (
-  <aside className='relative rounded-md border-l-4 border-l-blue-500 bg-blue-50 p-8'>
-    <img
-      src={infoSvgPath}
-      alt='Note'
-      className='absolute left-0 top-0 m-0 box-content h-9 w-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4 border-blue-50 bg-blue-50'
-    />
-    <div>{children}</div>
-  </aside>
-)
-
 const components: Components = {
   section: Section,
   h1: createHeading(`h1`),
@@ -167,8 +186,8 @@ const components: Components = {
   h5: createHeading(`h5`),
   h6: createHeading(`h6`),
   a: Anchor,
+  div: Div,
   pre: Pre,
-  aside: Aside,
 }
 
 const parseHrefPost = (

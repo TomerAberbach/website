@@ -1,4 +1,4 @@
-import type { Root as MdRoot, Node } from 'mdast'
+import type { Root as MdRoot } from 'mdast'
 import type { Root as HtmlRoot } from 'hast'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
@@ -6,7 +6,6 @@ import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
 import escapeStringRegExp from 'escape-string-regexp'
 import { unified } from 'unified'
-import type { Plugin } from 'unified'
 import remarkDirective from 'remark-directive'
 import rehypeShiki from '@shikijs/rehype'
 import stripMarkdown from 'strip-markdown'
@@ -28,6 +27,7 @@ import { forEach, join, map, pipe } from 'lfi'
 import rehypeMermaid from 'rehype-mermaid'
 import { invariant } from '@epic-web/invariant'
 import rehypeSvgo from 'rehype-svgo'
+import { remarkAdmonition } from 'remark-admonition'
 import fontsStylesPath from '~/styles/fonts.css'
 import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
@@ -35,105 +35,10 @@ import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpi
 import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
 import 'mdast-util-directive'
 
-/* eslint-disable typescript/consistent-type-definitions */
-declare module 'unified' {
-  interface CompileResultMap {
-    node: Node
-  }
-}
-/* eslint-enable typescript/consistent-type-definitions */
-
 export const convertMarkdownToHtml = async (
   markdown: string,
 ): Promise<HtmlRoot> =>
-  (
-    await unified()
-      .use(remarkParse)
-      .use(remarkGfm)
-      .use(remarkDirective)
-      .use(remarkFlex)
-      .use(remarkGif)
-      .use(remarkNote)
-      .use(remarkReplace)
-      .use(remarkSmartypants as Plugin)
-      .use(remarkA11yEmoji)
-      .use(
-        // @ts-expect-error Type definitions are wrong.
-        remarkEmbedder.default as unknown,
-        {
-          cache:
-            remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
-          transformers: [
-            // @ts-expect-error Type definitions are wrong.
-            remarkTransformerOembed.default,
-          ],
-        },
-      )
-      .use(remarkMath)
-      .use(remarkRehype, { clobberPrefix: `` })
-      .use(rehypeExternalLinks)
-      .use(rehypeSlug)
-      .use(rehypeMermaid, {
-        css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
-        mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
-      })
-      .use(rehypeSvgo, {
-        svgoConfig: {
-          multipass: true,
-          plugins: [
-            {
-              name: `preset-default`,
-              params: { overrides: { inlineStyles: false } },
-            },
-          ],
-        },
-      })
-      .use(rehypeShiki, {
-        theme: `material-theme-palenight`,
-        transformers: [
-          // Remove unnecessary attributes.
-          {
-            pre: node => {
-              delete node.properties.tabindex
-              delete node.properties.class
-            },
-            span: node => {
-              delete node.properties.class
-            },
-          },
-          // Extract meta.
-          {
-            // eslint-disable-next-line no-restricted-syntax
-            pre(node) {
-              const meta = this.options.meta?.__raw ?? ``
-              if (!meta) {
-                return
-              }
-
-              pipe(
-                String(meta).split(`,`),
-                map(value => {
-                  const values = value.split(`=`)
-                  invariant(values.length === 2, `Expected a pair`)
-                  return values as [string, string]
-                }),
-                forEach(
-                  ([key, value]) => (node.properties[`data-${key}`] = value),
-                ),
-              )
-            },
-          },
-        ],
-      })
-      .use(rehypeKatex)
-      .use(rehypePresetMinify)
-      // eslint-disable-next-line no-restricted-syntax
-      .use(function () {
-        // eslint-disable-next-line typescript/no-invalid-this
-        this.compiler = htmlAst => htmlAst
-      })
-      .process(markdown)
-  ).result as HtmlRoot
+  markdownToHtmlProcessor.run(markdownToHtmlProcessor.parse(markdown))
 
 const remarkEmbedderCache =
   // @ts-expect-error Type definitions are wrong.
@@ -209,18 +114,6 @@ type VideoPaths = {
   webm: string
 }
 
-// eslint-disable-next-line unicorn/consistent-function-scoping
-const remarkNote = () => (tree: MdRoot) =>
-  visit(tree, `containerDirective`, node => {
-    if (node.name !== `note`) {
-      return
-    }
-
-    node.data ??= {}
-    const { data } = node
-    data.hName = `aside`
-  })
-
 const remarkReplace = () => {
   const regExp = new RegExp(
     `(${pipe(
@@ -266,11 +159,90 @@ const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`without-postcss-fontpie.webm`, withoutPostcssFontpieWebmPath],
 ])
 
-export const convertMarkdownToText = (markdown: string): string =>
-  String(
-    unified()
-      .use(remarkParse)
-      .use(stripMarkdown as unknown as Plugin)
-      .use(remarkStringify)
-      .processSync(markdown),
+const markdownToHtmlProcessor = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkDirective)
+  .use(remarkFlex)
+  .use(remarkGif)
+  .use(remarkAdmonition)
+  .use(remarkReplace)
+  .use(remarkSmartypants)
+  .use(remarkA11yEmoji)
+  .use(
+    // @ts-expect-error Type definitions are wrong.
+    remarkEmbedder.default as unknown,
+    {
+      cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+      transformers: [
+        // @ts-expect-error Type definitions are wrong.
+        remarkTransformerOembed.default,
+      ],
+    },
   )
+  .use(remarkMath)
+  .use(remarkRehype, { clobberPrefix: `` })
+  .use(rehypeExternalLinks)
+  .use(rehypeSlug)
+  .use(rehypeMermaid, {
+    css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
+    mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
+  })
+  .use(rehypeSvgo, {
+    svgoConfig: {
+      multipass: true,
+      plugins: [
+        {
+          name: `preset-default`,
+          params: { overrides: { inlineStyles: false } },
+        },
+      ],
+    },
+  })
+  .use(rehypeShiki, {
+    theme: `material-theme-palenight`,
+    transformers: [
+      // Remove unnecessary attributes.
+      {
+        pre: node => {
+          delete node.properties.tabindex
+          delete node.properties.class
+        },
+        span: node => {
+          delete node.properties.class
+        },
+      },
+      // Extract meta.
+      {
+        // eslint-disable-next-line no-restricted-syntax
+        pre(node) {
+          const meta = this.options.meta?.__raw ?? ``
+          if (!meta) {
+            return
+          }
+
+          pipe(
+            String(meta).split(`,`),
+            map(value => {
+              const values = value.split(`=`)
+              invariant(values.length === 2, `Expected a pair`)
+              return values as [string, string]
+            }),
+            forEach(([key, value]) => (node.properties[`data-${key}`] = value)),
+          )
+        },
+      },
+    ],
+  })
+  .use(rehypeKatex)
+  .use(rehypePresetMinify)
+  .freeze()
+
+export const convertMarkdownToText = (markdown: string): string =>
+  String(markdownToTextProcessor.processSync(markdown))
+
+const markdownToTextProcessor = unified()
+  .use(remarkParse)
+  .use(stripMarkdown)
+  .use(remarkStringify)
+  .freeze()

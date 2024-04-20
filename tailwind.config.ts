@@ -127,16 +127,6 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            aside: {
-              marginTop: `2.5em`,
-              marginBottom: `2.5em`,
-            },
-            'aside > div > :first-child': {
-              marginTop: 0,
-            },
-            'aside > div > :last-child': {
-              marginBottom: 0,
-            },
             'code::before': {
               content: `none`,
             },
