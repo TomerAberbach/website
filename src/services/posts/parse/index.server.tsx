@@ -7,7 +7,6 @@ import parseFrontMatter from 'gray-matter'
 import { parseHrefs, parseReferences } from './references.server.ts'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
-import infoSvgPath from './images/info.svg'
 import {
   convertMarkdownToHtml,
   convertMarkdownToText,
@@ -128,8 +127,10 @@ const Anchor: Components[`a`] = ({
 }
 
 const Div: Components[`div`] = ({
-  [`data-admonition-name`]: admonitionName,
-  [`data-admonition-label`]: admonitionLabel,
+  'data-admonition-name': admonitionName,
+  'data-admonition-label': admonitionLabel,
+  'data-admonition-icon-url': admonitionIconUrl,
+  'data-admonition-color': admonitionColor,
   children,
   ...props
 }) => {
@@ -137,15 +138,34 @@ const Div: Components[`div`] = ({
     return <div {...props}>{children}</div>
   }
 
+  let divColorClass
+  let imgColorClass
+  switch (admonitionColor) {
+    case `blue`:
+      divColorClass = `border-l-blue-500 bg-blue-50`
+      imgColorClass = `border-blue-50 bg-blue-50`
+      break
+    case `yellow`:
+      divColorClass = `border-l-yellow-500 bg-yellow-100`
+      imgColorClass = `border-yellow-100 bg-yellow-100`
+      break
+  }
+
   return (
     <div
-      className='relative my-10 rounded-md border-l-4 border-l-blue-500 bg-blue-50 p-8'
+      className={clsx(
+        `relative my-10 rounded-md border-l-4 p-8`,
+        divColorClass,
+      )}
       {...props}
     >
       <img
-        src={infoSvgPath}
+        src={String(admonitionIconUrl)}
         alt=''
-        className='not-prose absolute left-0 top-0 m-0  box-content h-9 w-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4 border-blue-50 bg-blue-50'
+        className={clsx(
+          `not-prose absolute left-0 top-0 m-0 box-content h-9 w-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4`,
+          imgColorClass,
+        )}
       />
       {admonitionLabel ? (
         <header className='pb-2 text-base font-semibold uppercase'>

@@ -28,6 +28,8 @@ import rehypeMermaid from 'rehype-mermaid'
 import { invariant } from '@epic-web/invariant'
 import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
+import infoSvgPath from './images/info.svg'
+import warningSvgPath from './images/warning.svg'
 import fontsStylesPath from '~/styles/fonts.css'
 import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
@@ -165,7 +167,30 @@ const markdownToHtmlProcessor = unified()
   .use(remarkDirective)
   .use(remarkFlex)
   .use(remarkGif)
-  .use(remarkAdmonition)
+  .use(remarkAdmonition, {
+    types: new Map([
+      [
+        `note`,
+        {
+          defaultLabel: `Note`,
+          properties: {
+            'data-admonition-icon-url': infoSvgPath,
+            'data-admonition-color': `blue`,
+          },
+        },
+      ],
+      [
+        `warning`,
+        {
+          defaultLabel: `Warning`,
+          properties: {
+            'data-admonition-icon-url': warningSvgPath,
+            'data-admonition-color': `yellow`,
+          },
+        },
+      ],
+    ]),
+  })
   .use(remarkReplace)
   .use(remarkSmartypants)
   .use(remarkA11yEmoji)
