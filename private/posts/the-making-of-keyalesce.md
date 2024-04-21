@@ -181,9 +181,11 @@ A long running program using a naive implementation of `keyalesce` would have a 
 
 Consider the following code:
 
+<!-- eslint-disable prefer-const -->
+
 ```js
-const object1 = {}
-const object2 = {}
+let object1 = {}
+let object2 = {}
 
 const key1 = keyalesce([1, object1, 4])
 const key2 = keyalesce([1, 2, object2, 3])
@@ -243,9 +245,11 @@ Although `1` was in the sequence it was not pruned because it is still needed fo
 
 Consider the following code:
 
+<!-- eslint-disable prefer-const -->
+
 ```js
-const key1 = keyalesce([1, 2, 4])
-const key2 = keyalesce([1, 2, 5, 7])
+let key1 = keyalesce([1, 2, 4])
+let key2 = keyalesce([1, 2, 5, 7])
 
 // ...
 ```
@@ -324,11 +328,11 @@ const hangOut = (person1, person2) =>
 const didTheyHangOut = (person1, person2) =>
   hangouts.has(createHangoutKey(person1, person2))
 
-hangOut(`Tomer`, `Sam`)
+hangOut(`Tomer`, `Samuel`)
 hangOut(`Tomer`, `Amanda`)
 
-console.log(didTheyHangOut(`Tomer`, `Sam`))
-console.log(didTheyHangOut(`Sam`, `Tomer`))
+console.log(didTheyHangOut(`Tomer`, `Samuel`))
+console.log(didTheyHangOut(`Samuel`, `Tomer`))
 //=> true
 //=> true
 
@@ -337,8 +341,8 @@ console.log(didTheyHangOut(`Amanda`, `Tomer`))
 //=> true
 //=> true
 
-console.log(didTheyHangOut(`Sam`, `Amanda`))
-console.log(didTheyHangOut(`Amanda`, `Sam`))
+console.log(didTheyHangOut(`Samuel`, `Amanda`))
+console.log(didTheyHangOut(`Amanda`, `Samuel`))
 //=> false
 //=> false
 ```
