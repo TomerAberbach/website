@@ -201,7 +201,7 @@ const layoutGraph = ({
 const SPRING_LENGTH = 30
 const HORIZONTAL_OFFSET = 20
 const SCALE = 10
-const PADDING = 75
+const PADDING = 125
 
 export type GraphLayout = {
   boundingBox: BoundingBox
