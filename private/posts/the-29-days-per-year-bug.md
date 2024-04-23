@@ -2,7 +2,7 @@
 title: 'The 29 Days per Year Bug (30 Days for Leap Years!)'
 tags: ['bugs', 'code', 'docs', 'google']
 dates:
-  published: 2024-04-13
+  published: 2024-04-23
 ---
 
 A few years ago my coworker was working on a Google Docs feature when they came across a _bewildering_ bug.
