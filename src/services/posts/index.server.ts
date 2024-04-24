@@ -92,8 +92,21 @@ export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
         map((reference): [string, string] => [id, reference]),
       ),
     ),
-    forEach(([id, reference]) => posts.get(reference)?.referencedBy.add(id)),
+    filter(([, reference]) => reference.startsWith(`/`)),
+    forEach(([id, reference]) =>
+      posts.get(reference.slice(1))?.referencedBy.set(id, posts.get(id)!.title),
+    ),
   )
+
+  for (const post of posts.values()) {
+    post.referencedBy = new Map(
+      [...post.referencedBy].sort(
+        ([a], [b]) =>
+          posts.get(b)!.dates.published.getTime() -
+          posts.get(a)!.dates.published.getTime(),
+      ),
+    )
+  }
 
   return posts
 })

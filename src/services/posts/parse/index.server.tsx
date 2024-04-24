@@ -25,7 +25,7 @@ const parsePost = async (rawPost: RawPost): Promise<Post> => {
     ...(content.trim().length > 0
       ? await parseMarkdownPost(content, data)
       : parseHrefPost(data)),
-    referencedBy: new Set(),
+    referencedBy: new Map(),
   }
 }
 

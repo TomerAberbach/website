@@ -21,5 +21,5 @@ type BasePost = {
   tags: Set<string>
   dates: Dates
   references: Map<string, Set<string>>
-  referencedBy: Set<string>
+  referencedBy: Map<string, string>
 }

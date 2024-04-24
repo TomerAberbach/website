@@ -5,6 +5,9 @@ import { useId } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
 import arrowRightSvgPath from './arrow-right.svg'
+import arrowUpRightSvgPath from './arrow-up-right.svg'
+import arrowUpLeftSvgPath from './arrow-up-left.svg'
+import arrowUpSvgPath from './arrow-up.svg'
 import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
@@ -15,7 +18,7 @@ import {
   useLoaderData,
   useRouteError,
 } from '~/services/json.ts'
-import { ExternalLink, InternalLink } from '~/components/link.tsx'
+import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
 import pick from '~/services/pick.ts'
 import type { Post } from '~/services/posts/types.ts'
@@ -35,6 +38,7 @@ const PostPage = () => {
     title,
     tags,
     dates,
+    referencedBy,
     minutesToRead,
     content,
     previousPost,
@@ -110,6 +114,29 @@ const PostPage = () => {
             ) : null}
           </BalanceProvider>
         </footer>
+      ) : null}
+      {referencedBy.size > 0 ? (
+        <aside className='not-prose m-auto mt-12 flex flex-col items-center text-center'>
+          <div className='m-auto inline-flex items-end gap-14'>
+            <img src={arrowUpLeftSvgPath} alt='' className='h-6 w-6' />
+            <img src={arrowUpSvgPath} alt='' className='mb-3 h-6 w-6' />
+            <img src={arrowUpRightSvgPath} alt='' className='h-6 w-6' />
+          </div>
+          <h3 className='mt-2 text-lg font-semibold'>Linked to by</h3>
+          <ul className='text-base'>
+            {pipe(
+              referencedBy,
+              map(([reference, title]) => (
+                <li key={reference}>
+                  <Link href={reference} className='underline'>
+                    {title}
+                  </Link>
+                </li>
+              )),
+              reduce(toArray()),
+            )}
+          </ul>
+        </aside>
       ) : null}
     </article>
   )
@@ -238,6 +265,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         `title`,
         `tags`,
         `dates`,
+        `referencedBy`,
         `minutesToRead`,
         `content`,
         `description`,
