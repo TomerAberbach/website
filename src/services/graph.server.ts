@@ -199,7 +199,7 @@ const layoutGraph = ({
 }
 
 const SPRING_LENGTH = 30
-const HORIZONTAL_OFFSET = 20
+const HORIZONTAL_OFFSET = 30
 const SCALE = 10
 const PADDING = 150
 

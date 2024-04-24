@@ -226,7 +226,7 @@ const Vertex = ({
   return (
     <div
       className={clsx(
-        `group/vertex absolute rounded-full transition duration-200`,
+        `group/vertex absolute rounded-full transition duration-200 hover:z-30`,
         getTagClassNames(vertex.tags),
       )}
       style={{
