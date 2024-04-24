@@ -1,0 +1,21 @@
+diff --git a/dist/mermaid-isomorphic.js b/dist/mermaid-isomorphic.js
+index 4a3b3d164d7300b2200d6eb032b8ad9524a181a6..affc856a8a0ce4067ff2ad321dd86f0f4373197c 100644
+--- a/dist/mermaid-isomorphic.js
++++ b/dist/mermaid-isomorphic.js
+@@ -100,7 +100,15 @@ export function createMermaidRenderer(options = {}) {
+         let renderResults;
+         try {
+             page = await browserInstance.newPage({ bypassCSP: true });
+-            await page.goto(html);
++            page
++    .on('console', message =>
++      console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
++    .on('pageerror', ({ message }) => console.log(message))
++    .on('response', response =>
++      console.log(`${response.status()} ${response.url()}`))
++    .on('requestfailed', request =>
++      console.log(`${request.failure().errorText} ${request.url()}`))
++            await page.goto(html)
+             const promises = [page.addStyleTag(faStyle), page.addScriptTag(mermaidScript)];
+             if (renderOptions?.css) {
+                 promises.push(page.addStyleTag({ url: String(renderOptions.css) }));

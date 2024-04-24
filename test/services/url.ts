@@ -1,7 +1,5 @@
 import { jest } from 'tomer'
 
-process.env.LOCAL_HOSTNAME = `localhost`
-
 const originalWindow = window
 beforeEach(() => {
   // @ts-expect-error Simulating the server

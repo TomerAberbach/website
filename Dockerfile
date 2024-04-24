@@ -46,7 +46,6 @@ RUN apt-get --yes install python3-pip
 RUN pip3 install --break-system-packages fonttools[woff]
 
 ENV NODE_ENV=production
-ENV LOCAL_HOSTNAME=0.0.0.0
 RUN pnpm run build
 
 
