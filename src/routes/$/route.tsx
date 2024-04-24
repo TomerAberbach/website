@@ -122,7 +122,7 @@ const PostPage = () => {
             <img src={arrowUpSvgPath} alt='' className='mb-3 h-6 w-6' />
             <img src={arrowUpRightSvgPath} alt='' className='h-6 w-6' />
           </div>
-          <h3 className='mt-2 text-lg font-semibold'>Linked to by</h3>
+          <h3 className='mt-2 text-lg font-semibold'>Linked from</h3>
           <ul className='text-base'>
             {pipe(
               referencedBy,
