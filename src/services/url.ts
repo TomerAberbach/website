@@ -4,7 +4,7 @@ const removeTrailingSlash = (url: string): string =>
 export const getSiteUrl = (path: string): string =>
   removeTrailingSlash(new URL(path, SITE_URL).toString())
 
-export const LOCALHOST_URL = `http://localhost:3000`
+export const LOCALHOST_URL = `http://${process.env.LOCAL_HOSTNAME}:3000`
 
 export const SITE_URL: string = removeTrailingSlash(
   new URL(

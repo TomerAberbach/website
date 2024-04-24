@@ -12,6 +12,7 @@ kill_timeout = "5s"
 [env]
   FONTCONFIG_PATH = "private/fonts"
   PANGOCAIRO_BACKEND = "fontconfig"
+  LOCAL_HOSTNAME = "0.0.0.0"
   SITE_URL = "https://tomeraberba.ch"
 
 [[services]]
