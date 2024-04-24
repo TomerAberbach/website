@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'node:url'
 import type { Root as MdRoot } from 'mdast'
 import type { Root as HtmlRoot } from 'hast'
 import remarkParse from 'remark-parse'
@@ -35,6 +36,7 @@ import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
 import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
 import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
+import { privatePath } from '~/services/path.server.ts'
 import 'mdast-util-directive'
 
 export const convertMarkdownToHtml = async (
@@ -210,7 +212,7 @@ const markdownToHtmlProcessor = unified()
   .use(rehypeExternalLinks)
   .use(rehypeSlug)
   .use(rehypeMermaid, {
-    css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
+    css: pathToFileURL(privatePath(`fonts/kantumruy-pro.css`)),
     mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
   })
   .use(rehypeSvgo, { svgoConfig: { multipass: true } })
