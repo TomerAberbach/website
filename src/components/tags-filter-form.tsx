@@ -73,8 +73,7 @@ const TagsFilterStyle = ({
     entries(selectedTags),
     filter(([, selected]) => selected),
     map(
-      ([tag]) =>
-        `.${cssesc(`${TAG_CLASS_PREFIX}${tag}`, { isIdentifier: true })}`,
+      ([tag]) => `.${cssesc(createTagClassName(tag), { isIdentifier: true })}`,
     ),
   )
   const matchingTagsSelector =
@@ -106,4 +105,7 @@ const TagsFilterStyle = ({
   )
 }
 
-export const TAG_CLASS_PREFIX = `tag:`
+export const createTagClassName = (tag: string): string =>
+  `${TAG_CLASS_PREFIX}${tag.replaceAll(` `, `-`)}`
+
+const TAG_CLASS_PREFIX = `tag:`

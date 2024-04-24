@@ -12,8 +12,8 @@ import {
 import type { ReactNode } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { Link } from './link.tsx'
-import { TAG_CLASS_PREFIX } from './tags-filter-form.tsx'
 import closeSvgPath from './close.svg'
+import { createTagClassName } from './tags-filter-form.tsx'
 import type {
   Graph,
   Edge as GraphEdge,
@@ -342,10 +342,6 @@ const getScaledCalc = (value: number, limit: number) =>
   `calc(${(100 * value) / limit}%)`
 
 const getTagClassNames = (tags: Set<string>) =>
-  pipe(
-    tags,
-    map(tag => `${TAG_CLASS_PREFIX}${tag}`),
-    reduce(toArray()),
-  )
+  pipe(tags, map(createTagClassName), reduce(toArray()))
 
 export default GraphWidget
