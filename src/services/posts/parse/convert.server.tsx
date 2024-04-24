@@ -35,6 +35,7 @@ import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
 import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
 import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
+import { LOCALHOST_URL } from '~/services/url.ts'
 import 'mdast-util-directive'
 
 export const convertMarkdownToHtml = async (
@@ -210,7 +211,8 @@ const markdownToHtmlProcessor = unified()
   .use(rehypeExternalLinks)
   .use(rehypeSlug)
   .use(rehypeMermaid, {
-    css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap`,
+    launchOptions: { args: [`--disable-web-security`] },
+    css: new URL(fontsStylesPath, LOCALHOST_URL),
     mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
   })
   .use(rehypeSvgo, { svgoConfig: { multipass: true } })
