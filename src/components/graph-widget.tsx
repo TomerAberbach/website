@@ -155,7 +155,7 @@ const Edge = ({
 
   const weight = hrefs.size
   return (
-    <g>
+    <g className={clsx(getTagClassNames(tags))}>
       <line
         strokeWidth={2.5 + (weight / maxWeight) * 3}
         markerEnd={`url(#${cssesc(markerId, { isIdentifier: true })})`}
@@ -163,10 +163,7 @@ const Edge = ({
         y1={intersectedFromPosition.y}
         x2={intersectedToPosition.x}
         y2={intersectedToPosition.y}
-        className={clsx(
-          `stroke-gray-500 transition duration-200`,
-          getTagClassNames(tags),
-        )}
+        className='stroke-gray-500 transition duration-200'
       />
       <text
         x={(intersectedFromPosition.x + intersectedToPosition.x) / 2}
