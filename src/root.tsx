@@ -21,6 +21,8 @@ import tailwindStylesPath from './styles/tailwind.css'
 import fontsStylesPath from './styles/fonts.css'
 import Layout from './components/layout.tsx'
 import logoIcoPath from './logo.ico'
+import { ErrorCrashView } from './components/error.tsx'
+import { useRouteError } from './services/json.ts'
 import logoSvgPath from '~/private/media/logo.svg'
 
 const App = () => (
@@ -85,6 +87,8 @@ const HeadInlineScript = () => {
     />
   )
 }
+
+export const ErrorBoundary = () => <ErrorCrashView error={useRouteError()} />
 
 export const links: LinksFunction = () => [
   { rel: `preload`, href: fontsStylesPath, as: `style` },

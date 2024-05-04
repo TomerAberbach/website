@@ -29,6 +29,7 @@ import {
   formatMinutesToRead,
 } from '~/services/format.ts'
 import { getMeta } from '~/services/meta.ts'
+import { ErrorCrashView, ErrorView } from '~/components/error.tsx'
 
 const PostPage = () => {
   const suggestEditId = useId()
@@ -194,20 +195,12 @@ const Tag = ({ tag }: { tag: string }) => (
 export const ErrorBoundary = () => {
   const error = useRouteError()
   if (!isRouteErrorResponse(error)) {
-    return null
+    return <ErrorCrashView error={error} />
   }
 
   const { didYouMeanPost } = error.data as ErrorBoundaryData
-
   return (
-    <div className='flex flex-1 flex-col items-center justify-center gap-5 text-center'>
-      <h1 className='not-prose text-9xl font-semibold'>404</h1>
-      <p className='text-3xl'>
-        Oh no! It appears you’ve been{` `}
-        <strong>
-          <em>bamboozled!</em>
-        </strong>
-      </p>
+    <ErrorView message='404'>
       <p className='prose text-lg italic'>
         Did you mean{` `}
         <InternalLink href={`/${didYouMeanPost.id}`}>
@@ -215,7 +208,7 @@ export const ErrorBoundary = () => {
         </InternalLink>
         ?
       </p>
-    </div>
+    </ErrorView>
   )
 }
 
