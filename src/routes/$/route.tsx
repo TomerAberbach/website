@@ -99,7 +99,9 @@ const PostPage = () => {
                   alt='Previous'
                   className='h-6 w-6 -scale-x-100'
                 />
-                <Balancer as='div'>{previousPost.title}</Balancer>
+                <Balancer preferNative={false} as='div'>
+                  {previousPost.title}
+                </Balancer>
               </InternalLink>
             ) : null}
             {nextPost ? (
@@ -108,7 +110,9 @@ const PostPage = () => {
                 rel='next'
                 className='ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring'
               >
-                <Balancer as='div'>{nextPost.title}</Balancer>
+                <Balancer preferNative={false} as='div'>
+                  {nextPost.title}
+                </Balancer>
                 <img src={arrowRightSvgPath} alt='Next' className='h-6 w-6' />
               </InternalLink>
             ) : null}
