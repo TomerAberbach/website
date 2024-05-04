@@ -1,13 +1,17 @@
 ---
 title: 'Publications'
-tags: ['publications', 'resume']
+tags: ['biology', 'google', 'publications', 'resume']
 dates:
   published: 2022-08-16
-  updated: 2024-04-12
+  updated: 2024-04-18
 ---
 
 I've had a few publications over the years. The publications are ordered
 from most to least recent.
+
+- [Synthesis cost-optimal targeted mutant protein libraries](https://pubmed.ncbi.nlm.nih.gov/38669847) · April 18, 2024
+
+  > Protein variant libraries produced by site-directed mutagenesis are a useful tool utilized by protein engineers to explore variants with potentially improved properties, such as activity and stability. These libraries are commonly built by selecting residue positions and alternative beneficial mutations for each position. All possible combinations are then constructed and screened, by incorporating degenerate codons at mutation sites. These degenerate codons often encode additional unwanted amino acids or even STOP codons. Our study aims to take advantage of annealing based recombination of oligonucleotides during synthesis and utilize multiple degenerate codons per mutation site to produce targeted protein libraries devoid of unwanted variants. Toward this goal we created an algorithm to calculate the minimum number of degenerate codons necessary to specify any given amino acid set, and a dynamic programming method that uses this algorithm to optimally partition a DNA target sequence with degeneracies into overlapping oligonucleotides, such that the total cost of synthesis of the target mutant protein library is minimized. Computational experiments show that, for a modest increase in DNA synthesis costs, beneficial variant yields in produced mutant libraries are increased by orders of magnitude, an effect particularly pronounced in large combinatorial libraries.
 
 - [Language Agnostic Code Highlighting in Word Processors](https://www.tdcommons.org/dpubs_series/5207) · June 16, 2022
 
