@@ -23,6 +23,8 @@ Naturally this list only includes projects I'm allowed to talk about! For many
 projects I was not the only person who worked on it. Projects I worked on as part of my [20% time](https://builtin.com/software-engineering-perspectives/20-percent-time) are labeled with **_20%_**. The projects are ordered
 from most to least recent.
 
+- I co-led the implementation of [tabs in Docs](https://workspace.google.com/blog/product-announcements/new-generative-ai-and-security-innovations#:~:text=Tabs%20and%20personalization%20in%20Docs), which required a _foundational_ rearchitecture of the backend and frontend.
+
 - I delighted users with some easter eggs in Docs. Try typing [`@tictactoe`](https://www.instagram.com/reel/Cx3jQFbL072) or [`@fourinarow`](https://www.instagram.com/p/C2g0I3dt3LV)!&nbsp;**_20%_**
 
 - I [integrated generative AI into Docs](https://workspace.google.com/blog/product-announcements/generative-ai)!
