@@ -1,4 +1,4 @@
-import { first, get, map, max, pipe, reduce, toArray, values } from 'lfi'
+import { first, get, keys, map, max, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
 import {
@@ -271,10 +271,12 @@ const Vertex = ({
         <LinkVertex href={vertex.href} reloadDocument={vertex.reloadDocument}>
           {vertexNode}
         </LinkVertex>
-      ) : vertex.hrefs.size === 1 ? (
-        <LinkVertex href={get(first(vertex.hrefs))}>{vertexNode}</LinkVertex>
+      ) : vertex.hrefToTags.size === 1 ? (
+        <LinkVertex href={get(first(keys(vertex.hrefToTags)))}>
+          {vertexNode}
+        </LinkVertex>
       ) : (
-        <DialogVertex label={vertex.label} hrefs={vertex.hrefs}>
+        <DialogVertex label={vertex.label} hrefToTags={vertex.hrefToTags}>
           {vertexNode}
         </DialogVertex>
       )}
@@ -302,11 +304,11 @@ const LinkVertex = ({
 
 const DialogVertex = ({
   label,
-  hrefs,
+  hrefToTags,
   children,
 }: {
   label: string
-  hrefs: Set<string>
+  hrefToTags: Map<string, Set<string>>
   children: ReactNode
 }) => {
   const dialogElementRef = useRef<HTMLDialogElement | null>(null)
@@ -343,13 +345,20 @@ const DialogVertex = ({
           </div>
           <ul className='list-inside list-["→_"] whitespace-nowrap'>
             {pipe(
-              hrefs,
-              map(href => {
+              hrefToTags,
+              map(([href, tags]) => {
                 const url = new URL(href)
+                const text = url.pathname + url.search + url.hash
                 return (
-                  <li key={href}>
+                  <li
+                    key={href}
+                    className={clsx(`relative`, getTagClassNames(tags))}
+                  >
+                    <div className='pointer-events-none absolute inset-0 hidden before:content-["→_"]'>
+                      {text}
+                    </div>
                     <Link href={href} className='underline'>
-                      {url.pathname + url.search + url.hash}
+                      {text}
                     </Link>
                   </li>
                 )

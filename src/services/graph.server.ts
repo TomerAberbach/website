@@ -62,7 +62,7 @@ export const getGraph = cache(async (): Promise<Graph> => {
             id: toId,
             label: toId,
             tags: new Set(),
-            hrefs: new Set(),
+            hrefToTags: new Map(),
           }),
         )
       }
@@ -73,7 +73,14 @@ export const getGraph = cache(async (): Promise<Graph> => {
 
       if (vertex.type === `external`) {
         for (const href of hrefs) {
-          vertex.hrefs.add(href)
+          let hrefTags = vertex.hrefToTags.get(href)
+          if (!hrefTags) {
+            vertex.hrefToTags.set(href, (hrefTags = new Set()))
+          }
+
+          for (const tag of tags) {
+            hrefTags.add(tag)
+          }
         }
       }
     }),
@@ -81,7 +88,11 @@ export const getGraph = cache(async (): Promise<Graph> => {
 
   for (const vertex of vertices.values()) {
     if (vertex.type === `external`) {
-      vertex.hrefs = new Set([...vertex.hrefs].sort())
+      vertex.hrefToTags = new Map(
+        [...vertex.hrefToTags].sort(([href1], [href2]) =>
+          href1.localeCompare(href2),
+        ),
+      )
     }
   }
 
@@ -106,7 +117,7 @@ export type InternalVertex = BaseVertex & {
 
 export type ExternalVertex = BaseVertex & {
   type: `external`
-  hrefs: Set<string>
+  hrefToTags: Map<string, Set<string>>
 }
 
 type BaseVertex = {
