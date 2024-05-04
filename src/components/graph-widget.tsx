@@ -1,4 +1,4 @@
-import { first, get, map, pipe, reduce, toArray, values } from 'lfi'
+import { first, get, map, max, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
 import {
@@ -72,7 +72,14 @@ const useIsomorphicLayoutEffect =
   typeof window === `undefined` ? useEffect : useLayoutEffect
 
 const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
+  const maxWeight = pipe(
+    values(edges),
+    map(({ hrefs }) => hrefs.size),
+    max,
+    get,
+  )
   const markerId = useId()
+  const filterId = useId()
   const { width, height } = layout.boundingBox
 
   return (
@@ -91,6 +98,13 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
         >
           <path d='M 0 0 L 10 5 L 0 10 z' />
         </marker>
+        <filter id={filterId} x='-25%' y='10%' width='150%' height='80%'>
+          <feFlood floodColor='white' result='bg' />
+          <feMerge>
+            <feMergeNode in='bg' />
+            <feMergeNode in='SourceGraphic' />
+          </feMerge>
+        </filter>
       </defs>
       <g>
         {pipe(
@@ -99,7 +113,9 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
             <Edge
               key={`${edge.fromId} ${edge.toId}`}
               markerId={markerId}
+              filterId={filterId}
               layout={layout}
+              maxWeight={maxWeight}
               edge={edge}
             />
           )),
@@ -112,11 +128,15 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
 
 const Edge = ({
   markerId,
+  filterId,
   layout: { positions },
-  edge: { fromId, toId, tags },
+  maxWeight,
+  edge: { fromId, toId, tags, hrefs },
 }: {
   markerId: string
+  filterId: string
   layout: GraphLayout
+  maxWeight: number
   edge: GraphEdge
 }) => {
   const fromPosition = positions.get(fromId)!
@@ -133,19 +153,32 @@ const Edge = ({
     VERTEX_RADIUS,
   )
 
+  const weight = hrefs.size
   return (
-    <line
-      strokeWidth='2.5'
-      markerEnd={`url(#${cssesc(markerId, { isIdentifier: true })})`}
-      x1={intersectedFromPosition.x}
-      y1={intersectedFromPosition.y}
-      x2={intersectedToPosition.x}
-      y2={intersectedToPosition.y}
-      className={clsx(
-        `stroke-gray-500 transition duration-200`,
-        getTagClassNames(tags),
-      )}
-    />
+    <g>
+      <line
+        strokeWidth={2.5 + (weight / maxWeight) * 3}
+        markerEnd={`url(#${cssesc(markerId, { isIdentifier: true })})`}
+        x1={intersectedFromPosition.x}
+        y1={intersectedFromPosition.y}
+        x2={intersectedToPosition.x}
+        y2={intersectedToPosition.y}
+        className={clsx(
+          `stroke-gray-500 transition duration-200`,
+          getTagClassNames(tags),
+        )}
+      />
+      <text
+        x={(intersectedFromPosition.x + intersectedToPosition.x) / 2}
+        y={(intersectedFromPosition.y + intersectedToPosition.y) / 2}
+        textAnchor='middle'
+        alignmentBaseline='middle'
+        filter={`url(#${cssesc(filterId, { isIdentifier: true })})`}
+        className='overflow-visible bg-white fill-gray-500 text-xl'
+      >
+        {weight}
+      </text>
+    </g>
   )
 }
 
