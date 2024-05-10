@@ -31,6 +31,12 @@ export const loader = async (): Promise<Response> => {
               <item>
                 <title>${cdata(post.title)}</title>
                 <link>${url}</link>
+                ${pipe(
+                  post.tags,
+                  map(tag => `<category>${cdata(tag)}</category>`),
+                  join(``),
+                )}
+                <content>${cdata(post.content)}</content>
                 <description>${cdata(post.description)}</description>
                 <guid isPermaLink="true">${url}</guid>
                 <pubDate>${formatDateUTC(post.dates.published)}</pubDate>
