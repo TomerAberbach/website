@@ -40,6 +40,13 @@ export const loader = async (): Promise<Response> => {
                 <description>${cdata(post.description)}</description>
                 <guid isPermaLink="true">${url}</guid>
                 <pubDate>${formatDateUTC(post.dates.published)}</pubDate>
+                ${
+                  post.dates.updated
+                    ? `<lastBuildDate>${formatDateUTC(
+                        post.dates.updated,
+                      )}</lastBuildData>`
+                    : ``
+                }
               </item>
             `
           }),
