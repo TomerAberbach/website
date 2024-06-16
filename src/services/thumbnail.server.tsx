@@ -263,8 +263,8 @@ const renderText = async (
       text: {
         font: `Kantumruy Pro`,
         text,
-        width,
-        height,
+        width: Math.ceil(width),
+        height: Math.ceil(height),
         rgba: true,
       },
     }),
