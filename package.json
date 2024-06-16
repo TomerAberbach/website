@@ -72,6 +72,7 @@
     "hast-util-select": "^6.0.2",
     "hastscript": "^9.0.0",
     "isbot": "^5.1.9",
+    "katex": "^0.16.10",
     "lfi": "3.2.0",
     "mdast-util-directive": "^3.0.0",
     "mdast-util-to-string": "^4.0.0",

@@ -216,6 +216,7 @@ const markdownToHtmlProcessor = unified()
     mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
   })
   .use(rehypeSvgo, { svgoConfig: { multipass: true } })
+  .use(rehypeKatex)
   .use(rehypeShiki, {
     theme: `material-theme-palenight`,
     transformers: [
@@ -251,7 +252,6 @@ const markdownToHtmlProcessor = unified()
       },
     ],
   })
-  .use(rehypeKatex)
   .use(rehypePresetMinify)
   .freeze()
 

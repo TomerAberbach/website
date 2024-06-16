@@ -17,6 +17,7 @@ import {
   reduce,
   toArray,
 } from 'lfi'
+import katexStylesPath from 'katex/dist/katex.min.css'
 import tailwindStylesPath from './styles/tailwind.css'
 import fontsStylesPath from './styles/fonts.css'
 import Layout from './components/layout.tsx'
@@ -94,6 +95,7 @@ export const links: LinksFunction = () => [
   { rel: `preload`, href: fontsStylesPath, as: `style` },
   { rel: `stylesheet`, href: fontsStylesPath },
   { rel: `stylesheet`, href: tailwindStylesPath },
+  { rel: `stylesheet`, href: katexStylesPath },
   { rel: `icon`, href: logoIcoPath, sizes: `any` },
   { rel: `icon`, href: logoSvgPath, type: `image/svg+xml` },
 ]
