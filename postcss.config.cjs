@@ -1,4 +1,8 @@
 const { join } = require(`path`)
+const { existsSync } = require(`fs`)
+
+const fontsPath = join(__dirname, `private/fonts`)
+const fontsBuildPath = join(fontsPath, `build`)
 
 module.exports = {
   plugins: [
@@ -6,16 +10,13 @@ module.exports = {
     require(`postcss-url`)({
       filter: `**/*.{woff,woff2}`,
       url: `copy`,
-      basePath: join(__dirname, `private/fonts/build`),
+      basePath: existsSync(fontsBuildPath) ? fontsBuildPath : fontsPath,
       assetsPath: `build`,
       useHash: true,
       hashOptions: { append: true },
     }),
     require(`postcss-fontpie`)({
-      fontTypes: {
-        dm: `mono`,
-        'Kantumruy Pro': `sans-serif`,
-      },
+      fontTypes: { dm: `mono`, 'Kantumruy Pro': `sans-serif` },
       srcUrlToFilename: url => join(__dirname, `src/styles`, url),
     }),
     require(`tailwindcss`),
