@@ -138,7 +138,7 @@
     "prettier-plugin-tailwindcss": "^0.6.4",
     "start-server-and-test": "^2.0.4",
     "terser": "^5.31.1",
-    "tomer": "^3.2.3",
+    "tomer": "^3.2.4",
     "typescript": "^5.4.5"
   },
   "pnpm": {
