@@ -1,7 +1,6 @@
 import type { LinksFunction } from '@remix-run/node'
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -17,9 +16,9 @@ import {
   reduce,
   toArray,
 } from 'lfi'
-import katexStylesPath from 'katex/dist/katex.min.css'
-import tailwindStylesPath from './styles/tailwind.css'
-import fontsStylesPath from './styles/fonts.css'
+import katexStylesPath from 'katex/dist/katex.min.css?url'
+import tailwindStylesPath from './styles/tailwind.css?url'
+import fontsStylesPath from './styles/fonts.css?url'
 import Layout from './components/layout.tsx'
 import logoIcoPath from './logo.ico'
 import { ErrorCrashView } from './components/error.tsx'
@@ -56,7 +55,6 @@ const App = () => (
           defer
         />
       )}
-      <LiveReload />
     </body>
   </html>
 )

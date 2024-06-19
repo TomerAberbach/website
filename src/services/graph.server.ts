@@ -179,7 +179,7 @@ const layoutGraph = ({
     }),
   )
 
-  for (let iteration = 0; iteration < 1_000_000; iteration++) {
+  for (let iteration = 0; iteration < 10_000; iteration++) {
     layout.step()
   }
 

@@ -31,11 +31,12 @@ import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
-import fontsStylesPath from '~/styles/fonts.css'
+import fontsStylesPath from '~/styles/fonts.css?url'
 import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
 import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
 import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
+import efficiencyOfSortingAndDedupingSvgPath from '~/private/media/efficiency-of-sorting-and-deduping.svg'
 import { privatePath } from '~/services/path.server.ts'
 import 'mdast-util-directive'
 
@@ -133,7 +134,7 @@ const remarkReplace = () => {
   return (tree: MdRoot) =>
     visit(
       tree,
-      [`text`, `code`, `inlineCode`, `html`, `yaml`, `link`],
+      [`text`, `code`, `inlineCode`, `html`, `yaml`, `image`, `link`],
       node => {
         switch (node.type) {
           case `text`:
@@ -144,6 +145,7 @@ const remarkReplace = () => {
             node.value = node.value.replace(regExp, replacer)
             break
 
+          case `image`:
           case `link`:
             node.url = node.url.replace(regExp, replacer)
             break
@@ -157,6 +159,10 @@ const remarkReplace = () => {
 
 const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`fonts.css`, fontsStylesPath],
+  [
+    `efficiency-of-sorting-and-deduping.svg`,
+    efficiencyOfSortingAndDedupingSvgPath,
+  ],
   [`with-postcss-fontpie.mp4`, withPostcssFontpieMp4Path],
   [`with-postcss-fontpie.webm`, withPostcssFontpieWebmPath],
   [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],

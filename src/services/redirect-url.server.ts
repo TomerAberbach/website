@@ -1,9 +1,9 @@
-import fs from 'node:fs/promises'
+import fs from 'node:fs'
 import { parseRedirectUrl } from 'redirect-url'
 import { privatePath } from '~/services/path.server.ts'
 
 const redirectUrl = parseRedirectUrl(
-  await fs.readFile(privatePath(`redirects.txt`), `utf8`),
+  fs.readFileSync(privatePath(`redirects.txt`), `utf8`),
 )
 
 export default redirectUrl

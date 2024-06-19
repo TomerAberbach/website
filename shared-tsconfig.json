@@ -1,6 +1,7 @@
 {
   "extends": "tomer/tsconfig",
   "compilerOptions": {
+    "types": ["@remix-run/node", "vite/client"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",

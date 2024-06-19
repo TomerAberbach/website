@@ -4,8 +4,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-Thin-subset.woff2) format('woff2'),
-    url(KantumruyPro-Thin-subset.woff) format('woff');
+    url(kantumruy-pro-100-subset.woff2) format('woff2'),
+    url(kantumruy-pro-100-subset.woff) format('woff');
 }
 
 @font-face {
@@ -14,8 +14,8 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-ThinItalic-subset.woff2) format('woff2'),
-    url(KantumruyPro-ThinItalic-subset.woff) format('woff');
+    url(kantumruy-pro-100-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-100-italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -24,8 +24,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-ExtraLight-subset.woff2) format('woff2'),
-    url(KantumruyPro-ExtraLight-subset.woff) format('woff');
+    url(kantumruy-pro-200-subset.woff2) format('woff2'),
+    url(kantumruy-pro-200-subset.woff) format('woff');
 }
 
 @font-face {
@@ -34,8 +34,8 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-ExtraLightItalic-subset.woff2) format('woff2'),
-    url(KantumruyPro-ExtraLightItalic-subset.woff) format('woff');
+    url(kantumruy-pro-200-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-200-italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -44,8 +44,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-Light-subset.woff2) format('woff2'),
-    url(KantumruyPro-Light-subset.woff) format('woff');
+    url(kantumruy-pro-300-subset.woff2) format('woff2'),
+    url(kantumruy-pro-300-subset.woff) format('woff');
 }
 
 @font-face {
@@ -54,8 +54,8 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-LightItalic-subset.woff2) format('woff2'),
-    url(KantumruyPro-LightItalic-subset.woff) format('woff');
+    url(kantumruy-pro-300-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-300-italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -64,8 +64,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-Regular-subset.woff2) format('woff2'),
-    url(KantumruyPro-Regular-subset.woff) format('woff');
+    url(kantumruy-pro-400-subset.woff2) format('woff2'),
+    url(kantumruy-pro-400-subset.woff) format('woff');
 }
 
 @font-face {
@@ -74,8 +74,8 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-Italic-subset.woff2) format('woff2'),
-    url(KantumruyPro-Italic-subset.woff) format('woff');
+    url(kantumruy-pro-400-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-400-italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -84,8 +84,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-Medium-subset.woff2) format('woff2'),
-    url(KantumruyPro-Medium-subset.woff) format('woff');
+    url(kantumruy-pro-500-subset.woff2) format('woff2'),
+    url(kantumruy-pro-500-subset.woff) format('woff');
 }
 
 @font-face {
@@ -94,8 +94,8 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-MediumItalic-subset.woff2) format('woff2'),
-    url(KantumruyPro-MediumItalic-subset.woff) format('woff');
+    url(kantumruy-pro-500-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-500-italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -104,8 +104,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-SemiBold-subset.woff2) format('woff2'),
-    url(KantumruyPro-SemiBold-subset.woff) format('woff');
+    url(kantumruy-pro-600-subset.woff2) format('woff2'),
+    url(kantumruy-pro-600-subset.woff) format('woff');
 }
 
 @font-face {
@@ -114,8 +114,8 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-SemiBoldItalic-subset.woff2) format('woff2'),
-    url(KantumruyPro-SemiBoldItalic-subset.woff) format('woff');
+    url(kantumruy-pro-600-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-600-italic-subset.woff) format('woff');
 }
 
 @font-face {
@@ -124,8 +124,8 @@
   font-style: normal;
   font-display: swap;
   src:
-    url(KantumruyPro-Bold-subset.woff2) format('woff2'),
-    url(KantumruyPro-Bold-subset.woff) format('woff');
+    url(kantumruy-pro-700-subset.woff2) format('woff2'),
+    url(kantumruy-pro-700-subset.woff) format('woff');
 }
 
 @font-face {
@@ -134,6 +134,6 @@
   font-style: italic;
   font-display: swap;
   src:
-    url(KantumruyPro-BoldItalic-subset.woff2) format('woff2'),
-    url(KantumruyPro-BoldItalic-subset.woff) format('woff');
+    url(kantumruy-pro-700-italic-subset.woff2) format('woff2'),
+    url(kantumruy-pro-700-italic-subset.woff) format('woff');
 }
