@@ -11,7 +11,7 @@ import {
 import { selectAll } from 'hast-util-select'
 import type { Root } from 'hast'
 import { SITE_URL } from '~/services/url.ts'
-import fontsStylesPath from '~/styles/fonts.css'
+import fontsStylesPath from '~/styles/fonts.css?url'
 
 export const parseReferences = (
   hrefs: Iterable<string>,

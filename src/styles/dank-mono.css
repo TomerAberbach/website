@@ -7,30 +7,30 @@
 
 @font-face {
   font-family: 'dm';
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
   src:
-    url(DankMono-Regular-subset.woff2) format('woff2'),
-    url(DankMono-Regular-subset.woff) format('woff');
+    url(dm-400-subset.woff2) format('woff2'),
+    url(dm-400-subset.woff) format('woff');
 }
 
 @font-face {
   font-family: 'dm';
-  font-weight: normal;
+  font-weight: 400;
   font-style: italic;
   font-display: swap;
   src:
-    url(DankMono-Italic-subset.woff2) format('woff2'),
-    url(DankMono-Italic-subset.woff) format('woff');
+    url(dm-400-italic-subset.woff2) format('woff2'),
+    url(dm-400-italic-subset.woff) format('woff');
 }
 
 @font-face {
   font-family: 'dm';
-  font-weight: bold;
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
   src:
-    url(DankMono-Bold-subset.woff2) format('woff2'),
-    url(DankMono-Bold-subset.woff) format('woff');
+    url(dm-700-subset.woff2) format('woff2'),
+    url(dm-700-subset.woff) format('woff');
 }
