@@ -36,7 +36,6 @@ import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
 import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
 import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
 import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
-import efficiencyOfSortingAndDedupingSvgPath from '~/private/media/efficiency-of-sorting-and-deduping.svg'
 import { privatePath } from '~/services/path.server.ts'
 import 'mdast-util-directive'
 
@@ -159,10 +158,6 @@ const remarkReplace = () => {
 
 const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
   [`fonts.css`, fontsStylesPath],
-  [
-    `efficiency-of-sorting-and-deduping.svg`,
-    efficiencyOfSortingAndDedupingSvgPath,
-  ],
   [`with-postcss-fontpie.mp4`, withPostcssFontpieMp4Path],
   [`with-postcss-fontpie.webm`, withPostcssFontpieWebmPath],
   [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
