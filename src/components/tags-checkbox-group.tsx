@@ -100,6 +100,7 @@ const ResetIcon = () => (
     viewBox='0 0 20 20'
     fill='currentColor'
     className='h-full stroke-gray-500 stroke-[1.5]'
+    aria-hidden
   >
     <path
       fillRule='evenodd'
@@ -115,6 +116,7 @@ const SearchIcon = () => (
     viewBox='0 0 24 24'
     fill='currentColor'
     className='h-full stroke-gray-500 stroke-[1.5]'
+    aria-hidden
   >
     <path
       fillRule='evenodd'

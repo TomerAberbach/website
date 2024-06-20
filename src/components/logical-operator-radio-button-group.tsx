@@ -72,6 +72,7 @@ const QuestionMarkCircleIcon = () => (
     viewBox='0 0 24 24'
     fill='currentColor'
     className='h-5 w-5 lg:h-6 lg:w-6'
+    aria-hidden
   >
     <path
       fillRule='evenodd'

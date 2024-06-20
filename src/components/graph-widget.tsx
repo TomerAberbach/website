@@ -83,7 +83,11 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
   const { width, height } = layout.boundingBox
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className='absolute h-full w-full'>
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className='absolute h-full w-full'
+      aria-hidden
+    >
       <defs>
         <marker
           id={markerId}
@@ -172,6 +176,7 @@ const Edge = ({
         alignmentBaseline='middle'
         filter={`url(#${cssesc(filterId, { isIdentifier: true })})`}
         className='overflow-visible bg-white fill-gray-500 text-xl'
+        aria-hidden
       >
         {weight}
       </text>
