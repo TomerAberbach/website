@@ -10,7 +10,7 @@ import backToContentSvgPath from './images/back-to-content.svg'
 import {
   convertMarkdownToHtml,
   convertMarkdownToText,
-} from './convert.server.tsx'
+} from './convert.server.ts'
 import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.ts'
 import type { RawPost } from '~/services/posts/read.server.ts'
 import { renderHtml } from '~/services/html.tsx'

@@ -24,18 +24,14 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import RemarkEmbedderCache from '@remark-embedder/cache'
 import remarkSmartypants from 'remark-smartypants'
-import { forEach, join, map, pipe } from 'lfi'
+import { forEach, join, keys, map, pipe } from 'lfi'
 import rehypeMermaid from 'rehype-mermaid'
 import { invariant } from '@epic-web/invariant'
 import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
-import fontsStylesPath from '~/styles/fonts.css?url'
-import withPostcssFontpieMp4Path from '~/private/media/with-postcss-fontpie.mp4'
-import withPostcssFontpieWebmPath from '~/private/media/with-postcss-fontpie.webm'
-import withoutPostcssFontpieMp4Path from '~/private/media/without-postcss-fontpie.mp4'
-import withoutPostcssFontpieWebmPath from '~/private/media/without-postcss-fontpie.webm'
+import { ASSET_NAME_TO_URL, GIT_NAME_TO_URL } from './assets.server.ts'
 import { privatePath } from '~/services/path.server.ts'
 import 'mdast-util-directive'
 
@@ -68,7 +64,9 @@ const remarkGif = () => (tree: MdRoot) =>
       return
     }
 
-    const paths = GIF_PATHS.get(pipe(node.children, map(mdToText), join(``)))
+    const paths = GIT_NAME_TO_URL.get(
+      pipe(node.children, map(mdToText), join(``)),
+    )
     invariant(paths, `Expected GIF to exist`)
 
     const alt = node.attributes?.alt
@@ -90,45 +88,23 @@ const remarkGif = () => (tree: MdRoot) =>
           muted: true,
           playsinline: true,
         },
-        h(`source`, { src: paths.webm, type: `video/webm` }),
-        h(`source`, { src: paths.mp4, type: `video/mp4` }),
+        paths.webm && h(`source`, { src: paths.webm, type: `video/webm` }),
+        paths.mp4 && h(`source`, { src: paths.mp4, type: `video/mp4` }),
       ),
-    ]
+    ].filter(Boolean)
   })
-
-const GIF_PATHS: ReadonlyMap<string, VideoPaths> = new Map([
-  [
-    `with-postcss-fontpie`,
-    {
-      mp4: withPostcssFontpieMp4Path,
-      webm: withPostcssFontpieWebmPath,
-    },
-  ],
-  [
-    `without-postcss-fontpie`,
-    {
-      mp4: withoutPostcssFontpieMp4Path,
-      webm: withoutPostcssFontpieWebmPath,
-    },
-  ],
-])
-
-type VideoPaths = {
-  mp4: string
-  webm: string
-}
 
 const remarkReplace = () => {
   const regExp = new RegExp(
     `(${pipe(
-      REPLACEMENTS.keys(),
+      keys(ASSET_NAME_TO_URL),
       map(replacement => escapeStringRegExp(`$${replacement}`)),
       join(`|`),
     )})`,
     `gu`,
   )
   const replacer = (_: unknown, name: string): string =>
-    REPLACEMENTS.get(name.slice(1))!
+    ASSET_NAME_TO_URL.get(name.slice(1))!
 
   return (tree: MdRoot) =>
     visit(
@@ -155,14 +131,6 @@ const remarkReplace = () => {
       },
     )
 }
-
-const REPLACEMENTS: ReadonlyMap<string, string> = new Map([
-  [`fonts.css`, fontsStylesPath],
-  [`with-postcss-fontpie.mp4`, withPostcssFontpieMp4Path],
-  [`with-postcss-fontpie.webm`, withPostcssFontpieWebmPath],
-  [`without-postcss-fontpie.mp4`, withoutPostcssFontpieMp4Path],
-  [`without-postcss-fontpie.webm`, withoutPostcssFontpieWebmPath],
-])
 
 const markdownToHtmlProcessor = unified()
   .use(remarkParse)
