@@ -13,7 +13,7 @@
 
 # GitHub Pages redirects
 /mano-simulator               https://tomeraberbach.github.io/mano-simulator
-/spotify-true-random          https://tomeraberbach.github.io/spotify-true-random
+/spotify-true-random          https://spotify-true-random.tomeraberba.ch
 
 # Other Tomers
 /burg/:splat*                 http://arctic.som.ou.edu/tburg/:splat*
