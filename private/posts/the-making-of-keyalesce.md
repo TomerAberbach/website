@@ -5,7 +5,17 @@ dates:
   published: 2023-07-02
 ---
 
-Have you ever wanted to use [tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types) or objects for the keys of a [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) or the values of a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)? It's a [very](https://stackoverflow.com/questions/43592760/typescript-javascript-using-tuple-as-key-of-map) [common](https://stackoverflow.com/questions/21838436/map-using-tuples-or-objects) [question](https://stackoverflow.com/questions/63179867/set-of-tuples-in-javascript) because the following code doesn't do what you might expect:
+Have you ever wanted to use
+[tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types)
+or objects for the keys of a
+[`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+or the values of a
+[`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)?
+It's a
+[very](https://stackoverflow.com/questions/43592760/typescript-javascript-using-tuple-as-key-of-map)
+[common](https://stackoverflow.com/questions/21838436/map-using-tuples-or-objects)
+[question](https://stackoverflow.com/questions/63179867/set-of-tuples-in-javascript)
+because the following code doesn't do what you might expect:
 
 ```js
 const map = new Map()
@@ -19,7 +29,10 @@ console.log(set.has([1, 2]))
 //=> false
 ```
 
-The code behaves this way because a `Map`'s keys and a `Set`'s values are compared using reference equality, as specified by the [SameValueZero algorithm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality). Two deeply equal arrays are not _referentially_ equal:
+The code behaves this way because a `Map`'s keys and a `Set`'s values are
+compared using reference equality, as specified by the
+[SameValueZero algorithm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality).
+Two deeply equal arrays are not _referentially_ equal:
 
 <!-- eslint-skip -->
 
@@ -45,7 +58,8 @@ console.log(set.has(tuple))
 //=> true
 ```
 
-But that isn't particularly useful because typically you're constructing tuples on the fly using values from some external source:
+But that isn't particularly useful because typically you're constructing tuples
+on the fly using values from some external source:
 
 ```js
 const f = (x, y) => {
@@ -56,7 +70,8 @@ const f = (x, y) => {
 }
 ```
 
-A common solution is to use [`JSON.stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify):
+A common solution is to use
+[`JSON.stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify):
 
 ```js
 const map = new Map()
@@ -70,9 +85,13 @@ console.log(set.has(JSON.stringify([1, 2])))
 //=> true
 ```
 
-This works because strings are primitives, which are compared by value rather than by reference. Unfortunately, using `JSON.stringify` requires that the inner values are stringifiable. If they're not, then you're forced to write a custom serialization function.
+This works because strings are primitives, which are compared by value rather
+than by reference. Unfortunately, using `JSON.stringify` requires that the inner
+values are stringifiable. If they're not, then you're forced to write a custom
+serialization function.
 
-Plus, sometimes you _do_ want reference equality, per inner value, but serialization doesn't preserve reference equality:
+Plus, sometimes you _do_ want reference equality, per inner value, but
+serialization doesn't preserve reference equality:
 
 ```js
 const person1 = { name: `Tomer`, occupation: `Software Engineer` }
@@ -90,7 +109,9 @@ Surely there's a better way!
 
 ## The solution: `keyalesce`
 
-[`keyalesce`](https://github.com/TomerAberbach/keyalesce) is a module that returns the same unique key for the same value sequence[^1]. It's perfect for this use case:
+[`keyalesce`](https://github.com/TomerAberbach/keyalesce) is a module that
+returns the same unique key for the same value sequence[^1]. It's perfect for
+this use case:
 
 <!-- eslint-skip -->
 
@@ -132,7 +153,10 @@ console.log(keyalesce([1, 2, 3, 4, 5]) === keyalesce([1, 2, 3, 4, 5]))
 
 ## How does it work?
 
-`keyalesce` internally maintains a [trie](https://en.wikipedia.org/wiki/Trie) containing the sequences of values it has been called with. It creates and returns new keys for new sequences and returns previously created keys for known sequences!
+`keyalesce` internally maintains a [trie](https://en.wikipedia.org/wiki/Trie)
+containing the sequences of values it has been called with. It creates and
+returns new keys for new sequences and returns previously created keys for known
+sequences!
 
 For example, the following code:
 
@@ -171,11 +195,15 @@ graph LR
     a --> b --> c --> K4
 ```
 
-And calling `keyalesce([1, 2, 3, 4])` again would return `key1` after traversing nodes `1`, `2`, `3`, and `4` in the trie.
+And calling `keyalesce([1, 2, 3, 4])` again would return `key1` after traversing
+nodes `1`, `2`, `3`, and `4` in the trie.
 
 ### Does `keyalesce` cause memory leaks?
 
-A long running program using a naive implementation of `keyalesce` would have a [memory leak](https://en.wikipedia.org/wiki/Memory_leak) due to unbounded growth of the trie. How are [unreachable](https://en.wikipedia.org/wiki/Unreachable_memory) nodes pruned?
+A long running program using a naive implementation of `keyalesce` would have a
+[memory leak](https://en.wikipedia.org/wiki/Memory_leak) due to unbounded growth
+of the trie. How are
+[unreachable](https://en.wikipedia.org/wiki/Unreachable_memory) nodes pruned?
 
 #### Sequence value reachability
 
@@ -219,9 +247,16 @@ If the code continues like so:
 object2 = null
 ```
 
-Then `object2`'s original value is only reachable from the trie. `keyalesce` can now prune the associated sequence and its key from the trie because it has become _impossible_ for `keyalesce` to be called with that sequence ever again.
+Then `object2`'s original value is only reachable from the trie. `keyalesce` can
+now prune the associated sequence and its key from the trie because it has
+become _impossible_ for `keyalesce` to be called with that sequence ever again.
 
-I made the trie hold only [weak references](https://en.wikipedia.org/wiki/Weak_reference) to objects passed to `keyalesce` and pruned the trie when the objects are [garbage-collected](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>) using [`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry).
+I made the trie hold only
+[weak references](https://en.wikipedia.org/wiki/Weak_reference) to objects
+passed to `keyalesce` and pruned the trie when the objects are
+[garbage-collected](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>)
+using
+[`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry).
 
 After pruning in this case the trie would look like so:
 
@@ -238,7 +273,10 @@ graph LR
 ```
 
 :::note
-Although `1` was in the sequence it was not pruned because it is still needed for another sequence.
+
+Although `1` was in the sequence it was not pruned because it is still needed
+for another sequence.
+
 :::
 
 #### Created key reachability
@@ -273,7 +311,9 @@ graph LR
     5 --> 7 --> K2
 ```
 
-The previous section's logic does not apply because all of the sequence values are primitives, which are always reachable and not eligible for garbage collection. So how is the trie pruned in this case?
+The previous section's logic does not apply because all of the sequence values
+are primitives, which are always reachable and not eligible for garbage
+collection. So how is the trie pruned in this case?
 
 If the code continues like so:
 
@@ -281,10 +321,16 @@ If the code continues like so:
 key2 = null
 ```
 
-Then `key2`'s original value is only reachable from the trie. Although it's still possible to call `keyalesce` with `[1, 2, 5, 7]`, `keyalesce` can actually prune the key and its associated value sequence because there isn't any code that depends on receiving that specific key anymore. `keyalesce` doesn't need to return the same unique key
-for a given value sequence. It only needs to prevent multiple keys existing _simultaneously_ for the same value sequence.
+Then `key2`'s original value is only reachable from the trie. Although it's
+still possible to call `keyalesce` with `[1, 2, 5, 7]`, `keyalesce` can actually
+prune the key and its associated value sequence because there isn't any code
+that depends on receiving that specific key anymore. `keyalesce` doesn't need to
+return the same unique key for a given value sequence. It only needs to prevent
+multiple keys existing _simultaneously_ for the same value sequence.
 
-Similarly to the handling of object sequence values, I made the trie hold only weak references to created keys and pruned the trie when the keys are garbage-collected using `FinalizationRegistry`.
+Similarly to the handling of object sequence values, I made the trie hold only
+weak references to created keys and pruned the trie when the keys are
+garbage-collected using `FinalizationRegistry`.
 
 After pruning in this case the trie would look like so:
 
@@ -301,10 +347,14 @@ graph LR
 ```
 
 :::note
-Although `1` was in the sequence it was not pruned because it is still needed for another sequence.
+
+Although `1` was in the sequence it was not pruned because it is still needed
+for another sequence.
+
 :::
 
-In summary, the trie is pruned whenever object sequence values or keys have only weak references to them.
+In summary, the trie is pruned whenever object sequence values or keys have only
+weak references to them.
 
 ## Go use it!
 
@@ -347,4 +397,7 @@ console.log(didTheyHangOut(`Amanda`, `Samuel`))
 //=> false
 ```
 
-[^1]: Two value sequences are considered equal if each of their values are equal using the [SameValueZero algorithm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality).
+[^1]:
+    Two value sequences are considered equal if each of their values are equal
+    using the
+    [SameValueZero algorithm](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality).

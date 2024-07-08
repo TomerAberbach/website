@@ -1,7 +1,3 @@
 import config from 'tomer/prettier'
 
-export default {
-  ...config,
-  proseWrap: `preserve`,
-  plugins: [`prettier-plugin-tailwindcss`],
-}
+export default { ...config, plugins: [`prettier-plugin-tailwindcss`] }

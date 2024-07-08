@@ -6127,7 +6127,9 @@ packages:
       }
     engines: { node: '>=14.0.0' }
     peerDependencies:
-      esbuild: ^0.14.0 || ^0.15.0 || ^0.16.0 || ^0.17.0 || ^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0
+      esbuild:
+        ^0.14.0 || ^0.15.0 || ^0.16.0 || ^0.17.0 || ^0.18.0 || ^0.19.0 ||
+        ^0.20.0 || ^0.21.0
 
   esbuild@0.17.6:
     resolution:
@@ -7955,7 +7957,10 @@ packages:
       {
         integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==,
       }
-    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+    deprecated:
+      This module is not supported, and leaks memory. Do not use it. Check out
+      lru-cache if you want a good and tested way to coalesce async requests by
+      a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution:
@@ -12618,7 +12623,10 @@ packages:
         integrity: sha512-wcW+sIUiWnKgNY0dqCpOZkUbF/I+YPi+f09JZIDa39Ec+q82CpSYniDp+ISgTTbKmnpJWASeJBPZmoxH84wt3g==,
       }
     engines: { node: '>=0.12.0' }
-    deprecated: request-promise-native has been deprecated because it extends the now deprecated request package, see https://github.com/request/request/issues/3142
+    deprecated:
+      request-promise-native has been deprecated because it extends the now
+      deprecated request package, see
+      https://github.com/request/request/issues/3142
     peerDependencies:
       request: ^2.34
 
@@ -12628,7 +12636,9 @@ packages:
         integrity: sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==,
       }
     engines: { node: '>= 6' }
-    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
+    deprecated:
+      request has been deprecated, see
+      https://github.com/request/request/issues/3142
 
   require-directory@2.1.1:
     resolution:
@@ -13419,7 +13429,9 @@ packages:
       {
         integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==,
       }
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    deprecated:
+      Package no longer supported. Contact Support at
+      https://www.npmjs.com/support for more info.
 
   string-width@4.2.3:
     resolution:
@@ -14025,7 +14037,9 @@ packages:
       }
     engines: { node: '>= 6' }
     peerDependencies:
-      typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+      typescript:
+        '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev
+        || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
 
   tunnel-agent@0.6.0:
     resolution:
@@ -14497,14 +14511,20 @@ packages:
       {
         integrity: sha512-FULf7fayPdpASncVy4DLh3xydlXEJJpvIELjYjNeQWYUZ9pclcpvCZSr2gkmN2FrrGcI7G/cJsIEwk5/8vfXpg==,
       }
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+    deprecated:
+      Please upgrade  to version 7 or higher.  Older versions may use
+      Math.random() in certain circumstances, which is known to be
+      problematic.  See https://v8.dev/blog/math-random for details.
 
   uuid@3.4.0:
     resolution:
       {
         integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==,
       }
-    deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+    deprecated:
+      Please upgrade  to version 7 or higher.  Older versions may use
+      Math.random() in certain circumstances, which is known to be
+      problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
 
   uuid@9.0.1:
@@ -14655,7 +14675,8 @@ packages:
       {
         integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==,
       }
-    deprecated: Use your platform's native performance.now() and performance.timeOrigin.
+    deprecated:
+      Use your platform's native performance.now() and performance.timeOrigin.
 
   w3c-xmlserializer@1.1.2:
     resolution:
