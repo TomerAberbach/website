@@ -16,7 +16,7 @@ tags:
   ]
 dates:
   published: 2023-04-23
-  updated: 2024-06-07
+  updated: 2024-07-17
 ---
 
 Naturally this list only includes projects I'm allowed to talk about! For many
@@ -24,6 +24,21 @@ projects I was not the only person who worked on it. Projects I worked on as
 part of my
 [20% time](https://builtin.com/software-engineering-perspectives/20-percent-time)
 are labeled with **_20%_**. The projects are ordered from most to least recent.
+
+- Spearheaded the development of high-fidelity
+  [Markdown import and export for Docs](https://workspaceupdates.googleblog.com/2024/07/import-and-export-markdown-in-google-docs.html),
+  enhancing its compatibility with numerous content management
+  systems.&nbsp;**_20%_**
+
+  Several news outlets took note:
+
+  - [Ars Technica: Real, actual Markdown support is arriving in Google Docs, not a moment too soon](https://arstechnica.com/gadgets/2024/07/real-actual-markdown-support-is-arriving-in-google-docs-not-a-moment-too-soon)
+  - [How-To Geek: Google Docs Can Now Import and Export Markdown](https://www.howtogeek.com/google-docs-markdown-import-export)
+
+  And
+  [Hacker News _definitely_ noticed](https://news.ycombinator.com/item?id=40982118).
+
+  ![The Hacker News homepage with "Import and Export Markdown in Google Docs" as the top post]($docs-markdown-import-export-hn.png)
 
 - Co-led a foundational rearchitecture of the Docs backend, frontend, and data
   model to implement
