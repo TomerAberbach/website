@@ -8,6 +8,7 @@ hrefs:
   [
     'https://github.com/TomerAberbach',
     'https://www.linkedin.com/in/tomer-a',
+    'https://workspaceupdates.googleblog.com/2024/07/import-and-export-markdown-in-google-docs.html',
     'https://workspaceupdates.googleblog.com/2022/03/compose-with-markdown-in-google-docs-on.html',
     'https://workspaceupdates.googleblog.com/2022/07/edit-notifications-for-document-content-changes.html',
     'https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html',
