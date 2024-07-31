@@ -27,8 +27,9 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
 
 - Spearheaded the development of high-fidelity
   [Markdown import and export for Docs](https://workspaceupdates.googleblog.com/2024/07/import-and-export-markdown-in-google-docs.html),
-  enhancing its compatibility with numerous content management
-  systems.&nbsp;**_20%_**
+  enhancing its compatibility with numerous content management systems and
+  resulting in a user importing or exporting Markdown every ~5
+  seconds&nbsp;**_20%_**
 
   Several news outlets took note:
 
