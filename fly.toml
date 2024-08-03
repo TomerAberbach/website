@@ -1,40 +1,36 @@
-# fly.toml app configuration file generated for tomeraberbach on 2023-05-26T16:05:58-04:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
+# https://fly.io/docs/reference/configuration
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
 [experimental]
-  auto_rollback = true
+auto_rollback = true
 
 [env]
-  FONTCONFIG_PATH = "private/fonts"
-  PANGOCAIRO_BACKEND = "fontconfig"
-  SITE_URL = "https://tomeraberba.ch"
+FONTCONFIG_PATH = "private/fonts"
+PANGOCAIRO_BACKEND = "fontconfig"
+SITE_URL = "https://tomeraberba.ch"
 
 [[services]]
-  protocol = "tcp"
-  internal_port = 3000
-  processes = ["app"]
+protocol = "tcp"
+internal_port = 3000
+processes = ["app"]
 
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-    force_https = true
+[[services.ports]]
+port = 80
+handlers = ["http"]
+force_https = true
 
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
+[[services.ports]]
+port = 443
+handlers = ["tls", "http"]
 
-  [services.concurrency]
-    type = "connections"
-    hard_limit = 25
-    soft_limit = 20
+[services.concurrency]
+type = "connections"
+hard_limit = 25
+soft_limit = 20
 
-  [[services.tcp_checks]]
-    interval = "15s"
-    timeout = "2s"
-    grace_period = "1s"
-    restart_limit = 0
+[[services.tcp_checks]]
+interval = "15s"
+timeout = "2s"
+grace_period = "1s"
+restart_limit = 0
