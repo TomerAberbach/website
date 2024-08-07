@@ -2,7 +2,7 @@
 title: 'lonely cosmopolite'
 tags: ['jazz', 'lofi', 'piano', 'tracks']
 dates:
-  published: 2024-08-06
+  published: 2024-08-05
 ---
 
 I composed, produced, and released an instrumental lofi track!
