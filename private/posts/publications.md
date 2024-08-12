@@ -26,6 +26,9 @@ most to least recent.
   > without building knowledge of the entire syntax and grammar of the language
   > into the code highlighting implementation.
 
+  The techniques described in this defensive publication were used for
+  [adding code blocks to Google Docs](/what-ive-worked-on-at-google).
+
 - [Synthesis cost-optimal targeted mutant protein libraries](https://pubmed.ncbi.nlm.nih.gov/38669847)
   · April 18, 2024
 
@@ -48,6 +51,22 @@ most to least recent.
   > modest increase in DNA synthesis costs, beneficial variant yields in
   > produced mutant libraries are increased by orders of magnitude, an effect
   > particularly pronounced in large combinatorial libraries.
+
+- [Table cell splitting in an online document editor](https://patents.google.com/patent/US20240119224A1)
+  · April 11, 2024
+
+  > Techniques are described herein for table cell splitting in an online
+  > document editor. A method includes: responsive to a request to split a cell
+  > in a table, determining a target number of rows and a target number of
+  > columns, automatically inserting rows adjacent to rows of the cell to reach
+  > the target number of rows, automatically inserting columns adjacent to
+  > columns of the cell to reach the target number of columns, and automatically
+  > merging groups of cells within an initial boundary of the cell, each group
+  > spanning a determined number of rows per group and a determined number of
+  > columns per group.
+
+  The techniques described in this patent were used for
+  [adding table cell splitting to Google Docs](/what-ive-worked-on-at-google).
 
 - [Language Agnostic Code Highlighting in Word Processors](https://www.tdcommons.org/dpubs_series/5207)
   · June 16, 2022
