@@ -1,4 +1,3 @@
-import { pathToFileURL } from 'node:url'
 import type { Root as MdRoot } from 'mdast'
 import type { Root as HtmlRoot } from 'hast'
 import remarkParse from 'remark-parse'
@@ -32,7 +31,6 @@ import { remarkAdmonition } from 'remark-admonition'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
 import { ASSET_NAME_TO_URL, GIT_NAME_TO_URL } from './assets.server.ts'
-import { privatePath } from '~/services/path.server.ts'
 import 'mdast-util-directive'
 
 export const convertMarkdownToHtml = async (
@@ -181,8 +179,12 @@ const markdownToHtmlProcessor = unified()
   .use(rehypeExternalLinks)
   .use(rehypeSlug)
   .use(rehypeMermaid, {
-    css: pathToFileURL(privatePath(`fonts/kantumruy-pro.css`)),
-    mermaidConfig: { fontFamily: `Kantumruy Pro`, theme: `base` },
+    css: `https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap`,
+    mermaidConfig: {
+      fontSize: 16,
+      fontFamily: `Kantumruy Pro`,
+      theme: `base`,
+    },
   })
   .use(rehypeSvgo, { svgoConfig: { multipass: true } })
   .use(rehypeKatex)
