@@ -3,11 +3,28 @@ title: 'Publications'
 tags: ['biology', 'google', 'publications', 'resume']
 dates:
   published: 2022-08-16
-  updated: 2024-04-18
+  updated: 2024-06-05
 ---
 
 I've had a few publications over the years. The publications are ordered from
 most to least recent.
+
+- [Language Agnostic Incremental Real-time Code Highlighting](https://www.tdcommons.org/dpubs_series/7077)
+  · June 5, 2024
+
+  > This disclosure describes techniques of fast, real-time highlighting of code
+  > snippets with low algorithmic complexity. The techniques are suitable to
+  > enable highlighting of code sections within relatively lightweight
+  > environments such as general-purpose word processors. Delimited ranges of
+  > characters within code are identified. Changes within delimited ranges are
+  > tracked using a sparse array. The use of a sparse array enables operations
+  > on the delimited range to be tracked at a low computational complexity. The
+  > highlighted color of a word is the color of its delimited range. The color
+  > highlighting maintains real-time synchronization with edits being made
+  > simultaneously on a document by collaborating developers. The overhead to
+  > define a language is kept low, such that highlighting can be provided
+  > without building knowledge of the entire syntax and grammar of the language
+  > into the code highlighting implementation.
 
 - [Synthesis cost-optimal targeted mutant protein libraries](https://pubmed.ncbi.nlm.nih.gov/38669847)
   · April 18, 2024
