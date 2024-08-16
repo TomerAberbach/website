@@ -2,7 +2,7 @@
 title: 'The 1 Hour per Year Bug (But Only in Pacific Time!)'
 tags: ['bugs', 'code', 'docs', 'google']
 dates:
-  published: 2024-07-04
+  published: 2024-08-15
 ---
 
 The date was November 8, 2021 and I was a
