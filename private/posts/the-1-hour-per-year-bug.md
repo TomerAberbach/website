@@ -3,7 +3,17 @@ title: 'The 1 Hour per Year Bug (But Only in Pacific Time!)'
 tags: ['bugs', 'code', 'docs', 'google']
 dates:
   published: 2024-08-15
+  updated: 2024-08-21
 ---
+
+:::note
+
+This article was updated in response to some helpful comments on
+[Hacker News](https://news.ycombinator.com/item?id=41267894). I originally
+incorrectly formatted the Pacific Time Zone daylight saving times relative to
+the Eastern Time Zone!
+
+:::
 
 The date was November 8, 2021 and I was a
 [bug triager](https://en.wikipedia.org/wiki/Bug_triage) on the Google Docs team.
@@ -26,7 +36,7 @@ A pattern quickly emerged. These bugs were all reported:
 
 Normally I would have dismissed that as a coincidence, but
 [daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time) also
-ended at 11:00pm (PT) on November 7!
+ended at 2:00am (PT) on November 7!
 
 ## The investigation 🕵️
 
@@ -63,10 +73,11 @@ title: 24 hours
 ---
 graph LR
     START_TIME[12:00am]
-    BEFORE_INPUT_TIME["11:00pm (PDT)"]
+    DST_ENDED_TIME_PDT["2:00am (PDT)"]
+    DST_ENDED_TIME_PST["1:00am (PST)"]
     INPUT_TIME["11:00pm (PST)"]
 
-    START_TIME -->|23 hours| BEFORE_INPUT_TIME -->|"1 hour (clock turns back an hour)"| INPUT_TIME
+    START_TIME -->|2 hours| DST_ENDED_TIME_PDT -->|"0 hours (clock turns back an hour)"| DST_ENDED_TIME_PST -->|22 hours| INPUT_TIME
 ```
 
 And what does the code do when the input time is 1 day later than the start of
@@ -96,13 +107,13 @@ is computed as 23!
 
 This bug actually also extended to when daylight saving time _starts_.
 
-In 2021, daylight saving time started at 11:00pm (PT) on March 14. So what would
+In 2021, daylight saving time started at 2:00am (PT) on March 14. So what would
 happen for an input time of 12:00am (PT) on March 15 when the current time was
 11:00pm (PT) on March 14?
 
 You would expect there to be 23 hours between 12:00am, the start of the day, and
 11:00pm (PT) on March 14, and technically that's true, but due to daylight
-saving starting at 11:00pm, that time is actually the same as 12:00am (PT) on
+saving starting at 2:00am, that time is actually the same as 3:00am (PT) on
 March 15. This means there are only 23 hours between the start times of March 14
 and 15!
 
@@ -112,10 +123,11 @@ title: 23 hours
 ---
 graph LR
     START_TIME[12:00am]
-    CURRENT_TIME["11:00pm (PST)"]
+    DST_STARTED_TIME_PST["2:00am (PST)"]
+    DST_STARTED_TIME_PDT["3:00am (PDT)"]
     INPUT_TIME["12:00am (PDT)"]
 
-    START_TIME -->|23 hours| CURRENT_TIME -->|"0 hours (clock turns forward an hour)"| INPUT_TIME
+    START_TIME -->|2 hours| DST_STARTED_TIME_PST -->|"0 hours (clock turns forward an hour)"| DST_STARTED_TIME_PDT -->|21 hours| INPUT_TIME
 ```
 
 And what does the code do for that number of hours? It computes the number of
@@ -131,29 +143,18 @@ reply in the future and view it from the past.
 
 ## Why 1 hour per year, but only in Pacific Time? 🤔
 
-You might be wondering whether this bug happened in other time zones. After all,
-the Pacific Time Zone isn't the only one affected by daylight saving time.
+I originally wrote an explanation here, but some comments on
+[Hacker News](https://news.ycombinator.com/item?id=41267894) made me realize
+that this bug could have theoretically happened in any time zone.
 
-It turns out that the Pacific Time Zone is the only one where the bug caused a
-user visible difference because:
-
-1. Daylight saving time starting or ending changes the time zone offset by just
-   one hour.
-2. The bug only has an effect when the difference in the number of hours goes
-   from less than a day to at least a day, or vice versa (e.g. 23 to 24 or 24 to
-   23).
-
-The only hour of the day that satisfies those two conditions is 11:00pm, and the
-only time zone where daylight saving time starts and ends at 11:00pm is the
-Pacific Time Zone.
-
-So yes, this bug could really only happen for 1 hour in one time zone per year!
-Sorry West Coast folks...
+It's possible that all the bug reports were coincidentally from users in the
+Pacific Time Zone. Or perhaps there's some other factor at play that I haven't
+thought of. Let me know if you have any ideas!
 
 ## Conclusion 🧑‍⚖️
 
 At the time of writing, August 2024, my bug fix has enjoyed two glorious hours
-of usefulness in exactly one corner of the world. Time well spent I guess? 😅
+of usefulness. Time well spent I guess? 😅
 
 Here's to hoping my bug fix becomes
 [obsolete](https://en.wikipedia.org/wiki/Sunshine_Protection_Act) soon!
