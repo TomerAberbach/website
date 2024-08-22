@@ -113,9 +113,8 @@ happen for an input time of 12:00am (PT) on March 15 when the current time was
 
 You would expect there to be 23 hours between 12:00am, the start of the day, and
 11:00pm (PT) on March 14, and technically that's true, but due to daylight
-saving starting at 2:00am, that time is actually the same as 3:00am (PT) on
-March 15. This means there are only 23 hours between the start times of March 14
-and 15!
+saving starting at 2:00am, that time is actually the same as 3:00am. This means
+there are only 23 hours between the start times of March 14 and 15!
 
 ```mermaid
 ---
