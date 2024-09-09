@@ -1,5 +1,5 @@
 ---
-title: 'What I’ve Worked On at Google'
+title: 'What I Worked On at Google'
 tags:
   [
     'ai',
@@ -16,7 +16,7 @@ tags:
   ]
 dates:
   published: 2023-04-23
-  updated: 2024-07-17
+  updated: 2024-09-09
 ---
 
 Naturally this list only includes projects I'm allowed to talk about! For many
@@ -28,8 +28,8 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
 - Spearheaded the development of high-fidelity
   [Markdown import and export for Docs](https://workspaceupdates.googleblog.com/2024/07/import-and-export-markdown-in-google-docs.html),
   enhancing its compatibility with numerous content management systems and
-  resulting in a user importing or exporting Markdown every ~5
-  seconds&nbsp;**_20%_**
+  resulting in a user importing or exporting Markdown every
+  second.&nbsp;**_20%_**
 
   Several news outlets took note:
 
