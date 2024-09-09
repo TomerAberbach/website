@@ -1,4 +1,5 @@
 import { nextTick } from 'node:process'
+import { expect, test } from 'vitest'
 import { cache } from '~/services/cache.server.ts'
 
 test(`cache calls the given function on the next tick`, async () => {
@@ -6,9 +7,9 @@ test(`cache calls the given function on the next tick`, async () => {
 
   cache(() => (called = true))
 
-  expect(called).toBeFalse()
+  expect(called).toBe(false)
   await new Promise(nextTick)
-  expect(called).toBeTrue()
+  expect(called).toBe(true)
 })
 
 test(`cache returns a function that does not call the given function more than once`, async () => {

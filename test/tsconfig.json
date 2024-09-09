@@ -2,6 +2,6 @@
   "extends": "../shared-tsconfig.json",
   "include": ["../types/*", "../src/**/*", "**/*"],
   "compilerOptions": {
-    "types": ["@remix-run/node", "vite/client", "@types/jest"]
+    "types": ["@remix-run/node", "vite/client"]
   }
 }

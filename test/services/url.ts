@@ -1,11 +1,11 @@
-import { jest } from 'tomer'
+import { beforeEach, expect, test, vitest } from 'vitest'
 
 const originalWindow = window
 beforeEach(() => {
   // @ts-expect-error Simulating the server
   delete global.window
   delete process.env.SITE_URL
-  jest.resetModules()
+  vitest.resetModules()
 })
 
 test(`SITE_URL is set to localhost on the server when the environment variable is unset`, async () => {
