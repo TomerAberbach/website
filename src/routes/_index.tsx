@@ -2,12 +2,8 @@ import type { LoaderFunction } from '@remix-run/node'
 import { useId } from 'react'
 import { first, get, pipe, values } from 'lfi'
 import { getMarkdownPosts, getTags } from '~/services/posts/index.server.ts'
-import {
-  createMeta,
-  json,
-  useLoaderData,
-  useRouteError,
-} from '~/services/json.ts'
+import { createMeta, useLoaderData, useRouteError } from '~/services/json.ts'
+import { json } from '~/services/json.server.ts'
 import { getGraph } from '~/services/graph.server.ts'
 import type { Graph } from '~/services/graph.server.ts'
 import { TagsFilterForm } from '~/components/tags-filter-form.tsx'

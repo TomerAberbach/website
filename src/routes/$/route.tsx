@@ -12,12 +12,8 @@ import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
 } from '~/services/posts/index.server.ts'
-import {
-  createMeta,
-  json,
-  useLoaderData,
-  useRouteError,
-} from '~/services/json.ts'
+import { createMeta, useLoaderData, useRouteError } from '~/services/json.ts'
+import { json } from '~/services/json.server.ts'
 import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
 import pick from '~/services/pick.ts'
@@ -86,7 +82,7 @@ const PostPage = () => {
         </ul>
       </header>
       <Prose html={content} />
-      {previousPost ?? nextPost ? (
+      {(previousPost ?? nextPost) ? (
         <footer className='not-prose mt-8 flex items-center font-medium text-gray-700'>
           <BalanceProvider>
             {previousPost ? (
