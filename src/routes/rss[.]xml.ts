@@ -44,7 +44,7 @@ export const loader = async (): Promise<Response> => {
                   post.dates.updated
                     ? `<lastBuildDate>${formatDateUTC(
                         post.dates.updated,
-                      )}</lastBuildData>`
+                      )}</lastBuildDate>`
                     : ``
                 }
               </item>
