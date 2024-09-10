@@ -16,9 +16,9 @@ RUN apt-get --yes install ca-certificates fonts-liberation libappindicator3-1 \
   libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 \
   libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
   libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget \
-  xdg-utils gstreamer1.0-plugins-base libgstreamer-gl1.0-0 libwoff1 libopus0 \
-  libharfbuzz-icu0 libflite1 libenchant-2-2 libsecret-1-0 libhyphen0 \
-  libmanette-0.2-0 libx264-dev
+  xdg-utils gstreamer1.0-plugins-base libgstreamer-gl1.0-0 \
+  libgstreamer-plugins-bad1.0-0 libwoff1 libopus0 libharfbuzz-icu0 libflite1 \
+  libenchant-2-2 libsecret-1-0 libhyphen0 libmanette-0.2-0 libx264-dev libvpx
 
 
 FROM node as dependencies
