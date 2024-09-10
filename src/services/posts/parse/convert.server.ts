@@ -11,7 +11,6 @@ import rehypeShiki from '@shikijs/rehype'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
-import { firefox } from 'playwright-core'
 import { visit } from 'unist-util-visit'
 import remarkA11yEmoji from '@fec/remark-a11y-emoji'
 import { toString as mdToText } from 'mdast-util-to-string'
@@ -186,7 +185,6 @@ const markdownToHtmlProcessor = unified()
       fontFamily: `Kantumruy Pro`,
       theme: `base`,
     },
-    browser: firefox,
   })
   .use(rehypeSvgo, { svgoConfig: { multipass: true } })
   .use(rehypeKatex)

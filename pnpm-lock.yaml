@@ -99,9 +99,6 @@ importers:
       ngraph.graph:
         specifier: ^20.0.1
         version: 20.0.1
-      playwright-core:
-        specifier: ^1.47.0
-        version: 1.47.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
