@@ -7,7 +7,9 @@ import { SITE_URL, getSiteUrl } from '~/services/url.ts'
 export const loader = async (): Promise<Response> => {
   const posts = await getMarkdownPosts()
   const rss = `
-    <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <rss version="2.0"
+         xmlns:atom="http://www.w3.org/2005/Atom"
+         xmlns:content="http://purl.org/rss/1.0/modules/content">
       <channel>
         <atom:link href="${getSiteUrl(
           `rss.xml`,
