@@ -24,9 +24,9 @@
     "typecheck": "tomer typecheck",
     "build": "cross-env NODE_ENV=production node --loader ts-node/esm scripts/build.ts",
     "clean": "tomer clean .cache build public/build private/fonts/build src/styles/build",
-    "dev": "cross-env PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW=1 remix vite:dev",
+    "dev": "remix vite:dev",
     "test": "tomer test",
-    "start": "cross-env PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW=1 remix-serve ./build/server/index.js",
+    "start": "remix-serve ./build/server/index.js",
     "deploy": "fly deploy --remote-only"
   },
   "eslintConfig": {
@@ -51,7 +51,6 @@
     "@tailwindcss/typography": "^0.5.15",
     "clsx": "^2.1.1",
     "colortranslator": "^4.1.0",
-    "cross-env": "^7.0.3",
     "cssesc": "^3.0.0",
     "escape-goat": "^4.0.0",
     "escape-string-regexp": "^5.0.0",
@@ -67,6 +66,7 @@
     "mermaid-isomorphic": "^2.2.1",
     "ngraph.forcelayout": "^3.3.1",
     "ngraph.graph": "^20.0.1",
+    "playwright-core": "^1.47.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-wrap-balancer": "^1.1.1",
@@ -115,6 +115,7 @@
     "@types/string-similarity": "^4.0.2",
     "@vheemstra/vite-plugin-imagemin": "^2.0.0",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
     "cssnano": "^7.0.6",
     "eslint": "^8.57.0",
     "glyphhanger": "^5.0.0",
@@ -145,8 +146,7 @@
   "pnpm": {
     "patchedDependencies": {
       "glyphhanger@5.0.0": "patches/glyphhanger@5.0.0.patch",
-      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch",
-      "mermaid-isomorphic": "patches/mermaid-isomorphic.patch"
+      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch"
     }
   }
 }
