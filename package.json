@@ -54,6 +54,7 @@
     "cssesc": "^3.0.0",
     "escape-goat": "^4.0.0",
     "escape-string-regexp": "^5.0.0",
+    "filter-obj": "^6.1.0",
     "gray-matter": "^4.0.3",
     "hast-util-select": "^6.0.2",
     "hastscript": "^9.0.0",

@@ -5,6 +5,7 @@ import { useId } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
 import katexStylesPath from 'katex/dist/katex.min.css?url'
+import { includeKeys } from 'filter-obj'
 import arrowRightSvgPath from './arrow-right.svg'
 import arrowUpRightSvgPath from './arrow-up-right.svg'
 import arrowUpLeftSvgPath from './arrow-up-left.svg'
@@ -17,7 +18,6 @@ import { createMeta, useLoaderData, useRouteError } from '~/services/json.ts'
 import { json } from '~/services/json.server.ts'
 import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
-import pick from '~/services/pick.ts'
 import type { Post } from '~/services/posts/types.ts'
 import Tooltip from '~/components/tooltip.tsx'
 import {
@@ -257,7 +257,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   const post = (await getMarkdownPosts()).get(postId)
   if (post) {
     return json({
-      post: pick(post, [
+      post: includeKeys(post, [
         `id`,
         `title`,
         `tags`,
@@ -275,7 +275,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   throw json<ErrorBoundaryData>(
     {
-      didYouMeanPost: pick(await findBestMarkdownPostMatch(postId), [
+      didYouMeanPost: includeKeys(await findBestMarkdownPostMatch(postId), [
         `id`,
         `title`,
       ]),

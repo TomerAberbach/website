@@ -63,6 +63,9 @@ importers:
       escape-string-regexp:
         specifier: ^5.0.0
         version: 5.0.0
+      filter-obj:
+        specifier: ^6.1.0
+        version: 6.1.0
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -6669,6 +6672,13 @@ packages:
         integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==,
       }
     engines: { node: '>=8' }
+
+  filter-obj@6.1.0:
+    resolution:
+      {
+        integrity: sha512-xdMtCAODmPloU9qtmPcdBV9Kd27NtMse+4ayThxqIHUES5Z2S6bGpap5PpdmNM56ub7y3i1eyr+vJJIIgWGKmA==,
+      }
+    engines: { node: '>=18' }
 
   finalhandler@1.1.2:
     resolution:
@@ -19709,6 +19719,8 @@ snapshots:
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
+
+  filter-obj@6.1.0: {}
 
   finalhandler@1.1.2:
     dependencies:

@@ -14,10 +14,10 @@ import {
   window,
 } from 'lfi'
 import { findBestMatch } from 'string-similarity'
+import { includeKeys } from 'filter-obj'
 import { readRawPosts } from './read.server.ts'
 import parsePost from './parse/index.server.tsx'
 import type { MarkdownPost, Post } from './types.ts'
-import pick from '~/services/pick.ts'
 import { cache } from '~/services/cache.server.ts'
 
 export const findBestMarkdownPostMatch = async (
@@ -76,10 +76,10 @@ export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
     filter((post): post is MarkdownPost => post.type === `markdown`),
     window(3),
     forEach(([nextPost, post, previousPost]) => {
-      nextPost!.previousPost = pick(post!, [`id`, `title`])
-      post!.nextPost = pick(nextPost!, [`id`, `title`])
-      post!.previousPost = pick(previousPost!, [`id`, `title`])
-      previousPost!.nextPost = pick(post!, [`id`, `title`])
+      nextPost!.previousPost = includeKeys(post!, [`id`, `title`])
+      post!.nextPost = includeKeys(nextPost!, [`id`, `title`])
+      post!.previousPost = includeKeys(previousPost!, [`id`, `title`])
+      previousPost!.nextPost = includeKeys(post!, [`id`, `title`])
     }),
   )
 
