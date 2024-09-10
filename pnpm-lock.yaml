@@ -54,6 +54,9 @@ importers:
       colortranslator:
         specifier: ^4.1.0
         version: 4.1.0
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       cssesc:
         specifier: ^3.0.0
         version: 3.0.0
@@ -235,9 +238,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.45)
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
       cssnano:
         specifier: ^7.0.6
         version: 7.0.6(postcss@8.4.45)
