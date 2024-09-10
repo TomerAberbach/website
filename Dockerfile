@@ -17,7 +17,7 @@ RUN apt-get --yes install ca-certificates fonts-liberation libappindicator3-1 \
   libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
   libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release wget \
   xdg-utils gstreamer1.0-plugins-base libwoff1 libopus0 libharfbuzz-icu0 \
-  libvpx9 libflite1
+  libflite1
 
 
 FROM node as dependencies
