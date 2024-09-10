@@ -7,9 +7,12 @@ export type MarkdownPost = BasePost & {
   minutesToRead: number
   content: string
   description: string
+  features: Set<MarkdownPostFeature>
   previousPost?: AdjacentMarkdownPost
   nextPost?: AdjacentMarkdownPost
 }
+
+export type MarkdownPostFeature = `math`
 
 export type AdjacentMarkdownPost = { id: string; title: string }
 

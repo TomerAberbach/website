@@ -4,6 +4,7 @@ import { isRouteErrorResponse } from '@remix-run/react'
 import { useId } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
+import katexStylesPath from 'katex/dist/katex.min.css?url'
 import arrowRightSvgPath from './arrow-right.svg'
 import arrowUpRightSvgPath from './arrow-up-right.svg'
 import arrowUpLeftSvgPath from './arrow-up-left.svg'
@@ -208,8 +209,8 @@ export const ErrorBoundary = () => {
   )
 }
 
-export const meta = createMeta<typeof loader>(({ location, data }) =>
-  getMeta(
+export const meta = createMeta<typeof loader>(({ location, data }) => [
+  ...getMeta(
     location,
     data
       ? {
@@ -225,7 +226,10 @@ export const meta = createMeta<typeof loader>(({ location, data }) =>
           type: `website`,
         },
   ),
-)
+  ...(data?.post.features.has(`math`)
+    ? [{ tagName: `link`, rel: `stylesheet`, href: katexStylesPath }]
+    : []),
+])
 
 const truncate = (text: string): string => {
   if (text.length <= MAX_LENGTH) {
@@ -262,6 +266,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
         `minutesToRead`,
         `content`,
         `description`,
+        `features`,
         `previousPost`,
         `nextPost`,
       ]),

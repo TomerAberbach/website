@@ -3,7 +3,9 @@ import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
 import clsx from 'clsx'
 import { z } from 'zod'
+import type { Root as HtmlRoot } from 'hast'
 import parseFrontMatter from 'gray-matter'
+import { select } from 'hast-util-select'
 import { parseHrefs, parseReferences } from './references.server.ts'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -11,7 +13,12 @@ import {
   convertMarkdownToHtml,
   convertMarkdownToText,
 } from './convert.server.ts'
-import type { HrefPost, MarkdownPost, Post } from '~/services/posts/types.ts'
+import type {
+  HrefPost,
+  MarkdownPost,
+  MarkdownPostFeature,
+  Post,
+} from '~/services/posts/types.ts'
 import type { RawPost } from '~/services/posts/read.server.ts'
 import { renderHtml } from '~/services/html.tsx'
 import type { Components } from '~/services/html.tsx'
@@ -42,6 +49,7 @@ const parseMarkdownPost = async (
     minutesToRead: Math.max(1, Math.round(readingTime(content).minutes)),
     content: renderToString(renderHtml(htmlAst, components)),
     description: truncate(convertMarkdownToText(content)),
+    features: extractMarkdownPostFeatures(htmlAst),
   }
 }
 
@@ -60,6 +68,18 @@ const truncate = (text: string): string => {
 }
 
 const MAX_LENGTH = 200
+
+const extractMarkdownPostFeatures = (
+  htmlAst: HtmlRoot,
+): Set<MarkdownPostFeature> => {
+  const features = new Set<MarkdownPostFeature>()
+
+  if (select(`[class='katex']`, htmlAst)) {
+    features.add(`math`)
+  }
+
+  return features
+}
 
 const Section: Components[`section`] = props => {
   if (props[`data-footnotes`]) {
