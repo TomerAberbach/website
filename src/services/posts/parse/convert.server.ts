@@ -185,6 +185,10 @@ const markdownToHtmlProcessor = unified()
       fontFamily: `Kantumruy Pro`,
       theme: `base`,
     },
+    launchOptions: {
+      // https://github.com/puppeteer/puppeteer/issues/2410#issuecomment-659021191
+      args: [`--font-render-hinting=none`],
+    },
   })
   .use(rehypeSvgo, { svgoConfig: { multipass: true } })
   .use(rehypeKatex)
