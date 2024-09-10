@@ -1,0 +1,12 @@
+diff --git a/src/mermaid-isomorphic.ts b/src/mermaid-isomorphic.ts
+index c4cdda1a4d60458bca9bffc89143c5e4c16f9bd3..bf2d4fe17c5a8a1e8fd83fb448676e654c4793e8 100644
+--- a/src/mermaid-isomorphic.ts
++++ b/src/mermaid-isomorphic.ts
+@@ -252,6 +252,7 @@ export function createMermaidRenderer(options: CreateMermaidRendererOptions = {}
+         }
+       }
+       await Promise.all(promises)
++      await page.evaluate(() => document.fonts.ready);
+ 
+       renderResults = await page.evaluate(renderDiagrams, {
+         diagrams,
