@@ -20,14 +20,6 @@ logger.warn = (msg, options) => {
     return
   }
 
-  if (
-    msg.includes(`[plugin:vite:resolve]`) &&
-    msg.includes(`externalized for browser compatibility`)
-  ) {
-    // Importing server code in routes is the standard Remix practice.
-    return
-  }
-
   originalWarning(msg, options)
 }
 
