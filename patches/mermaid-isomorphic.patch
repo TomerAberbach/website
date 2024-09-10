@@ -1,0 +1,22 @@
+diff --git a/dist/mermaid-isomorphic.js b/dist/mermaid-isomorphic.js
+index c83ed43bc2c6260670e46b5698e95d2f61bc3b17..33a706502cfc1d17ebc606ac49481bb3000360e8 100644
+--- a/dist/mermaid-isomorphic.js
++++ b/dist/mermaid-isomorphic.js
+@@ -16,7 +16,8 @@ const faStyle = {
+  * @returns A settled promise that holds the rendering results.
+  */
+ async function renderDiagrams({ diagrams, mermaidConfig, prefix, screenshot }) {
+-    await Promise.all(Array.from(document.fonts, (font) => font.load()));
++    const fonts = await Promise.all(Array.from(document.fonts, (font) => font.load()));
++    console.log(fonts.map(font => font.family))
+     const parser = new DOMParser();
+     const serializer = new XMLSerializer();
+     mermaid.initialize(mermaidConfig);
+@@ -100,6 +101,7 @@ export function createMermaidRenderer(options = {}) {
+         let renderResults;
+         try {
+             page = await browserInstance.newPage({ bypassCSP: true });
++            page.on('console', msg => console.log(msg.text()))
+             await page.goto(html);
+             const promises = [page.addStyleTag(faStyle), page.addScriptTag(mermaidScript)];
+             const css = renderOptions?.css;
