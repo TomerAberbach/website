@@ -67,6 +67,7 @@ const handleBotRequest = (
           pipe(body)
         },
         onShellError: (error: unknown) => {
+          // eslint-disable-next-line typescript/prefer-promise-reject-errors
           reject(error)
         },
         onError: (error: unknown) => {
@@ -116,6 +117,7 @@ const handleBrowserRequest = (
           pipe(body)
         },
         onShellError: (error: unknown) => {
+          // eslint-disable-next-line typescript/prefer-promise-reject-errors
           reject(error)
         },
         onError: (error: unknown) => {

@@ -207,7 +207,6 @@ const markdownToHtmlProcessor = unified()
       },
       // Extract meta.
       {
-        // eslint-disable-next-line no-restricted-syntax
         pre(node) {
           const meta = this.options.meta?.__raw ?? ``
           if (!meta) {

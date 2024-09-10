@@ -33,12 +33,10 @@ export const TagsFilterForm = ({
     >
       <div className='flex items-center gap-3'>
         <h2 className='text-lg font-medium'>Filter by tags</h2>
-        {
-          <LogicalOperatorRadioButtonGroup
-            logicalOperator={logicalOperator}
-            setLogicalOperator={setLogicalOperator}
-          />
-        }
+        <LogicalOperatorRadioButtonGroup
+          logicalOperator={logicalOperator}
+          setLogicalOperator={setLogicalOperator}
+        />
       </div>
       <TagsCheckboxGroup
         selectedTags={selectedTags}

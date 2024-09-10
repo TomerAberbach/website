@@ -40,7 +40,6 @@ export const createMeta =
     })
 
 type InferData<DataOrFunction> = DataOrFunction extends (
-  // eslint-disable-next-line typescript/no-explicit-any
   ...args: any[]
 ) => infer Output
   ? Awaited<Output> extends TypedResponse<infer ResponseData>

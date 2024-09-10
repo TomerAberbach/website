@@ -167,6 +167,7 @@ export default {
   },
   plugins: [
     typography,
+    // eslint-disable-next-line typescript/unbound-method
     plugin(({ addVariant }) => {
       addVariant(`child`, `& > *`)
       addVariant(`js`, `.js &`)
