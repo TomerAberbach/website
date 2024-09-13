@@ -43,6 +43,7 @@ export default {
   theme: {
     fontFamily: {
       sans: [`var(--font-sans)`, ...defaultTheme.fontFamily.sans],
+      'system-mono': defaultTheme.fontFamily.mono,
       mono: [`var(--font-mono)`, ...defaultTheme.fontFamily.mono],
     },
     fontSize: {

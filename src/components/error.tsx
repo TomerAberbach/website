@@ -34,7 +34,10 @@ export const ErrorCrashView = ({ error }: { error: unknown }) => {
         File an issue
       </ExternalLink>
       {stack ? (
-        <pre className='mt-3 max-w-full overflow-auto rounded-md bg-yellow-100 p-4 text-left'>
+        // Use the system monospace font because we subset our custom monospace
+        // font based on the website content and the stack may contain
+        // characters not included in the subset font.
+        <pre className='mt-3 max-w-full overflow-auto rounded-md bg-yellow-100 p-4 text-left font-system-mono'>
           {stack}
         </pre>
       ) : null}
