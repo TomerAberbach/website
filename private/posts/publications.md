@@ -27,7 +27,7 @@ most to least recent.
   > into the code highlighting implementation.
 
   The techniques described in this defensive publication were used for
-  [adding code blocks to Google Docs](/what-ive-worked-on-at-google).
+  [adding code blocks to Google Docs](/what-i-worked-on-at-google).
 
 - [Synthesis cost-optimal targeted mutant protein libraries](https://pubmed.ncbi.nlm.nih.gov/38669847)
   · April 18, 2024
@@ -66,7 +66,7 @@ most to least recent.
   > columns per group.
 
   The techniques described in this patent were used for
-  [adding table cell splitting to Google Docs](/what-ive-worked-on-at-google).
+  [adding table cell splitting to Google Docs](/what-i-worked-on-at-google).
 
 - [Language Agnostic Code Highlighting in Word Processors](https://www.tdcommons.org/dpubs_series/5207)
   · June 16, 2022
@@ -86,7 +86,7 @@ most to least recent.
   > small block of code near the altered text character(s).
 
   The techniques described in this defensive publication were used for
-  [adding code blocks to Google Docs](/what-ive-worked-on-at-google).
+  [adding code blocks to Google Docs](/what-i-worked-on-at-google).
 
 - [Decodon Calculator: Degenerate Codon Set Design for Protein Variant Libraries](https://par.nsf.gov/servlets/purl/10285027)
   · August 1, 2020
