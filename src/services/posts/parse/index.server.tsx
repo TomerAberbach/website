@@ -24,15 +24,16 @@ import { renderHtml } from '~/services/html.tsx'
 import type { Components } from '~/services/html.tsx'
 import { Link } from '~/components/link.tsx'
 import Tooltip from '~/components/tooltip.tsx'
+import { entries } from 'lfi'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
   return {
     id: rawPost.id,
+    referencedBy: new Map(),
     ...(content.trim().length > 0
       ? await parseMarkdownPost(content, data)
       : parseHrefPost(data)),
-    referencedBy: new Map(),
   }
 }
 
@@ -245,6 +246,10 @@ const stringSetSchema = z
 const basePostMetadataSchema = z.object({
   title: z.string(),
   tags: stringSetSchema,
+  referencedBy: z
+    .record(z.string())
+    .transform(references => new Map(entries(references)))
+    .optional(),
   dates: z.object({
     published: z.coerce.date(),
     updated: z.coerce.date().optional(),

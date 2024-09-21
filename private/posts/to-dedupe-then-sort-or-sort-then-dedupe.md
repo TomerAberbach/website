@@ -1,6 +1,8 @@
 ---
 title: 'To Dedupe Then Sort or Sort Then Dedupe?'
 tags: ['code', 'data structures', 'javascript', 'performance']
+referencedBy:
+  'https://news.ycombinator.com/item?id=40917215': 'Hacker News'
 dates:
   published: 2024-06-30
 ---

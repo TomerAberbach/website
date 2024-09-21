@@ -1,6 +1,15 @@
 ---
 title: 'The 1 Hour per Year Bug (But Only in Pacific Time!)'
 tags: ['bugs', 'code', 'dates', 'docs', 'google', 'software engineering']
+referencedBy:
+  'https://news.ycombinator.com/item?id=41267894': 'Hacker News'
+  'https://stackoverflow.blog/newsletter/issue-243-battling-ticket-bots':
+    'The Overflow: Issue 234'
+  'https://www.pointer.io/archives/post_60f563f3-67fa-49c6-9928-c5e53fe7e4cf':
+    'Pointer: Issue 543'
+  'https://tldr.tech/webdev/2024-08-22': 'TLDR Web Dev: 2024-08-22 Issue'
+  'https://www.detect.sh/blog/detect-6-kafka-data-loss-real-debugging-stories-all-things-ebpf-incidents-at-openai-anthropic-hubspot-google':
+    'Detect.sh: September Issue'
 dates:
   published: 2024-08-15
   updated: 2024-08-21
