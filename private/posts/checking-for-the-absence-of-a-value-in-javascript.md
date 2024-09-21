@@ -1,6 +1,9 @@
 ---
 title: 'Checking for the Absence of a Value in JavaScript'
 tags: ['code', 'javascript']
+referencedBy:
+  'https://github.com/leonardomso/33-js-concepts':
+    '33 Concepts Every JavaScript Developer Should Know'
 dates:
   published: 2018-08-16
   updated: 2023-01-11

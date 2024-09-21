@@ -102,8 +102,8 @@ export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
     post.referencedBy = new Map(
       [...post.referencedBy].sort(
         ([a], [b]) =>
-          posts.get(b)!.dates.published.getTime() -
-          posts.get(a)!.dates.published.getTime(),
+          (posts.get(b)?.dates.published.getTime() ?? 0) -
+          (posts.get(a)?.dates.published.getTime() ?? 0),
       ),
     )
   }
