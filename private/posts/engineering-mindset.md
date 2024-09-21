@@ -1,6 +1,6 @@
 ---
 title: 'Engineering Mindset'
-tags: ['code', 'engineering', 'learning']
+tags: ['code', 'learning', 'software engineering']
 dates:
   published: 2024-09-20
 ---
