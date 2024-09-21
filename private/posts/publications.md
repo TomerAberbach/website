@@ -1,6 +1,6 @@
 ---
 title: 'Publications'
-tags: ['biology', 'google', 'publications', 'resume']
+tags: ['biology', 'code', 'google', 'publications', 'resume']
 dates:
   published: 2022-08-16
   updated: 2024-06-05

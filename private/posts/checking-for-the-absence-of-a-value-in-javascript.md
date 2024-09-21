@@ -1,6 +1,6 @@
 ---
 title: 'Checking for the Absence of a Value in JavaScript'
-tags: ['code', 'javascript', 'nodejs']
+tags: ['code', 'javascript']
 dates:
   published: 2018-08-16
   updated: 2023-01-11

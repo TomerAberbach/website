@@ -1,6 +1,15 @@
 ---
 title: 'The Making of Keyalesce'
-tags: ['code', 'data structures', 'gc', 'javascript', 'performance', 'tries']
+tags:
+  [
+    'code',
+    'data structures',
+    'gc',
+    'javascript',
+    'packages',
+    'performance',
+    'tries',
+  ]
 dates:
   published: 2023-07-02
 ---

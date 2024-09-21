@@ -1,6 +1,6 @@
 ---
 title: 'The 1 Hour per Year Bug (But Only in Pacific Time!)'
-tags: ['bugs', 'code', 'docs', 'google']
+tags: ['bugs', 'code', 'dates', 'docs', 'google', 'software engineering']
 dates:
   published: 2024-08-15
   updated: 2024-08-21
