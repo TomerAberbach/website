@@ -79,7 +79,6 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
     get,
   )
   const markerId = useId()
-  const filterId = useId()
   const { width, height } = layout.boundingBox
 
   return (
@@ -102,13 +101,6 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
         >
           <path d='M 0 0 L 10 5 L 0 10 z' />
         </marker>
-        <filter id={filterId} x='-25%' y='10%' width='150%' height='80%'>
-          <feFlood floodColor='white' result='bg' />
-          <feMerge>
-            <feMergeNode in='bg' />
-            <feMergeNode in='SourceGraphic' />
-          </feMerge>
-        </filter>
       </defs>
       <g>
         {pipe(
@@ -117,7 +109,6 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
             <Edge
               key={`${edge.fromId} ${edge.toId}`}
               markerId={markerId}
-              filterId={filterId}
               layout={layout}
               maxWeight={maxWeight}
               edge={edge}
@@ -132,20 +123,17 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
 
 const Edge = ({
   markerId,
-  filterId,
   layout: { positions },
   maxWeight,
   edge: { fromId, toId, tags, hrefs },
 }: {
   markerId: string
-  filterId: string
   layout: GraphLayout
   maxWeight: number
   edge: GraphEdge
 }) => {
   const fromPosition = positions.get(fromId)!
   const toPosition = positions.get(toId)!
-
   const intersectedFromPosition = intersectCircle(
     toPosition,
     fromPosition,
@@ -157,29 +145,56 @@ const Edge = ({
     VERTEX_RADIUS,
   )
 
+  const labelPosition = {
+    x: (intersectedFromPosition.x + intersectedToPosition.x) / 2,
+    y: (intersectedFromPosition.y + intersectedToPosition.y) / 2,
+  }
+  const beforeLabelPosition = translatePosition(
+    labelPosition,
+    intersectedFromPosition.angle,
+    EDGE_LABEL_PADDING,
+  )
+  const afterLabelPosition = translatePosition(
+    labelPosition,
+    intersectedToPosition.angle,
+    EDGE_LABEL_PADDING,
+  )
+
   const weight = hrefs.size
+  const lineStrokeWidth =
+    MIN_EDGE_STROKE_WIDTH +
+    (weight / maxWeight) * (MAX_EDGE_STROKE_WIDTH - MIN_EDGE_STROKE_WIDTH)
+  const lineClassName = `stroke-gray-500 transition duration-200`
+
   return (
     <g className={clsx(getTagClassNames(tags))}>
       <line
-        strokeWidth={2.5 + (weight / maxWeight) * 3}
-        markerEnd={`url(#${cssesc(markerId, { isIdentifier: true })})`}
+        strokeWidth={lineStrokeWidth}
         x1={intersectedFromPosition.x}
         y1={intersectedFromPosition.y}
-        x2={intersectedToPosition.x}
-        y2={intersectedToPosition.y}
-        className='stroke-gray-500 transition duration-200'
+        x2={beforeLabelPosition.x}
+        y2={beforeLabelPosition.y}
+        className={lineClassName}
       />
       <text
-        x={(intersectedFromPosition.x + intersectedToPosition.x) / 2}
-        y={(intersectedFromPosition.y + intersectedToPosition.y) / 2}
+        x={labelPosition.x}
+        y={labelPosition.y}
         textAnchor='middle'
         alignmentBaseline='middle'
-        filter={`url(#${cssesc(filterId, { isIdentifier: true })})`}
-        className='overflow-visible bg-white fill-gray-500 text-xl'
+        className='overflow-visible fill-gray-500 text-xl'
         aria-hidden
       >
         {weight}
       </text>
+      <line
+        strokeWidth={lineStrokeWidth}
+        markerEnd={`url(#${cssesc(markerId, { isIdentifier: true })})`}
+        x1={afterLabelPosition.x}
+        y1={afterLabelPosition.y}
+        x2={intersectedToPosition.x}
+        y2={intersectedToPosition.y}
+        className={lineClassName}
+      />
     </g>
   )
 }
@@ -188,15 +203,29 @@ const intersectCircle = (
   start: Position,
   end: Position,
   radius: number,
-): Position => {
+): Position & { angle: number } => {
   const width = end.x - start.x
   const height = end.y - start.y
   const angle = Math.atan2(height, width)
   const dx = Math.cos(angle) * radius
   const dy = Math.sin(angle) * radius
 
-  return { x: end.x - dx, y: end.y - dy }
+  return { x: end.x - dx, y: end.y - dy, angle }
 }
+
+const translatePosition = (
+  { x, y }: Position,
+  angle: number,
+  distance: number,
+): Position => {
+  const dx = Math.cos(angle) * distance
+  const dy = Math.sin(angle) * distance
+  return { x: x + dx, y: y + dy }
+}
+
+const EDGE_LABEL_PADDING = 18.75
+const MIN_EDGE_STROKE_WIDTH = 2.5
+const MAX_EDGE_STROKE_WIDTH = 5.5
 
 const Vertices = ({ graph: { vertices, layout } }: { graph: Graph }) => (
   <BalanceProvider>
