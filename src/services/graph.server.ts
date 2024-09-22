@@ -141,11 +141,9 @@ const layoutGraph = ({
   edges: Map<string, Edge>
 }): GraphLayout => {
   const ngraph = createGraph<string, string>()
-
   for (const id of vertices.keys()) {
     ngraph.addNode(id)
   }
-
   for (const { fromId, toId } of edges.values()) {
     ngraph.addLink(fromId, toId)
   }
@@ -171,9 +169,14 @@ const layoutGraph = ({
     forEach(([index, { id }]) => {
       layout.setNodePosition(
         id,
-        // Zig zag internal vertices from left and right in the vertical column.
-        (index % 2 === 0 ? -1 : 1) * HORIZONTAL_OFFSET,
-        index * SPRING_LENGTH,
+        index === 0
+          ? // Place the first internal vertex in the center so that it's always
+            // visible on load, even on a small screen.
+            0
+          : // Zig zag the remaining internal vertices from right to left in a
+            // vertical column.
+            (index % 2 === 0 ? -1 : 1) * HORIZONTAL_OFFSET,
+        index * VERTICAL_OFFSET,
       )
       layout.pinNode(ngraph.getNode(id)!, true)
     }),
@@ -211,6 +214,7 @@ const layoutGraph = ({
 
 const SPRING_LENGTH = 30
 const HORIZONTAL_OFFSET = 30
+const VERTICAL_OFFSET = 20
 const SCALE = 10
 const PADDING = 150
 
