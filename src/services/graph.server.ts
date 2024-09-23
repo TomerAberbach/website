@@ -1,8 +1,9 @@
 import {
   filter,
+  first,
   flatMap,
   forEach,
-  index,
+  get,
   keys,
   map,
   pipe,
@@ -161,30 +162,34 @@ const layoutGraph = ({
     springCoefficient: 0.005,
   })
 
-  // Position internal vertices in a vertical column.
-  pipe(
+  const firstInternalVertexId = pipe(
     vertices.values(),
     filter(({ type }) => type === `internal`),
-    index,
-    forEach(([index, { id }]) => {
-      layout.setNodePosition(
-        id,
-        index === 0
-          ? // Place the first internal vertex in the center so that it's always
-            // visible on load, even on a small screen.
-            0
-          : // Zig zag the remaining internal vertices from right to left in a
-            // vertical column.
-            (index % 2 === 0 ? -1 : 1) * HORIZONTAL_OFFSET,
-        index * VERTICAL_OFFSET,
-      )
-      layout.pinNode(ngraph.getNode(id)!, true)
-    }),
+    map(({ id }) => id),
+    first,
+    get,
   )
 
-  for (let iteration = 0; iteration < 10_000; iteration++) {
+  // Layout the graph while keeping the first internal vertex at the top and
+  // centered vertically.
+  layout.pinNode(ngraph.getNode(firstInternalVertexId)!, true)
+  for (let iteration = 0; iteration < 12_500; iteration++) {
+    // Reset the first internal vertex to the top and centered vertically
+    // because the layout of other vertices at each step changes the bounds.
+    const {
+      min_x: minX,
+      min_y: minY,
+      max_x: maxX,
+    } = layout.simulator.getBoundingBox()
+    layout.setNodePosition(firstInternalVertexId, (minX + maxX) / 2, minY)
+
     layout.step()
   }
+
+  // Add some padding between the first interval vertex and the rest of the
+  // graph.
+  const { x, y } = layout.getNodePosition(firstInternalVertexId)
+  layout.setNodePosition(firstInternalVertexId, x, y - 15)
 
   const {
     min_x: minX,
@@ -213,8 +218,6 @@ const layoutGraph = ({
 }
 
 const SPRING_LENGTH = 30
-const HORIZONTAL_OFFSET = 30
-const VERTICAL_OFFSET = 20
 const SCALE = 10
 const PADDING = 150
 
