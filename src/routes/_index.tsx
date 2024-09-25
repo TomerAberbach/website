@@ -10,7 +10,11 @@ import type { Graph } from '~/services/graph.server.ts'
 import { TagsFilterForm } from '~/components/tags-filter-form.tsx'
 import GraphWidget from '~/components/graph-widget.tsx'
 import type { MarkdownPost } from '~/services/posts/types.ts'
-import { SITE_DESCRIPTION, getMeta } from '~/services/meta.ts'
+import {
+  SITE_DESCRIPTION,
+  SITE_TITLE_AND_AUTHOR,
+  getMeta,
+} from '~/services/meta.ts'
 import { ErrorCrashView } from '~/components/error.tsx'
 
 const HomePage = () => {
@@ -29,7 +33,7 @@ export const ErrorBoundary = () => <ErrorCrashView error={useRouteError()} />
 
 export const meta = createMeta<LoaderData>(({ location, data }) =>
   getMeta(location, {
-    title: `Home`,
+    title: SITE_TITLE_AND_AUTHOR,
     description: SITE_DESCRIPTION,
     post: data?.latestPost,
     type: `website`,
