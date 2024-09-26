@@ -6,6 +6,7 @@ import { z } from 'zod'
 import type { Root as HtmlRoot } from 'hast'
 import parseFrontMatter from 'gray-matter'
 import { select } from 'hast-util-select'
+import { entries } from 'lfi'
 import { parseHrefs, parseReferences } from './references.server.ts'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
@@ -24,7 +25,6 @@ import { renderHtml } from '~/services/html.tsx'
 import type { Components } from '~/services/html.tsx'
 import { Link } from '~/components/link.tsx'
 import Tooltip from '~/components/tooltip.tsx'
-import { entries } from 'lfi'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
