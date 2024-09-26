@@ -8,6 +8,7 @@ import escapeStringRegExp from 'escape-string-regexp'
 import { unified } from 'unified'
 import remarkDirective from 'remark-directive'
 import rehypeShiki from '@shikijs/rehype'
+import remarkCustomHeaderId from 'remark-custom-header-id'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
@@ -134,6 +135,7 @@ const markdownToHtmlProcessor = unified()
   .use(remarkParse)
   .use(remarkGfm)
   .use(remarkDirective)
+  .use(remarkCustomHeaderId)
   .use(remarkFlex)
   .use(remarkGif)
   .use(remarkAdmonition, {

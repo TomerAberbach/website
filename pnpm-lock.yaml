@@ -145,6 +145,9 @@ importers:
       remark-admonition:
         specifier: ^1.0.0
         version: 1.0.0
+      remark-custom-header-id:
+        specifier: ^1.0.0
+        version: 1.0.0
       remark-directive:
         specifier: ^3.0.0
         version: 3.0.0
@@ -7301,6 +7304,10 @@ packages:
   remark-admonition@1.0.0:
     resolution: {integrity: sha512-e2YKLdvxmGT7uwZ3IxHTo9zFmndb1lpyOO+QT3vvi7ugwXM3npl/11y5w0HTGGSYLW/5yoUNQYUfnIU45WhYhQ==}
     engines: {node: '>= 18'}
+
+  remark-custom-header-id@1.0.0:
+    resolution: {integrity: sha512-xs1MAgCg1HoiIfqSVV5BPydB4/sc1tT8OHDoqt8Lnf1JHPMUDVumY2Szm/P9MIxIzOT9+tu4IYJTql0vCzldoA==}
+    engines: {node: '>=18'}
 
   remark-directive@3.0.0:
     resolution: {integrity: sha512-l1UyWJ6Eg1VPU7Hm/9tt0zKtReJQNOA4+iDMAxTyZNWnJnFlbS/7zhiel/rogTLQ2vMYwDzSJa4BiVNqGlqIMA==}
@@ -17695,6 +17702,11 @@ snapshots:
       unist-util-visit: 5.0.0
     transitivePeerDependencies:
       - supports-color
+
+  remark-custom-header-id@1.0.0:
+    dependencies:
+      '@types/unist': 3.0.3
+      unist-util-visit: 5.0.0
 
   remark-directive@3.0.0:
     dependencies:
