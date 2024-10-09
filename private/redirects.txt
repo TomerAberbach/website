@@ -14,6 +14,9 @@
 /resume                       /resume.pdf
 /s                            https://github.com/TomerAberbach/website/blob/main/private/redirects.txt
 
+# tunelink.to
+/ffk                          https://tunelink.to/ffk
+
 # GitHub Pages redirects
 /mano-simulator               https://tomeraberbach.github.io/mano-simulator
 /spotify-true-random          https://spotify-true-random.tomeraberba.ch
