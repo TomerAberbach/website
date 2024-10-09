@@ -44,9 +44,10 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
 
 - Co-led a foundational rearchitecture of the Docs backend, frontend, and data
   model to implement
-  [tabs in Docs](https://workspace.google.com/blog/product-announcements/new-generative-ai-and-security-innovations#:~:text=Tabs%20and%20personalization%20in%20Docs),
+  [tabs in Docs](https://workspaceupdates.googleblog.com/2024/10/tabs-in-google-docs.html),
   including updating all cross-cutting features, resulting in ~1.75 tabs on
-  average for recently opened documents.
+  average for recently opened documents. The Verge took
+  note:&nbsp;["Google Docs is making it much easier to organize information"](https://www.theverge.com/2024/10/8/24265025/google-docs-tabs-organization-feature-availability).
 
 - Delighted users with some easter eggs in Docs. Try typing
   [`@tictactoe`](https://www.instagram.com/reel/Cx3jQFbL072) or
