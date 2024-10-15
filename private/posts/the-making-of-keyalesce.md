@@ -12,6 +12,7 @@ tags:
   ]
 dates:
   published: 2023-07-02
+  updated: 2024-11-16
 ---
 
 Have you ever wanted to use
@@ -364,6 +365,31 @@ for another sequence.
 
 In summary, the trie is pruned whenever object sequence values or keys have only
 weak references to them.
+
+#### Is it actually safe to clean up unreachable keys?
+
+You might think up the following scenario, which shows we can't really know
+whether "any code depends on receiving that specific key anymore":
+
+1. Use `keyalesce` to create a key from a sequence of primitive values
+2. Add some properties to the created key
+3. Depend on those added properties existing throughout your code
+4. Let the key become unreachable
+5. Get confused when `keyalesce` returns a key without those properties for the
+   same sequence of primitive values from before, causing your code to misbehave
+
+`keyalesce` prevents this scenario by
+[freezing](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+the created key, which makes it impossible to depend on the contents of the key.
+The key is a completely opaque object.
+
+The correct alternative to setting properties on the created key is to, well,
+use it as a key! You can use it as a key in a:
+
+- `Map`; if you want the key's associated value to exist as long as the `Map` is
+  reachable. Beware of memory leaks in this case!
+- `WeakMap`; if you want the key's associated value to exist only as long as the
+  key is reachable by the rules explained before
 
 ## Go use it!
 
