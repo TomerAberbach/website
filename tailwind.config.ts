@@ -128,6 +128,10 @@ export default {
       typography: {
         DEFAULT: {
           css: {
+            li: {
+              marginTop: `0.375em`,
+              marginBottom: `0.375em`,
+            },
             'code::before': {
               content: `none`,
             },
