@@ -22,7 +22,7 @@ const ASSET_PATH_TO_URL: Readonly<Record<string, string>> = import.meta.glob(
 
 export const ASSET_NAME_TO_URL: ReadonlyMap<string, string> = pipe(
   entries(ASSET_PATH_TO_URL),
-  map(([path, url]): [string, string] => [basename(path), url]),
+  map(([path, url]) => [basename(path), url]),
   reduce(toMap()),
 )
 
@@ -31,7 +31,7 @@ type VideoUrls = Record<(typeof VIDEO_TYPES)[number], string | undefined>
 
 export const GIT_NAME_TO_URL: ReadonlyMap<string, VideoUrls> = pipe(
   entries(ASSET_NAME_TO_URL),
-  filterMap(([name, url]): [string, [keyof VideoUrls, string]] | null => {
+  filterMap(([name, url]) => {
     const ext = extname(name)
     const videoType = ext.slice(1)
     if (!arrayIncludes(VIDEO_TYPES, videoType)) {

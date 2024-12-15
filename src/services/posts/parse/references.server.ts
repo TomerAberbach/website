@@ -19,7 +19,7 @@ export const parseReferences = (
   pipe(
     hrefs,
     filter(href => !href.startsWith(`#`) && !IGNORED_HREFS.has(href)),
-    map((href): [string, string] => [parseReference(href), href]),
+    map(href => [parseReference(href), href]),
     reduce(toGrouped(toSet(), toMap())),
   )
 

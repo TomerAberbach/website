@@ -89,7 +89,7 @@ export const getPosts: () => Promise<Map<string, Post>> = cache(async () => {
       pipe(
         values(references),
         flatten,
-        map((reference): [string, string] => [id, reference]),
+        map(reference => [id, reference]),
       ),
     ),
     filter(([, reference]) => reference.startsWith(`/`)),

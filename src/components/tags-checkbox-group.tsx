@@ -37,7 +37,7 @@ export const TagsCheckboxGroup = ({
     setSelectedTags(
       pipe(
         keys(selectedTags),
-        map((tag): [string, boolean] => [tag, false]),
+        map(tag => [tag, false]),
         reduce(toObject()),
       ),
     )

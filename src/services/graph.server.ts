@@ -39,7 +39,7 @@ export const getGraph = cache(async (): Promise<Graph> => {
     posts,
     flatMap(([fromId, { tags, references }]) =>
       map(
-        ([toId, hrefs]): [string, Edge] => [
+        ([toId, hrefs]) => [
           `${fromId} ${toId}`,
           { fromId, toId, tags: new Set(tags), hrefs },
         ],
@@ -205,7 +205,7 @@ const layoutGraph = ({
     },
     positions: pipe(
       keys(vertices),
-      map((id): [string, Position] => {
+      map(id => {
         const { x, y } = layout.getNodePosition(id)
         return [
           id,
