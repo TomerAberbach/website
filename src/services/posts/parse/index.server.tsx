@@ -188,9 +188,9 @@ const Div: Components[`div`] = ({
           imgColorClass,
         )}
       />
-      {admonitionLabel ? (
+      {typeof admonitionLabel === `string` ? (
         <header className='pb-2 text-base font-semibold uppercase'>
-          {String(admonitionLabel)}
+          {admonitionLabel}
         </header>
       ) : null}
       <div className='first:*:mt-0 last:*:mb-0'>{children}</div>
@@ -199,7 +199,7 @@ const Div: Components[`div`] = ({
 }
 
 const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
-  if (title == null) {
+  if (typeof title !== `string`) {
     return <pre style={style} {...props} />
   }
 
@@ -211,7 +211,7 @@ const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
         style={style}
         className='ml-5 inline-block translate-y-1 rounded-t-md px-3 pt-2 font-mono text-sm text-gray-100'
       >
-        {String(title)}
+        {title}
       </div>
       <pre style={style} className='mt-0' {...props} />
     </>

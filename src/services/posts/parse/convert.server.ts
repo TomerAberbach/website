@@ -42,7 +42,6 @@ const remarkEmbedderCache =
   // @ts-expect-error Type definitions are wrong.
   new (RemarkEmbedderCache.default as unknown)() as RemarkEmbedderCache
 
-// eslint-disable-next-line unicorn/consistent-function-scoping
 const remarkFlex = () => (tree: MdRoot) =>
   visit(tree, `containerDirective`, node => {
     if (node.name !== `horizontal`) {
@@ -55,7 +54,6 @@ const remarkFlex = () => (tree: MdRoot) =>
     data.hProperties = { class: `flex max-w-full flex-wrap child:flex-1` }
   })
 
-// eslint-disable-next-line unicorn/consistent-function-scoping
 const remarkGif = () => (tree: MdRoot) =>
   visit(tree, `leafDirective`, node => {
     if (node.name !== `gif`) {
@@ -109,6 +107,7 @@ const remarkReplace = () => {
       tree,
       [`text`, `code`, `inlineCode`, `html`, `yaml`, `image`, `link`],
       node => {
+        // eslint-disable-next-line typescript/switch-exhaustiveness-check
         switch (node.type) {
           case `text`:
           case `code`:
