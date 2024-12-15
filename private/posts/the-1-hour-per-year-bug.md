@@ -80,7 +80,7 @@ between the two times; a whole day!
 ---
 title: 24 hours
 ---
-graph LR
+flowchart LR
     START_TIME[12:00am]
     DST_ENDED_TIME_PDT["2:00am (PDT)"]
     DST_ENDED_TIME_PST["1:00am (PST)"]
@@ -129,7 +129,7 @@ only 23 hours between the start times of March 14 and 15!
 ---
 title: 23 hours
 ---
-graph LR
+flowchart LR
     START_TIME[12:00am]
     DST_STARTED_TIME_PST["2:00am (PST)"]
     DST_STARTED_TIME_PDT["3:00am (PDT)"]

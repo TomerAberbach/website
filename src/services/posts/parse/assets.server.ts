@@ -31,7 +31,7 @@ type VideoUrls = Record<(typeof VIDEO_TYPES)[number], string | undefined>
 
 export const GIT_NAME_TO_URL: ReadonlyMap<string, VideoUrls> = pipe(
   entries(ASSET_NAME_TO_URL),
-  filterMap(([name, url]) => {
+  filterMap(([name, url]): [string, [keyof VideoUrls, string]] | null => {
     const ext = extname(name)
     const videoType = ext.slice(1)
     if (!arrayIncludes(VIDEO_TYPES, videoType)) {

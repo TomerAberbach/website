@@ -180,7 +180,7 @@ const key4 = keyalesce([`a`, `b`, `c`])
 Would result in the following trie:
 
 ```mermaid
-graph LR
+flowchart LR
     R((root))
     K1((key1))
     K2((key2))
@@ -234,7 +234,7 @@ const key2 = keyalesce([1, 2, object2, 3])
 Which would result in the following trie:
 
 ```mermaid
-graph LR
+flowchart LR
     R((root))
     K1((key1))
     K2((key2))
@@ -271,7 +271,7 @@ using
 After pruning in this case the trie would look like so:
 
 ```mermaid
-graph LR
+flowchart LR
     R((root))
     K1((key 1))
 
@@ -305,7 +305,7 @@ let key2 = keyalesce([1, 2, 5, 7])
 Which would result in the following trie:
 
 ```mermaid
-graph LR
+flowchart LR
     R((root))
     K1((key1))
     K2((key2))
@@ -345,7 +345,7 @@ garbage-collected using `FinalizationRegistry`.
 After pruning in this case the trie would look like so:
 
 ```mermaid
-graph LR
+flowchart LR
     R((root))
     K1((key1))
 

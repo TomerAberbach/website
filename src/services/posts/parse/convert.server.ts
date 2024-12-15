@@ -183,6 +183,9 @@ const markdownToHtmlProcessor = unified()
       fontSize: 16,
       fontFamily: `Kantumruy Pro`,
       theme: `base`,
+      flowchart: {
+        wrappingWidth: 400,
+      },
     },
     launchOptions: {
       // https://github.com/puppeteer/puppeteer/issues/2410#issuecomment-659021191

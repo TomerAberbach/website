@@ -37,7 +37,7 @@ that HTML-based rendering **_also_** had a bug, and the bug coincidentally
 "fixed" layout's output so that the final output looked correct.
 
 ```mermaid
-graph TB
+flowchart TB
     L["layout (bug)"]
     HR["HTML-based rendering (bug)"]
     CR[canvas-based rendering]
