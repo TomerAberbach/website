@@ -58,11 +58,9 @@ before-and-after GIFs:
 
 :::horizontal
 
-::gif[without-postcss-fontpie]{alt="This website's web font loading and causing
-a layout shift"}
+::gif[without-postcss-fontpie]{alt="Website's font load causing a layout shift"}
 
-::gif[with-postcss-fontpie]{alt="This website's web font loading without causing
-a layout shift"}
+::gif[with-postcss-fontpie]{alt="Website's font load with no layout shift"}
 
 :::
 
