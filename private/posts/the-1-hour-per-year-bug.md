@@ -10,6 +10,7 @@ referencedBy:
   'https://tldr.tech/webdev/2024-08-22': 'TLDR Web Dev: 2024-08-22 Issue'
   'https://www.detect.sh/blog/detect-6-kafka-data-loss-real-debugging-stories-all-things-ebpf-incidents-at-openai-anthropic-hubspot-google':
     'Detect.sh: September Issue'
+  'https://www.nibbles.dev/p/74': 'The Nibble: Issue 74'
 dates:
   published: 2024-08-15
   updated: 2024-08-21
