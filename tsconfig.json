@@ -1,4 +1,4 @@
 {
   "extends": "./shared-tsconfig.json",
-  "include": ["*", "types/*", "src/**/*", "scripts/**/*"]
+  "include": ["*", ".react-router/types/**/*", "types/*", "app/**/*", "scripts/**/*"]
 }

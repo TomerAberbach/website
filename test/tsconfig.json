@@ -1,7 +1,7 @@
 {
   "extends": "../shared-tsconfig.json",
-  "include": ["../types/*", "../src/**/*", "**/*"],
+  "include": ["../types/*", "../app/**/*", "**/*"],
   "compilerOptions": {
-    "types": ["@remix-run/node", "vite/client"]
+    "types": ["@react-router/node", "vite/client"]
   }
 }

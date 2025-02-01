@@ -1,6 +1,6 @@
 import { any, entries, filter, join, map, pipe, values } from 'lfi'
 import cssesc from 'cssesc'
-import { Form } from '@remix-run/react'
+import { Form } from 'react-router'
 import { useCallback } from 'react'
 import type { FormEventHandler } from 'react'
 import type { LogicalOperator } from './logical-operator-radio-button-group.ts'

@@ -4,7 +4,6 @@ import type { Sharp } from 'sharp'
 import sharp from 'sharp'
 import { htmlEscape } from 'escape-goat'
 import { ColorTranslator } from 'colortranslator'
-import tailwindConfig from '../../tailwind.config.ts'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.ts'
 import type { MarkdownPost } from '~/services/posts/types.ts'
 import { privatePath } from '~/services/path.server.ts'
@@ -16,9 +15,8 @@ import {
 import { cache } from '~/services/cache.server.ts'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 
-const { colors } = tailwindConfig.theme
-const blue400 = new ColorTranslator(colors.blue[400]).HEX
-const gray600 = new ColorTranslator(colors.gray[600]).HEX
+const blue400 = new ColorTranslator('hsl(201, 97%, 67%)').HEX
+const gray600 = new ColorTranslator('hsl(201, 5%, 39%)').HEX
 
 export const renderThumbnail = async (
   post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,

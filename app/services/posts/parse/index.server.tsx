@@ -138,7 +138,7 @@ const Anchor: Components[`a`] = ({
         <a
           {...rest}
           aria-labelledby={tooltipId}
-          className='inline-block h-4 w-4 align-text-top no-underline hover:ring'
+          className='inline-block h-4 w-4 align-text-top no-underline hover:ring-3'
         >
           <img src={backToContentSvgPath} alt='' className='m-0 h-4 w-4' />
         </a>
@@ -193,7 +193,7 @@ const Div: Components[`div`] = ({
           {admonitionLabel}
         </header>
       ) : null}
-      <div className='first:*:mt-0 last:*:mb-0'>{children}</div>
+      <div className='*:first:mt-0 *:last:mb-0'>{children}</div>
     </div>
   )
 }

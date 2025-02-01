@@ -1,6 +1,6 @@
 import type { ChangeEventHandler } from 'react'
 import { useCallback, useId } from 'react'
-import { useSearchParams } from '@remix-run/react'
+import { useSearchParams } from 'react-router'
 import { arrayIncludes } from 'ts-extras'
 import Tooltip from './tooltip.tsx'
 
@@ -40,7 +40,7 @@ export const LogicalOperatorRadioButtonGroup = ({
                   name='op'
                   value={currentLogicalOperator}
                   checked={checked}
-                  className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none border-2 border-gray-300 checked:z-10 checked:border-blue-600 hover:z-20 hover:ring focus-visible:z-20 group-first:rounded-l-xl group-last:rounded-r-xl'
+                  className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none border-2 border-gray-300 checked:z-10 checked:border-blue-600 hover:z-20 hover:ring-3 focus-visible:z-20 group-first:rounded-l-xl group-last:rounded-r-xl'
                   onChange={handleLogicalOperatorChange}
                 />
                 <div className='h-full w-full bg-white p-2 text-gray-500 transition group-first:rounded-l-xl group-last:rounded-r-xl peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>

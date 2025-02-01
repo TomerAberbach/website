@@ -1,5 +1,5 @@
 import { invariant } from '@epic-web/invariant'
-import type { LoaderFunctionArgs } from '@remix-run/server-runtime'
+import type { LoaderFunctionArgs } from 'react-router'
 import { getMarkdownPosts } from '~/services/posts/index.server.ts'
 import { renderThumbnail } from '~/services/thumbnail.server.tsx'
 

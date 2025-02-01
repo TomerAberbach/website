@@ -1,6 +1,5 @@
 import { concat, join, map } from 'lfi'
-import type { Location } from '@remix-run/react'
-import type { MetaDescriptor } from '@remix-run/node'
+import type { Location, MetaDescriptor } from 'react-router'
 import type { MarkdownPost } from './posts/types.ts'
 import { formatDatesForDisplay, formatMinutesToRead } from './format.ts'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.ts'

@@ -45,7 +45,7 @@ module.exports = {
         dm: `mono`,
         'Kantumruy Pro': `sans-serif`,
       },
-      srcUrlToFilename: url => join(__dirname, `src/styles`, url),
+      srcUrlToFilename: url => join(__dirname, `app/styles`, url),
     }),
     // ...
   ],

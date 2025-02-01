@@ -22,7 +22,7 @@ const Header = () => (
     </div>
     <InternalLink
       href='/'
-      className='underlined absolute bottom-0 left-2 inline-block text-gray-800 text-opacity-90 focus:outline-none'
+      className='underlined absolute bottom-0 left-2 inline-block text-gray-800/90 focus:outline-hidden'
     >
       <h1 className='inline whitespace-nowrap text-2xl font-bold leading-none'>
         {SITE_TITLE_AND_AUTHOR}
@@ -128,7 +128,7 @@ const IconLink = ({
   <Link
     href={href}
     reloadDocument={reloadDocument}
-    className='inline-block hover:ring'
+    className='inline-block hover:ring-3'
   >
     <svg
       role='img'

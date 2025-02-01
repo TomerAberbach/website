@@ -3,8 +3,6 @@
 ARG NODE_VERSION=22.9.0
 FROM node:${NODE_VERSION} as node
 
-LABEL fly_launch_runtime="Remix"
-
 ARG PNPM_VERSION=9.11.0
 RUN npm install -g pnpm@$PNPM_VERSION
 

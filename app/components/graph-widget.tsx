@@ -40,7 +40,7 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
   }, [])
 
   return (
-    <div className='flex w-full flex-grow items-center justify-center'>
+    <div className='flex w-full grow items-center justify-center'>
       <div
         ref={scrollElementRef}
         className={clsx(
@@ -330,7 +330,7 @@ const LinkVertex = ({
   <Link
     href={href}
     reloadDocument={reloadDocument}
-    className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring'
+    className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring-3'
   >
     {children}
   </Link>
@@ -356,7 +356,7 @@ const DialogVertex = ({
     <>
       <button
         type='button'
-        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0 hover:ring'
+        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0 hover:ring-3'
         onClick={handleClick}
       >
         {children}
@@ -372,7 +372,7 @@ const DialogVertex = ({
             </h3>
             <div className='ml-6 w-6' />
             <form method='dialog' className='sticky right-6 top-0'>
-              <button type='submit' className='focus-ring hover:ring'>
+              <button type='submit' className='focus-ring hover:ring-3'>
                 <img src={closeSvgPath} alt='Close' className='h-6 w-6' />
               </button>
             </form>

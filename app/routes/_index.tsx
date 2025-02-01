@@ -1,10 +1,14 @@
-import type { LoaderFunction } from '@remix-run/node'
+import type { LoaderFunction } from 'react-router'
 import { useId } from 'react'
 import { first, get, pipe, values } from 'lfi'
 import { includeKeys } from 'filter-obj'
 import { getMarkdownPosts, getTags } from '~/services/posts/index.server.ts'
-import { createMeta, useLoaderData, useRouteError } from '~/services/json.ts'
-import { json } from '~/services/json.server.ts'
+import {
+  createMeta,
+  useLoaderData,
+  useRouteError,
+} from '~/services/deserialize'
+import { serialize } from '~/services/serialize.server'
 import { getGraph } from '~/services/graph.server.ts'
 import type { Graph } from '~/services/graph.server.ts'
 import { TagsFilterForm } from '~/components/tags-filter-form.tsx'
@@ -46,7 +50,7 @@ export const loader: LoaderFunction = async () => {
     getGraph(),
     getLatestMarkdownPost(),
   ])
-  return json<LoaderData>({
+  return serialize<LoaderData>({
     tags,
     graph,
     latestPost: includeKeys(latestPost, [

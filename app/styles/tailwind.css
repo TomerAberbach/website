@@ -1,0 +1,202 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@layer base {
+  html {
+    @apply font-sans;
+  }
+
+  html,
+  body {
+    @apply flex min-h-full flex-col;
+  }
+
+  html:has(dialog[open]:modal) {
+    @apply overflow-hidden;
+    scrollbar-gutter: stable both-edges;
+  }
+
+  body {
+    @apply text-base;
+    @apply flex-1 subpixel-antialiased;
+    font-feature-settings: 'kern';
+  }
+
+  code {
+    font-variant-ligatures: no-common-ligatures;
+  }
+
+  svg[id^='mermaid-'] foreignObject {
+    @apply visible flex;
+
+    & * {
+      @apply flex h-full items-center;
+    }
+  }
+}
+
+@theme {
+  --font-sans: Kantumruy Pro, Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --font-system-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  --font-mono: dm, dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+
+  --font-weight-*: initial;
+  --font-weight-hairline: 100;
+  --font-weight-thin: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* @link https://utopia.fyi/type/calculator?c=320,16,1.15,960,20,1.175,10,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+  --text-xs: clamp(0.7561rem, 0.6815rem + 0.3731vw, 0.9054rem);
+  --text-sm: clamp(0.8696rem, 0.7724rem + 0.4857vw, 1.0638rem);
+  --text-base: clamp(1rem, 0.875rem + 0.625vw, 1.25rem);
+  --text-lg: clamp(1.15rem, 0.9906rem + 0.7969vw, 1.4688rem);
+  --text-xl: clamp(1.3225rem, 1.1209rem + 1.0082vw, 1.7258rem);
+  --text-2xl: clamp(1.5209rem, 1.2674rem + 1.2673vw, 2.0278rem);
+  --text-3xl: clamp(1.749rem, 1.4322rem + 1.5841vw, 2.3827rem);
+  --text-4xl: clamp(2.0114rem, 1.6172rem + 1.9707vw, 2.7996rem);
+  --text-5xl: clamp(2.3131rem, 1.8248rem + 2.4412vw, 3.2896rem);
+  --text-6xl: clamp(2.66rem, 2.0574rem + 3.013vw, 3.8652rem);
+  --text-7xl: clamp(3.059rem, 2.3177rem + 3.7065vw, 4.5416rem);
+  --text-8xl: clamp(3.5179rem, 2.6086rem + 4.5464vw, 5.3364rem);
+  --text-9xl: clamp(4.0456rem, 2.9332rem + 5.5619vw, 6.2703rem);
+
+  --text-xs--line-height: 1.6;
+  --text-sm--line-height: 1.6;
+  --text-base--line-height: 1.6;
+  --text-lg--line-height: 1.6;
+  --text-xl--line-height: 1.2;
+  --text-2xl--line-height: 1.2;
+  --text-3xl--line-height: 1.2;
+  --text-4xl--line-height: 1.1;
+  --text-5xl--line-height: 1.1;
+  --text-6xl--line-height: 1.1;
+  --text-7xl--line-height: 1;
+  --text-8xl--line-height: 1;
+  --text-9xl--line-height: 1;
+
+  --color-gray-50: hsl(201, 5%, 96%);
+  --color-gray-100: hsl(201, 5%, 89%);
+  --color-gray-200: hsl(201, 5%, 80%);
+  --color-gray-300: hsl(201, 5%, 70%);
+  --color-gray-400: hsl(201, 5%, 60%);
+  --color-gray-500: hsl(201, 5%, 49%);
+  --color-gray-600: hsl(201, 5%, 39%);
+  --color-gray-700: hsl(201, 5%, 30%);
+  --color-gray-800: hsl(201, 5%, 23%);
+  --color-gray-900: hsl(201, 5%, 16%);
+
+  --color-blue-50: hsl(201, 100%, 95%);
+  --color-blue-100: hsl(201, 100%, 90%);
+  --color-blue-200: hsl(201, 98%, 85%);
+  --color-blue-300: hsl(201, 98%, 76%);
+  --color-blue-400: hsl(201, 97%, 67%);
+  --color-blue-500: hsl(201, 96%, 60%);
+  --color-blue-600: hsl(201, 93%, 48%);
+  --color-blue-700: hsl(201, 86%, 40%);
+  --color-blue-800: hsl(201, 89%, 30%);
+  --color-blue-900: hsl(201, 96%, 23%);
+
+  --color-orange-50: hsl(16, 100%, 95%);
+  --color-orange-100: hsl(16, 100%, 90%);
+  --color-orange-200: hsl(16, 98%, 85%);
+  --color-orange-300: hsl(16, 98%, 76%);
+  --color-orange-400: hsl(16, 96%, 67%);
+  --color-orange-500: hsl(16, 93%, 60%);
+  --color-orange-600: hsl(16, 89%, 52%);
+  --color-orange-700: hsl(16, 86%, 40%);
+  --color-orange-800: hsl(16, 89%, 30%);
+  --color-orange-900: hsl(16, 96%, 23%);
+
+  --color-yellow-50: hsl(49, 100%, 96%);
+  --color-yellow-100: hsl(48, 100%, 88%);
+  --color-yellow-200: hsl(48, 98%, 76%);
+  --color-yellow-300: hsl(48, 96%, 68%);
+  --color-yellow-400: hsl(44, 94%, 63%);
+  --color-yellow-500: hsl(43, 92%, 48%);
+  --color-yellow-600: hsl(40, 87%, 48%);
+  --color-yellow-700: hsl(36, 77%, 48%);
+  --color-yellow-800: hsl(29, 80%, 44%);
+  --color-yellow-900: hsl(22, 82%, 39%);
+}
+
+@custom-variant child (& > *);
+@custom-variant js (.js &);
+
+@layer utilities {
+  .js:not(.fonts) {
+    --font-sans: Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-mono: dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  }
+
+  .focus-ring {
+    @apply outline-hidden ring-blue-300 ring-offset-2 transition duration-200 focus-visible:ring-3;
+  }
+
+  .underlined {
+    background: linear-gradient(to right, #fbca07, #fbca07),
+      linear-gradient(
+        to right,
+        var(--color-blue-500),
+        var(--color-blue-500),
+        var(--color-blue-500)
+      );
+    background-size:
+      100% 0.2em,
+      0 0.2em;
+    background-position:
+      100% 100%,
+      0 100%;
+    background-repeat: no-repeat;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .underlined {
+      transition: background-size 400ms var(--ease-in-out);
+    }
+  }
+
+  .underlined:hover,
+  .underlined:focus-visible {
+    background-size:
+      0 0.2em,
+      100% 0.2em;
+  }
+
+  .prose {
+    :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+    :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+      @apply content-none;
+    }
+
+    :where(:not(pre) > code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      @apply bg-gray-100 rounded-md;
+      padding: .125em .25em;
+    }
+
+    :where(.gif):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      margin-top: 1.25em;
+      margin-bottom: 1.25em;
+    }
+
+    :where(iframe):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      margin-top: 1.25em;
+      margin-bottom: 1.25em;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    :where(svg):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      margin: 1.25em auto;
+    }
+
+    :where(section[data-footnotes="true"] p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+  }
+}

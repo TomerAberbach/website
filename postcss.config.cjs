@@ -9,7 +9,6 @@ if (process.env.NODE_ENV === `production` && existsSync(fontsBuildPath)) {
 
 module.exports = {
   plugins: [
-    require(`postcss-import`),
     require(`postcss-url`)({
       filter: `**/*.{woff,woff2}`,
       url: `copy`,
@@ -25,8 +24,7 @@ module.exports = {
         return join(fontsPath, filename)
       },
     }),
-    require(`tailwindcss`),
-    require(`autoprefixer`),
+    require(`@tailwindcss/postcss`),
     ...(process.env.NODE_ENV === `production` ? [require(`cssnano`)] : []),
   ],
 }

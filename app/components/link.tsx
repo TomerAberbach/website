@@ -1,5 +1,5 @@
 import type { AnchorHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react'
-import { Link as RemixLink } from '@remix-run/react'
+import { Link as RouterLink } from 'react-router'
 import clsx from 'clsx'
 
 export const Link = (props: LinkProps) =>
@@ -33,7 +33,7 @@ export const InternalLink = ({ href, reloadDocument, ...props }: LinkProps) =>
     // eslint-disable-next-line jsx-a11y/anchor-has-content
     <a href={href} {...withFocusRingClassName(props)} />
   ) : (
-    <RemixLink
+    <RouterLink
       to={href}
       reloadDocument={reloadDocument}
       {...withFocusRingClassName(props)}
@@ -45,7 +45,7 @@ const withFocusRingClassName = <Props extends { className?: string }>({
   ...restProps
 }: Props) => ({ ...restProps, className: clsx(className, `focus-ring`) })
 
-export type LinkProps = Omit<Parameters<typeof RemixLink>[0], `to`> &
+export type LinkProps = Omit<Parameters<typeof RouterLink>[0], `to`> &
   DetailedHTMLProps<
     AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement

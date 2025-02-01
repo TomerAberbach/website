@@ -1,6 +1,6 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
+import type { LoaderFunctionArgs } from 'react-router'
 import { map, pipe, reduce, toArray } from 'lfi'
-import { isRouteErrorResponse } from '@remix-run/react'
+import { isRouteErrorResponse } from 'react-router'
 import { useId } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
@@ -14,8 +14,12 @@ import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,
 } from '~/services/posts/index.server.ts'
-import { createMeta, useLoaderData, useRouteError } from '~/services/json.ts'
-import { json } from '~/services/json.server.ts'
+import {
+  createMeta,
+  useLoaderData,
+  useRouteError,
+} from '~/services/deserialize'
+import { serialize } from '~/services/serialize.server'
 import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
 import type { Post } from '~/services/posts/types.ts'
@@ -46,8 +50,8 @@ const PostPage = () => {
   return (
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header>
-        <h1 className='m-0'>{title}</h1>
-        <p className='m-0 -ml-[1ch] mt-1.5 border-l-[1ch] border-white text-gray-600'>
+        <h1 className='!m-0'>{title}</h1>
+        <p className='!m-0 !-ml-[1ch] !mt-1.5 border-l-[1ch] border-white text-gray-600'>
           <span className='mr-[1ch] inline-block whitespace-nowrap'>
             <Dates dates={dates} />
           </span>
@@ -59,7 +63,7 @@ const PostPage = () => {
               </time>
               <Tooltip id={suggestEditId} content='Suggest an edit'>
                 <ExternalLink
-                  className='inline-block h-[1em] w-[1em] hover:ring'
+                  className='inline-block h-[1em] w-[1em] hover:ring-3'
                   href={`https://github.com/TomerAberbach/website/edit/main/private/posts/${id}.md`}
                 >
                   <span className='not-prose'>
@@ -90,7 +94,7 @@ const PostPage = () => {
               <InternalLink
                 href={`/${previousPost.id}`}
                 rel='prev'
-                className='mr-auto flex max-w-[50%] items-center gap-3 hover:ring'
+                className='mr-auto flex max-w-[50%] items-center gap-3 hover:ring-3'
               >
                 <img
                   src={arrowRightSvgPath}
@@ -106,7 +110,7 @@ const PostPage = () => {
               <InternalLink
                 href={`/${nextPost.id}`}
                 rel='next'
-                className='ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring'
+                className='ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring-3'
               >
                 <Balancer preferNative={false} as='div'>
                   {nextPost.title}
@@ -130,7 +134,7 @@ const PostPage = () => {
               referencedBy,
               map(([reference, title]) => (
                 <li key={reference}>
-                  <Link href={reference} className='underline'>
+                  <Link href={`/${reference}`} className='underline'>
                     {title}
                   </Link>
                 </li>
@@ -182,7 +186,7 @@ const Date = ({ date }: { date: Date }) => (
 const Tag = ({ tag }: { tag: string }) => (
   <InternalLink
     href={`/?tags=${encodeURIComponent(tag)}`}
-    className='relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50 hover:ring'
+    className='relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50 hover:ring-3'
   >
     <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-gray-300' />
     <span className='text-gray-600'>{tag}</span>
@@ -256,7 +260,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   const post = (await getMarkdownPosts()).get(postId)
   if (post) {
-    return json({
+    return serialize({
       post: includeKeys(post, [
         `id`,
         `title`,
@@ -273,7 +277,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     })
   }
 
-  throw json<ErrorBoundaryData>(
+  throw serialize<ErrorBoundaryData>(
     {
       didYouMeanPost: includeKeys(await findBestMarkdownPostMatch(postId), [
         `id`,

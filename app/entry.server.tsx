@@ -1,7 +1,7 @@
 import { PassThrough } from 'node:stream'
-import type { EntryContext } from '@remix-run/node'
-import { createReadableStreamFromReadable, redirect } from '@remix-run/node'
-import { RemixServer } from '@remix-run/react'
+import type { EntryContext } from 'react-router'
+import { createReadableStreamFromReadable } from '@react-router/node'
+import { ServerRouter, redirect } from 'react-router'
 import { isbot } from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
 import redirectUrl from './services/redirect-url.server.ts'
@@ -10,26 +10,18 @@ const handleRequest = (
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  reactRouterContext: EntryContext,
 ) => {
   const redirectResult = redirectUrl(request.url)
   if (redirectResult) {
     return redirect(redirectResult.url, redirectResult.status)
   }
 
-  return isBotRequest(request.headers.get(`user-agent`))
-    ? handleBotRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext,
-      )
-    : handleBrowserRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext,
-      )
+  return (
+    isBotRequest(request.headers.get(`user-agent`))
+      ? handleBotRequest
+      : handleBrowserRequest
+  )(request, responseStatusCode, responseHeaders, reactRouterContext)
 }
 
 const isBotRequest = (userAgent: string | null): boolean =>
@@ -39,16 +31,12 @@ const handleBotRequest = (
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  reactRouterContext: EntryContext,
 ) =>
   new Promise((resolve, reject) => {
     let shellRendered = false
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer
-        context={remixContext}
-        url={request.url}
-        abortDelay={ABORT_DELAY}
-      />,
+      <ServerRouter context={reactRouterContext} url={request.url} />,
       {
         onAllReady: () => {
           shellRendered = true
@@ -82,23 +70,21 @@ const handleBotRequest = (
       },
     )
 
-    setTimeout(abort, ABORT_DELAY)
+    // Automatically timeout the React renderer after 6 seconds, which ensures
+    // React has enough time to flush down the rejected boundary contents.
+    setTimeout(abort, streamTimeout + 1000)
   })
 
 const handleBrowserRequest = (
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  reactRouterContext: EntryContext,
 ) =>
   new Promise((resolve, reject) => {
     let shellRendered = false
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer
-        context={remixContext}
-        url={request.url}
-        abortDelay={ABORT_DELAY}
-      />,
+      <ServerRouter context={reactRouterContext} url={request.url} />,
       {
         onShellReady: () => {
           shellRendered = true
@@ -132,9 +118,12 @@ const handleBrowserRequest = (
       },
     )
 
-    setTimeout(abort, ABORT_DELAY)
+    // Automatically timeout the React renderer after 6 seconds, which ensures
+    // React has enough time to flush down the rejected boundary contents.
+    setTimeout(abort, streamTimeout + 1000)
   })
 
-const ABORT_DELAY = 5000
+// Reject/cancel all pending promises after 5 seconds.
+const streamTimeout = 5000
 
 export default handleRequest

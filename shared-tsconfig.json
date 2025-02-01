@@ -1,7 +1,8 @@
 {
   "extends": "tomer/tsconfig",
   "compilerOptions": {
-    "types": ["@remix-run/node", "vite/client"],
+    "types": ["@react-router/node", "vite/client"],
+    "rootDirs": [".", "./.react-router/types"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -9,7 +10,7 @@
     "baseUrl": ".",
     "paths": {
       "~/private/*": ["./private/*"],
-      "~/*": ["./src/*"]
+      "~/*": ["./app/*"]
     }
   }
 }

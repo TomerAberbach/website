@@ -1,11 +1,5 @@
-import type { LinksFunction } from '@remix-run/node'
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from '@remix-run/react'
+import type { LinksFunction } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import {
   entries,
   flatMap,
@@ -21,7 +15,7 @@ import fontsStylesPath from './styles/fonts.css?url'
 import Layout from './components/layout.tsx'
 import logoIcoPath from './logo.ico'
 import { ErrorCrashView } from './components/error.tsx'
-import { useRouteError } from './services/json.ts'
+import { useRouteError } from './services/deserialize.ts'
 import logoSvgPath from '~/private/media/logo.svg'
 
 const App = () => (

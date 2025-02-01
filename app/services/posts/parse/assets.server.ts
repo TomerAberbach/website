@@ -12,7 +12,7 @@ import {
 import { arrayIncludes } from 'ts-extras'
 
 const ASSET_PATH_TO_URL: Readonly<Record<string, string>> = import.meta.glob(
-  [`/private/media/*`, `/src/styles/fonts.css`],
+  [`/private/media/*`, `/app/styles/fonts.css`],
   {
     eager: true,
     query: `?url`,

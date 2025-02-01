@@ -12,7 +12,7 @@ import {
 } from 'lfi'
 import type { ChangeEventHandler } from 'react'
 import { useCallback, useState } from 'react'
-import { useSearchParams } from '@remix-run/react'
+import { useSearchParams } from 'react-router'
 import Tooltip from './tooltip.tsx'
 
 export const TagsCheckboxGroup = ({
@@ -64,7 +64,7 @@ export const TagsCheckboxGroup = ({
                 <button
                   aria-labelledby={tooltipId}
                   type='button'
-                  className='focus-ring hidden aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:block'
+                  className='focus-ring hidden cursor-pointer aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring-3 active:bg-blue-200 js:block'
                   onClick={handleReset}
                 >
                   <ResetIcon />
@@ -76,7 +76,7 @@ export const TagsCheckboxGroup = ({
                 <button
                   aria-labelledby={tooltipId}
                   type='submit'
-                  className='focus-ring block aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring active:bg-blue-200 js:hidden'
+                  className='focus-ring cursor-pointer block aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring-3 active:bg-blue-200 js:hidden'
                 >
                   <SearchIcon />
                 </button>
@@ -190,7 +190,7 @@ const Tag = ({
       name='tags'
       value={tag}
       checked={selected}
-      className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600 hover:ring'
+      className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600 hover:ring-3'
       onChange={onChange}
     />
     <div className='rounded-2xl bg-white p-2.5 font-medium leading-none text-gray-500 transition peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>

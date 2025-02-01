@@ -1,6 +1,5 @@
-import { vitePlugin as remix } from '@remix-run/dev'
+import { reactRouter } from '@react-router/dev/vite'
 import { createLogger, defineConfig } from 'vite'
-import { installGlobals } from '@remix-run/node'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import imagemin from '@vheemstra/vite-plugin-imagemin'
 import imageminJpeg from 'imagemin-mozjpeg'
@@ -9,8 +8,7 @@ import imageminWebp from 'imagemin-webp'
 import imageminPng from 'imagemin-pngquant'
 import imageminSvg from 'imagemin-svgo'
 import restart from 'vite-plugin-restart'
-
-installGlobals()
+import tailwindcss from '@tailwindcss/vite'
 
 const logger = createLogger()
 const originalWarning = logger.warn.bind(logger)
@@ -27,8 +25,9 @@ export default defineConfig({
   customLogger: logger,
   server: { port: 3000 },
   plugins: [
-    remix({ appDirectory: `src`, ignoredRouteFiles: [`**/.*`] }),
+    reactRouter(),
     tsconfigPaths(),
+    tailwindcss(),
     imagemin({
       plugins: {
         gif: imageminGif(),

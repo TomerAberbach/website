@@ -10,7 +10,7 @@ const fromRoot = (path: string): string => join(rootPath, path)
 
 // Clean
 const buildPaths = [
-  `src/styles/build`,
+  `app/styles/build`,
   `build`,
   `private/fonts/build`,
   `public/build`,
@@ -18,13 +18,13 @@ const buildPaths = [
 await $`rm -rf ${buildPaths}`
 
 // Generate font subsets
-await $`remix vite:build`
+await $`react-router build`
 const fontsBuildPath = fromRoot(`private/fonts/build`)
 await $`mkdir -p ${fontsBuildPath}`
-const runServerCommand = `remix-serve ${fromRoot(`build/server/index.js`)}`
+const runServerCommand = `react-router-serve ${fromRoot(`build/server/index.js`)}`
 const glyphhangerCommand = `glyphhanger http://localhost:3000 --spider-limit=0 --formats=woff,woff2 --subset=${fromRoot(`private/fonts/*.ttf`)} --output=${fontsBuildPath}`
 await $`start-server-and-test ${runServerCommand} http-get://localhost:3000 ${glyphhangerCommand}`
 
 // Rebuild with new fonts and minify
-await $`remix vite:build`
+await $`react-router build`
 await $`find build/client -name \\*.js -exec terser --module -c keep_fargs=false -o {} -- {} \\;`
