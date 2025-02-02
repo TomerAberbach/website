@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 @layer base {
@@ -36,9 +36,13 @@
 }
 
 @theme {
-  --font-sans: Kantumruy Pro, Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  --font-system-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-  --font-mono: dm, dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  --font-sans: Kantumruy Pro, Kantumruy Pro Fallback, ui-sans-serif, system-ui,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+    Noto Color Emoji;
+  --font-system-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    Liberation Mono, Courier New, monospace;
+  --font-mono: dm, dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, Liberation Mono, Courier New, monospace;
 
   --font-weight-*: initial;
   --font-weight-hairline: 100;
@@ -128,8 +132,10 @@
 
 @layer utilities {
   .js:not(.fonts) {
-    --font-sans: Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    --font-mono: dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-sans: Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif,
+      Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-mono: dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco,
+      Consolas, Liberation Mono, Courier New, monospace;
   }
 
   .focus-ring {
@@ -167,22 +173,28 @@
   }
 
   .prose {
-    :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
-    :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+    :where(code):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      )::before,
+    :where(code):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      )::after {
       @apply content-none;
     }
 
-    :where(:not(pre) > code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    :where(:not(pre) > code):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      ) {
       @apply bg-gray-100 rounded-md;
-      padding: .125em .25em;
+      padding: 0.125em 0.25em;
     }
 
-    :where(.gif):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    :where(.gif):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
       margin-top: 1.25em;
       margin-bottom: 1.25em;
     }
 
-    :where(iframe):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    :where(iframe):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
       margin-top: 1.25em;
       margin-bottom: 1.25em;
       width: 100%;
@@ -190,11 +202,13 @@
       aspect-ratio: 16 / 9;
     }
 
-    :where(svg):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    :where(svg):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
       margin: 1.25em auto;
     }
 
-    :where(section[data-footnotes="true"] p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    :where(section[data-footnotes='true'] p):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      ) {
       margin-top: 0.5em;
       margin-bottom: 0.5em;
     }
