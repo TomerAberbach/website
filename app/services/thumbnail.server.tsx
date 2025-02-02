@@ -15,8 +15,8 @@ import {
 import { cache } from '~/services/cache.server.ts'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 
-const blue400 = new ColorTranslator('hsl(201, 97%, 67%)').HEX
-const gray600 = new ColorTranslator('hsl(201, 5%, 39%)').HEX
+const blue400 = new ColorTranslator(`hsl(201, 97%, 67%)`).HEX
+const gray600 = new ColorTranslator(`hsl(201, 5%, 39%)`).HEX
 
 export const renderThumbnail = async (
   post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,

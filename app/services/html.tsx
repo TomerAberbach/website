@@ -1,7 +1,9 @@
+/* eslint-disable typescript/no-unsafe-return, typescript/no-unsafe-call, typescript/no-unsafe-member-access */
+
 import type { Root } from 'hast'
 import rehypeReact from 'rehype-react'
 import type { Options } from 'rehype-react'
-import type { ComponentType, ReactElement, JSX } from 'react'
+import type { ComponentType, JSX, ReactElement } from 'react'
 import { unified } from 'unified'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 
