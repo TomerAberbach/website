@@ -36,11 +36,11 @@ jobs:
       - name: Format
         run: pnpm format --check
 
-      - name: Lint
-        run: pnpm lint --no-fix
-
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint --no-fix
 
       - name: Test
         run: pnpm test
