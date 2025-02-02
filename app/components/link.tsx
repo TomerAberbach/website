@@ -31,7 +31,7 @@ export const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
 export const InternalLink = ({ href, reloadDocument, ...props }: LinkProps) =>
   typeof window === `undefined` ? (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
-    <a href={href} {...withFocusRingClassName(props)} />
+    <a data-discover='true' href={href} {...withFocusRingClassName(props)} />
   ) : (
     <RouterLink
       to={href}
