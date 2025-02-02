@@ -20,11 +20,13 @@ import logoSvgPath from '~/private/media/logo.svg'
 
 const App = () => (
   <html
-    // The mismatch between server and client for the `className` attribute is
-    // expected when JS is enabled because the `className` will be set to `js`
-    // before hydration happens (this needs to happen early to prevent a
-    // "flicker" of non-JS styles).
-    suppressHydrationWarning
+    // Ignore the mismatch between server and client for the `className`
+    // attribute because it's expected when JS is enabled. className` will be
+    // set to `js` before hydration happens (this needs to happen early to
+    // prevent a "flicker" of non-JS styles).
+    className={
+      typeof document === 'undefined' ? '' : document.documentElement.className
+    }
     lang='en'
   >
     <head>
@@ -66,7 +68,7 @@ const HeadInlineScript = () => {
     <script
       dangerouslySetInnerHTML={{
         __html:
-          `document.documentElement.className='js';` +
+          `document.documentElement.classList.add('js');` +
           `Promise.all([${pipe(
             entries(fonts),
             flatMap(([fontFamily, styles]) =>
@@ -74,7 +76,7 @@ const HeadInlineScript = () => {
             ),
             map(font => `document.fonts.load('${font}')`),
             join(`,`),
-          )}]).then(()=>document.documentElement.className+=' fonts')`,
+          )}]).then(()=>document.documentElement.classList.add('fonts'))`,
       }}
     />
   )
