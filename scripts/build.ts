@@ -25,7 +25,7 @@ const runServerCommand = `react-router-serve ${fromRoot(`build/server/index.js`)
 const glyphhangerCommand = `glyphhanger http://localhost:3000 --spider-limit=0 --formats=woff,woff2 --subset=${fromRoot(`private/fonts/*.ttf`)} --output=${fontsBuildPath}`
 await $({
   // `get-stdin` hangs inside `glyphhanger` without this.
-  stdio: 'inherit',
+  stdio: `inherit`,
 })`start-server-and-test ${runServerCommand} http-get://localhost:3000 ${glyphhangerCommand}`
 
 // Rebuild with new fonts and minify

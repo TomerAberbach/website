@@ -1,3 +1,5 @@
+/* eslint-disable typescript/no-unsafe-return, typescript/no-unsafe-call, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment */
+
 import type { Root as MdRoot } from 'mdast'
 import type { Root as HtmlRoot } from 'hast'
 import remarkParse from 'remark-parse'
