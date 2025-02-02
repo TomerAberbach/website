@@ -8,6 +8,7 @@ import escapeStringRegExp from 'escape-string-regexp'
 import { unified } from 'unified'
 import remarkDirective from 'remark-directive'
 import rehypeShiki from '@shikijs/rehype'
+import type { RehypeShikiOptions } from '@shikijs/rehype'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
 import rehypePresetMinify from 'rehype-preset-minify'
@@ -227,7 +228,7 @@ const markdownToHtmlProcessor = unified()
         },
       },
     ],
-  })
+  } satisfies RehypeShikiOptions)
   .use(rehypePresetMinify)
   .freeze()
 

@@ -1,7 +1,7 @@
 import type { Root } from 'hast'
 import rehypeReact from 'rehype-react'
 import type { Options } from 'rehype-react'
-import type { ComponentType, ReactElement } from 'react'
+import type { ComponentType, ReactElement, JSX } from 'react'
 import { unified } from 'unified'
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 
