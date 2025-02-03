@@ -25,7 +25,7 @@ const App = () => (
     // set to `js` before hydration happens (this needs to happen early to
     // prevent a "flicker" of non-JS styles).
     className={
-      typeof document === 'undefined' ? '' : document.documentElement.className
+      typeof document === `undefined` ? `` : document.documentElement.className
     }
     lang='en'
   >
