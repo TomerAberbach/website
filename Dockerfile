@@ -24,7 +24,6 @@ WORKDIR /app
 ADD patches patches
 ADD package.json pnpm-lock.yaml ./
 RUN pnpm install
-RUN pnpm prepare:playwright
 
 
 FROM node as production-dependencies
