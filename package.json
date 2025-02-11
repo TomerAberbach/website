@@ -17,8 +17,9 @@
     "not op_mini all"
   ],
   "scripts": {
-    "prepare": "tomer install",
-    "install-playwright": "playwright install --with-deps chromium",
+    "prepare:tomer": "tomer install",
+    "prepare:playwright": "playwright install --with-deps chromium",
+    "prepare": "run-s prepare:*",
     "format": "tomer format",
     "lint": "tomer lint",
     "typecheck:react-router": "react-router typegen",
