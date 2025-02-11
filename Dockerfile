@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 ARG NODE_VERSION=23.7.0
-FROM node:${NODE_VERSION} as node
+FROM node:${NODE_VERSION} AS node
 
 ARG PNPM_VERSION=10.2.1
 RUN npm install -g pnpm@$PNPM_VERSION
@@ -19,21 +19,21 @@ RUN apt-get --yes install ca-certificates fonts-liberation libappindicator3-1 \
   libenchant-2-2 libsecret-1-0 libhyphen0 libmanette-0.2-0 libx264-dev libvpx7
 
 
-FROM node as dependencies
+FROM node AS dependencies
 WORKDIR /app
 ADD patches patches
 ADD package.json pnpm-lock.yaml ./
 RUN pnpm install
 
 
-FROM node as production-dependencies
+FROM node AS production-dependencies
 WORKDIR /app
 COPY --from=dependencies /app /app
 RUN pnpm prune --prod --config.ignore-scripts=true
 COPY --from=dependencies /root/.cache /root/.cache
 
 
-FROM node as build
+FROM node AS build
 WORKDIR /app
 COPY --from=dependencies /app/node_modules /app/node_modules
 COPY --from=dependencies /root/.cache /root/.cache
