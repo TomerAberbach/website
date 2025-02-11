@@ -1,9 +1,9 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=22.9.0
+ARG NODE_VERSION=23.7.0
 FROM node:${NODE_VERSION} as node
 
-ARG PNPM_VERSION=9.11.0
+ARG PNPM_VERSION=10.2.1
 RUN npm install -g pnpm@$PNPM_VERSION
 
 # For puppeteer and playwright
