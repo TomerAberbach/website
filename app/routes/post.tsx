@@ -134,7 +134,7 @@ const PostPage = () => {
               referencedBy,
               map(([reference, title]) => (
                 <li key={reference}>
-                  <Link href={`/${reference}`} className='underline'>
+                  <Link href={reference} className='underline'>
                     {title}
                   </Link>
                 </li>

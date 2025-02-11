@@ -25,8 +25,8 @@ export default defineConfig({
   customLogger: logger,
   server: { port: 3000 },
   plugins: [
-    reactRouter(),
     tsconfigPaths(),
+    reactRouter(),
     tailwindcss(),
     imagemin({
       plugins: {

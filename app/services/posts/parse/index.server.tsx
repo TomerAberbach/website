@@ -28,10 +28,11 @@ import Tooltip from '~/components/tooltip.tsx'
 
 const parsePost = async (rawPost: RawPost): Promise<Post> => {
   const { content, data } = parseFrontMatter(rawPost.content)
+
   return {
     id: rawPost.id,
     referencedBy: new Map(),
-    ...(content.trim().length > 0
+    ...(rawPost.type === `markdown`
       ? await parseMarkdownPost(content, data)
       : parseHrefPost(data)),
   }

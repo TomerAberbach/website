@@ -6,7 +6,10 @@ export const Link = (props: LinkProps) =>
   isExternalUrl(props.href) ? (
     <ExternalLink {...props} />
   ) : (
-    <InternalLink {...props} />
+    <InternalLink
+      {...props}
+      href={props.href.startsWith(`/`) ? props.href : `/${props.href}`}
+    />
   )
 
 const isExternalUrl = (href: string): boolean => {
