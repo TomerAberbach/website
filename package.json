@@ -126,7 +126,6 @@
     "postcss-fontpie": "^2.0.1",
     "postcss-url": "^10.1.3",
     "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.11",
     "start-server-and-test": "^2.0.10",
     "terser": "^5.37.0",
     "tomer": "^6.1.1",
