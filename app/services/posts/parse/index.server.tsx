@@ -113,7 +113,7 @@ const createHeading =
       >
         <img
           src={linkSvgPath}
-          className='m-0 h-6 w-6'
+          className='not-prose m-0 h-6 w-6'
           // eslint-disable-next-line react/jsx-no-useless-fragment
           alt={`${renderToString(<>{children}</>)} permalink`}
         />
