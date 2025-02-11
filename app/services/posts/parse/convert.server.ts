@@ -235,7 +235,7 @@ const markdownToHtmlProcessor = unified()
   .freeze()
 
 export const convertMarkdownToText = (markdown: string): string =>
-  String(markdownToTextProcessor.processSync(markdown)).replace(/\s+/g, ` `)
+  String(markdownToTextProcessor.processSync(markdown)).replaceAll(/\s+/gu, ` `)
 
 const markdownToTextProcessor = unified()
   .use(remarkParse)
