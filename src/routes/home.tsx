@@ -18,15 +18,27 @@ import {
 import { ErrorCrashView } from '~/components/error.tsx'
 import { getOrderedPosts } from '~/services/ordered.server'
 import type { MarkdownPost, Post } from '~/services/post.server'
+import { PostSwitcher, useSelectedPostId } from '~/components/post-switcher'
 
 const HomePage = () => {
-  const { tags, graph } = useLoaderData<typeof loader>()
+  const { postIds, tags, graph } = useLoaderData<typeof loader>()
+
   const graphId = useId()
+  const [selectedPostId, setSelectedPostId] = useSelectedPostId(postIds)
 
   return (
-    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-20'>
+    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-16'>
       <TagsFilterForm targetId={graphId} tags={tags} />
-      <GraphWidget id={graphId} graph={graph} />
+      <PostSwitcher
+        selectedPostId={selectedPostId}
+        setSelectedPostId={setSelectedPostId}
+        graph={graph}
+      />
+      <GraphWidget
+        id={graphId}
+        graph={graph}
+        selectedVertexId={selectedPostId}
+      />
     </div>
   )
 }
@@ -46,6 +58,7 @@ export const loader = async () => {
   const posts = await getOrderedPosts()
   const [tags, graph] = await Promise.all([getTags(posts), getGraph(posts)])
   return serialize({
+    postIds: new Set(posts.keys()),
     tags,
     graph,
     latestPost: includeKeys(getLatestMarkdownPost(posts), [

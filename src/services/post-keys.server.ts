@@ -2,6 +2,7 @@ import { basename } from 'node:path'
 import fs from 'node:fs/promises'
 import {
   asConcur,
+  filterConcur,
   flatMapConcur,
   map,
   mapConcur,
@@ -31,6 +32,7 @@ export const getPostKeys = cache(async (): Promise<Map<string, PostKey>> => {
         }),
       ),
     ),
+    filterConcur(([id]) => !id.startsWith(`_`)),
     reduceConcur(toGrouped(toArray(), toMap())),
   )
   return pipe(

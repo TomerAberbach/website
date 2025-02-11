@@ -190,7 +190,7 @@ const Tag = ({
       name='tags'
       value={tag}
       checked={selected}
-      className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600 hover:ring-3'
+      className='focus-ring peer absolute left-0 top-0 size-full cursor-pointer appearance-none rounded-2xl border-2 border-gray-300 checked:border-blue-600 hover:ring-3'
       onChange={onChange}
     />
     <div className='rounded-2xl bg-white p-2.5 font-medium leading-none text-gray-500 transition peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>

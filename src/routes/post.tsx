@@ -2,7 +2,6 @@ import type { LoaderFunctionArgs } from 'react-router'
 import { filter, map, pipe, reduce, toArray, toMap } from 'lfi'
 import { isRouteErrorResponse } from 'react-router'
 import { useId } from 'react'
-import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
 import katexStylesPath from 'katex/dist/katex.min.css?url'
 import { includeKeys } from 'filter-obj'
@@ -32,6 +31,7 @@ import type { Post } from '~/services/post.server'
 import { getPostKeys } from '~/services/post-keys.server'
 import type { PostKey } from '~/services/post-keys.server'
 import { getOrderedMarkdownPosts } from '~/services/ordered.server'
+import ShrinkWrap from '~/components/shrink-wrap.tsx'
 
 const PostPage = () => {
   const suggestEditId = useId()
@@ -64,7 +64,7 @@ const PostPage = () => {
               </time>
               <Tooltip id={suggestEditId} content='Suggest an edit'>
                 <ExternalLink
-                  className='inline-block h-[1em] w-[1em] hover:ring-3'
+                  className='inline-block size-[1em] hover:ring-3'
                   href={`https://github.com/TomerAberbach/website/edit/main/private/posts/${id}.md`}
                 >
                   <span className='not-prose'>
@@ -90,44 +90,42 @@ const PostPage = () => {
       <Prose html={html} />
       {(previousPost ?? nextPost) ? (
         <footer className='not-prose mt-8 flex items-center font-medium text-gray-700'>
-          <BalanceProvider>
-            {previousPost ? (
-              <InternalLink
-                href={`/${previousPost.id}`}
-                rel='prev'
-                className='mr-auto flex max-w-[50%] items-center gap-3 hover:ring-3'
-              >
-                <img
-                  src={arrowRightSvgPath}
-                  alt='Previous'
-                  className='h-6 w-6 -scale-x-100'
-                />
-                <Balancer preferNative={false} as='div'>
-                  {previousPost.title}
-                </Balancer>
-              </InternalLink>
-            ) : null}
-            {nextPost ? (
-              <InternalLink
-                href={`/${nextPost.id}`}
-                rel='next'
-                className='ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring-3'
-              >
-                <Balancer preferNative={false} as='div'>
-                  {nextPost.title}
-                </Balancer>
-                <img src={arrowRightSvgPath} alt='Next' className='h-6 w-6' />
-              </InternalLink>
-            ) : null}
-          </BalanceProvider>
+          {previousPost ? (
+            <InternalLink
+              href={`/${previousPost.id}`}
+              rel='prev'
+              className='mr-auto flex max-w-[50%] items-center gap-3 hover:ring-3'
+            >
+              <img
+                src={arrowRightSvgPath}
+                alt='Previous'
+                className='size-6 -scale-x-100'
+              />
+              <div className='text-balance'>
+                <ShrinkWrap>{previousPost.title}</ShrinkWrap>
+              </div>
+            </InternalLink>
+          ) : null}
+          {nextPost ? (
+            <InternalLink
+              href={`/${nextPost.id}`}
+              rel='next'
+              className='ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring-3'
+            >
+              <div className='text-balance'>
+                <ShrinkWrap>{nextPost.title}</ShrinkWrap>
+              </div>
+              <img src={arrowRightSvgPath} alt='Next' className='size-6' />
+            </InternalLink>
+          ) : null}
         </footer>
       ) : null}
       {referencedBy.size > 0 ? (
         <aside className='not-prose m-auto mt-12 flex flex-col items-center text-center'>
           <div className='m-auto inline-flex items-end gap-14'>
-            <img src={arrowUpLeftSvgPath} alt='' className='h-6 w-6' />
-            <img src={arrowUpSvgPath} alt='' className='mb-3 h-6 w-6' />
-            <img src={arrowUpRightSvgPath} alt='' className='h-6 w-6' />
+            <img src={arrowUpLeftSvgPath} alt='' className='size-6' />
+            <img src={arrowUpSvgPath} alt='' className='mb-3 size-6' />
+            <img src={arrowUpRightSvgPath} alt='' className='size-6' />
           </div>
           <h3 className='mt-2 text-lg font-semibold'>Linked from</h3>
           <ul className='text-base'>
@@ -189,7 +187,7 @@ const Tag = ({ tag }: { tag: string }) => (
     href={`/?tags=${encodeURIComponent(tag)}`}
     className='relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50 hover:ring-3'
   >
-    <div className='absolute left-0 top-0 h-full w-full rounded-2xl border-2 border-gray-300' />
+    <div className='absolute left-0 top-0 size-full rounded-2xl border-2 border-gray-300' />
     <span className='text-gray-600'>{tag}</span>
   </InternalLink>
 )

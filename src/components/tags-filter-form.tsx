@@ -28,11 +28,11 @@ export const TagsFilterForm = ({
 
   return (
     <Form
-      className='mx-auto flex max-w-[60ch] flex-col items-center gap-3'
+      className='mx-auto flex max-w-[90ch] flex-col items-center gap-3'
       onSubmit={preventFormSubmission}
     >
       <div className='flex items-center gap-3'>
-        <h2 className='text-lg font-medium'>Filter by tags</h2>
+        <h2 className='text-lg font-medium text-gray-700'>Filter by tags</h2>
         <LogicalOperatorRadioButtonGroup
           logicalOperator={logicalOperator}
           setLogicalOperator={setLogicalOperator}

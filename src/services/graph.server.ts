@@ -1,9 +1,7 @@
 import {
   filter,
-  first,
   flatMap,
   forEach,
-  get,
   keys,
   map,
   pipe,
@@ -11,6 +9,7 @@ import {
   toArray,
   toMap,
   values,
+  window,
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
@@ -35,6 +34,18 @@ export const getGraph = async (
     ]),
     reduce(toMap()),
   )
+  pipe(
+    values(posts),
+    map(post => vertices.get(post.id) as InternalVertex),
+    window(3),
+    forEach(([nextVertex, vertex, previousVertex]) => {
+      nextVertex!.previous = vertex!.id
+      vertex!.next = nextVertex!.id
+      vertex!.previous = previousVertex!.id
+      previousVertex!.next = vertex!.id
+    }),
+  )
+
   const edges = pipe(
     posts,
     flatMap(([fromId, { tags, references }]) =>
@@ -112,6 +123,8 @@ export type Vertex = InternalVertex | ExternalVertex
 
 export type InternalVertex = BaseVertex & {
   type: `internal`
+  previous?: string
+  next?: string
   href: string
   reloadDocument: boolean
 }
@@ -161,35 +174,9 @@ const layoutGraph = ({
     // grow more.
     springCoefficient: 0.005,
   })
-
-  const firstInternalVertexId = pipe(
-    vertices.values(),
-    filter(({ type }) => type === `internal`),
-    map(({ id }) => id),
-    first,
-    get,
-  )
-
-  // Layout the graph while keeping the first internal vertex at the top and
-  // centered vertically.
-  layout.pinNode(ngraph.getNode(firstInternalVertexId)!, true)
   for (let iteration = 0; iteration < 12_500; iteration++) {
-    // Reset the first internal vertex to the top and centered vertically
-    // because the layout of other vertices at each step changes the bounds.
-    const {
-      min_x: minX,
-      min_y: minY,
-      max_x: maxX,
-    } = layout.simulator.getBoundingBox()
-    layout.setNodePosition(firstInternalVertexId, (minX + maxX) / 2, minY)
-
     layout.step()
   }
-
-  // Add some padding between the first interval vertex and the rest of the
-  // graph.
-  const { x, y } = layout.getNodePosition(firstInternalVertexId)
-  layout.setNodePosition(firstInternalVertexId, x, y - 15)
 
   const {
     min_x: minX,

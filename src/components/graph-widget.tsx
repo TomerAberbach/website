@@ -9,8 +9,9 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { ReactNode } from 'react'
-import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
+import panzoom from 'panzoom'
+import type { PanZoom } from 'panzoom'
+import type { ReactNode, RefObject } from 'react'
 import { Link } from './link.tsx'
 import closeSvgPath from './close.svg'
 import { createTagClassName } from './tags-filter-form.tsx'
@@ -22,38 +23,50 @@ import type {
   Position,
 } from '~/services/graph.server.ts'
 
-const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
+const GraphWidget = ({
+  id,
+  graph,
+  selectedVertexId,
+}: {
+  id: string
+  graph: Graph
+  selectedVertexId: string
+}) => {
   const {
     layout: {
       boundingBox: { width, height },
     },
   } = graph
 
-  const [hasMounted, setHasMounted] = useState(false)
-  const scrollElementRef = useRef<HTMLDivElement>(null)
-
-  useIsomorphicLayoutEffect(() => {
-    setHasMounted(true)
-    const scrollElement = scrollElementRef.current!
-    const { scrollWidth, clientWidth } = scrollElement
-    scrollElement.scrollLeft = (scrollWidth - clientWidth) / 2
-  }, [])
+  const panningElementRef = useRef<HTMLDivElement>(null)
+  const viewportElementRef = useRef<HTMLDivElement>(null)
+  const [panningState, setPanningPaused] = usePanning({
+    graph,
+    selectedVertexId,
+    panningElementRef,
+    viewportElementRef,
+  })
 
   return (
-    <div className='flex w-full grow items-center justify-center'>
+    <div
+      ref={viewportElementRef}
+      className={clsx(
+        `overflow-hidden w-screen mx-[calc(50%-50vw)] fade-y h-[80vh] m-auto`,
+        panningState !== `paused` && `cursor-grab active:cursor-grabbing`,
+      )}
+    >
       <div
-        ref={scrollElementRef}
+        ref={panningElementRef}
         className={clsx(
-          `w-full overflow-x-auto px-16 py-3`,
-          !hasMounted && `js:overflow-x-hidden`,
+          `inline-block`,
+          // Prevent clicking and dragging from a vertex causing a click on the
+          // vertex.
+          panningState === `panning` && `pointer-events-none`,
         )}
       >
         <div
           id={id}
-          className={clsx(
-            `relative m-auto w-full overflow-visible`,
-            !hasMounted && `js:left-1/2 js:m-0 js:-translate-x-1/2`,
-          )}
+          className='relative m-auto w-full'
           style={{
             minWidth: 0.75 * width,
             maxWidth: width,
@@ -61,11 +74,110 @@ const GraphWidget = ({ id, graph }: { id: string; graph: Graph }) => {
           }}
         >
           <Edges graph={graph} />
-          <Vertices graph={graph} />
+          <Vertices graph={graph} setPanningPaused={setPanningPaused} />
         </div>
       </div>
     </div>
   )
+}
+
+const usePanning = ({
+  graph,
+  selectedVertexId,
+  panningElementRef,
+  viewportElementRef,
+}: {
+  graph: Graph
+  selectedVertexId: string
+  panningElementRef: RefObject<HTMLElement | null>
+  viewportElementRef: RefObject<HTMLElement | null>
+}) => {
+  const panzoomRef = useRef<PanZoom>(null)
+  const [panning, setPanning] = useState(false)
+
+  useIsomorphicLayoutEffect(() => {
+    const panningElement = panningElementRef.current!
+
+    const panzoomInstance = panzoom(panningElement, {
+      // Disable zooming.
+      minZoom: 1,
+      maxZoom: 1,
+      // Ignore mouse wheel for scrolling.
+      beforeWheel: () => true,
+      // Enforce bounds.
+      bounds: true,
+      boundsPadding: 0.5,
+    })
+    panzoomInstance.on(`panstart`, () => setPanning(true))
+    panzoomInstance.on(`panend`, () => setPanning(false))
+
+    panzoomRef.current = panzoomInstance
+    return () => {
+      panzoomInstance.dispose()
+      panzoomRef.current = null
+    }
+  }, [panningElementRef])
+
+  const { positions, boundingBox } = graph.layout
+  const [hasMounted, setHasMounted] = useState(false)
+  const previousSelectedVertexId = usePrevious(selectedVertexId)
+
+  useIsomorphicLayoutEffect(() => {
+    if (selectedVertexId === previousSelectedVertexId) {
+      return
+    }
+
+    const { x, y } = positions.get(selectedVertexId)!
+    const ratioX = x / boundingBox.width
+    const ratioY = y / boundingBox.height
+
+    const { offsetWidth: viewportWidth, offsetHeight: viewportHeight } =
+      viewportElementRef.current!
+    const viewportCenterX = viewportWidth / 2
+    const viewportCenterY = viewportHeight / 2
+
+    const { offsetWidth: contentWidth, offsetHeight: contentHeight } =
+      panningElementRef.current!
+
+    const panzoomX = -(ratioX * contentWidth - viewportCenterX)
+    const panzoomY = -(ratioY * contentHeight - viewportCenterY)
+    const panzoom = panzoomRef.current!
+
+    if (!hasMounted || window.matchMedia(`(prefers-reduced-motion)`).matches) {
+      panzoom.moveTo(panzoomX, panzoomY)
+    } else {
+      panzoom.smoothMoveTo(panzoomX, panzoomY)
+    }
+
+    setHasMounted(true)
+  }, [
+    hasMounted,
+    positions,
+    boundingBox,
+    selectedVertexId,
+    panningElementRef,
+    viewportElementRef,
+  ])
+
+  const [paused, setPaused] = useState(false)
+  useEffect(() => {
+    if (paused) {
+      panzoomRef.current?.pause()
+    } else {
+      panzoomRef.current?.resume()
+    }
+  }, [paused])
+
+  const panningState = paused ? `paused` : panning ? `panning` : `idle`
+  return [panningState, setPaused] as const
+}
+
+const usePrevious = <Value,>(value: Value): Value | null => {
+  const ref = useRef<Value>(null)
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
 }
 
 const useIsomorphicLayoutEffect =
@@ -84,7 +196,7 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className='absolute h-full w-full'
+      className='absolute size-full'
       aria-hidden
     >
       <defs>
@@ -227,18 +339,27 @@ const EDGE_LABEL_PADDING = 18.75
 const MIN_EDGE_STROKE_WIDTH = 2.5
 const MAX_EDGE_STROKE_WIDTH = 5.5
 
-const Vertices = ({ graph: { vertices, layout } }: { graph: Graph }) => (
-  <BalanceProvider>
-    <div>
-      {pipe(
-        vertices,
-        map(([id, vertex]) => (
-          <Vertex key={id} layout={layout} vertex={vertex} />
-        )),
-        reduce(toArray()),
-      )}
-    </div>
-  </BalanceProvider>
+const Vertices = ({
+  graph: { vertices, layout },
+  setPanningPaused,
+}: {
+  graph: Graph
+  setPanningPaused: (value: boolean) => void
+}) => (
+  <div>
+    {pipe(
+      vertices,
+      map(([id, vertex]) => (
+        <Vertex
+          key={id}
+          layout={layout}
+          vertex={vertex}
+          setPanningPaused={setPanningPaused}
+        />
+      )),
+      reduce(toArray()),
+    )}
+  </div>
 )
 
 const Vertex = ({
@@ -247,9 +368,11 @@ const Vertex = ({
     positions,
   },
   vertex,
+  setPanningPaused,
 }: {
   layout: GraphLayout
   vertex: GraphVertex
+  setPanningPaused: (value: boolean) => void
 }) => {
   const { x, y } = positions.get(vertex.id)!
 
@@ -267,7 +390,7 @@ const Vertex = ({
   )
   const vertexNode = (
     <>
-      <div className='h-full w-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
+      <div className='size-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
       <div
         className={clsx(
           `absolute bottom-[150%] left-1/2 -translate-x-1/2 text-center text-sm font-medium md:text-base`,
@@ -275,9 +398,7 @@ const Vertex = ({
         )}
       >
         {vertex.type === `internal` ? (
-          <div className='inline-block w-52'>
-            <Balancer>{labelNode}</Balancer>
-          </div>
+          <div className='inline-block w-52 text-balance'>{labelNode}</div>
         ) : (
           labelNode
         )}
@@ -310,7 +431,11 @@ const Vertex = ({
           {vertexNode}
         </LinkVertex>
       ) : (
-        <DialogVertex label={vertex.label} hrefToTags={vertex.hrefToTags}>
+        <DialogVertex
+          setPanningPaused={setPanningPaused}
+          label={vertex.label}
+          hrefToTags={vertex.hrefToTags}
+        >
           {vertexNode}
         </DialogVertex>
       )}
@@ -319,51 +444,72 @@ const Vertex = ({
 }
 
 const LinkVertex = ({
+  id,
   href,
   reloadDocument,
   children,
 }: {
+  id?: string
   href: string
   reloadDocument?: boolean
   children: ReactNode
-}) => (
-  <Link
-    href={href}
-    reloadDocument={reloadDocument}
-    className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring-3'
-  >
-    {children}
-  </Link>
-)
+}) => {
+  const preventDefault = useCallback<React.EventHandler<React.SyntheticEvent>>(
+    e => e.preventDefault(),
+    [],
+  )
+  return (
+    <Link
+      id={id}
+      href={href}
+      reloadDocument={reloadDocument}
+      // Prevent dragging vertex text, which conflicts with graph panning.
+      onMouseDown={preventDefault}
+      onMouseMove={preventDefault}
+      onTouchStart={preventDefault}
+      onTouchMove={preventDefault}
+      className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring-3 cursor-pointer'
+    >
+      {children}
+    </Link>
+  )
+}
 
 const DialogVertex = ({
+  setPanningPaused,
   label,
   hrefToTags,
   children,
 }: {
+  setPanningPaused: (value: boolean) => void
   label: string
   hrefToTags: Map<string, Set<string>>
   children: ReactNode
 }) => {
   const dialogElementRef = useRef<HTMLDialogElement | null>(null)
 
-  const handleClick = useCallback(
-    () => dialogElementRef.current!.showModal(),
-    [],
+  const openDialog = useCallback(() => {
+    setPanningPaused(true)
+    dialogElementRef.current!.showModal()
+  }, [setPanningPaused])
+  const resumePanning = useCallback(
+    () => setPanningPaused(false),
+    [setPanningPaused],
   )
 
   return (
     <>
       <button
         type='button'
-        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0 hover:ring-3'
-        onClick={handleClick}
+        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0 hover:ring-3 cursor-pointer'
+        onClick={openDialog}
       >
         {children}
       </button>
       <dialog
         ref={dialogElementRef}
         className='rounded-lg bg-white p-0 shadow-xl m-auto'
+        onClose={resumePanning}
       >
         <div className='m-6 inline-block'>
           <div className='flex justify-between'>
@@ -372,8 +518,11 @@ const DialogVertex = ({
             </h3>
             <div className='ml-6 w-6' />
             <form method='dialog' className='sticky right-6 top-0'>
-              <button type='submit' className='focus-ring hover:ring-3'>
-                <img src={closeSvgPath} alt='Close' className='h-6 w-6' />
+              <button
+                type='submit'
+                className='focus-ring hover:ring-3 cursor-pointer'
+              >
+                <img src={closeSvgPath} alt='Close' className='size-6' />
               </button>
             </form>
           </div>

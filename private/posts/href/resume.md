@@ -1,6 +1,6 @@
 ---
 title: 'Resume'
-tags: ['code', 'google', 'packages', 'resume']
+tags: ['code', 'google', 'packages', 'resume', 'stainless']
 dates:
   published: 0001-00-00
 href: '/resume.pdf'
