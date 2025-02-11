@@ -6,10 +6,10 @@ import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
 import katexStylesPath from 'katex/dist/katex.min.css?url'
 import { includeKeys } from 'filter-obj'
-import arrowRightSvgPath from './arrow-right.svg'
-import arrowUpRightSvgPath from './arrow-up-right.svg'
-import arrowUpLeftSvgPath from './arrow-up-left.svg'
-import arrowUpSvgPath from './arrow-up.svg'
+import arrowRightSvgPath from '~/private/media/arrow-right.svg'
+import arrowUpRightSvgPath from '~/private/media/arrow-up-right.svg'
+import arrowUpLeftSvgPath from '~/private/media/arrow-up-left.svg'
+import arrowUpSvgPath from '~/private/media/arrow-up.svg'
 import {
   findBestMarkdownPostMatch,
   getMarkdownPosts,

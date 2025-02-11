@@ -33,7 +33,7 @@ import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
-import { ASSET_NAME_TO_URL, GIT_NAME_TO_URL } from './assets.server.ts'
+import { ASSET_NAME_TO_URL, VIDEO_NAME_TO_URL } from './assets.server.ts'
 import 'mdast-util-directive'
 
 export const convertMarkdownToHtml = async (
@@ -63,7 +63,7 @@ const remarkGif = () => (tree: MdRoot) =>
       return
     }
 
-    const paths = GIT_NAME_TO_URL.get(
+    const paths = VIDEO_NAME_TO_URL.get(
       pipe(node.children, map(mdToText), join(``)),
     )
     invariant(paths, `Expected GIF to exist`)

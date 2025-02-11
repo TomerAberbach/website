@@ -13,11 +13,7 @@ import { arrayIncludes } from 'ts-extras'
 
 const ASSET_PATH_TO_URL: Readonly<Record<string, string>> = import.meta.glob(
   [`/private/media/*`, `/app/styles/fonts.css`],
-  {
-    eager: true,
-    query: `?url`,
-    import: `default`,
-  },
+  { eager: true, query: `?url`, import: `default` },
 )
 
 export const ASSET_NAME_TO_URL: ReadonlyMap<string, string> = pipe(
@@ -29,7 +25,7 @@ export const ASSET_NAME_TO_URL: ReadonlyMap<string, string> = pipe(
 const VIDEO_TYPES = [`mp4`, `webm`] as const
 type VideoUrls = Record<(typeof VIDEO_TYPES)[number], string | undefined>
 
-export const GIT_NAME_TO_URL: ReadonlyMap<string, VideoUrls> = pipe(
+export const VIDEO_NAME_TO_URL: ReadonlyMap<string, VideoUrls> = pipe(
   entries(ASSET_NAME_TO_URL),
   filterMap(([name, url]): [string, [keyof VideoUrls, string]] | null => {
     const ext = extname(name)

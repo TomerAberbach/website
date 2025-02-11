@@ -21,7 +21,9 @@
     "install-playwright": "playwright install --with-deps chromium",
     "format": "tomer format",
     "lint": "tomer lint",
-    "typecheck": "tomer typecheck",
+    "typecheck:react-router": "react-router typegen",
+    "typecheck:tomer": "tomer typecheck",
+    "typecheck": "run-s typecheck:*",
     "build": "cross-env NODE_ENV=production node --loader ts-node/esm scripts/build.ts",
     "clean": "tomer clean .cache build public/build private/fonts/build app/styles/build",
     "dev": "react-router dev",
@@ -36,7 +38,6 @@
   "dependencies": {
     "@epic-web/invariant": "^1.0.0",
     "@fec/remark-a11y-emoji": "^4.0.2",
-    "@react-router/fs-routes": "^7.0.0",
     "@react-router/node": "^7.0.0",
     "@react-router/serve": "^7.0.0",
     "@remark-embedder/cache": "^2.1.0",
