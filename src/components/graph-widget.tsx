@@ -363,7 +363,7 @@ const DialogVertex = ({
       </button>
       <dialog
         ref={dialogElementRef}
-        className='rounded-lg bg-white p-0 shadow-xl'
+        className='rounded-lg bg-white p-0 shadow-xl m-auto'
       >
         <div className='m-6 inline-block'>
           <div className='flex justify-between'>
