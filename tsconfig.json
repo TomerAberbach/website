@@ -4,7 +4,7 @@
     "*",
     ".react-router/types/**/*",
     "types/*",
-    "app/**/*",
+    "src/**/*",
     "scripts/**/*"
   ]
 }

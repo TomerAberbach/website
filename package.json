@@ -25,16 +25,13 @@
     "typecheck:tomer": "tomer typecheck",
     "typecheck": "run-s typecheck:*",
     "build": "cross-env NODE_ENV=production node --import tsx scripts/build.ts",
-    "clean": "tomer clean .cache build public/build private/fonts/build app/styles/build",
+    "clean": "tomer clean .cache build public/build private/fonts/build src/styles/build",
     "dev": "react-router dev",
     "test": "tomer test",
     "start": "react-router-serve ./build/server/index.js",
     "deploy": "fly deploy --remote-only"
   },
   "prettier": "tomer/prettier",
-  "tomer": {
-    "src": "app"
-  },
   "dependencies": {
     "@epic-web/invariant": "^1.0.0",
     "@fec/remark-a11y-emoji": "^4.0.2",

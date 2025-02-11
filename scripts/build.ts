@@ -10,7 +10,7 @@ const fromRoot = (path: string): string => join(rootPath, path)
 
 // Clean
 const buildPaths = [
-  `app/styles/build`,
+  `src/styles/build`,
   `build`,
   `private/fonts/build`,
   `public/build`,

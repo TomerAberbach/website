@@ -5,6 +5,7 @@ import { map, pipe } from 'lfi'
 import { invariant } from '@epic-web/invariant'
 
 export default {
+  appDirectory: `src`,
   prerender: async ({ getStaticPaths }) => [
     ...getStaticPaths(),
     ...pipe(
