@@ -6,10 +6,10 @@ settings:
 
 patchedDependencies:
   '@zachleat/spider-pig@3.0.0':
-    hash: dl7ekihkku46p6otfnv7t3lfzq
+    hash: 9a48ade5783cb39ea7330fddd774043fe8f65960bfd13977675ca304f5b070b1
     path: patches/@zachleat__spider-pig@3.0.0.patch
   glyphhanger@5.0.0:
-    hash: ktlnajiffqjphag5c52f24g44q
+    hash: 86c3bb7303f8cbbf5c644771795824f7b19b0ac47191908eed86b47f5f53b80d
     path: patches/glyphhanger@5.0.0.patch
 
 importers:
@@ -259,7 +259,7 @@ importers:
         version: 9.19.0(jiti@2.4.2)
       glyphhanger:
         specifier: ^5.0.0
-        version: 5.0.0(patch_hash=ktlnajiffqjphag5c52f24g44q)
+        version: 5.0.0(patch_hash=86c3bb7303f8cbbf5c644771795824f7b19b0ac47191908eed86b47f5f53b80d)
       imagemin-gifsicle:
         specifier: ^7.0.0
         version: 7.0.0
@@ -10755,7 +10755,7 @@ snapshots:
       loupe: 3.1.3
       tinyrainbow: 2.0.0
 
-  '@zachleat/spider-pig@3.0.0(patch_hash=dl7ekihkku46p6otfnv7t3lfzq)':
+  '@zachleat/spider-pig@3.0.0(patch_hash=9a48ade5783cb39ea7330fddd774043fe8f65960bfd13977675ca304f5b070b1)':
     dependencies:
       chalk: 4.1.2
       debug: 4.4.0
@@ -13204,9 +13204,9 @@ snapshots:
 
   globrex@0.1.2: {}
 
-  glyphhanger@5.0.0(patch_hash=ktlnajiffqjphag5c52f24g44q):
+  glyphhanger@5.0.0(patch_hash=86c3bb7303f8cbbf5c644771795824f7b19b0ac47191908eed86b47f5f53b80d):
     dependencies:
-      '@zachleat/spider-pig': 3.0.0(patch_hash=dl7ekihkku46p6otfnv7t3lfzq)
+      '@zachleat/spider-pig': 3.0.0(patch_hash=9a48ade5783cb39ea7330fddd774043fe8f65960bfd13977675ca304f5b070b1)
       chalk: 4.1.2
       characterset: 1.3.0
       connect: 3.7.0
