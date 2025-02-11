@@ -42,6 +42,6 @@ export default defineConfig({
         },
       },
     }),
-    restart({ restart: [`private/posts/*.md`, `**/*.server.tsx?`] }),
+    restart({ restart: [`private/posts/**/*.md`, `**/*.server.tsx?`] }),
   ],
 })
