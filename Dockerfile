@@ -52,6 +52,8 @@ FROM node
 WORKDIR /app
 COPY --from=production-dependencies /app/node_modules /app/node_modules
 COPY --from=production-dependencies /root/.cache /root/.cache
+COPY --from=production-dependencies /app/package.json /app/package.json
+COPY --from=production-dependencies /app/pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY --from=build /app/build /app/build
 COPY --from=build /app/private /app/private
 COPY --from=build /app/public /app/public
