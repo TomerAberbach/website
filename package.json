@@ -29,7 +29,7 @@
     "clean": "tomer clean .cache build public/build private/fonts/build src/styles/build",
     "dev": "react-router dev",
     "test": "tomer test",
-    "start": "tsx src/server.ts",
+    "start": "tsx server.ts",
     "deploy": "fly deploy --remote-only"
   },
   "prettier": "tomer/prettier",

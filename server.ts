@@ -38,7 +38,7 @@ express()
   .use(
     createRequestHandler({
       build: (await import(
-        `../build/server/index.js`
+        `./build/server/index.js`
       )) as unknown as ServerBuild,
     }),
   )
