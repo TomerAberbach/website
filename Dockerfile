@@ -55,6 +55,6 @@ COPY --from=production-dependencies /root/.cache /root/.cache
 COPY --from=build /app/build /app/build
 COPY --from=build /app/private /app/private
 COPY --from=build /app/public /app/public
-ADD . .
+COPY --from=build /server.ts /server.ts
 ENV NODE_ENV=production
 CMD ["pnpm", "run", "start"]
