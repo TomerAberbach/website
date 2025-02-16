@@ -37,9 +37,7 @@ express()
   )
   .use(
     createRequestHandler({
-      build: (await import(
-        `./build/server/index.js`
-      )) as unknown as ServerBuild,
+      build: (await import(`./build/server/index.js` as string)) as ServerBuild,
     }),
   )
   .use(morgan(`tiny`))
