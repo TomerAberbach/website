@@ -2,6 +2,7 @@ import compression from 'compression'
 import express from 'express'
 import morgan from 'morgan'
 import { createRequestHandler } from '@react-router/express'
+import type { ServerBuild } from 'react-router'
 
 console.log(`Starting server`)
 
@@ -36,8 +37,9 @@ express()
   )
   .use(
     createRequestHandler({
-      // @ts-expect-error Virtual module provided by React Router at build time.
-      build: () => import(`../build/server/index.js`),
+      build: (await import(
+        `../build/server/index.js`
+      )) as unknown as ServerBuild,
     }),
   )
   .use(morgan(`tiny`))
