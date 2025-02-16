@@ -4,23 +4,21 @@ import type { Sharp } from 'sharp'
 import sharp from 'sharp'
 import { htmlEscape } from 'escape-goat'
 import { ColorTranslator } from 'colortranslator'
-import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.ts'
-import type { MarkdownPost } from '~/services/posts/types.ts'
+import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
+import type { MarkdownPost } from './post.server.ts'
+import { cache } from './cache.server.ts'
 import { privatePath } from '~/services/path.server.ts'
 import type { Dates } from '~/services/format.ts'
 import {
   formatDatesForDisplay,
   formatMinutesToRead,
 } from '~/services/format.ts'
-import { cache } from '~/services/cache.server.ts'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 
 const blue400 = new ColorTranslator(`hsl(201, 97%, 67%)`).HEX
 const gray600 = new ColorTranslator(`hsl(201, 5%, 39%)`).HEX
 
-export const renderThumbnail = async (
-  post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,
-) => {
+export const renderThumbnail = async (post: MarkdownPost) => {
   const [logo, thumbnailContent] = await Promise.all([
     getLogo(),
     renderThumbnailContent(post),
@@ -80,9 +78,7 @@ const ThumbnailFrame = () => (
   </svg>
 )
 
-const renderThumbnailContent = async (
-  post: Pick<MarkdownPost, `title` | `dates` | `minutesToRead`>,
-) => {
+const renderThumbnailContent = async (post: MarkdownPost) => {
   const [header, avatarAndAuthorText] = await Promise.all([
     renderHeader(post),
     getAvatarAndAuthorText(),

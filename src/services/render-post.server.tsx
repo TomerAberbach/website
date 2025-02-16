@@ -1,87 +1,16 @@
-import readingTime from 'reading-time'
-import { renderToString } from 'react-dom/server'
-import { createElement } from 'react'
 import clsx from 'clsx'
-import { z } from 'zod'
 import type { Root as HtmlRoot } from 'hast'
-import parseFrontMatter from 'gray-matter'
-import { select } from 'hast-util-select'
-import { entries } from 'lfi'
-import { parseHrefs, parseReferences } from './references.server.ts'
+import { createElement } from 'react'
+import { renderToString } from 'react-dom/server'
 import linkSvgPath from './images/link.svg'
 import backToContentSvgPath from './images/back-to-content.svg'
-import {
-  convertMarkdownToHtml,
-  convertMarkdownToText,
-} from './convert.server.ts'
-import type {
-  HrefPost,
-  MarkdownPost,
-  MarkdownPostFeature,
-  Post,
-} from '~/services/posts/types.ts'
-import type { RawPost } from '~/services/posts/read.server.ts'
-import { renderHtml } from '~/services/html.tsx'
-import type { Components } from '~/services/html.tsx'
+import type { Components } from './render-html.tsx'
+import { renderHtml } from './render-html.tsx'
 import { Link } from '~/components/link.tsx'
 import Tooltip from '~/components/tooltip.tsx'
 
-const parsePost = async (rawPost: RawPost): Promise<Post> => {
-  const { content, data } = parseFrontMatter(rawPost.content)
-
-  return {
-    id: rawPost.id,
-    referencedBy: new Map(),
-    ...(rawPost.type === `markdown`
-      ? await parseMarkdownPost(content, data)
-      : parseHrefPost(data)),
-  }
-}
-
-const parseMarkdownPost = async (
-  content: string,
-  metadata: Record<string, unknown>,
-): Promise<Omit<MarkdownPost, `id` | `referencedBy`>> => {
-  const htmlAst = await convertMarkdownToHtml(content)
-
-  return {
-    type: `markdown`,
-    ...basePostMetadataSchema.parse(metadata),
-    references: parseReferences(parseHrefs(htmlAst)),
-    minutesToRead: Math.max(1, Math.round(readingTime(content).minutes)),
-    content: renderToString(renderHtml(htmlAst, components)),
-    description: truncate(convertMarkdownToText(content)),
-    features: extractMarkdownPostFeatures(htmlAst),
-  }
-}
-
-const truncate = (text: string): string => {
-  if (text.length <= MAX_LENGTH) {
-    return text
-  }
-
-  for (let offset = 0; offset < 15; offset++) {
-    if (/\s/u.test(text.charAt(MAX_LENGTH - offset))) {
-      return `${text.slice(0, Math.max(0, MAX_LENGTH - offset))}…`
-    }
-  }
-
-  return text.slice(0, Math.max(0, MAX_LENGTH))
-}
-
-const MAX_LENGTH = 200
-
-const extractMarkdownPostFeatures = (
-  htmlAst: HtmlRoot,
-): Set<MarkdownPostFeature> => {
-  const features = new Set<MarkdownPostFeature>()
-
-  if (select(`[class='katex']`, htmlAst)) {
-    features.add(`math`)
-  }
-
-  return features
-}
+export const renderPost = (htmlAst: HtmlRoot): string =>
+  renderToString(renderHtml(htmlAst, components))
 
 const Section: Components[`section`] = props => {
   if (props[`data-footnotes`]) {
@@ -231,35 +160,3 @@ const components: Components = {
   div: Div,
   pre: Pre,
 }
-
-const parseHrefPost = (
-  metadata: Record<string, unknown>,
-): Omit<HrefPost, `id` | `referencedBy`> => {
-  const { hrefs, ...rest } = hrefPostMetadataSchema.parse(metadata)
-  return { type: `href`, ...rest, references: parseReferences(hrefs) }
-}
-
-const stringSetSchema = z
-  .array(z.string())
-  .refine(strings => new Set(strings).size === strings.length)
-  .transform(strings => new Set(strings.sort()))
-
-const basePostMetadataSchema = z.object({
-  title: z.string(),
-  tags: stringSetSchema,
-  referencedBy: z
-    .record(z.string())
-    .transform(references => new Map(entries(references)))
-    .optional(),
-  dates: z.object({
-    published: z.coerce.date(),
-    updated: z.coerce.date().optional(),
-  }),
-})
-
-const hrefPostMetadataSchema = basePostMetadataSchema.extend({
-  href: z.string(),
-  hrefs: stringSetSchema,
-})
-
-export default parsePost

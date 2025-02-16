@@ -1,11 +1,11 @@
 import { first, get, join, map, pipe, values } from 'lfi'
 import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import { formatDateUTC, formatDatesUTC } from '~/services/format.ts'
-import { getMarkdownPosts } from '~/services/posts/index.server.ts'
-import { SITE_URL, getSiteUrl } from '~/services/url.ts'
+import { SITE_URL, getSiteUrl } from '~/services/site-url'
+import { getOrderedMarkdownPosts } from '~/services/ordered.server'
 
 export const loader = async (): Promise<Response> => {
-  const posts = await getMarkdownPosts()
+  const posts = await getOrderedMarkdownPosts()
   const rss = `
     <rss version="2.0"
          xmlns:atom="http://www.w3.org/2005/Atom"
@@ -21,14 +21,12 @@ export const loader = async (): Promise<Response> => {
         <copyright>${cdata(
           `© ${SITE_TITLE_AND_AUTHOR}. All rights reserved.`,
         )}</copyright>
-        <lastBuildDate>${formatDatesUTC(
-          pipe(values(posts), first, get).dates,
-        )}</lastBuildDate>
+        <lastBuildDate>${formatDatesUTC(pipe(posts, values, first, get).dates)}</lastBuildDate>
         <ttl>40</ttl>
         ${pipe(
           posts,
-          map(([postId, post]) => {
-            const url = getSiteUrl(postId)
+          map(([id, post]) => {
+            const url = getSiteUrl(id)
             return `
               <item>
                 <title>${cdata(post.title)}</title>
@@ -38,7 +36,7 @@ export const loader = async (): Promise<Response> => {
                   map(tag => `<category>${cdata(tag)}</category>`),
                   join(``),
                 )}
-                <content:encoded>${cdata(post.content)}</content:encoded>
+                <content:encoded>${cdata(post.html)}</content:encoded>
                 <description>${cdata(post.description)}</description>
                 <guid isPermaLink="true">${url}</guid>
                 <pubDate>${formatDateUTC(post.dates.published)}</pubDate>

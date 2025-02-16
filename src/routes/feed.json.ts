@@ -2,8 +2,8 @@ import { map, pipe, reduce, toArray } from 'lfi'
 import avatarPath from '~/private/media/avatar.png'
 import { formatDateISO } from '~/services/format.ts'
 import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
-import { getMarkdownPosts } from '~/services/posts/index.server.ts'
-import { SITE_URL, getSiteUrl } from '~/services/url.ts'
+import { getOrderedMarkdownPosts } from '~/services/ordered.server'
+import { SITE_URL, getSiteUrl } from '~/services/site-url'
 
 export const loader = async (): Promise<Record<string, unknown>> => ({
   version: `https://jsonfeed.org/version/1.1`,
@@ -20,13 +20,13 @@ export const loader = async (): Promise<Record<string, unknown>> => ({
   ],
   language: `en-US`,
   items: pipe(
-    await getMarkdownPosts(),
-    map(([postId, post]) => ({
-      id: postId,
-      url: getSiteUrl(postId),
+    await getOrderedMarkdownPosts(),
+    map(([id, post]) => ({
+      id,
+      url: getSiteUrl(id),
       title: post.title,
-      content_html: post.content,
-      image: getSiteUrl(`${postId}.png`),
+      content_html: post.html,
+      image: getSiteUrl(`${id}.png`),
       date_published: formatDateISO(post.dates.published),
       ...(post.dates.updated && {
         date_modified: formatDateISO(post.dates.updated),

@@ -1,9 +1,9 @@
 import { concat, join, map } from 'lfi'
 import type { Location, MetaDescriptor } from 'react-router'
-import type { MarkdownPost } from './posts/types.ts'
 import { formatDatesForDisplay, formatMinutesToRead } from './format.ts'
-import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail.ts'
-import { getSiteUrl } from './url.ts'
+import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
+import { getSiteUrl } from './site-url.ts'
+import type { MarkdownPost } from './post.server.ts'
 
 export const getMeta = (
   location: Location,

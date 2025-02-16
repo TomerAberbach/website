@@ -9,7 +9,7 @@ beforeEach(() => {
 })
 
 test(`SITE_URL is set to localhost on the server when the environment variable is unset`, async () => {
-  const { SITE_URL } = await import(`~/services/url.ts`)
+  const { SITE_URL } = await import(`~/services/site-url`)
 
   expect(SITE_URL).toBe(`http://localhost:3000`)
 })
@@ -20,7 +20,7 @@ const FULL_URL = `${BASE_URL}/some/path/`
 test(`SITE_URL is set based on the environment variable on the server when it is set`, async () => {
   process.env.SITE_URL = FULL_URL
 
-  const { SITE_URL } = await import(`~/services/url.ts`)
+  const { SITE_URL } = await import(`~/services/site-url`)
 
   expect(SITE_URL).toBe(BASE_URL)
 })
@@ -31,7 +31,7 @@ test(`SITE_URL is set based on the current href in the browser`, async () => {
     value: { href: FULL_URL },
   })
 
-  const { SITE_URL } = await import(`~/services/url.ts`)
+  const { SITE_URL } = await import(`~/services/site-url`)
 
   expect(SITE_URL).toBe(BASE_URL)
 })
@@ -39,7 +39,7 @@ test(`SITE_URL is set based on the current href in the browser`, async () => {
 test.each([`/some/path`, `/some/path/`])(
   `getSiteUrl returns the SITE_URL with the given path appended with any trailing slash removed`,
   async path => {
-    const { getSiteUrl } = await import(`~/services/url.ts`)
+    const { getSiteUrl } = await import(`~/services/site-url`)
     const url = getSiteUrl(path)
 
     expect(url).toBe(`http://localhost:3000/some/path`)

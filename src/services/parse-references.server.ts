@@ -10,7 +10,7 @@ import {
 } from 'lfi'
 import { selectAll } from 'hast-util-select'
 import type { Root } from 'hast'
-import { SITE_URL } from '~/services/url.ts'
+import { SITE_URL } from './site-url.ts'
 import fontsStylesPath from '~/styles/fonts.css?url'
 
 export const parseReferences = (

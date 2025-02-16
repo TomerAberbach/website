@@ -14,12 +14,12 @@ import {
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
-import { cache } from './cache.server.ts'
-import { getPosts } from './posts/index.server.ts'
+import type { Ordered } from './ordered.server.ts'
+import type { Post } from './post.server.ts'
 
-export const getGraph = cache(async (): Promise<Graph> => {
-  const posts = await getPosts()
-
+export const getGraph = async (
+  posts: Map<string, Ordered<Post>>,
+): Promise<Graph> => {
   const vertices = pipe(
     posts,
     map(([id, { title, tags, ...rest }]): [string, Vertex] => [
@@ -100,7 +100,7 @@ export const getGraph = cache(async (): Promise<Graph> => {
   const layout = layoutGraph({ vertices, edges })
 
   return { vertices, edges, layout }
-})
+}
 
 export type Graph = {
   vertices: Map<string, Vertex>

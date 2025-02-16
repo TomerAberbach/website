@@ -1,8 +1,6 @@
-import type { LoaderFunction } from 'react-router'
 import { useId } from 'react'
-import { first, get, pipe, values } from 'lfi'
+import { filter, first, flatMap, get, map, pipe, reduce, toArray } from 'lfi'
 import { includeKeys } from 'filter-obj'
-import { getMarkdownPosts, getTags } from '~/services/posts/index.server.ts'
 import {
   createMeta,
   useLoaderData,
@@ -10,19 +8,19 @@ import {
 } from '~/services/deserialize'
 import { serialize } from '~/services/serialize.server'
 import { getGraph } from '~/services/graph.server.ts'
-import type { Graph } from '~/services/graph.server.ts'
 import { TagsFilterForm } from '~/components/tags-filter-form.tsx'
 import GraphWidget from '~/components/graph-widget.tsx'
-import type { MarkdownPost } from '~/services/posts/types.ts'
 import {
   SITE_DESCRIPTION,
   SITE_TITLE_AND_AUTHOR,
   getMeta,
 } from '~/services/meta.ts'
 import { ErrorCrashView } from '~/components/error.tsx'
+import { getOrderedPosts } from '~/services/ordered.server'
+import type { MarkdownPost, Post } from '~/services/post.server'
 
 const HomePage = () => {
-  const { tags, graph } = useLoaderData<LoaderData>()
+  const { tags, graph } = useLoaderData<typeof loader>()
   const graphId = useId()
 
   return (
@@ -35,7 +33,7 @@ const HomePage = () => {
 
 export const ErrorBoundary = () => <ErrorCrashView error={useRouteError()} />
 
-export const meta = createMeta<LoaderData>(({ location, data }) =>
+export const meta = createMeta<typeof loader>(({ location, data }) =>
   getMeta(location, {
     title: SITE_TITLE_AND_AUTHOR,
     description: SITE_DESCRIPTION,
@@ -44,16 +42,13 @@ export const meta = createMeta<LoaderData>(({ location, data }) =>
   }),
 )
 
-export const loader: LoaderFunction = async () => {
-  const [tags, graph, latestPost] = await Promise.all([
-    getTags(),
-    getGraph(),
-    getLatestMarkdownPost(),
-  ])
-  return serialize<LoaderData>({
+export const loader = async () => {
+  const posts = await getOrderedPosts()
+  const [tags, graph] = await Promise.all([getTags(posts), getGraph(posts)])
+  return serialize({
     tags,
     graph,
-    latestPost: includeKeys(latestPost, [
+    latestPost: includeKeys(getLatestMarkdownPost(posts), [
       `id`,
       `title`,
       `tags`,
@@ -63,17 +58,23 @@ export const loader: LoaderFunction = async () => {
   })
 }
 
-const getLatestMarkdownPost = async () =>
-  pipe(await getMarkdownPosts(), values, first, get)
+const getTags = (posts: Map<string, Post>) =>
+  new Set(
+    pipe(
+      posts,
+      flatMap(([, { tags }]) => tags),
+      reduce(toArray()),
+    ).sort(),
+  )
 
-type LoaderData = {
-  tags: Set<string>
-  graph: Graph
-  latestPost: Pick<
-    MarkdownPost,
-    `id` | `title` | `tags` | `dates` | `minutesToRead`
-  >
-}
+const getLatestMarkdownPost = (posts: Map<string, Post>): MarkdownPost =>
+  pipe(
+    posts,
+    map(([, post]) => post),
+    filter(post => post.type === `markdown`),
+    first,
+    get,
+  )
 
 export const shouldRevalidate = () => false
 

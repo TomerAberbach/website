@@ -1,19 +1,16 @@
 import type { LoaderFunctionArgs } from 'react-router'
-import { map, pipe, reduce, toArray } from 'lfi'
+import { filter, map, pipe, reduce, toArray, toMap } from 'lfi'
 import { isRouteErrorResponse } from 'react-router'
 import { useId } from 'react'
 import { Provider as BalanceProvider, Balancer } from 'react-wrap-balancer'
 import { invariant } from '@epic-web/invariant'
 import katexStylesPath from 'katex/dist/katex.min.css?url'
 import { includeKeys } from 'filter-obj'
+import { findBestMatch } from 'string-similarity'
 import arrowRightSvgPath from '~/private/media/arrow-right.svg'
 import arrowUpRightSvgPath from '~/private/media/arrow-up-right.svg'
 import arrowUpLeftSvgPath from '~/private/media/arrow-up-left.svg'
 import arrowUpSvgPath from '~/private/media/arrow-up.svg'
-import {
-  findBestMarkdownPostMatch,
-  getMarkdownPosts,
-} from '~/services/posts/index.server.ts'
 import {
   createMeta,
   useLoaderData,
@@ -22,7 +19,6 @@ import {
 import { serialize } from '~/services/serialize.server'
 import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
-import type { Post } from '~/services/posts/types.ts'
 import Tooltip from '~/components/tooltip.tsx'
 import {
   formatDateForDisplay,
@@ -31,6 +27,11 @@ import {
 } from '~/services/format.ts'
 import { getMeta } from '~/services/meta.ts'
 import { ErrorCrashView, ErrorView } from '~/components/error.tsx'
+import { getPost } from '~/services/post.server'
+import type { Post } from '~/services/post.server'
+import { getPostKeys } from '~/services/post-keys.server'
+import type { PostKey } from '~/services/post-keys.server'
+import { getOrderedMarkdownPosts } from '~/services/ordered.server'
 
 const PostPage = () => {
   const suggestEditId = useId()
@@ -42,9 +43,9 @@ const PostPage = () => {
     dates,
     referencedBy,
     minutesToRead,
-    content,
-    previousPost,
-    nextPost,
+    html,
+    previous: previousPost,
+    next: nextPost,
   } = post
 
   return (
@@ -86,7 +87,7 @@ const PostPage = () => {
           )}
         </ul>
       </header>
-      <Prose html={content} />
+      <Prose html={html} />
       {(previousPost ?? nextPost) ? (
         <footer className='not-prose mt-8 flex items-center font-medium text-gray-700'>
           <BalanceProvider>
@@ -258,34 +259,50 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
   )
 
-  const post = (await getMarkdownPosts()).get(postId)
-  if (post) {
-    return serialize({
-      post: includeKeys(post, [
+  const postKeys = pipe(
+    await getPostKeys(),
+    filter(([, key]) => key.type === `markdown`),
+    reduce(toMap()),
+  )
+  const postKey = postKeys.get(postId)
+  if (!postKey) {
+    const bestPostMatch = await getPost(findBestPostMatchKey(postId, postKeys))
+    throw serialize<ErrorBoundaryData>(
+      { didYouMeanPost: includeKeys(bestPostMatch, [`id`, `title`]) },
+      { status: 404 },
+    )
+  }
+
+  const posts = await getOrderedMarkdownPosts()
+  const post = posts.get(postId)
+  invariant(post, `Expected \`${postId}\` to be a \`markdown\` post.`)
+
+  return serialize({
+    post: {
+      ...includeKeys(post, [
         `id`,
         `title`,
         `tags`,
         `dates`,
         `referencedBy`,
         `minutesToRead`,
-        `content`,
+        `html`,
         `description`,
         `features`,
-        `previousPost`,
-        `nextPost`,
-      ]),
-    })
-  }
-
-  throw serialize<ErrorBoundaryData>(
-    {
-      didYouMeanPost: includeKeys(await findBestMarkdownPostMatch(postId), [
-        `id`,
-        `title`,
+        `previous`,
+        `next`,
       ]),
     },
-    { status: 404 },
-  )
+  })
+}
+
+const findBestPostMatchKey = (
+  id: string,
+  keys: Map<string, PostKey>,
+): PostKey => {
+  const ids = [...keys.keys()]
+  const { bestMatchIndex } = findBestMatch(id.toLowerCase(), ids)
+  return keys.get(ids[bestMatchIndex]!)!
 }
 
 type ErrorBoundaryData = { didYouMeanPost: Pick<Post, `id` | `title`> }
