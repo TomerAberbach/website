@@ -37,6 +37,7 @@ export const renderThumbnail = async (post: MarkdownPost) => {
         input: thumbnailContent,
       },
     ])
+    .png({ compressionLevel: 9, effort: 10 })
     .toBuffer()
 }
 
