@@ -158,7 +158,8 @@
     ],
     "patchedDependencies": {
       "glyphhanger@5.0.0": "patches/glyphhanger@5.0.0.patch",
-      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch"
+      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch",
+      "@react-router/dev": "patches/@react-router__dev.patch"
     }
   }
 }

@@ -1,5 +1,5 @@
 import type { Config } from '@react-router/dev/config'
-import { filter, map, pipe } from 'lfi'
+import { filter, flatMap, pipe } from 'lfi'
 import { getPostKeys } from './src/services/post-keys.server.ts'
 
 export default {
@@ -9,7 +9,7 @@ export default {
     ...pipe(
       await getPostKeys(),
       filter(([, key]) => key.type === `markdown`),
-      map(([id]) => `/${id}`),
+      flatMap(([id]) => [`/${id}`, `/${id}.png`]),
     ),
   ],
 } satisfies Config
