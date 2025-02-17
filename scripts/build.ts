@@ -30,4 +30,5 @@ await $({
 
 // Rebuild with new fonts and minify
 await $`react-router build`
+await $`imagemin build/client/assets -o build/client/assets`
 await $`find build/client -name \\*.js -exec terser --module -c keep_fargs=false -o {} -- {} \\;`
