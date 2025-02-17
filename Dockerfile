@@ -3,7 +3,7 @@
 ARG NODE_VERSION=23.7.0
 FROM node:${NODE_VERSION} AS node
 
-ARG PNPM_VERSION=10.2.1
+ARG PNPM_VERSION=10.4.1
 RUN npm install -g pnpm@$PNPM_VERSION
 
 # For puppeteer and playwright
