@@ -36,13 +36,15 @@
 }
 
 @theme {
-  --font-sans: Kantumruy Pro, Kantumruy Pro Fallback, ui-sans-serif, system-ui,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
-    Noto Color Emoji;
-  --font-system-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+  --font-sans:
+    Kantumruy Pro, Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --font-system-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
+    Courier New, monospace;
+  --font-mono:
+    dm, dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     Liberation Mono, Courier New, monospace;
-  --font-mono: dm, dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, Liberation Mono, Courier New, monospace;
 
   --font-weight-*: initial;
   --font-weight-hairline: 100;
@@ -132,10 +134,12 @@
 
 @layer utilities {
   .js:not(.fonts) {
-    --font-sans: Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif,
+    --font-sans:
+      Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif,
       Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    --font-mono: dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco,
-      Consolas, Liberation Mono, Courier New, monospace;
+    --font-mono:
+      dm Fallback, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      Liberation Mono, Courier New, monospace;
   }
 
   .focus-ring {
@@ -143,7 +147,8 @@
   }
 
   .underlined {
-    background: linear-gradient(to right, #fbca07, #fbca07),
+    background:
+      linear-gradient(to right, #fbca07, #fbca07),
       linear-gradient(
         to right,
         var(--color-blue-500),
