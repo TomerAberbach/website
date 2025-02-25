@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useLocation } from 'react-router'
 import { InternalLink, Link } from './link.tsx'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import logoSvgPath from '~/private/media/logo.svg'
@@ -13,63 +14,79 @@ const Layout = ({ children }: { children: ReactNode }) => (
 
 export default Layout
 
-const Header = () => (
-  <header className='relative self-center'>
-    <Logo className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40' />
-    {/* Ensures that the width of the `header` element matches its contents. */}
-    <div className='invisible h-0 pl-2 text-2xl font-bold'>
-      {SITE_TITLE_AND_AUTHOR}
-    </div>
-    <InternalLink
-      href='/'
-      className='underlined absolute bottom-0 left-2 inline-block text-gray-800/90 focus:outline-hidden'
-    >
-      <h1 className='inline whitespace-nowrap text-2xl font-bold leading-none'>
+const Header = () => {
+  const homeHref = useHomeHref()
+  return (
+    <header className='relative self-center'>
+      <Logo className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40' />
+      {/* Ensures that the width of the `header` element matches its contents. */}
+      <div className='invisible h-0 pl-2 text-2xl font-bold'>
         {SITE_TITLE_AND_AUTHOR}
-      </h1>
-    </InternalLink>
-  </header>
-)
+      </div>
+      <InternalLink
+        href={homeHref}
+        className='underlined absolute bottom-0 left-2 inline-block text-gray-800/90 focus:outline-hidden'
+      >
+        <h1 className='inline whitespace-nowrap text-2xl font-bold leading-none'>
+          {SITE_TITLE_AND_AUTHOR}
+        </h1>
+      </InternalLink>
+    </header>
+  )
+}
 
-const Footer = () => (
-  <footer className='mx-auto flex flex-col items-center gap-y-3 text-xs text-gray-600'>
-    <div className='flex h-[70px] items-end'>
-      <p className='text-center'>
-        ©&nbsp;
-        <span className='relative inline-block'>
-          <Logo className='absolute -left-[0.125rem] bottom-[0.3125rem] -z-10 h-[70px] w-14' />
-          <InternalLink
-            href='/'
-            className='underlined font-semibold text-gray-800'
-          >
-            Tomer&nbsp;Aberbach
-          </InternalLink>
-        </span>
-        . All&nbsp;rights&nbsp;reserved.
-      </p>
-    </div>
-    <ul className='flex items-center gap-x-3'>
-      <li>
-        <GitHubIcon />
-      </li>
-      <li>
-        <SpotifyIcon />
-      </li>
-      <li>
-        <XIcon />
-      </li>
-      <li>
-        <LinkedInIcon />
-      </li>
-      <li>
-        <JsonFeedIcon />
-      </li>
-      <li>
-        <RssIcon />
-      </li>
-    </ul>
-  </footer>
-)
+const Footer = () => {
+  const homeHref = useHomeHref()
+  return (
+    <footer className='mx-auto flex flex-col items-center gap-y-3 text-xs text-gray-600'>
+      <div className='flex h-[70px] items-end'>
+        <p className='text-center'>
+          ©&nbsp;
+          <span className='relative inline-block'>
+            <Logo className='absolute -left-[0.125rem] bottom-[0.3125rem] -z-10 h-[70px] w-14' />
+            <InternalLink
+              href={homeHref}
+              className='underlined font-semibold text-gray-800'
+            >
+              Tomer&nbsp;Aberbach
+            </InternalLink>
+          </span>
+          . All&nbsp;rights&nbsp;reserved.
+        </p>
+      </div>
+      <ul className='flex items-center gap-x-3'>
+        <li>
+          <GitHubIcon />
+        </li>
+        <li>
+          <SpotifyIcon />
+        </li>
+        <li>
+          <XIcon />
+        </li>
+        <li>
+          <LinkedInIcon />
+        </li>
+        <li>
+          <JsonFeedIcon />
+        </li>
+        <li>
+          <RssIcon />
+        </li>
+      </ul>
+    </footer>
+  )
+}
+
+const useHomeHref = () => {
+  const location = useLocation()
+  const postId = location.pathname.slice(1)
+  if (!postId) {
+    return `/`
+  }
+
+  return `/?post=${encodeURIComponent(postId)}`
+}
 
 const Logo = ({ className }: { className: string }) => (
   <img src={logoSvgPath} aria-label='Palm tree' className={className} />

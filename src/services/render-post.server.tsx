@@ -39,11 +39,11 @@ const createHeading =
       { id, className: clsx(className, `group relative`), ...rest },
       <Link
         href={`#${id}`}
-        className='absolute top-1/2 h-6 w-6 -translate-x-[1.85rem] -translate-y-1/2 opacity-0 focus:opacity-100 group-hover:opacity-100'
+        className='absolute top-1/2 size-6 -translate-x-[1.85rem] -translate-y-1/2 opacity-0 focus:opacity-100 group-hover:opacity-100'
       >
         <img
           src={linkSvgPath}
-          className='not-prose m-0 h-6 w-6'
+          className='not-prose m-0 size-6'
           // eslint-disable-next-line react/jsx-no-useless-fragment
           alt={`${renderToString(<>{children}</>)} permalink`}
         />
@@ -68,9 +68,9 @@ const Anchor: Components[`a`] = ({
         <a
           {...rest}
           aria-labelledby={tooltipId}
-          className='inline-block h-4 w-4 align-text-top no-underline hover:ring-3'
+          className='inline-block size-4 align-text-top no-underline hover:ring-3'
         >
-          <img src={backToContentSvgPath} alt='' className='m-0 h-4 w-4' />
+          <img src={backToContentSvgPath} alt='' className='m-0 size-4' />
         </a>
       )}
     </Tooltip>
@@ -114,7 +114,7 @@ const Div: Components[`div`] = ({
         src={String(admonitionIconUrl)}
         alt=''
         className={clsx(
-          `not-prose absolute left-0 top-0 m-0 box-content h-9 w-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4`,
+          `not-prose absolute left-0 top-0 m-0 box-content size-9 -translate-x-1/2 -translate-y-[45%] rounded-full border-4`,
           imgColorClass,
         )}
       />

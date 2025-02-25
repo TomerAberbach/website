@@ -40,10 +40,10 @@ export const LogicalOperatorRadioButtonGroup = ({
                   name='op'
                   value={currentLogicalOperator}
                   checked={checked}
-                  className='focus-ring peer absolute left-0 top-0 h-full w-full cursor-pointer appearance-none border-2 border-gray-300 checked:z-10 checked:border-blue-600 hover:z-20 hover:ring-3 focus-visible:z-20 group-first:rounded-l-xl group-last:rounded-r-xl'
+                  className='focus-ring peer absolute left-0 top-0 size-full cursor-pointer appearance-none border-2 border-gray-300 checked:z-10 checked:border-blue-600 hover:z-20 hover:ring-3 focus-visible:z-20 group-first:rounded-l-xl group-last:rounded-r-xl'
                   onChange={handleLogicalOperatorChange}
                 />
-                <div className='h-full w-full bg-white p-2 text-gray-500 transition group-first:rounded-l-xl group-last:rounded-r-xl peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
+                <div className='size-full bg-white p-2 text-gray-500 transition group-first:rounded-l-xl group-last:rounded-r-xl peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
                   {currentLogicalOperator}
                 </div>
               </label>
@@ -71,7 +71,7 @@ const QuestionMarkCircleIcon = () => (
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 24 24'
     fill='currentColor'
-    className='h-5 w-5 lg:h-6 lg:w-6'
+    className='size-5 lg:size-6'
     aria-hidden
   >
     <path

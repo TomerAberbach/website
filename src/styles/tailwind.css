@@ -133,6 +133,15 @@
 @custom-variant js (.js &);
 
 @layer utilities {
+  .fade-y {
+    mask-image: linear-gradient(
+      transparent,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
   .js:not(.fonts) {
     --font-sans:
       Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif,
