@@ -1,9 +1,9 @@
 import { beforeEach, expect, test, vitest } from 'vitest'
 
-const originalWindow = window
+const originalDocument = document
 beforeEach(() => {
   // @ts-expect-error Simulating the server
-  delete global.window
+  delete global.document
   delete process.env.SITE_URL
   vitest.resetModules()
 })
@@ -26,8 +26,8 @@ test(`SITE_URL is set based on the environment variable on the server when it is
 })
 
 test(`SITE_URL is set based on the current href in the browser`, async () => {
-  global.window = Object.create(originalWindow) as typeof window
-  Object.defineProperty(global.window, `location`, {
+  global.document = Object.create(originalDocument) as typeof document
+  Object.defineProperty(global.document, `location`, {
     value: { href: FULL_URL },
   })
 
