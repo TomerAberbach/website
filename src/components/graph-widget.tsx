@@ -138,6 +138,15 @@ const usePanning = ({
     ],
   )
 
+  const [paused, setPaused] = useState(false)
+  useEffect(() => {
+    if (paused) {
+      panzoomRef.current?.pause()
+    } else {
+      panzoomRef.current?.resume()
+    }
+  }, [paused])
+
   useIsomorphicLayoutEffect(() => {
     const panningElement = panningElementRef.current!
 
@@ -156,6 +165,12 @@ const usePanning = ({
     panzoomInstance.on(`panstart`, () => setPanning(true))
     panzoomInstance.on(`panend`, () => setPanning(false))
 
+    const pause = () => panzoomInstance.pause()
+    panningElement.addEventListener(`touchstart`, pause)
+    const unpause = () => panzoomInstance.pause()
+    panningElement.addEventListener(`touchcancel`, unpause)
+    panningElement.addEventListener(`touchend`, unpause)
+
     // Decrease the probability of a flicker on load.
     requestAnimationFrame(() => {
       const { x, y } = getPanzoomPosition(selectedVertexId)
@@ -166,6 +181,10 @@ const usePanning = ({
 
     panzoomRef.current = panzoomInstance
     return () => {
+      panningElement.removeEventListener(`touchstart`, pause)
+      panningElement.removeEventListener(`touchcancel`, unpause)
+      panningElement.removeEventListener(`touchend`, unpause)
+
       panzoomInstance.dispose()
       panzoomRef.current = null
     }
@@ -189,15 +208,6 @@ const usePanning = ({
       panzoom.smoothMoveTo(x, y)
     }
   }, [getPanzoomPosition, selectedVertexId, previousSelectedVertexId])
-
-  const [paused, setPaused] = useState(false)
-  useEffect(() => {
-    if (paused) {
-      panzoomRef.current?.pause()
-    } else {
-      panzoomRef.current?.resume()
-    }
-  }, [paused])
 
   const panningState = paused ? `paused` : panning ? `panning` : `idle`
   return [panningState, setPaused] as const
