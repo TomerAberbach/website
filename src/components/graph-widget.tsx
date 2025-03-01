@@ -499,8 +499,6 @@ const LinkVertex = ({
       // Prevent dragging vertex text, which conflicts with graph panning.
       onMouseDown={preventDefault}
       onMouseMove={preventDefault}
-      onTouchStart={preventDefault}
-      onTouchMove={preventDefault}
       className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring-3 cursor-pointer'
     >
       {children}
