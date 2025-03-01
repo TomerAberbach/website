@@ -91,7 +91,7 @@ const TagsFilterStyle = ({
           }
 
           ${selector} > :is(a, button) {
-            display: none;
+            visibility: hidden;
           }
 
           ${selector} > :not(:is(a, button, dialog)) {
