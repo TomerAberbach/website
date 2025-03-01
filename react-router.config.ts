@@ -9,11 +9,7 @@ export default {
     ...pipe(
       await getPostKeys(),
       filter(([, key]) => key.type === `markdown`),
-      flatMap(([id]) => [
-        `/${id}`,
-        // TODO: Add back once fonts are fixed.
-        // `/${id}.png`
-      ]),
+      flatMap(([id]) => [`/${id}`, `/${id}.png`]),
     ),
   ],
 } satisfies Config
