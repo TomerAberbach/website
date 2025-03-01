@@ -6,11 +6,6 @@ kill_timeout = "5s"
 [experimental]
 auto_rollback = true
 
-[env]
-FONTCONFIG_PATH = "private/fonts"
-PANGOCAIRO_BACKEND = "fontconfig"
-SITE_URL = "https://tomeraberba.ch"
-
 [[services]]
 protocol = "tcp"
 internal_port = 3000

@@ -58,5 +58,8 @@ COPY --from=build /app/build /app/build
 COPY --from=build /app/private /app/private
 COPY --from=build /app/public /app/public
 COPY --from=build /app/server.ts /app/server.ts
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+  FONTCONFIG_PATH=private/fonts \
+  PANGOCAIRO_BACKEND=fontconfig \
+  SITE_URL=https://tomeraberba.ch
 CMD ["pnpm", "run", "start"]
