@@ -22,6 +22,8 @@ import type {
   Vertex as GraphVertex,
   Position,
 } from '~/services/graph.server.ts'
+import usePrevious from '~/hooks/use-previous.ts'
+import useHasMounted from '~/hooks/use-has-mounted.ts'
 
 const GraphWidget = ({
   id,
@@ -34,12 +36,14 @@ const GraphWidget = ({
 }) => {
   const {
     layout: {
+      positions,
       boundingBox: { width, height },
     },
   } = graph
 
   const panningElementRef = useRef<HTMLDivElement>(null)
   const viewportElementRef = useRef<HTMLDivElement>(null)
+  const hasMounted = useHasMounted()
   const [panningState, setPanningPaused] = usePanning({
     graph,
     selectedVertexId,
@@ -47,6 +51,7 @@ const GraphWidget = ({
     viewportElementRef,
   })
 
+  const selectedVertexPosition = positions.get(selectedVertexId)!
   return (
     <div
       ref={viewportElementRef}
@@ -71,6 +76,16 @@ const GraphWidget = ({
             minWidth: 0.75 * width,
             maxWidth: width,
             aspectRatio: `${width} / ${height}`,
+            // Before panzoom loads, "fake" the centering in the user's viewport
+            // by shifting the graph based on the selected vertex's relative
+            // position.
+            ...(!hasMounted && {
+              left: `50vw`,
+              top: `40vh`,
+              transform: `translate(${
+                (-100 * selectedVertexPosition.x) / width
+              }%, ${(-100 * selectedVertexPosition.y) / height}%)`,
+            }),
           }}
         >
           <Edges graph={graph} />
@@ -92,8 +107,36 @@ const usePanning = ({
   panningElementRef: RefObject<HTMLElement | null>
   viewportElementRef: RefObject<HTMLElement | null>
 }) => {
+  const { positions, boundingBox } = graph.layout
   const panzoomRef = useRef<PanZoom>(null)
   const [panning, setPanning] = useState(false)
+
+  const getPanzoomPosition = useCallback(
+    (vertexId: string): Position => {
+      const { x, y } = positions.get(vertexId)!
+      const ratioX = x / boundingBox.width
+      const ratioY = y / boundingBox.height
+
+      const { offsetWidth: viewportWidth, offsetHeight: viewportHeight } =
+        viewportElementRef.current!
+      const viewportCenterX = viewportWidth / 2
+      const viewportCenterY = viewportHeight / 2
+
+      const { offsetWidth: contentWidth, offsetHeight: contentHeight } =
+        panningElementRef.current!
+
+      const panzoomX = -(ratioX * contentWidth - viewportCenterX)
+      const panzoomY = -(ratioY * contentHeight - viewportCenterY)
+      return { x: panzoomX, y: panzoomY }
+    },
+    [
+      boundingBox.width,
+      boundingBox.height,
+      positions,
+      panningElementRef,
+      viewportElementRef,
+    ],
+  )
 
   useIsomorphicLayoutEffect(() => {
     const panningElement = panningElementRef.current!
@@ -111,6 +154,9 @@ const usePanning = ({
     panzoomInstance.on(`panstart`, () => setPanning(true))
     panzoomInstance.on(`panend`, () => setPanning(false))
 
+    const { x, y } = getPanzoomPosition(selectedVertexId)
+    panzoomInstance.moveTo(x, y)
+
     panzoomRef.current = panzoomInstance
     return () => {
       panzoomInstance.dispose()
@@ -118,46 +164,24 @@ const usePanning = ({
     }
   }, [panningElementRef])
 
-  const { positions, boundingBox } = graph.layout
-  const [hasMounted, setHasMounted] = useState(false)
   const previousSelectedVertexId = usePrevious(selectedVertexId)
-
   useIsomorphicLayoutEffect(() => {
-    if (selectedVertexId === previousSelectedVertexId) {
+    if (
+      previousSelectedVertexId === null ||
+      selectedVertexId === previousSelectedVertexId
+    ) {
       return
     }
 
-    const { x, y } = positions.get(selectedVertexId)!
-    const ratioX = x / boundingBox.width
-    const ratioY = y / boundingBox.height
-
-    const { offsetWidth: viewportWidth, offsetHeight: viewportHeight } =
-      viewportElementRef.current!
-    const viewportCenterX = viewportWidth / 2
-    const viewportCenterY = viewportHeight / 2
-
-    const { offsetWidth: contentWidth, offsetHeight: contentHeight } =
-      panningElementRef.current!
-
-    const panzoomX = -(ratioX * contentWidth - viewportCenterX)
-    const panzoomY = -(ratioY * contentHeight - viewportCenterY)
+    const { x, y } = getPanzoomPosition(selectedVertexId)
     const panzoom = panzoomRef.current!
 
-    if (!hasMounted || window.matchMedia(`(prefers-reduced-motion)`).matches) {
-      panzoom.moveTo(panzoomX, panzoomY)
+    if (window.matchMedia(`(prefers-reduced-motion)`).matches) {
+      panzoom.moveTo(x, y)
     } else {
-      panzoom.smoothMoveTo(panzoomX, panzoomY)
+      panzoom.smoothMoveTo(x, y)
     }
-
-    setHasMounted(true)
-  }, [
-    hasMounted,
-    positions,
-    boundingBox,
-    selectedVertexId,
-    panningElementRef,
-    viewportElementRef,
-  ])
+  }, [getPanzoomPosition, selectedVertexId, previousSelectedVertexId])
 
   const [paused, setPaused] = useState(false)
   useEffect(() => {
@@ -170,14 +194,6 @@ const usePanning = ({
 
   const panningState = paused ? `paused` : panning ? `panning` : `idle`
   return [panningState, setPaused] as const
-}
-
-const usePrevious = <Value,>(value: Value): Value | null => {
-  const ref = useRef<Value>(null)
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
 }
 
 const useIsomorphicLayoutEffect =
