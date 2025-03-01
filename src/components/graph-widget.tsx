@@ -147,6 +147,8 @@ const usePanning = ({
       maxZoom: 1,
       // Ignore mouse wheel for scrolling.
       beforeWheel: () => true,
+      // Allow people to click links on mobile.
+      onTouch: () => false,
       // Enforce bounds.
       bounds: true,
       boundsPadding: 0.5,
@@ -154,8 +156,13 @@ const usePanning = ({
     panzoomInstance.on(`panstart`, () => setPanning(true))
     panzoomInstance.on(`panend`, () => setPanning(false))
 
-    const { x, y } = getPanzoomPosition(selectedVertexId)
-    panzoomInstance.moveTo(x, y)
+    // Decrease the probability of a flicker on load.
+    requestAnimationFrame(() => {
+      const { x, y } = getPanzoomPosition(selectedVertexId)
+      requestAnimationFrame(() => {
+        panzoomInstance.moveTo(x, y)
+      })
+    })
 
     panzoomRef.current = panzoomInstance
     return () => {
