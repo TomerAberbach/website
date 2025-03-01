@@ -181,7 +181,7 @@ const usePrevious = <Value,>(value: Value): Value | null => {
 }
 
 const useIsomorphicLayoutEffect =
-  typeof window === `undefined` ? useEffect : useLayoutEffect
+  typeof document === `undefined` ? useEffect : useLayoutEffect
 
 const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
   const maxWeight = pipe(

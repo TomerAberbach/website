@@ -130,7 +130,6 @@
 }
 
 @custom-variant child (& > *);
-@custom-variant js (.js &);
 
 @layer utilities {
   .fade-y {
@@ -142,7 +141,7 @@
     );
   }
 
-  .js:not(.fonts) {
+  html:not(.fonts) {
     --font-sans:
       Kantumruy Pro Fallback, ui-sans-serif, system-ui, sans-serif,
       Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;

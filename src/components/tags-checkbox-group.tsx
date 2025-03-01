@@ -64,21 +64,10 @@ export const TagsCheckboxGroup = ({
                 <button
                   aria-labelledby={tooltipId}
                   type='button'
-                  className='focus-ring hidden cursor-pointer aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring-3 active:bg-blue-200 js:block'
+                  className='focus-ring cursor-pointer aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring-3 active:bg-blue-200'
                   onClick={handleReset}
                 >
                   <ResetIcon />
-                </button>
-              )}
-            </Tooltip>
-            <Tooltip content='Search'>
-              {tooltipId => (
-                <button
-                  aria-labelledby={tooltipId}
-                  type='submit'
-                  className='focus-ring cursor-pointer block aspect-square h-full rounded-full border-2 border-gray-300 bg-white p-2 text-sm font-medium hover:bg-blue-100 hover:ring-3 active:bg-blue-200 js:hidden'
-                >
-                  <SearchIcon />
                 </button>
               )}
             </Tooltip>
@@ -99,7 +88,7 @@ const ResetIcon = () => (
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 20 20'
     fill='currentColor'
-    className='h-full stroke-gray-500 stroke-[1.5]'
+    className='stroke-gray-500 stroke-[1.5]'
     aria-hidden
   >
     <path

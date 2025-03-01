@@ -21,9 +21,9 @@ import logoSvgPath from '~/private/media/logo.svg'
 const App = () => (
   <html
     // Ignore the mismatch between server and client for the `className`
-    // attribute because it's expected when JS is enabled. className` will be
-    // set to `js` before hydration happens (this needs to happen early to
-    // prevent a "flicker" of non-JS styles).
+    // attribute because it's expected when JS is enabled. `className` may be
+    // set to `fonts` before hydration happens (this needs to happen early to
+    // prevent a "flicker").
     className={
       typeof document === `undefined` ? `` : document.documentElement.className
     }
@@ -67,16 +67,14 @@ const HeadInlineScript = () => {
   return (
     <script
       dangerouslySetInnerHTML={{
-        __html:
-          `document.documentElement.classList.add('js');` +
-          `Promise.all([${pipe(
-            entries(fonts),
-            flatMap(([fontFamily, styles]) =>
-              map(style => `${style} 1rem ${fontFamily}`.trim(), styles),
-            ),
-            map(font => `document.fonts.load('${font}')`),
-            join(`,`),
-          )}]).then(()=>document.documentElement.classList.add('fonts'))`,
+        __html: `Promise.all([${pipe(
+          entries(fonts),
+          flatMap(([fontFamily, styles]) =>
+            map(style => `${style} 1rem ${fontFamily}`.trim(), styles),
+          ),
+          map(font => `document.fonts.load('${font}')`),
+          join(`,`),
+        )}]).then(()=>document.documentElement.classList.add('fonts'))`,
       }}
     />
   )
