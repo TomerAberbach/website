@@ -167,9 +167,9 @@ const usePanning = ({
 
     const pause = () => panzoomInstance.pause()
     panningElement.addEventListener(`touchstart`, pause)
-    const unpause = () => panzoomInstance.pause()
-    panningElement.addEventListener(`touchcancel`, unpause)
-    panningElement.addEventListener(`touchend`, unpause)
+    const resume = () => panzoomInstance.resume()
+    panningElement.addEventListener(`touchcancel`, resume)
+    panningElement.addEventListener(`touchend`, resume)
 
     // Decrease the probability of a flicker on load.
     requestAnimationFrame(() => {
@@ -182,8 +182,8 @@ const usePanning = ({
     panzoomRef.current = panzoomInstance
     return () => {
       panningElement.removeEventListener(`touchstart`, pause)
-      panningElement.removeEventListener(`touchcancel`, unpause)
-      panningElement.removeEventListener(`touchend`, unpause)
+      panningElement.removeEventListener(`touchcancel`, resume)
+      panningElement.removeEventListener(`touchend`, resume)
 
       panzoomInstance.dispose()
       panzoomRef.current = null
