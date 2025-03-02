@@ -151,7 +151,7 @@
   }
 
   .focus-ring {
-    @apply outline-hidden ring-blue-300 ring-offset-2 transition duration-200 focus-visible:ring-3;
+    @apply ring-blue-300 ring-offset-2 outline-hidden transition duration-200 focus-visible:ring-3;
   }
 
   .underlined {
@@ -198,7 +198,7 @@
     :where(:not(pre) > code):not(
         :where([class~='not-prose'], [class~='not-prose'] *)
       ) {
-      @apply bg-gray-100 rounded-md;
+      @apply rounded-md bg-gray-100;
       padding: 0.125em 0.25em;
     }
 

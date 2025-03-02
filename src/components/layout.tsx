@@ -27,7 +27,7 @@ const Header = () => {
         href={homeHref}
         className='underlined absolute bottom-0 left-2 inline-block text-gray-800/90 focus:outline-hidden'
       >
-        <h1 className='inline whitespace-nowrap text-2xl font-bold leading-none'>
+        <h1 className='inline text-2xl leading-none font-bold whitespace-nowrap'>
           {SITE_TITLE_AND_AUTHOR}
         </h1>
       </InternalLink>
@@ -43,7 +43,7 @@ const Footer = () => {
         <p className='text-center'>
           ©&nbsp;
           <span className='relative inline-block'>
-            <Logo className='absolute -left-[0.125rem] bottom-[0.3125rem] -z-10 h-[70px] w-14' />
+            <Logo className='absolute bottom-[0.3125rem] -left-[0.125rem] -z-10 h-[70px] w-14' />
             <InternalLink
               href={homeHref}
               className='underlined font-semibold text-gray-800'

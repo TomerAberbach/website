@@ -52,7 +52,7 @@ const PostPage = () => {
     <article className='prose mx-auto w-[80ch] max-w-full text-base'>
       <header>
         <h1 className='!m-0'>{title}</h1>
-        <p className='!m-0 !-ml-[1ch] !mt-1.5 border-l-[1ch] border-white text-gray-600'>
+        <p className='!m-0 !mt-1.5 !-ml-[1ch] border-l-[1ch] border-white text-gray-600'>
           <span className='mr-[1ch] inline-block whitespace-nowrap'>
             <Dates dates={dates} />
           </span>
@@ -185,9 +185,9 @@ const Date = ({ date }: { date: Date }) => (
 const Tag = ({ tag }: { tag: string }) => (
   <InternalLink
     href={`/?tags=${encodeURIComponent(tag)}`}
-    className='relative block rounded-2xl p-2.5 font-medium leading-none hover:bg-gray-50 hover:ring-3'
+    className='relative block rounded-2xl p-2.5 leading-none font-medium hover:bg-gray-50 hover:ring-3'
   >
-    <div className='absolute left-0 top-0 size-full rounded-2xl border-2 border-gray-300' />
+    <div className='absolute top-0 left-0 size-full rounded-2xl border-2 border-gray-300' />
     <span className='text-gray-600'>{tag}</span>
   </InternalLink>
 )

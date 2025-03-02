@@ -27,13 +27,15 @@ const HomePage = () => {
   const [selectedPostId, setSelectedPostId] = useSelectedPostId(postIds)
 
   return (
-    <div className='flex flex-1 flex-col gap-8 sm:gap-y-12 md:gap-y-16'>
-      <TagsFilterForm targetId={graphId} tags={tags} />
-      <PostSwitcher
-        selectedPostId={selectedPostId}
-        setSelectedPostId={setSelectedPostId}
-        graph={graph}
-      />
+    <div className='flex flex-1 flex-col gap-8 sm:gap-12 md:gap-16'>
+      <div className='flex flex-col gap-10 sm:gap-14 md:gap-18'>
+        <TagsFilterForm targetId={graphId} tags={tags} />
+        <PostSwitcher
+          selectedPostId={selectedPostId}
+          setSelectedPostId={setSelectedPostId}
+          graph={graph}
+        />
+      </div>
       <GraphWidget
         id={graphId}
         graph={graph}

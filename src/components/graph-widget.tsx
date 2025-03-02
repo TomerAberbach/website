@@ -56,7 +56,7 @@ const GraphWidget = ({
     <div
       ref={viewportElementRef}
       className={clsx(
-        `overflow-hidden w-screen mx-[calc(50%-50vw)] fade-y h-[80vh] m-auto`,
+        `fade-y m-auto mx-[calc(50%-50vw)] h-[60vh] w-screen overflow-hidden`,
         panningState !== `paused` && `cursor-grab active:cursor-grabbing`,
       )}
     >
@@ -81,7 +81,7 @@ const GraphWidget = ({
             // position.
             ...(!hasMounted && {
               left: `50vw`,
-              top: `40vh`,
+              top: `30vh`,
               transform: `translate(${
                 (-100 * selectedVertexPosition.x) / width
               }%, ${(-100 * selectedVertexPosition.y) / height}%)`,
@@ -412,7 +412,7 @@ const Vertex = ({
   const labelNode = (
     <span
       className={clsx(
-        `break-words box-decoration-clone py-[0.3em] opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 group-hover/vertex:opacity-90 sm:py-[0.25em]`,
+        `box-decoration-clone py-[0.3em] break-words opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 group-hover/vertex:opacity-90 sm:py-[0.25em]`,
         vertex.type === `internal`
           ? `bg-blue-200 shadow-blue-200 group-hover/link:bg-blue-300 group-hover/link:shadow-blue-300 group-focus-visible/link:bg-blue-300 group-focus-visible/link:shadow-blue-300`
           : `group-odd/vertex:bg-yellow-100 group-odd/vertex:shadow-yellow-100 group-even/vertex:bg-orange-200 group-even/vertex:shadow-orange-200 group-odd/vertex:group-hover/link:bg-yellow-200 group-odd/vertex:group-hover/link:shadow-yellow-200 group-even/vertex:group-hover/link:bg-orange-300 group-even/vertex:group-hover/link:shadow-orange-300 group-odd/vertex:group-focus-visible/link:bg-yellow-200 group-odd/vertex:group-focus-visible/link:shadow-yellow-200 group-even/vertex:group-focus-visible/link:bg-orange-300 group-even/vertex:group-focus-visible/link:shadow-orange-300`,
@@ -499,7 +499,7 @@ const LinkVertex = ({
       // Prevent dragging vertex text, which conflicts with graph panning.
       onMouseDown={preventDefault}
       onMouseMove={preventDefault}
-      className='group/link absolute inset-0 rounded-full ring-offset-0 hover:ring-3 cursor-pointer'
+      className='group/link absolute inset-0 cursor-pointer rounded-full ring-offset-0 hover:ring-3'
     >
       {children}
     </Link>
@@ -532,14 +532,14 @@ const DialogVertex = ({
     <>
       <button
         type='button'
-        className='group/link focus-ring absolute inset-0 rounded-full ring-offset-0 hover:ring-3 cursor-pointer'
+        className='group/link focus-ring absolute inset-0 cursor-pointer rounded-full ring-offset-0 hover:ring-3'
         onClick={openDialog}
       >
         {children}
       </button>
       <dialog
         ref={dialogElementRef}
-        className='rounded-lg bg-white p-0 shadow-xl m-auto'
+        className='m-auto rounded-lg bg-white p-0 shadow-xl'
         onClose={resumePanning}
       >
         <div className='m-6 inline-block'>
@@ -548,10 +548,10 @@ const DialogVertex = ({
               Links to <em>{label}</em>:
             </h3>
             <div className='ml-6 w-6' />
-            <form method='dialog' className='sticky right-6 top-0'>
+            <form method='dialog' className='sticky top-0 right-6'>
               <button
                 type='submit'
-                className='focus-ring hover:ring-3 cursor-pointer'
+                className='focus-ring cursor-pointer hover:ring-3'
               >
                 <img src={closeSvgPath} alt='Close' className='size-6' />
               </button>

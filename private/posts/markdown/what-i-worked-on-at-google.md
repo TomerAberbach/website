@@ -7,13 +7,13 @@ tags:
     'docs',
     'drawings',
     'drive',
+    'engineering',
     'google',
     'markdown',
     'resume',
     'sheets',
     'sites',
     'slides',
-    'software engineering',
   ]
 dates:
   published: 2023-04-23

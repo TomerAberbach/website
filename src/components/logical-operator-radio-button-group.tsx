@@ -25,25 +25,25 @@ export const LogicalOperatorRadioButtonGroup = ({
 
   return (
     <div className='flex items-center gap-1.5'>
-      <fieldset aria-describedby={tooltipId}>
+      <fieldset aria-describedby={tooltipId} className='h-full'>
         <legend className='sr-only'>Logical operator</legend>
-        <div className='flex -space-x-[2px] rounded-2xl'>
+        <div className='flex h-full -space-x-[2px] rounded-2xl'>
           {LOGICAL_OPERATORS.map(currentLogicalOperator => {
             const checked = currentLogicalOperator === logicalOperator
             return (
               <label
                 key={currentLogicalOperator}
-                className='group relative text-center font-mono font-medium leading-none first:rounded-l-xl last:rounded-r-xl'
+                className='group relative text-center font-mono leading-none font-medium first:rounded-l-xl last:rounded-r-xl'
               >
                 <input
                   type='radio'
                   name='op'
                   value={currentLogicalOperator}
                   checked={checked}
-                  className='focus-ring peer absolute left-0 top-0 size-full cursor-pointer appearance-none border-2 border-gray-300 checked:z-10 checked:border-blue-600 hover:z-20 hover:ring-3 focus-visible:z-20 group-first:rounded-l-xl group-last:rounded-r-xl'
+                  className='focus-ring peer absolute top-0 left-0 size-full cursor-pointer appearance-none border-2 border-gray-300 group-first:rounded-l-xl group-last:rounded-r-xl checked:z-10 checked:border-blue-600 hover:z-20 hover:ring-3 focus-visible:z-20'
                   onChange={handleLogicalOperatorChange}
                 />
-                <div className='size-full bg-white p-2 text-gray-500 transition group-first:rounded-l-xl group-last:rounded-r-xl peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
+                <div className='flex size-full items-center bg-white p-2 text-gray-500 transition group-first:rounded-l-xl group-last:rounded-r-xl peer-checked:text-blue-700 peer-hover:bg-blue-50 peer-active:bg-blue-100'>
                   {currentLogicalOperator}
                 </div>
               </label>

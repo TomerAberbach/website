@@ -35,8 +35,8 @@ export const PostSwitcher = ({
   }, [nextVertex, setSelectedPostId])
 
   return (
-    <div className='flex items-center gap-3 justify-between h-20 md:h-12'>
-      <div className='ml-auto has-[:disabled]:invisible flex items-center'>
+    <div className='flex h-20 items-center justify-between gap-3 md:h-12'>
+      <div className='ml-auto flex items-center has-[:disabled]:invisible'>
         <Tooltip content='Previous post'>
           {tooltipId => (
             <button
@@ -46,23 +46,23 @@ export const PostSwitcher = ({
               onClick={selectPreviousPost}
               aria-labelledby={tooltipId}
               disabled={!previousVertex}
-              className='cursor-pointer focus-ring hover:ring-3'
+              className='focus-ring cursor-pointer hover:ring-3'
             >
               <ChevronLeft />
             </button>
           )}
         </Tooltip>
       </div>
-      <div className='w-60 flex items-center flex-col'>
+      <div className='flex w-60 flex-col items-center'>
         <Link
           href={vertex.href}
           reloadDocument={vertex.reloadDocument}
-          className='text-center font-medium text-gray-700 hover:ring-3 max-w-full text-balance'
+          className='max-w-full text-center font-medium text-balance text-gray-700 hover:ring-3'
         >
           <ShrinkWrap>{vertex.label}</ShrinkWrap>
         </Link>
       </div>
-      <div className='mr-auto has-[:disabled]:invisible flex items-center'>
+      <div className='mr-auto flex items-center has-[:disabled]:invisible'>
         <Tooltip content='Next post'>
           {tooltipId => (
             <button
@@ -72,7 +72,7 @@ export const PostSwitcher = ({
               onClick={selectNextPost}
               aria-labelledby={tooltipId}
               disabled={!nextVertex}
-              className='cursor-pointer focus-ring hover:ring-3'
+              className='focus-ring cursor-pointer hover:ring-3'
             >
               <ChevronRight />
             </button>

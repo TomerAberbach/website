@@ -1,6 +1,6 @@
 ---
 title: 'The 1 Hour per Year Bug (But Only in Pacific Time!)'
-tags: ['bugs', 'code', 'dates', 'docs', 'google', 'software engineering']
+tags: ['bugs', 'code', 'dates', 'docs', 'engineering', 'google']
 referencedBy:
   'https://news.ycombinator.com/item?id=41267894': 'Hacker News'
   'https://stackoverflow.blog/newsletter/issue-243-battling-ticket-bots':

@@ -1,6 +1,6 @@
 ---
 title: 'The 29 Days per Year Bug (30 Days for Leap Years!)'
-tags: ['bugs', 'code', 'dates', 'docs', 'google', 'software engineering']
+tags: ['bugs', 'code', 'dates', 'docs', 'engineering', 'google']
 dates:
   published: 2024-04-23
 ---

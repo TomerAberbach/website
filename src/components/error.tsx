@@ -37,7 +37,7 @@ export const ErrorCrashView = ({ error }: { error: unknown }) => {
         // Use the system monospace font because we subset our custom monospace
         // font based on the website content and the stack may contain
         // characters not included in the subset font.
-        <pre className='mt-3 max-w-full overflow-auto rounded-md bg-yellow-100 p-4 text-left font-system-mono'>
+        <pre className='font-system-mono mt-3 max-w-full overflow-auto rounded-md bg-yellow-100 p-4 text-left'>
           {stack}
         </pre>
       ) : null}

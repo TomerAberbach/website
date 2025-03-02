@@ -1,4 +1,4 @@
-import { any, entries, filter, join, map, pipe, values } from 'lfi'
+import { join, map, pipe } from 'lfi'
 import cssesc from 'cssesc'
 import { Form } from 'react-router'
 import { useCallback } from 'react'
@@ -8,7 +8,7 @@ import {
   LogicalOperatorRadioButtonGroup,
   useLogicalOperator,
 } from './logical-operator-radio-button-group.tsx'
-import { TagsCheckboxGroup, useSelectedTags } from './tags-checkbox-group.tsx'
+import { TagsListbox, useSelectedTags } from './tags-listbox.tsx'
 
 export const TagsFilterForm = ({
   targetId,
@@ -28,24 +28,22 @@ export const TagsFilterForm = ({
 
   return (
     <Form
-      className='mx-auto flex max-w-[90ch] flex-col items-center gap-3'
+      className='mx-auto flex max-w-full flex-col items-center gap-2'
       onSubmit={preventFormSubmission}
     >
-      <div className='flex items-center gap-3'>
-        <h2 className='text-lg font-medium text-gray-700'>Filter by tags</h2>
+      <h2 className='text-lg font-medium text-gray-700'>Filter by tags</h2>
+      <div className='flex max-w-full items-stretch gap-2'>
+        <TagsListbox
+          tags={tags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
         <LogicalOperatorRadioButtonGroup
           logicalOperator={logicalOperator}
           setLogicalOperator={setLogicalOperator}
         />
       </div>
-      <TagsCheckboxGroup
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-      {pipe(
-        values(selectedTags),
-        any(selected => selected),
-      ) && (
+      {selectedTags.length > 0 && (
         <TagsFilterStyle
           targetId={targetId}
           logicalOperator={logicalOperator}
@@ -63,16 +61,13 @@ const TagsFilterStyle = ({
 }: {
   targetId: string
   logicalOperator: LogicalOperator
-  selectedTags: Record<string, boolean>
+  selectedTags: string[]
 }) => {
   const escapedTargetId = cssesc(targetId, { isIdentifier: true })
 
   const tagClassSelectors = pipe(
-    entries(selectedTags),
-    filter(([, selected]) => selected),
-    map(
-      ([tag]) => `.${cssesc(createTagClassName(tag), { isIdentifier: true })}`,
-    ),
+    selectedTags,
+    map(tag => `.${cssesc(createTagClassName(tag), { isIdentifier: true })}`),
   )
   const matchingTagsSelector =
     logicalOperator === `&&`
