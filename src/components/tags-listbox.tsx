@@ -39,10 +39,10 @@ export const TagsListbox = ({
 
   return (
     <Listbox value={selectedTags} onChange={setNewSelectedTags} multiple>
-      <div className='relative flex flex-col items-center'>
+      <div className='relative flex min-w-0 flex-col items-center'>
         <ListboxButton
           ref={listboxButtonRef}
-          className='focus-ring cursor-pointer truncate rounded-xl border-2 border-gray-300 bg-white p-2 leading-none font-medium text-gray-500 transition hover:ring-3'
+          className='focus-ring max-w-full cursor-pointer truncate rounded-xl border-2 border-gray-300 bg-white p-2 leading-none font-medium text-gray-500 transition hover:ring-3'
         >
           <SelectedTags tags={selectedTags} />
         </ListboxButton>
