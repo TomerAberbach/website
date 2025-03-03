@@ -4,8 +4,11 @@ import { getPostKeys } from './src/services/post-keys.server.ts'
 
 export default {
   appDirectory: `src`,
-  prerender: async ({ getStaticPaths }) => [
-    ...getStaticPaths(),
+  // Don't prerender the home page because it renders differently based on query
+  // parameters.
+  prerender: async () => [
+    `/feed.json`,
+    `/rss.xml`,
     ...pipe(
       await getPostKeys(),
       filter(([, key]) => key.type === `markdown`),
