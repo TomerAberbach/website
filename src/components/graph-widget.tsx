@@ -166,7 +166,7 @@ const usePanning = ({
     panzoomInstance.on(`panend`, () => setPanning(false))
 
     const pause = () => panzoomInstance.pause()
-    panningElement.addEventListener(`touchstart`, pause)
+    panningElement.addEventListener(`touchstart`, pause, { passive: true })
     const resume = () => panzoomInstance.resume()
     panningElement.addEventListener(`touchcancel`, resume)
     panningElement.addEventListener(`touchend`, resume)
