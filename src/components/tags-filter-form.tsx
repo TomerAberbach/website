@@ -31,7 +31,6 @@ export const TagsFilterForm = ({
       className='mx-auto flex max-w-full flex-col items-center gap-2'
       onSubmit={preventFormSubmission}
     >
-      <h2 className='text-lg font-medium text-gray-700'>Filter by tags</h2>
       <div className='flex max-w-full items-stretch gap-2'>
         <TagsListbox
           tags={tags}

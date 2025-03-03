@@ -8,7 +8,6 @@ import {
 } from '~/services/deserialize'
 import { serialize } from '~/services/serialize.server'
 import { getGraph } from '~/services/graph.server.ts'
-import { TagsFilterForm } from '~/components/tags-filter-form.tsx'
 import GraphWidget from '~/components/graph-widget.tsx'
 import {
   SITE_DESCRIPTION,
@@ -28,14 +27,13 @@ const HomePage = () => {
 
   return (
     <div className='flex flex-1 flex-col gap-8 sm:gap-12 md:gap-16'>
-      <div className='flex flex-col gap-10 sm:gap-14 md:gap-18'>
-        <TagsFilterForm targetId={graphId} tags={tags} />
-        <PostSwitcher
-          selectedPostId={selectedPostId}
-          setSelectedPostId={setSelectedPostId}
-          graph={graph}
-        />
-      </div>
+      <PostSwitcher
+        selectedPostId={selectedPostId}
+        setSelectedPostId={setSelectedPostId}
+        tags={tags}
+        graph={graph}
+        graphId={graphId}
+      />
       <GraphWidget
         id={graphId}
         graph={graph}

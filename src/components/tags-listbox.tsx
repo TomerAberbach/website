@@ -50,7 +50,7 @@ export const TagsListbox = ({
           <button
             type='button'
             onClick={resetSelectedTags}
-            className='focus-ring absolute -bottom-0.5 translate-y-full cursor-pointer text-xs font-medium text-gray-600 transition hover:text-blue-700 hover:ring-3'
+            className='focus-ring absolute -bottom-0.5 translate-y-full cursor-pointer text-sm font-medium text-gray-600 transition hover:text-blue-700 hover:ring-3'
           >
             Reset
           </button>
@@ -89,17 +89,39 @@ const SelectedTags = ({ tags }: { tags: string[] }) => {
   const conjunction = logicalOperator === `&&` ? `and` : `or`
   switch (tags.length) {
     case 0:
-      return `∅`
+      return <FilterIcon />
     case 1:
       return tags[0]!
-    case 2:
-      return tags.join(` ${conjunction} `)
-    case 3:
-      return `${tags[0]}, ${tags[1]}, ${conjunction} ${tags[2]}`
+    case 2: {
+      const text1 = tags.join(` ${conjunction} `)
+      const text2 = `${tags[0]} ${conjunction} 1 other`
+      return text1.length <= text2.length ? text1 : text2
+    }
+    case 3: {
+      const text1 = `${tags[0]}, ${tags[1]}, ${conjunction} ${tags[2]}`
+      const text2 = `${tags[0]}, ${tags[1]}, ${conjunction} 1 other`
+      return text1.length <= text2.length ? text1 : text2
+    }
     default:
       return `${tags[0]}, ${tags[1]}, ${conjunction} ${tags.length - 2} others`
   }
 }
+
+const FilterIcon = () => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 20 20'
+    fill='currentColor'
+    className='size-5'
+    aria-label='Filter'
+  >
+    <path
+      fillRule='evenodd'
+      d='M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z'
+      clipRule='evenodd'
+    />
+  </svg>
+)
 
 const CheckmarkIcon = ({ className }: { className: string }) => (
   <svg

@@ -5,16 +5,21 @@ import { setHas } from 'ts-extras'
 import { Link } from './link.tsx'
 import Tooltip from './tooltip.tsx'
 import ShrinkWrap from './shrink-wrap.tsx'
+import { TagsFilterForm } from './tags-filter-form.tsx'
 import type { Graph, InternalVertex } from '~/services/graph.server.ts'
 
 export const PostSwitcher = ({
   selectedPostId,
   setSelectedPostId,
+  tags,
   graph,
+  graphId,
 }: {
   selectedPostId: string
   setSelectedPostId: (newSelectedPostId: string) => void
+  tags: Set<string>
   graph: Graph
+  graphId: string
 }) => {
   const vertex = graph.vertices.get(selectedPostId) as InternalVertex
 
@@ -35,49 +40,54 @@ export const PostSwitcher = ({
   }, [nextVertex, setSelectedPostId])
 
   return (
-    <div className='flex h-20 items-center justify-between gap-3 md:h-12'>
-      <div className='ml-auto flex items-center has-[:disabled]:invisible'>
-        <Tooltip content='Previous post'>
-          {tooltipId => (
-            <button
-              // Prevent flash of disappearing focus ring when clicking.
-              key={previousVertex?.id}
-              type='button'
-              onClick={selectPreviousPost}
-              aria-labelledby={tooltipId}
-              disabled={!previousVertex}
-              className='focus-ring cursor-pointer hover:ring-3'
-            >
-              <ChevronLeft />
-            </button>
-          )}
-        </Tooltip>
-      </div>
-      <div className='flex w-60 flex-col items-center'>
-        <Link
-          href={vertex.href}
-          reloadDocument={vertex.reloadDocument}
-          className='max-w-full text-center font-medium text-balance text-gray-700 hover:ring-3'
-        >
-          <ShrinkWrap>{vertex.label}</ShrinkWrap>
-        </Link>
-      </div>
-      <div className='mr-auto flex items-center has-[:disabled]:invisible'>
-        <Tooltip content='Next post'>
-          {tooltipId => (
-            <button
-              // Prevent flash of disappearing focus ring when clicking.
-              key={nextVertex?.id}
-              type='button'
-              onClick={selectNextPost}
-              aria-labelledby={tooltipId}
-              disabled={!nextVertex}
-              className='focus-ring cursor-pointer hover:ring-3'
-            >
-              <ChevronRight />
-            </button>
-          )}
-        </Tooltip>
+    <div className='h-39'>
+      <div className='flex h-full -translate-y-6 items-center justify-between gap-3'>
+        <div className='ml-auto flex items-center has-[:disabled]:invisible'>
+          <Tooltip content='Previous post'>
+            {tooltipId => (
+              <button
+                // Prevent flash of disappearing focus ring when clicking.
+                key={previousVertex?.id}
+                type='button'
+                onClick={selectPreviousPost}
+                aria-labelledby={tooltipId}
+                disabled={!previousVertex}
+                className='focus-ring cursor-pointer hover:ring-3'
+              >
+                <ChevronLeft />
+              </button>
+            )}
+          </Tooltip>
+        </div>
+        <div className='relative flex w-60 flex-col items-center gap-3'>
+          <Link
+            href={vertex.href}
+            reloadDocument={vertex.reloadDocument}
+            className='max-w-full text-center font-medium text-balance text-gray-700 hover:ring-3'
+          >
+            <ShrinkWrap>{vertex.label}</ShrinkWrap>
+          </Link>
+          <div className='absolute -bottom-3 translate-y-full'>
+            <TagsFilterForm targetId={graphId} tags={tags} />
+          </div>
+        </div>
+        <div className='mr-auto flex items-center has-[:disabled]:invisible'>
+          <Tooltip content='Next post'>
+            {tooltipId => (
+              <button
+                // Prevent flash of disappearing focus ring when clicking.
+                key={nextVertex?.id}
+                type='button'
+                onClick={selectNextPost}
+                aria-labelledby={tooltipId}
+                disabled={!nextVertex}
+                className='focus-ring cursor-pointer hover:ring-3'
+              >
+                <ChevronRight />
+              </button>
+            )}
+          </Tooltip>
+        </div>
       </div>
     </div>
   )
