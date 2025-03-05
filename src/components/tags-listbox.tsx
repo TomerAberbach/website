@@ -92,14 +92,11 @@ const SelectedTags = ({ tags }: { tags: string[] }) => {
       return <FilterIcon />
     case 1:
       return tags[0]!
-    case 2: {
-      const text1 = tags.join(` ${conjunction} `)
-      const text2 = `${tags[0]} ${conjunction} 1 other`
-      return text1.length <= text2.length ? text1 : text2
-    }
+    case 2:
+      return tags.join(` ${conjunction} `)
     case 3: {
       const text1 = `${tags[0]}, ${tags[1]}, ${conjunction} ${tags[2]}`
-      const text2 = `${tags[0]}, ${tags[1]}, ${conjunction} 1 other`
+      const text2 = `${tags[0]} ${conjunction} 2 others`
       return text1.length <= text2.length ? text1 : text2
     }
     default:
