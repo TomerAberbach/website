@@ -11,6 +11,9 @@ patchedDependencies:
   glyphhanger@5.0.0:
     hash: 86c3bb7303f8cbbf5c644771795824f7b19b0ac47191908eed86b47f5f53b80d
     path: patches/glyphhanger@5.0.0.patch
+  panzoom:
+    hash: 17458f11955766919b1db86c4dde39fdbfa86649087cfb05f7258ae0f09bbda0
+    path: patches/panzoom.patch
 
 importers:
 
@@ -117,7 +120,7 @@ importers:
         version: 20.0.1
       panzoom:
         specifier: ^9.4.3
-        version: 9.4.3
+        version: 9.4.3(patch_hash=17458f11955766919b1db86c4dde39fdbfa86649087cfb05f7258ae0f09bbda0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -15781,7 +15784,7 @@ snapshots:
 
   pako@0.2.9: {}
 
-  panzoom@9.4.3:
+  panzoom@9.4.3(patch_hash=17458f11955766919b1db86c4dde39fdbfa86649087cfb05f7258ae0f09bbda0):
     dependencies:
       amator: 1.1.0
       ngraph.events: 1.2.2

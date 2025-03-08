@@ -160,18 +160,6 @@ const usePanning = ({
     panzoomInstance.on(`panstart`, () => setPanning(true))
     panzoomInstance.on(`panend`, () => setPanning(false))
 
-    const maybePause = (e: TouchEvent) => {
-      // Prevent interference with scrolling by only panning when more than one
-      // finger is used.
-      if (e.touches.length === 1) {
-        panzoomInstance.pause()
-      }
-    }
-    panningElement.addEventListener(`touchstart`, maybePause, { passive: true })
-    const resume = () => panzoomInstance.resume()
-    panningElement.addEventListener(`touchcancel`, resume)
-    panningElement.addEventListener(`touchend`, resume)
-
     // Decrease the probability of a flicker on load.
     requestAnimationFrame(() => {
       const { x, y } = getPanzoomPosition(initiallySelectedVertexIdRef.current)
@@ -182,10 +170,6 @@ const usePanning = ({
 
     panzoomRef.current = panzoomInstance
     return () => {
-      panningElement.removeEventListener(`touchstart`, maybePause)
-      panningElement.removeEventListener(`touchcancel`, resume)
-      panningElement.removeEventListener(`touchend`, resume)
-
       panzoomInstance.dispose()
       panzoomRef.current = null
     }
