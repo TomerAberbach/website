@@ -55,11 +55,10 @@ export const meta = createMeta<typeof loader>(({ location, data }) =>
 )
 
 export const loader = async () => {
-  const posts = await getOrderedPosts()
-  const [tags, graph] = await Promise.all([getTags(posts), getGraph(posts)])
+  const [posts, graph] = await Promise.all([getOrderedPosts(), getGraph()])
   return serialize({
     postIds: new Set(posts.keys()),
-    tags,
+    tags: getTags(posts),
     graph,
     latestPost: includeKeys(getLatestMarkdownPost(posts), [
       `id`,

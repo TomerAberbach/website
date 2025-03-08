@@ -18,12 +18,11 @@ import {
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
 import scc from '@rtsao/scc'
-import type { Ordered } from './ordered.server.ts'
-import type { Post } from './post.server.ts'
+import { getOrderedPosts } from './ordered.server.ts'
+import { cache } from './cache.server.ts'
 
-export const getGraph = async (
-  posts: Map<string, Ordered<Post>>,
-): Promise<Graph> => {
+export const getGraph = cache(async (): Promise<Graph> => {
+  const posts = await getOrderedPosts()
   const vertices = pipe(
     posts,
     map(([id, { title, tags, ...rest }]): [string, Vertex] => [
@@ -116,7 +115,7 @@ export const getGraph = async (
   const layout = layoutGraph({ vertices, edges })
 
   return { vertices, edges, layout }
-}
+})
 
 export type Graph = {
   vertices: Map<string, Vertex>
