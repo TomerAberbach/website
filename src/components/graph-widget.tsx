@@ -1,14 +1,7 @@
 import { first, get, keys, map, max, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import panzoom from 'panzoom'
 import type { PanZoom } from 'panzoom'
 import type { ReactNode, RefObject } from 'react'
@@ -108,6 +101,8 @@ const usePanning = ({
   viewportElementRef: RefObject<HTMLElement | null>
 }) => {
   const { positions, boundingBox } = graph.layout
+
+  const initiallySelectedVertexIdRef = useRef(selectedVertexId)
   const panzoomRef = useRef<PanZoom>(null)
   const [panning, setPanning] = useState(false)
 
@@ -147,7 +142,7 @@ const usePanning = ({
     }
   }, [paused])
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     const panningElement = panningElementRef.current!
 
     const panzoomInstance = panzoom(panningElement, {
@@ -179,7 +174,7 @@ const usePanning = ({
 
     // Decrease the probability of a flicker on load.
     requestAnimationFrame(() => {
-      const { x, y } = getPanzoomPosition(selectedVertexId)
+      const { x, y } = getPanzoomPosition(initiallySelectedVertexIdRef.current)
       requestAnimationFrame(() => {
         panzoomInstance.moveTo(x, y)
       })
@@ -194,10 +189,10 @@ const usePanning = ({
       panzoomInstance.dispose()
       panzoomRef.current = null
     }
-  }, [panningElementRef])
+  }, [panningElementRef, getPanzoomPosition])
 
   const previousSelectedVertexId = usePrevious(selectedVertexId)
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     if (
       previousSelectedVertexId === null ||
       selectedVertexId === previousSelectedVertexId
@@ -218,9 +213,6 @@ const usePanning = ({
   const panningState = paused ? `paused` : panning ? `panning` : `idle`
   return [panningState, setPaused] as const
 }
-
-const useIsomorphicLayoutEffect =
-  typeof document === `undefined` ? useEffect : useLayoutEffect
 
 const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
   const maxWeight = pipe(
