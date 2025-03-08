@@ -102,7 +102,6 @@ const usePanning = ({
 }) => {
   const { positions, boundingBox } = graph.layout
 
-  const initiallySelectedVertexIdRef = useRef(selectedVertexId)
   const panzoomRef = useRef<PanZoom>(null)
   const [panning, setPanning] = useState(false)
 
@@ -131,6 +130,9 @@ const usePanning = ({
       panningElementRef,
       viewportElementRef,
     ],
+  )
+  const getInitialPanzoomPositionRef = useRef(() =>
+    getPanzoomPosition(selectedVertexId),
   )
 
   const [paused, setPaused] = useState(false)
@@ -162,7 +164,7 @@ const usePanning = ({
 
     // Decrease the probability of a flicker on load.
     requestAnimationFrame(() => {
-      const { x, y } = getPanzoomPosition(initiallySelectedVertexIdRef.current)
+      const { x, y } = getInitialPanzoomPositionRef.current()
       requestAnimationFrame(() => {
         panzoomInstance.moveTo(x, y)
       })
@@ -173,7 +175,7 @@ const usePanning = ({
       panzoomInstance.dispose()
       panzoomRef.current = null
     }
-  }, [panningElementRef, getPanzoomPosition])
+  }, [panningElementRef])
 
   const previousSelectedVertexId = usePrevious(selectedVertexId)
   useEffect(() => {
