@@ -63,7 +63,7 @@ const GraphWidget = ({
       <div
         ref={panningElementRef}
         className={clsx(
-          `inline-block`,
+          `inline-block touch-pan-x touch-pan-y`,
           // Prevent clicking and dragging from a vertex causing a click on the
           // vertex.
           panningState === `panning` && `pointer-events-none`,

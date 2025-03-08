@@ -22,6 +22,13 @@
     font-feature-settings: 'kern';
   }
 
+  /* Get rid of 300ms delay when tapping links and buttons on mobile. */
+  a,
+  input,
+  button {
+    touch-action: manipulation;
+  }
+
   code {
     font-variant-ligatures: no-common-ligatures;
   }
