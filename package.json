@@ -44,6 +44,7 @@
     "@remark-embedder/cache": "^2.1.0",
     "@remark-embedder/core": "^3.0.3",
     "@remark-embedder/transformer-oembed": "^5.0.1",
+    "@rtsao/scc": "^1.1.0",
     "@shikijs/rehype": "^3.1.0",
     "clsx": "^2.1.1",
     "colortranslator": "^4.1.0",

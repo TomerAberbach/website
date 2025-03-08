@@ -2,17 +2,22 @@ import {
   filter,
   flatMap,
   forEach,
+  get,
   keys,
   map,
+  maxWith,
   pipe,
   reduce,
   toArray,
+  toGrouped,
   toMap,
+  toSet,
   values,
   window,
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
+import scc from '@rtsao/scc'
 import type { Ordered } from './ordered.server.ts'
 import type { Post } from './post.server.ts'
 
@@ -150,15 +155,31 @@ export type Edge = {
 const layoutGraph = ({
   vertices,
   edges,
-}: {
-  vertices: Map<string, Vertex>
-  edges: Map<string, Edge>
-}): GraphLayout => {
+}: Pick<Graph, `vertices` | `edges`>): GraphLayout => {
   const ngraph = createGraph<string, string>()
   for (const id of vertices.keys()) {
     ngraph.addNode(id)
   }
   for (const { fromId, toId } of edges.values()) {
+    ngraph.addLink(fromId, toId)
+  }
+
+  // Ensure the graph is still compact when there's more than one connected
+  // component by an edge between connected components.
+  const connectedComponents = findConnectedComponents(edges)
+  const layoutOnlyEdges = pipe(
+    connectedComponents,
+    window(2),
+    map(([previousComponent, nextComponent]) =>
+      findSimilarInternalVertexPair({
+        vertices,
+        vertexIds1: previousComponent!,
+        vertexIds2: nextComponent!,
+      }),
+    ),
+    reduce(toArray()),
+  )
+  for (const [fromId, toId] of layoutOnlyEdges) {
     ngraph.addLink(fromId, toId)
   }
 
@@ -169,10 +190,10 @@ const layoutGraph = ({
 
     // Decrease this number to spread out the vertices by making them repel each
     // other more.
-    gravity: -5,
+    gravity: -5.25,
     // Decrease this number to spread out the vertices by allowing the edges to
     // grow more.
-    springCoefficient: 0.005,
+    springCoefficient: 0.0045,
   })
   for (let iteration = 0; iteration < 12_500; iteration++) {
     layout.step()
@@ -202,6 +223,44 @@ const layoutGraph = ({
       reduce(toMap()),
     ),
   }
+}
+
+const findSimilarInternalVertexPair = ({
+  vertices,
+  vertexIds1,
+  vertexIds2,
+}: {
+  vertices: Graph[`vertices`]
+  vertexIds1: Set<string>
+  vertexIds2: Set<string>
+}): [string, string] =>
+  pipe(
+    vertexIds1,
+    flatMap(id1 =>
+      pipe(
+        vertexIds2,
+        map(id2 => [id1, id2]),
+      ),
+    ),
+    filter(ids => ids.every(id => vertices.get(id)?.type === `internal`)),
+    maxWith(([id1, id2]) => {
+      const vertex1 = vertices.get(id1)!
+      const vertex2 = vertices.get(id2)!
+      return vertex1.tags.intersection(vertex2.tags).size
+    }),
+    get,
+  )
+
+const findConnectedComponents = (edges: Graph[`edges`]): Set<string>[] => {
+  const graph = pipe(
+    values(edges),
+    flatMap(({ fromId, toId }) => [
+      [fromId, toId],
+      [toId, fromId],
+    ]),
+    reduce(toGrouped(toSet(), toMap())),
+  )
+  return scc(graph)
 }
 
 const SPRING_LENGTH = 30
