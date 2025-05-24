@@ -8,7 +8,11 @@ export const Link = (props: LinkProps) =>
   ) : (
     <InternalLink
       {...props}
-      href={props.href.startsWith(`/`) ? props.href : `/${props.href}`}
+      href={
+        props.href.startsWith(`/`) || props.href.startsWith(`#`)
+          ? props.href
+          : `/${props.href}`
+      }
     />
   )
 
