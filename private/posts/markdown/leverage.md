@@ -1,6 +1,6 @@
 ---
 title: 'Leverage'
-tags: ['jazz', 'piano', 'tracks']
+tags: ['jazz', 'music', 'piano', 'tracks']
 dates:
   published: 2024-02-26
 ---

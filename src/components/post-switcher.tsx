@@ -1,4 +1,4 @@
-import { first, get } from 'lfi'
+import { any, filter, first, get, or, pipe } from 'lfi'
 import { useCallback } from 'react'
 import { useSearchParams } from 'react-router'
 import { setHas } from 'ts-extras'
@@ -6,6 +6,7 @@ import { Link } from './link.tsx'
 import Tooltip from './tooltip.tsx'
 import ShrinkWrap from './shrink-wrap.tsx'
 import { TagsFilterForm } from './tags-filter-form.tsx'
+import { useSelectedTags } from './tags-listbox.tsx'
 import type { Graph, InternalVertex } from '~/services/graph.server.ts'
 
 export const PostSwitcher = ({
@@ -23,16 +24,24 @@ export const PostSwitcher = ({
 }) => {
   const vertex = graph.vertices.get(selectedPostId) as InternalVertex
 
-  const previousVertex = vertex.previous
-    ? graph.vertices.get(vertex.previous)
-    : undefined
+  const previousVertex = useAdjacentVertex({
+    vertex,
+    direction: `previous`,
+    tags,
+    graph,
+  })
   const selectPreviousPost = useCallback(() => {
     if (previousVertex) {
       setSelectedPostId(previousVertex.id)
     }
   }, [previousVertex, setSelectedPostId])
 
-  const nextVertex = vertex.next ? graph.vertices.get(vertex.next) : undefined
+  const nextVertex = useAdjacentVertex({
+    vertex,
+    direction: `next`,
+    tags,
+    graph,
+  })
   const selectNextPost = useCallback(() => {
     if (nextVertex) {
       setSelectedPostId(nextVertex.id)
@@ -93,6 +102,45 @@ export const PostSwitcher = ({
   )
 }
 
+const useAdjacentVertex = ({
+  vertex,
+  direction,
+  tags,
+  graph,
+}: {
+  vertex: InternalVertex
+  direction: `previous` | `next`
+  tags: Set<string>
+  graph: Graph
+}): InternalVertex | undefined => {
+  const [selectedTags] = useSelectedTags(tags)
+  const selectedTagsSet = new Set(selectedTags)
+
+  // eslint-disable-next-line typescript/no-unnecessary-condition
+  while (true) {
+    const adjacentVertexId = vertex[direction]
+    if (!adjacentVertexId) {
+      return undefined
+    }
+
+    const adjacentVertex = graph.vertices.get(adjacentVertexId)
+    if (!adjacentVertexId) {
+      return undefined
+    }
+
+    vertex = adjacentVertex as InternalVertex
+    if (
+      selectedTagsSet.size === 0 ||
+      pipe(
+        vertex.tags,
+        any(tag => selectedTagsSet.has(tag)),
+      )
+    ) {
+      return vertex
+    }
+  }
+}
+
 const ChevronLeft = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
@@ -127,12 +175,31 @@ const ChevronRight = () => (
   </svg>
 )
 
-export const useSelectedPostId = (
-  postIds: Set<string>,
-): [string, (newSelectedPostId: string) => void] => {
+export const useSelectedPostId = ({
+  postIds,
+  tags,
+  graph,
+}: {
+  postIds: Set<string>
+  tags: Set<string>
+
+  graph: Graph
+}): [string, (newSelectedPostId: string) => void] => {
+  const [selectedTags] = useSelectedTags(tags)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const firstPostId = get(first(postIds))
+  const selectedTagsSet = new Set(selectedTags)
+  const firstPostId = pipe(
+    postIds,
+    filter(postId =>
+      pipe(
+        graph.vertices.get(postId)!.tags,
+        any(tag => selectedTagsSet.has(tag)),
+      ),
+    ),
+    first,
+    or(() => get(first(postIds))),
+  )
   const sanitizePostId = useCallback(
     (postId: string | null) => (setHas(postIds, postId) ? postId : firstPostId),
     [postIds, firstPostId],

@@ -160,6 +160,7 @@ export const useSelectedTags = (
         .join(`,`)
 
       const newSearchParams = new URLSearchParams(searchParams)
+      newSearchParams.delete(`post`)
       if (searchTags) {
         newSearchParams.set(`tags`, searchTags)
       } else {

@@ -1,6 +1,6 @@
 ---
 title: 'lonely cosmopolite'
-tags: ['jazz', 'lofi', 'piano', 'tracks']
+tags: ['jazz', 'lofi', 'music', 'piano', 'tracks']
 dates:
   published: 2024-08-05
 ---

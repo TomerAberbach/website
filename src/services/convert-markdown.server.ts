@@ -31,6 +31,7 @@ import rehypeMermaid from 'rehype-mermaid'
 import { invariant } from '@epic-web/invariant'
 import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
+import type { LeafDirective, TextDirective } from 'mdast-util-directive'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
 import { ASSET_NAME_TO_URL, VIDEO_NAME_TO_URL } from './assets.server.ts'
@@ -90,8 +91,39 @@ const remarkGif = () => (tree: MdRoot) =>
         paths.webm && h(`source`, { src: paths.webm, type: `video/webm` }),
         paths.mp4 && h(`source`, { src: paths.mp4, type: `video/mp4` }),
       ),
-    ].filter(Boolean)
+    ]
   })
+
+const remarkAudio = () => (tree: MdRoot) =>
+  // @ts-expect-error Types are no good.
+  visit(
+    tree,
+    [`leafDirective`, `textDirective`] as const,
+    (node: LeafDirective | TextDirective) => {
+      if (node.name !== `audio`) {
+        return
+      }
+
+      const src = pipe(node.children, map(mdToText), join(``))
+      const filename = src.split(`/`).at(-1)
+
+      node.data ??= {}
+      const { data } = node
+      data.hName = `audio`
+      data.hProperties = { controls: `controls`, src }
+      data.hChildren = [
+        h(
+          `a`,
+          {
+            href: src,
+            download: filename,
+            rel: `noopener noreferrer`,
+          },
+          `Download ${filename}`,
+        ),
+      ]
+    },
+  )
 
 const remarkReplace = () => {
   const regExp = new RegExp(
@@ -138,6 +170,7 @@ const markdownToHtmlProcessor = unified()
   .use(remarkDirective)
   .use(remarkFlex)
   .use(remarkGif)
+  .use(remarkAudio)
   .use(remarkAdmonition, {
     types: new Map([
       [

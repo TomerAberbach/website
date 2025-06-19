@@ -23,7 +23,11 @@ const HomePage = () => {
   const { postIds, tags, graph } = useLoaderData<typeof loader>()
 
   const graphId = useId()
-  const [selectedPostId, setSelectedPostId] = useSelectedPostId(postIds)
+  const [selectedPostId, setSelectedPostId] = useSelectedPostId({
+    postIds,
+    tags,
+    graph,
+  })
 
   return (
     <div className='flex flex-1 flex-col gap-8 sm:gap-12 md:gap-16'>

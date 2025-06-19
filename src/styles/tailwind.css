@@ -232,5 +232,20 @@
       margin-top: 0.5em;
       margin-bottom: 0.5em;
     }
+
+    :where(audio):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      @apply mx-auto;
+    }
+
+    :where(td):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      @apply align-middle;
+    }
+
+    :where(td > audio):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      ) {
+      @apply mx-0;
+      height: 2.25em;
+    }
   }
 }
