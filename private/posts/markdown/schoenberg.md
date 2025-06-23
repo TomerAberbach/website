@@ -55,7 +55,9 @@ behavior unless it causes notes to overlap.
 Additionally:
 
 - Playing the same note twice in a row, corresponding to a pitch class distance
-  of 0, is a no-op.
+  of 0, is a no-op. However, playing and overlapping two different notes with
+  the same pitch class (e.g. in different octaves) can be used to start loops
+  without adding other commands.
 - When playing multiple notes at exactly the same time (e.g. a
   [chord](<https://en.wikipedia.org/wiki/Chord_(music)>)), the chronology of the
   notes is considered to be the ascending pitch order.
