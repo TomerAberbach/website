@@ -110,7 +110,7 @@ const remarkAudio = () => (tree: MdRoot) =>
       node.data ??= {}
       const { data } = node
       data.hName = `audio`
-      data.hProperties = { controls: `controls`, src }
+      data.hProperties = { controls: `controls`, preload: `auto`, src }
       data.hChildren = [
         h(
           `a`,
