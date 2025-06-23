@@ -11,8 +11,8 @@ same question:
 > How did you get to where you are?
 
 What they were asking is how I developed my software engineering skills to their
-current levels. Over those two weeks I refined my answer wrote it up in case it
-comes up again or is helpful to others.
+current levels. Over those two weeks I refined my answer and wrote it up in case
+it comes up again or is helpful to others.
 
 ## Surface level vs deep understanding
 
