@@ -17,8 +17,7 @@
   }
 
   body {
-    @apply text-base;
-    @apply flex-1 subpixel-antialiased;
+    @apply flex-1 text-base subpixel-antialiased;
     font-feature-settings: 'kern';
   }
 
@@ -26,7 +25,7 @@
   a,
   input,
   button {
-    touch-action: manipulation;
+    @apply touch-manipulation;
   }
 
   code {
