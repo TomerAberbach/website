@@ -52,6 +52,12 @@ const createHeading =
     )
   }
 
+const Table: Components[`table`] = props => (
+  <div className='overflow-auto'>
+    <table {...props} />
+  </div>
+)
+
 const Anchor: Components[`a`] = ({
   'data-footnote-backref': dataFootnoteBackref,
   children,
@@ -156,6 +162,7 @@ const components: Components = {
   h4: createHeading(`h4`),
   h5: createHeading(`h5`),
   h6: createHeading(`h6`),
+  table: Table,
   a: Anchor,
   div: Div,
   pre: Pre,

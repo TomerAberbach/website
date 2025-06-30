@@ -237,7 +237,7 @@
       @apply mx-auto;
     }
 
-    :where(td):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    :where(th, td):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
       @apply align-middle;
     }
 
