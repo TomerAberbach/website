@@ -33,7 +33,6 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
   second.&nbsp;**_20%_**
 
   Several news outlets took note:
-
   - [Ars Technica: Real, actual Markdown support is arriving in Google Docs, not a moment too soon](https://arstechnica.com/gadgets/2024/07/real-actual-markdown-support-is-arriving-in-google-docs-not-a-moment-too-soon)
   - [How-To Geek: Google Docs Can Now Import and Export Markdown](https://www.howtogeek.com/google-docs-markdown-import-export)
 
@@ -59,7 +58,6 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
   a large team, resulting in ~150,000 weekly usages.
 
   _Many_ news outlets took note:
-
   - [Forbes: Google Stock Jumps As It Puts Artificial Intelligence Into Google Docs](https://www.forbes.com/sites/qai/2023/03/15/google-stock-jumps-as-it-unveils-new-ai-powered-tools-for-workspace)
   - [Fortune: GPT-4 debuts and Google beats Microsoft in race to add generative A.I. to consumer office tools](https://fortune.com/2023/03/14/gpt-4-debuts-and-google-beats-microsoft-in-race-to-add-generative-a-i-to-consumer-office-tools)
   - [Reuters: Google unveils 'magic wand' to draft documents as AI race tightens](https://www.reuters.com/technology/google-unveils-magic-wand-draft-documents-ai-race-tightens-2023-03-14)
@@ -88,7 +86,6 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
   resulting in ~1.2 million automatic weekly conversions.&nbsp;**_20%_**
 
   Several news outlets took note:
-
   - [WIRED: "How to Use Markdown in Google Docs"](https://www.wired.com/story/how-to-use-markdown-google-docs)
   - [The Verge: "# Google Docs is getting more Markdown support"](https://www.theverge.com/2022/3/29/23002138/google-docs-markdown-support-formatting-update)
   - [TechCrunch: "Google adds limited Markdown support to Google Docs"](https://techcrunch.com/2022/03/30/google-adds-limited-markdown-support-to-google-docs)

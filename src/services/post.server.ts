@@ -132,7 +132,7 @@ const basePostMetadataSchema = z.object({
   title: z.string(),
   tags: stringSetSchema,
   referencedBy: z
-    .record(z.string())
+    .record(z.string(), z.string())
     .default({})
     .transform(references => new Map(entries(references))),
   dates: z.object({
