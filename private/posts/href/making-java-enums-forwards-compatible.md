@@ -1,6 +1,6 @@
 ---
 title: 'Making Java enums forwards compatible'
-tags: ['code', 'compatibility', 'java', 'stainless']
+tags: ['code', 'compatibility', 'java', 'libraries', 'stainless']
 dates:
   published: 2025-02-10
 href: 'https://www.stainless.com/blog/making-java-enums-forwards-compatible'

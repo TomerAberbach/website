@@ -1,6 +1,6 @@
 ---
 title: 'Making Java nullable fields backwards compatible'
-tags: ['code', 'compatibility', 'java', 'stainless']
+tags: ['code', 'compatibility', 'java', 'libraries', 'stainless']
 dates:
   published: 2025-01-29
 href: 'https://www.stainless.com/blog/making-java-nullable-fields-backwards-compatible'

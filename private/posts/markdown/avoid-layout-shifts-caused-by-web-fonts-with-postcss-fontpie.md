@@ -1,6 +1,6 @@
 ---
 title: 'Avoid Layout Shifts Caused by Web Fonts With PostCSS Fontpie'
-tags: ['code', 'fonts', 'javascript', 'performance', 'postcss']
+tags: ['code', 'fonts', 'javascript', 'libraries', 'performance', 'postcss']
 referencedBy:
   'https://x.com/PostCSS/status/1663251368771977234': '@PostCSS on X'
   'https://frontender-ua.medium.com/frontend-weekly-digest-312-22-28-may-2023-6dc34fa067d6':

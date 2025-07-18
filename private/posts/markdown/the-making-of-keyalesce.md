@@ -6,7 +6,7 @@ tags:
     'data structures',
     'gc',
     'javascript',
-    'packages',
+    'libraries',
     'performance',
     'tries',
   ]
