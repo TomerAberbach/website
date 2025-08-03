@@ -1,9 +1,9 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=23.7.0
+ARG NODE_VERSION=24.4.1
 FROM node:${NODE_VERSION} AS node
 
-ARG PNPM_VERSION=10.4.1
+ARG PNPM_VERSION=10.13.1
 RUN npm install -g pnpm@$PNPM_VERSION
 ENV NODE_ENV=production \
   FONTCONFIG_PATH=private/fonts \

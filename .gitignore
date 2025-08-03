@@ -1,9 +1,6 @@
 node_modules
-
 /.cache
 .env
 **/build/
-
-**/*.tsbuildinfo
 coverage
 .react-router

@@ -116,7 +116,6 @@ const useAdjacentVertex = ({
   const [selectedTags] = useSelectedTags(tags)
   const selectedTagsSet = new Set(selectedTags)
 
-  // eslint-disable-next-line typescript/no-unnecessary-condition
   while (true) {
     const adjacentVertexId = vertex[direction]
     if (!adjacentVertexId) {

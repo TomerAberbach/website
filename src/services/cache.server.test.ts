@@ -1,6 +1,6 @@
 import { nextTick } from 'node:process'
 import { expect, test } from 'vitest'
-import { cache } from '~/services/cache.server.ts'
+import { cache } from './cache.server.ts'
 
 test(`cache calls the given function on the next tick`, async () => {
   let called = false
