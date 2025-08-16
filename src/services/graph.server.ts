@@ -1,4 +1,5 @@
 import {
+  concat,
   filter,
   flatMap,
   forEach,
@@ -53,12 +54,28 @@ export const getGraph = cache(async (): Promise<Graph> => {
   const edges = pipe(
     posts,
     flatMap(([fromId, { tags, references }]) =>
-      map(
-        ([toId, hrefs]) => [
+      pipe(
+        references,
+        flatMap(([toId, hrefs]): Iterable<[string, Set<string>]> => {
+          const externalVertexIds = pipe(
+            hrefs,
+            filter(href => vertices.has(href)),
+            reduce(toSet()),
+          )
+          const remainingHrefs = pipe(
+            hrefs,
+            filter(href => !externalVertexIds.has(href)),
+            reduce(toSet()),
+          )
+          return concat(
+            map(id => [id, new Set([id])], externalVertexIds),
+            remainingHrefs.size > 0 ? [[toId, remainingHrefs]] : [],
+          )
+        }),
+        map(([toId, hrefs]) => [
           `${fromId} ${toId}`,
           { fromId, toId, tags: new Set(tags), hrefs },
-        ],
-        references,
+        ]),
       ),
     ),
     reduce(toMap()),

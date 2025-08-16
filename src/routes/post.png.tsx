@@ -18,7 +18,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   const post = await getMarkdownPost(postKey)
   const image = await renderThumbnail(post)
-  return new Response(image, {
+  return new Response(new Uint8Array(image), {
     headers: {
       'Content-Type': `image/png`,
       'Content-Length': String(Buffer.byteLength(image)),
