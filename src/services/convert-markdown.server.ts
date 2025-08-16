@@ -6,10 +6,12 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeExternalLinks from 'rehype-external-links'
 import remarkStringify from 'remark-stringify'
+import { headingRange } from 'mdast-util-heading-range'
 import escapeStringRegExp from 'escape-string-regexp'
 import { unified } from 'unified'
 import remarkDirective from 'remark-directive'
 import rehypeShiki from '@shikijs/rehype'
+import rehypeRaw from 'rehype-raw'
 import type { RehypeShikiOptions } from '@shikijs/rehype'
 import stripMarkdown from 'strip-markdown'
 import { h } from 'hastscript'
@@ -32,6 +34,8 @@ import { invariant } from '@epic-web/invariant'
 import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
 import type { LeafDirective, TextDirective } from 'mdast-util-directive'
+import { toHast } from 'mdast-util-to-hast'
+import { toHtml } from 'hast-util-to-html'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
 import { ASSET_NAME_TO_URL, VIDEO_NAME_TO_URL } from './assets.server.ts'
@@ -164,6 +168,50 @@ const remarkReplace = () => {
     )
 }
 
+const remarkCollapsibleHeading = () => (tree: MdRoot) => {
+  let modified: boolean
+  do {
+    modified = false
+    headingRange(
+      tree,
+      (text: string) => text.startsWith(`> `),
+      (start, nodes, end) => {
+        modified = true
+
+        const firstChild = start.children[0]
+        invariant(
+          firstChild?.type === `text`,
+          `Expected heading to start with text`,
+        )
+        firstChild.value = firstChild.value.slice(`> `.length)
+
+        return [
+          {
+            type: `html`,
+            data: {
+              hName: `details`,
+              hChildren: [
+                {
+                  type: `element`,
+                  tagName: `summary`,
+                  properties: {},
+                  children: [{ type: `raw`, value: toHtml(toHast(start)) }],
+                },
+                {
+                  type: `raw`,
+                  value: nodes.map(node => toHtml(toHast(node))).join(``),
+                },
+              ],
+            },
+            value: ``,
+          },
+          end,
+        ]
+      },
+    )
+  } while (modified) // eslint-disable-line typescript/no-unnecessary-condition
+}
+
 const markdownToHtmlProcessor = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -210,7 +258,9 @@ const markdownToHtmlProcessor = unified()
     },
   )
   .use(remarkMath)
-  .use(remarkRehype, { clobberPrefix: `` })
+  .use(remarkCollapsibleHeading)
+  .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: `` })
+  .use(rehypeRaw)
   .use(rehypeExternalLinks)
   .use(rehypeSlug)
   .use(rehypeMermaid, {

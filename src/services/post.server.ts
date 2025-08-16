@@ -35,7 +35,7 @@ export const getHrefPost = async (key: PostKey): Promise<HrefPost> => {
   const { data } = parseFrontMatter(await readPost(key))
   const { hrefs, ...otherMetadata } = hrefPostMetadataSchema.parse(data)
   const post: HrefPost = {
-    id: key.id,
+    id: otherMetadata.href,
     type: `href`,
     ...otherMetadata,
     references: parseReferences(hrefs),

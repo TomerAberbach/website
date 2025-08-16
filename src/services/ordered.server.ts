@@ -69,10 +69,9 @@ export const getOrderedPosts: () => Promise<Map<string, Ordered<Post>>> = cache(
           map(reference => [id, reference]),
         ),
       ),
-      filter(([, reference]) => reference.startsWith(`/`)),
       forEach(([id, reference]) =>
         postById
-          .get(reference.slice(1))
+          .get(reference.startsWith(`/`) ? reference.slice(1) : reference)
           ?.referencedBy.set(id, postById.get(id)!.title),
       ),
     )
