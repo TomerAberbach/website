@@ -91,11 +91,11 @@ are labeled with **_20%_**. The projects are ordered from most to least recent.
   - [TechCrunch: "Google adds limited Markdown support to Google Docs"](https://techcrunch.com/2022/03/30/google-adds-limited-markdown-support-to-google-docs)
 
   And
-  [tech Twitter _definitely_ noticed](https://twitter.com/TomerAberbach/status/1508895335200043021).
+  [tech Twitter _definitely_ noticed](https://x.com/TomerAberbach/status/1508895335200043021).
 
 - Simplified Docs, Slides, and Drawings authoring with shared prefix
   substitution rule support, and
-  [en- and em-dash substitution](https://twitter.com/googledocs/status/1471555730364846083),
+  [en- and em-dash substitution](https://x.com/googledocs/status/1471555730364846083),
   resulting in a 45% increase in substitutions and no change in undo
   rates.&nbsp;**_20%_**
 
