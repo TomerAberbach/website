@@ -256,7 +256,19 @@
     :where(details > summary):not(
       :where([class~='not-prose'], [class~='not-prose'] *)
     ) {
-      @apply cursor-pointer;
+      @apply flex cursor-pointer flex-row items-center;
+    }
+
+    :where(details > summary):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      )::before {
+      @apply my-auto mr-[0.5em] inline-block content-['▶'];
+    }
+
+    :where(details[open] > summary):not(
+        :where([class~='not-prose'], [class~='not-prose'] *)
+      )::before {
+      transform: rotate(90deg);
     }
 
     :where(details[open] > summary:has(> h1, h2, h3, h4, h5, h6)):not(
@@ -268,7 +280,7 @@
     :where(details > summary > :where(h1, h2, h3, h4, h5, h6)):not(
       :where([class~='not-prose'], [class~='not-prose'] *)
     ) {
-      @apply my-0 inline-block align-middle;
+      @apply my-0;
     }
   }
 }

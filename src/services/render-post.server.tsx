@@ -39,7 +39,7 @@ const createHeading =
       { id, className: clsx(className, `group relative`), ...rest },
       <Link
         href={`#${id}`}
-        className='absolute top-1/2 size-6 -translate-x-[1.85rem] -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100 in-[summary]:-translate-x-[3.15rem]'
+        className='absolute top-1/2 size-6 -translate-x-[1.85rem] -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100 in-[summary]:-translate-x-[3.35rem]'
       >
         <img
           src={linkSvgPath}
