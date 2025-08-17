@@ -11,6 +11,7 @@ tags:
     'javascript',
     'learning',
     'python',
+    'typescript',
   ]
 dates:
   published: 2025-08-16
@@ -44,6 +45,36 @@ they'd be pointless.
 
 This behavior makes the `TryGet` methods almost always useless. You're better
 off wrapping the `Get` methods in a `try-catch`.
+
+## > TypeScript [`readonly` properties](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties) are cursed
+
+Marking a property as `readonly` tells TypeScript to disallow writing to it
+during type-checking.
+
+However, it's a nearly meaningless guardrail because
+[TypeScript allows assigning a type with a `readonly` property to a type with a writable property](https://github.com/microsoft/TypeScript/issues/13347).
+
+<!-- eslint-skip -->
+
+```ts
+type Person = {
+  name: string
+}
+type ReadonlyPerson = {
+  readonly name: string
+}
+
+const readonlyPerson: ReadonlyPerson = { name: `Tomer` }
+// Cannot assign to 'name' because it is a read-only property.
+readonlyPerson.name = `Tumor`
+
+// Typechecks! 😱
+const writablePerson: Person = readonlyPerson
+writablePerson.name = `Tumor`
+```
+
+Hopefully one day
+[`readonly` properties are properly enforced](https://github.com/microsoft/TypeScript/pull/58296).
 
 ## > Maven dependency mediation is cursed
 

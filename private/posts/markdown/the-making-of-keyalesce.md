@@ -9,6 +9,7 @@ tags:
     'libraries',
     'performance',
     'tries',
+    'typescript',
   ]
 dates:
   published: 2023-07-02
