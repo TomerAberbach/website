@@ -42,7 +42,7 @@ export const TagsListbox = ({
       <div className='relative flex min-w-0 flex-col items-center'>
         <ListboxButton
           ref={listboxButtonRef}
-          className='focus-ring max-w-full cursor-pointer truncate rounded-xl border-2 border-gray-300 bg-white p-2 leading-none font-medium text-gray-500 transition hover:ring-3'
+          className='focus-ring max-w-full cursor-pointer truncate rounded-xl border-2 border-gray-300 bg-white p-2 leading-4.5 font-medium text-gray-500 transition hover:ring-3'
         >
           <SelectedTags tags={selectedTags} />
         </ListboxButton>
@@ -109,7 +109,7 @@ const FilterIcon = () => (
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 20 20'
     fill='currentColor'
-    className='size-5'
+    className='size-4.5'
     aria-label='Filter'
   >
     <path
