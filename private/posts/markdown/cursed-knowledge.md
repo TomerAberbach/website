@@ -21,9 +21,10 @@ Cursed knowledge I have learned over time that I wish I never knew. Inspired by
 [Immich's Cursed Knowledge](https://immich.app/cursed-knowledge). The knowledge
 is ordered from most to least recently learned.
 
-## > C# [`JsonElement`'s `TryGet` methods](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement#methods) are cursed
+## > C# `JsonElement`'s `TryGet` methods are cursed
 
-`JsonElement` has `GetByte`/`TryGetByte`, `GetDateTime`/`TryGetDateTime`,
+[`JsonElement`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement#methods)
+has `GetByte`/`TryGetByte`, `GetDateTime`/`TryGetDateTime`,
 `GetDouble`/`TryGetDouble`, etc. However, `GetBoolean` and `GetString` have no
 corresponding `TryGet` methods. What gives?
 
@@ -46,10 +47,10 @@ they'd be pointless.
 This behavior makes the `TryGet` methods almost always useless. You're better
 off wrapping the `Get` methods in a `try-catch`.
 
-## > TypeScript [`readonly` properties](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties) are cursed
+## > TypeScript `readonly` properties are cursed
 
-Marking a property as `readonly` tells TypeScript to disallow writing to it
-during type-checking.
+[Marking a property as `readonly`](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties)
+tells TypeScript to disallow writing to it during type-checking.
 
 However, it's a nearly meaningless guardrail because
 [TypeScript allows assigning a type with a `readonly` property to a type with a writable property](https://github.com/microsoft/TypeScript/issues/13347).
@@ -85,9 +86,10 @@ not the highest version.
 This behavior caused
 [a bug in the OpenAI Java SDK](https://www.stainless.com/blog/escaping-maven-dependency-hell).
 
-## > JavaScript [`Date`'s `setMonth`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth) method is cursed
+## > JavaScript `Date`'s `setMonth` method is cursed
 
-Calling `setMonth(month)`
+Calling
+[`setMonth(month)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth))
 [doesn't always update the date to the given `month`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth#description).
 For example, if the date is August 31, then setting the month to September will
 actually update the date to October 1. September only has 30 days, so the 31st
@@ -95,10 +97,11 @@ day "overflows" to the next month.
 
 This behavior caused [a bug in Google Docs](/the-29-days-per-year-bug).
 
-## > Python [default parameter values](https://docs.python.org/3.13/reference/compound_stmts.html#:~:text=Default%20parameter%20values%20are%20evaluated%20from%20left%20to%20right%20when%20the%20function%20definition%20is%20executed) are cursed
+## > Python default parameter values are cursed
 
-A function's default parameter values are evaluated _once_; not on each function
-call.
+A function's
+[default parameter values are evaluated _once_](https://docs.python.org/3.13/reference/compound_stmts.html#:~:text=Default%20parameter%20values%20are%20evaluated%20from%20left%20to%20right%20when%20the%20function%20definition%20is%20executed);
+not on each function call.
 
 This means you shouldn't use mutable values for a parameter's default value:
 
@@ -132,7 +135,7 @@ print(append_fun())
 #=> ['fun']
 ```
 
-## > Java [`URL`'s identity methods](https://docs.oracle.com/javase/8/docs/api/java/net/URL.html) are cursed
+## > Java `URL`'s identity methods are cursed
 
 A call to
 [`equals`](https://docs.oracle.com/javase/8/docs/api/java/net/URL.html#equals-java.lang.Object-)
