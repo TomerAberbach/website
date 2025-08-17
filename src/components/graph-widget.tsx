@@ -162,13 +162,8 @@ const usePanning = ({
     panzoomInstance.on(`panstart`, () => setPanning(true))
     panzoomInstance.on(`panend`, () => setPanning(false))
 
-    // Decrease the probability of a flicker on load.
-    requestAnimationFrame(() => {
-      const { x, y } = getInitialPanzoomPositionRef.current()
-      requestAnimationFrame(() => {
-        panzoomInstance.moveTo(x, y)
-      })
-    })
+    const { x, y } = getInitialPanzoomPositionRef.current()
+    panzoomInstance.moveTo(x, y)
 
     panzoomRef.current = panzoomInstance
     return () => {
