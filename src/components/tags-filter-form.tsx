@@ -62,8 +62,6 @@ const TagsFilterStyle = ({
   logicalOperator: LogicalOperator
   selectedTags: string[]
 }) => {
-  const escapedTargetId = cssesc(targetId, { isIdentifier: true })
-
   const tagClassSelectors = pipe(
     selectedTags,
     map(tag => `.${cssesc(createTagClassName(tag), { isIdentifier: true })}`),
@@ -72,7 +70,7 @@ const TagsFilterStyle = ({
     logicalOperator === `&&`
       ? join(``, tagClassSelectors)
       : `:is(${join(`,`, tagClassSelectors)})`
-  const selector = `#${escapedTargetId} :is([class^='${TAG_CLASS_PREFIX}'], [class*=' ${TAG_CLASS_PREFIX}']):not(${matchingTagsSelector})`
+  const selector = `#${targetId} :is([class^='${TAG_CLASS_PREFIX}'], [class*=' ${TAG_CLASS_PREFIX}']):not(${matchingTagsSelector})`
 
   return (
     <style
