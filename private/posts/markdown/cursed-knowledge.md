@@ -10,16 +10,63 @@ tags:
     'java',
     'javascript',
     'learning',
+    'performance',
+    'php',
     'python',
+    'ruby',
     'typescript',
   ]
 dates:
-  published: 2025-08-16
+  published: 2025-08-25
 ---
 
 Cursed knowledge I have learned over time that I wish I never knew. Inspired by
 [Immich's Cursed Knowledge](https://immich.app/cursed-knowledge). The knowledge
 is ordered from most to least recently learned.
+
+## > PHP variables are cursed
+
+PHP's `$` symbol is an operator that looks up a variable by name.
+
+```php
+$foo = "hi";
+$bar = "foo";
+
+echo $$bar;
+//=> hi
+
+$a = "hi";
+$b = "a";
+$c = "b";
+$d = "c";
+$e = "d";
+
+echo $$$$$e;
+//=> hi
+
+$$$$$e = "bye";
+echo $a;
+//=> bye
+```
+
+This is cursed because it's an unnecessary feature that enables writing
+incomprehensible code.
+
+Credit goes to [Stephen Downward](https://www.scd31.com) for telling me about
+it!
+
+## > GitHub Actions's `sleep` command is cursed
+
+GitHub Actions's
+[`sleep` command](https://github.com/actions/runner/blob/main/src/Misc/layoutroot/safe_sleep.sh)
+is implemented as a [busy wait](https://en.wikipedia.org/wiki/Busy_waiting).
+
+This is cursed because it can result in
+[100% CPU usage](https://github.com/actions/runner/issues/2380) or even
+[looping forever](https://github.com/actions/runner/issues/3792), but sleeping
+is supposed to allow other tasks to run.
+
+Credit goes to [Hao Wang](https://github.com/ms-jpq) for telling me about it!
 
 ## > C# `JsonElement`'s `TryGet` methods are cursed
 
@@ -44,15 +91,16 @@ identically to `GetBoolean` and `GetString`, respectively, because they have
 nothing to validate after the `JsonValueKind`. The methods don't exist because
 they'd be pointless.
 
-This behavior makes the `TryGet` methods almost always useless. You're better
-off wrapping the `Get` methods in a `try-catch`.
+This is cursed because the `TryGet` method names promise graceful error
+handling, but the methods still throw exceptions. It's a misleading API that
+provides no real benefit over wrapping a `Get` method in a `try-catch`.
 
 ## > TypeScript `readonly` properties are cursed
 
 [Marking a property as `readonly`](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties)
 tells TypeScript to disallow writing to it during type-checking.
 
-However, it's a nearly meaningless guardrail because
+However, it's a meaningless guardrail because
 [TypeScript allows assigning a type with a `readonly` property to a type with a writable property](https://github.com/microsoft/TypeScript/issues/13347).
 
 <!-- eslint-skip -->
@@ -74,8 +122,11 @@ const writablePerson: Person = readonlyPerson
 writablePerson.name = `Tumor`
 ```
 
-Hopefully one day
-[`readonly` properties are properly enforced](https://github.com/microsoft/TypeScript/pull/58296).
+This is cursed because `readonly` gives developers a false sense of security
+while being trivial to bypass, even by accident.
+
+Luckily there's an
+[open PR that adds a flag for enforcing `readonly` properties](https://github.com/microsoft/TypeScript/pull/58296).
 
 ## > Maven dependency mediation is cursed
 
@@ -83,19 +134,39 @@ When multiples versions of a dependency appear in the dependency tree, Maven
 [chooses the version closest to the project root](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Transitive_Dependencies);
 not the highest version.
 
-This behavior caused
-[a bug in the OpenAI Java SDK](https://www.stainless.com/blog/escaping-maven-dependency-hell).
+This is cursed because it leads to unpredictable dependency resolution that
+silently downgrades transitive dependencies.
+
+This behavior even caused
+[a bug in the OpenAI Java SDK](https://www.stainless.com/blog/escaping-maven-dependency-hell)!
+
+## > RuboCop is cursed
+
+[RuboCop](https://docs.rubocop.org), a popular Ruby formatter and linter, has
+auto-fixable lint rules known as
+["cops"](https://docs.rubocop.org/rubocop/cops.html). Every time a cop fixes a
+problem in a file,
+[every other cop reruns on that file](https://github.com/rubocop/rubocop/issues/6492#issuecomment-439306272).
+
+This is cursed because it takes
+[infinite time](https://github.com/rubocop/rubocop/issues/2280) to run in the
+worst case.
+
+Credit goes to [Hao Wang](https://github.com/ms-jpq) for telling me about it!
 
 ## > JavaScript `Date`'s `setMonth` method is cursed
 
 Calling
-[`setMonth(month)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth))
+[`setMonth(month)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth)
 [doesn't always update the date to the given `month`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth#description).
 For example, if the date is August 31, then setting the month to September will
-actually update the date to October 1. September only has 30 days, so the 31st
-day "overflows" to the next month.
+update the date to October 1. September only has 30 days, so the 31st day
+"overflows" to the next month.
 
-This behavior caused [a bug in Google Docs](/the-29-days-per-year-bug).
+This is cursed because it violates the fundamental expectation that calling a
+setter method with a value actually sets that value.
+
+This behavior even caused [a bug in Google Docs](/the-29-days-per-year-bug)!
 
 ## > Python default parameter values are cursed
 
@@ -135,6 +206,9 @@ print(append_fun())
 #=> ['fun']
 ```
 
+This is cursed because it creates invisible shared state between function calls,
+turning what appears to be a pure function into something stateful.
+
 ## > Java `URL`'s identity methods are cursed
 
 A call to
@@ -147,3 +221,6 @@ address are considered equal.
 This also means that using `URL` objects as
 [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)
 keys will result in many DNS lookups.
+
+This is cursed because identity methods are supposed to be stateless and
+performant.
