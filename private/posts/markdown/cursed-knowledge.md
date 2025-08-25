@@ -68,6 +68,17 @@ is supposed to allow other tasks to run.
 
 Credit goes to [Hao Wang](https://github.com/ms-jpq) for telling me about it!
 
+## > CSS margin collapse is cursed
+
+CSS margins
+[collapse vertically, but not horizontally](https://www.joshwcomeau.com/css/rules-of-margin-collapse#only-vertical-margins-collapse-1).
+
+This is cursed because it's weirdly inconsistent and makes the rules of margin
+collapse even more confusing than they already are.
+
+Credit goes to [Samuel Foster](https://fostersamuel.com) for telling me about
+it!
+
 ## > C# `JsonElement`'s `TryGet` methods are cursed
 
 [`JsonElement`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement#methods)
