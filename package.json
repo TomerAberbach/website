@@ -16,7 +16,7 @@
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint/ --fix .",
     "typecheck:react-router": "react-router typegen",
     "typecheck:tomer": "tsc --noEmit",
-    "typecheck": "run-s typecheck:*",
+    "typecheck": "run-s 'typecheck:*'",
     "build": "NODE_ENV=production node scripts/build.ts",
     "dev": "react-router dev",
     "test": "vitest",
