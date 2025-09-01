@@ -137,6 +137,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
       "esbuild",
       "gifsicle",
       "jpegtran-bin",
