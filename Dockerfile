@@ -1,9 +1,9 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=24.4.1
+ARG NODE_VERSION=24.5.0
 FROM node:${NODE_VERSION} AS node
 
-ARG PNPM_VERSION=10.13.1
+ARG PNPM_VERSION=10.14.0
 RUN npm install -g pnpm@$PNPM_VERSION
 ENV NODE_ENV=production \
   FONTCONFIG_PATH=private/fonts \
@@ -26,7 +26,7 @@ RUN apt-get --yes install ca-certificates fonts-liberation libappindicator3-1 \
 FROM node AS dependencies
 WORKDIR /app
 ADD patches patches
-ADD package.json pnpm-lock.yaml ./
+ADD package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install
 
 
@@ -58,6 +58,7 @@ COPY --from=production-dependencies /app/node_modules /app/node_modules
 COPY --from=production-dependencies /root/.cache /root/.cache
 COPY --from=production-dependencies /app/package.json /app/package.json
 COPY --from=production-dependencies /app/pnpm-lock.yaml /app/pnpm-lock.yaml
+COPY --from=production-dependencies /app/pnpm-workspace.yaml /app/pnpm-workspace.yaml
 COPY --from=build /app/build /app/build
 COPY --from=build /app/private /app/private
 COPY --from=build /app/public /app/public
