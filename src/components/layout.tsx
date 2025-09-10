@@ -64,6 +64,13 @@ const Footer = () => {
         <li>
           <XIcon />
         </li>
+        {/* This for Mastodon verification. */}
+        <li hidden>
+          {/* eslint-disable-next-line react/no-invalid-html-attribute */}
+          <a rel='me' href='https://mastodon.social/@tomeraberbach'>
+            Mastodon
+          </a>
+        </li>
         <li>
           <LinkedInIcon />
         </li>
