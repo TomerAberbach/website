@@ -1,7 +1,7 @@
+import { createRequestHandler } from '@react-router/express'
 import compression from 'compression'
 import express from 'express'
 import morgan from 'morgan'
-import { createRequestHandler } from '@react-router/express'
 import type { ServerBuild } from 'react-router'
 
 console.log(`Starting server`)

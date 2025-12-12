@@ -1,6 +1,6 @@
+import clsx from 'clsx'
 import type { AnchorHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react'
 import { Link as RouterLink } from 'react-router'
-import clsx from 'clsx'
 
 export const Link = (props: LinkProps) =>
   isExternalUrl(props.href) ? (

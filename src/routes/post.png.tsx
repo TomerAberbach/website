@@ -1,8 +1,8 @@
 import { invariant } from '@epic-web/invariant'
 import type { LoaderFunctionArgs } from 'react-router'
-import { getPostKeys } from '~/services/post-keys.server'
-import { getMarkdownPost } from '~/services/post.server'
-import { renderThumbnail } from '~/services/render-thumbnail.server'
+import { getPostKeys } from '~/services/post-keys.server.ts'
+import { getMarkdownPost } from '~/services/post.server.ts'
+import { renderThumbnail } from '~/services/render-thumbnail.server.tsx'
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { postId } = params
@@ -12,7 +12,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   )
 
   const postKey = (await getPostKeys()).get(postId)
-  if (!postKey || postKey.type !== `markdown`) {
+  if (postKey?.type !== `markdown`) {
     return new Response(`Not found`, { status: 400 })
   }
 

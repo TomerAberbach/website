@@ -1,9 +1,9 @@
 import { PassThrough } from 'node:stream'
-import type { EntryContext } from 'react-router'
 import { createReadableStreamFromReadable } from '@react-router/node'
-import { ServerRouter, redirect } from 'react-router'
 import { isbot } from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
+import { redirect, ServerRouter } from 'react-router'
+import type { EntryContext } from 'react-router'
 import redirectUrl from './services/redirect-url.server.ts'
 
 const handleRequest = (
@@ -55,7 +55,7 @@ const handleBotRequest = (
           pipe(body)
         },
         onShellError: (error: unknown) => {
-          // eslint-disable-next-line typescript/prefer-promise-reject-errors
+          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           reject(error)
         },
         onError: (error: unknown) => {
@@ -103,7 +103,7 @@ const handleBrowserRequest = (
           pipe(body)
         },
         onShellError: (error: unknown) => {
-          // eslint-disable-next-line typescript/prefer-promise-reject-errors
+          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           reject(error)
         },
         onError: (error: unknown) => {

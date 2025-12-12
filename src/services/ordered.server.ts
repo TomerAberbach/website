@@ -1,3 +1,5 @@
+// eslint-disable-next-line depend/ban-dependencies
+import { includeKeys } from 'filter-obj'
 import {
   asConcur,
   filter,
@@ -15,11 +17,10 @@ import {
   window,
 } from 'lfi'
 import type { Simplify } from 'type-fest'
-import { includeKeys } from 'filter-obj'
+import { cache } from './cache.server.ts'
+import { getPostKeys } from './post-keys.server.ts'
 import { getPost } from './post.server.ts'
 import type { MarkdownPost, Post } from './post.server.ts'
-import { getPostKeys } from './post-keys.server.ts'
-import { cache } from './cache.server.ts'
 
 export const getOrderedMarkdownPosts = async (): Promise<
   Map<string, Ordered<MarkdownPost>>

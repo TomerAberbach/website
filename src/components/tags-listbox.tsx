@@ -1,6 +1,3 @@
-import { filter, flatMap, map, pipe, reduce, toArray, unique } from 'lfi'
-import { useCallback, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router'
 import {
   Listbox,
   ListboxButton,
@@ -8,6 +5,9 @@ import {
   ListboxOptions,
 } from '@headlessui/react'
 import clsx from 'clsx'
+import { filter, flatMap, map, pipe, reduce, toArray, unique } from 'lfi'
+import { useCallback, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router'
 import { useLogicalOperator } from './logical-operator-radio-button-group.tsx'
 
 export const TagsListbox = ({

@@ -1,37 +1,38 @@
-import type { LoaderFunctionArgs } from 'react-router'
-import { filter, map, pipe, reduce, toArray, toMap } from 'lfi'
-import { isRouteErrorResponse } from 'react-router'
-import { useId } from 'react'
 import { invariant } from '@epic-web/invariant'
-import katexStylesPath from 'katex/dist/katex.min.css?url'
+// eslint-disable-next-line depend/ban-dependencies
 import { includeKeys } from 'filter-obj'
+import katexStylesPath from 'katex/dist/katex.min.css?url'
+import { filter, map, pipe, reduce, toArray, toMap } from 'lfi'
+import { useId } from 'react'
+import type { LoaderFunctionArgs } from 'react-router'
+import { isRouteErrorResponse } from 'react-router'
 import { findBestMatch } from 'string-similarity'
+import { ErrorCrashView, ErrorView } from '~/components/error.tsx'
+import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
+import Prose from '~/components/prose.tsx'
+import ShrinkWrap from '~/components/shrink-wrap.tsx'
+import Tooltip from '~/components/tooltip.tsx'
 import arrowRightSvgPath from '~/private/media/arrow-right.svg'
-import arrowUpRightSvgPath from '~/private/media/arrow-up-right.svg'
 import arrowUpLeftSvgPath from '~/private/media/arrow-up-left.svg'
+import arrowUpRightSvgPath from '~/private/media/arrow-up-right.svg'
 import arrowUpSvgPath from '~/private/media/arrow-up.svg'
 import {
   createMeta,
   useLoaderData,
   useRouteError,
-} from '~/services/deserialize'
-import { serialize } from '~/services/serialize.server'
-import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
-import Prose from '~/components/prose.tsx'
-import Tooltip from '~/components/tooltip.tsx'
+} from '~/services/deserialize.ts'
 import {
   formatDateForDisplay,
   formatDateISO,
   formatMinutesToRead,
 } from '~/services/format.ts'
 import { getMeta } from '~/services/meta.ts'
-import { ErrorCrashView, ErrorView } from '~/components/error.tsx'
-import { getPost } from '~/services/post.server'
-import type { Post } from '~/services/post.server'
-import { getPostKeys } from '~/services/post-keys.server'
-import type { PostKey } from '~/services/post-keys.server'
-import { getOrderedMarkdownPosts } from '~/services/ordered.server'
-import ShrinkWrap from '~/components/shrink-wrap.tsx'
+import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
+import { getPostKeys } from '~/services/post-keys.server.ts'
+import type { PostKey } from '~/services/post-keys.server.ts'
+import { getPost } from '~/services/post.server.ts'
+import type { Post } from '~/services/post.server.ts'
+import { serialize } from '~/services/serialize.server.ts'
 
 const PostPage = () => {
   const suggestEditId = useId()

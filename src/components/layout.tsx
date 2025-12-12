@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import { useLocation } from 'react-router'
 import { InternalLink, Link } from './link.tsx'
-import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import logoSvgPath from '~/private/media/logo.svg'
+import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <div className='flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-10 sm:px-10 md:gap-y-16 md:px-16'>

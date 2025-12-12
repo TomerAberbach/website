@@ -1,13 +1,15 @@
-import { first, get, keys, map, max, pipe, reduce, toArray, values } from 'lfi'
 import clsx from 'clsx'
 import cssesc from 'cssesc'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { first, get, keys, map, max, pipe, reduce, toArray, values } from 'lfi'
 import panzoom from 'panzoom'
 import type { PanZoom } from 'panzoom'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import type { ReactNode, RefObject } from 'react'
-import { Link } from './link.tsx'
 import closeSvgPath from './close.svg'
+import { Link } from './link.tsx'
 import { createTagClassName } from './tags-filter-form.tsx'
+import useHasMounted from '~/hooks/use-has-mounted.ts'
+import usePrevious from '~/hooks/use-previous.ts'
 import type {
   Graph,
   Edge as GraphEdge,
@@ -15,8 +17,6 @@ import type {
   Vertex as GraphVertex,
   Position,
 } from '~/services/graph.server.ts'
-import usePrevious from '~/hooks/use-previous.ts'
-import useHasMounted from '~/hooks/use-has-mounted.ts'
 
 const GraphWidget = ({
   id,
@@ -184,7 +184,7 @@ const usePanning = ({
     const { x, y } = getPanzoomPosition(selectedVertexId)
     const panzoom = panzoomRef.current!
 
-    if (window.matchMedia(`(prefers-reduced-motion)`).matches) {
+    if (globalThis.matchMedia(`(prefers-reduced-motion)`).matches) {
       panzoom.moveTo(x, y)
     } else {
       panzoom.smoothMoveTo(x, y)

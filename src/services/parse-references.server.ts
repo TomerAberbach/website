@@ -1,3 +1,5 @@
+import type { Root } from 'hast'
+import { selectAll } from 'hast-util-select'
 import {
   filter,
   flatMap,
@@ -8,8 +10,6 @@ import {
   toMap,
   toSet,
 } from 'lfi'
-import { selectAll } from 'hast-util-select'
-import type { Root } from 'hast'
 import { SITE_URL } from './site-url.ts'
 import fontsStylesPath from '~/styles/fonts.css?url'
 

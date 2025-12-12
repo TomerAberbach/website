@@ -1,5 +1,3 @@
-import type { LinksFunction } from 'react-router'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import {
   entries,
   flatMap,
@@ -10,12 +8,14 @@ import {
   reduce,
   toArray,
 } from 'lfi'
-import tailwindStylesPath from './styles/tailwind.css?url'
-import fontsStylesPath from './styles/fonts.css?url'
+import type { LinksFunction } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { ErrorCrashView } from './components/error.tsx'
 import Layout from './components/layout.tsx'
 import logoIcoPath from './logo.ico'
-import { ErrorCrashView } from './components/error.tsx'
 import { useRouteError } from './services/deserialize.ts'
+import fontsStylesPath from './styles/fonts.css?url'
+import tailwindStylesPath from './styles/tailwind.css?url'
 import logoSvgPath from '~/private/media/logo.svg'
 
 const App = () => (

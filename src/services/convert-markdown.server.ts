@@ -1,44 +1,44 @@
-/* eslint-disable typescript/no-unsafe-return, typescript/no-unsafe-call, typescript/no-unsafe-member-access, typescript/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
 
-import type { Root as MdRoot } from 'mdast'
-import type { Root as HtmlRoot } from 'hast'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import rehypeExternalLinks from 'rehype-external-links'
-import remarkStringify from 'remark-stringify'
-import { headingRange } from 'mdast-util-heading-range'
-import escapeStringRegExp from 'escape-string-regexp'
-import { unified } from 'unified'
-import remarkDirective from 'remark-directive'
-import rehypeShiki from '@shikijs/rehype'
-import rehypeRaw from 'rehype-raw'
-import type { RehypeShikiOptions } from '@shikijs/rehype'
-import stripMarkdown from 'strip-markdown'
-import { h } from 'hastscript'
-import rehypePresetMinify from 'rehype-preset-minify'
-import { visit } from 'unist-util-visit'
+import { invariant } from '@epic-web/invariant'
 import remarkA11yEmoji from '@fec/remark-a11y-emoji'
-import { toString as mdToText } from 'mdast-util-to-string'
-import remarkGfm from 'remark-gfm'
-import rehypeSlug from 'rehype-slug'
+import RemarkEmbedderCache from '@remark-embedder/cache'
 import type { RemarkEmbedderOptions } from '@remark-embedder/core'
 import remarkEmbedder from '@remark-embedder/core'
 import remarkTransformerOembed from '@remark-embedder/transformer-oembed'
-import remarkMath from 'remark-math'
-import rehypeKatex from 'rehype-katex'
-import RemarkEmbedderCache from '@remark-embedder/cache'
-import remarkSmartypants from 'remark-smartypants'
+import rehypeShiki from '@shikijs/rehype'
+import type { RehypeShikiOptions } from '@shikijs/rehype'
+import escapeStringRegExp from 'escape-string-regexp'
+import type { Root as HtmlRoot } from 'hast'
+import { toHtml } from 'hast-util-to-html'
+import { h } from 'hastscript'
 import { forEach, join, keys, map, pipe } from 'lfi'
+import type { Root as MdRoot } from 'mdast'
+import type { LeafDirective, TextDirective } from 'mdast-util-directive'
+import { headingRange } from 'mdast-util-heading-range'
+import { toHast } from 'mdast-util-to-hast'
+import { toString as mdToText } from 'mdast-util-to-string'
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypeKatex from 'rehype-katex'
 import rehypeMermaid from 'rehype-mermaid'
-import { invariant } from '@epic-web/invariant'
+import rehypePresetMinify from 'rehype-preset-minify'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
 import rehypeSvgo from 'rehype-svgo'
 import { remarkAdmonition } from 'remark-admonition'
-import type { LeafDirective, TextDirective } from 'mdast-util-directive'
-import { toHast } from 'mdast-util-to-hast'
-import { toHtml } from 'hast-util-to-html'
+import remarkDirective from 'remark-directive'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import remarkSmartypants from 'remark-smartypants'
+import remarkStringify from 'remark-stringify'
+import stripMarkdown from 'strip-markdown'
+import { unified } from 'unified'
+import { visit } from 'unist-util-visit'
+import { ASSET_NAME_TO_URL, VIDEO_NAME_TO_URL } from './assets.server.ts'
 import infoSvgPath from './images/info.svg'
 import warningSvgPath from './images/warning.svg'
-import { ASSET_NAME_TO_URL, VIDEO_NAME_TO_URL } from './assets.server.ts'
 import 'mdast-util-directive'
 
 export const convertMarkdownToHtml = async (
@@ -146,7 +146,7 @@ const remarkReplace = () => {
       tree,
       [`text`, `code`, `inlineCode`, `html`, `yaml`, `image`, `link`],
       node => {
-        // eslint-disable-next-line typescript/switch-exhaustiveness-check
+        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
         switch (node.type) {
           case `text`:
           case `code`:
@@ -209,7 +209,7 @@ const remarkCollapsibleHeading = () => (tree: MdRoot) => {
         ]
       },
     )
-  } while (modified) // eslint-disable-line typescript/no-unnecessary-condition
+  } while (modified) // eslint-disable-line @typescript-eslint/no-unnecessary-condition
 }
 
 const markdownToHtmlProcessor = unified()

@@ -1,8 +1,8 @@
 import { reactRouter } from '@react-router/dev/vite'
-import { createLogger, defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import restart from 'vite-plugin-restart'
 import tailwindcss from '@tailwindcss/vite'
+import { createLogger, defineConfig } from 'vite'
+import restart from 'vite-plugin-restart'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const logger = createLogger()
 const originalWarning = logger.warn.bind(logger)

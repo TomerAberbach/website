@@ -1,11 +1,10 @@
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { $ } from 'zx'
 
 $.preferLocal = true
 $.verbose = true
 
-const rootPath = dirname(dirname(fileURLToPath(import.meta.url)))
+const rootPath = dirname(import.meta.dirname)
 const fromRoot = (path: string): string => join(rootPath, path)
 
 // Clean

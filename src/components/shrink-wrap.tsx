@@ -1,6 +1,6 @@
+import StyleObserver from '@bramus/style-observer'
 import { createElement, useCallback, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
-import StyleObserver from '@bramus/style-observer'
 
 const ShrinkWrap = ({
   as = `div`,

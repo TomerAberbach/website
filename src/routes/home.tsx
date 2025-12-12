@@ -1,23 +1,24 @@
-import { useId } from 'react'
-import { filter, first, flatMap, get, map, pipe, reduce, toArray } from 'lfi'
+// eslint-disable-next-line depend/ban-dependencies
 import { includeKeys } from 'filter-obj'
+import { filter, first, flatMap, get, map, pipe, reduce, toArray } from 'lfi'
+import { useId } from 'react'
+import { ErrorCrashView } from '~/components/error.tsx'
+import GraphWidget from '~/components/graph-widget.tsx'
+import { PostSwitcher, useSelectedPostId } from '~/components/post-switcher.tsx'
 import {
   createMeta,
   useLoaderData,
   useRouteError,
-} from '~/services/deserialize'
-import { serialize } from '~/services/serialize.server'
+} from '~/services/deserialize.ts'
 import { getGraph } from '~/services/graph.server.ts'
-import GraphWidget from '~/components/graph-widget.tsx'
 import {
+  getMeta,
   SITE_DESCRIPTION,
   SITE_TITLE_AND_AUTHOR,
-  getMeta,
 } from '~/services/meta.ts'
-import { ErrorCrashView } from '~/components/error.tsx'
-import { getOrderedPosts } from '~/services/ordered.server'
-import type { MarkdownPost, Post } from '~/services/post.server'
-import { PostSwitcher, useSelectedPostId } from '~/components/post-switcher'
+import { getOrderedPosts } from '~/services/ordered.server.ts'
+import type { MarkdownPost, Post } from '~/services/post.server.ts'
+import { serialize } from '~/services/serialize.server.ts'
 
 const HomePage = () => {
   const { postIds, tags, graph } = useLoaderData<typeof loader>()

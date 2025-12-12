@@ -1,11 +1,11 @@
-/* eslint-disable typescript/no-unsafe-return, typescript/no-unsafe-call, typescript/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 
 import type { Root } from 'hast'
+import type { ComponentType, JSX, ReactElement } from 'react'
+import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 import rehypeReact from 'rehype-react'
 import type { Options } from 'rehype-react'
-import type { ComponentType, JSX, ReactElement } from 'react'
 import { unified } from 'unified'
-import { Fragment, jsx, jsxs } from 'react/jsx-runtime'
 
 export const renderHtml = (
   htmlAst: Root,

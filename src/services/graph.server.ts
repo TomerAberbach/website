@@ -1,3 +1,4 @@
+import scc from '@rtsao/scc'
 import {
   concat,
   filter,
@@ -18,9 +19,8 @@ import {
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
-import scc from '@rtsao/scc'
-import { getOrderedPosts } from './ordered.server.ts'
 import { cache } from './cache.server.ts'
+import { getOrderedPosts } from './ordered.server.ts'
 
 export const getGraph = cache(async (): Promise<Graph> => {
   const posts = await getOrderedPosts()

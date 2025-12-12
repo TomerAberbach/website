@@ -1,10 +1,10 @@
-import { unified } from 'unified'
-import rehypeParse from 'rehype-parse-isomorphic'
 import { invariant } from '@epic-web/invariant'
 import { useLayoutEffect, useRef } from 'react'
-import { renderHtml } from '~/services/render-html'
-import type { Components } from '~/services/render-html'
+import rehypeParse from 'rehype-parse-isomorphic'
+import { unified } from 'unified'
 import { Link } from '~/components/link.tsx'
+import { renderHtml } from '~/services/render-html.tsx'
+import type { Components } from '~/services/render-html.tsx'
 
 const Prose = ({ html }: { html: string }) =>
   renderHtml(htmlParser.parse(html), components)

@@ -1,9 +1,9 @@
 import { concat, join, map } from 'lfi'
 import type { Location, MetaDescriptor } from 'react-router'
 import { formatDatesForDisplay, formatMinutesToRead } from './format.ts'
-import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
-import { getSiteUrl } from './site-url.ts'
 import type { MarkdownPost } from './post.server.ts'
+import { getSiteUrl } from './site-url.ts'
+import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
 
 export const getMeta = (
   location: Location,
@@ -45,7 +45,8 @@ export const getMeta = (
     post.dates,
   )}. ${formatMinutesToRead(post.minutesToRead)}. By ${SITE_TITLE_AND_AUTHOR}.`
 
-  return baseMeta.concat([
+  return [
+    ...baseMeta,
     // https://ogp.me
     { property: `og:title`, content: title },
     { property: `og:description`, content: description },
@@ -67,7 +68,7 @@ export const getMeta = (
     { name: `twitter:description`, content: description },
     { name: `twitter:image`, content: postImageUrl },
     { name: `twitter:image:alt`, content: postImageAlt },
-  ])
+  ]
 }
 
 const getArticleMeta = ({
