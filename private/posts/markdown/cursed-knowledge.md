@@ -18,11 +18,62 @@ tags:
   ]
 dates:
   published: 2025-08-25
+  updated: 2025-12-03
 ---
 
 Cursed knowledge I have learned over time that I wish I never knew. Inspired by
 [Immich's Cursed Knowledge](https://immich.app/cursed-knowledge). The knowledge
 is ordered from most to least recently learned.
+
+## > Ajv `multipleOf` validation is cursed
+
+[Ajv](https://github.com/ajv-validator) validates a number against
+[`multipleOf`](https://json-schema.org/understanding-json-schema/reference/numeric#multiples)
+like so:
+
+<!-- eslint-disable -->
+
+```ts
+const quotient = input / multipleOf
+const isMultipleOf = quotient === parseInt(String(quotient))
+```
+
+This doesn't work for
+[large numbers like `1e21`](https://github.com/ajv-validator/ajv/issues/2561),
+even for `multipleOf: 1`, because `parseInt("1e21")` is `1`, not `1e21`.
+
+This is cursed because the
+[JavaScript remainder operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+is right there! 🤦
+
+## > TypeScript template literal types are cursed
+
+Replacing a template literal type's interpolated types with subtypes doesn't
+necessarily result in a subtype of the original template literal type.
+
+<!-- eslint-disable -->
+
+```ts
+const first: string = ' -'
+const second: number = 0
+const third: string = 'a'
+// This typechecks :)
+const a: `${string} - ${number} - ${string}` = `${first} - ${second} - ${third}`
+
+const first1 = ' -'
+const second1 = 0
+const third1 = 'a'
+// None of these typecheck :(
+// Even though `first1`, `second1`, and `third1` are subtypes of `first`, `second`, and `third`, respectively
+const b: `${string} - ${number} - ${string}` = `${first1} - ${second1} - ${third1}`
+const c: `${string} - ${number} - ${string}` = `${' -'} - ${0} - ${'a'}`
+const d: `${string} - ${number} - ${string}` = ' - - 0 - x'
+```
+
+This is cursed because the behavior violates the
+[Liskov substitution principle](https://en.wikipedia.org/wiki/Liskov_substitution_principle).
+Unfortunately,
+[it's unlikely to be fixed](https://github.com/microsoft/TypeScript/issues/62625).
 
 ## > PHP variables are cursed
 
@@ -67,6 +118,9 @@ This is cursed because it can result in
 is supposed to allow other tasks to run.
 
 Credit goes to [Hao Wang](https://github.com/ms-jpq) for telling me about it!
+
+UPDATE:
+[Looping forever is now fixed](https://github.com/actions/runner/issues/3792#issuecomment-3597495291).
 
 ## > CSS margin collapse is cursed
 
