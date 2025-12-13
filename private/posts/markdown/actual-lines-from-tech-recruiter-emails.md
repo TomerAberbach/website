@@ -1,0 +1,28 @@
+---
+title: 'Actual Lines From Tech Recruiter Emails'
+tags: ['engineering', 'recruiting']
+dates:
+  published: 2025-12-13
+---
+
+Inspired by
+[CJ Quines's original blog post](https://blog.cjquines.com/post/tech-recruiter-emails)!
+
+- "Tomer?" (this was the whole email)
+- "Transform an unsexy industry!"
+- "I totally get it 😂 these emails are super annoying, right?"
+- "How are you?!"
+- "Another technical recruiter here, trying to gas you and see if you'd like to
+  discuss. Annoyed, non-plussed, or charmed? Lmk for research purposes....."
+- "We also offer a referral bonus – we’ll treat you to any restaurant of your
+  choice if you refer a person that we hire."
+- "Exactly the muscle and firepower we need! 🔥"
+- "The engineering team remains embryonic."
+- "Your FP iterator library (lfi) shows the design taste we need for shopping AI
+  that feels human."
+- "Me again 🙂"
+- "I came across your details via some of your impressive open source projects
+  like eslint-config."
+- "A career is like a frog in boiling water."
+- "Quick question: What's the difference between debugging code and my follow-up
+  game? One actually gets results 😅"
