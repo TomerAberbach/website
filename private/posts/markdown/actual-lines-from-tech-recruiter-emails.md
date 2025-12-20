@@ -3,10 +3,13 @@ title: 'Actual Lines From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
+  updated: 2025-12-20
 ---
 
 Inspired by
-[CJ Quines's original blog post](https://blog.cjquines.com/post/tech-recruiter-emails)!
+[CJ Quines's original blog post](https://blog.cjquines.com/post/tech-recruiter-emails),
+which may or may not be a joke, hard to tell... Anyway, the following are real,
+I promise!
 
 - "Tomer?" (this was the whole email)
 - "Transform an unsexy industry!"
@@ -26,3 +29,5 @@ Inspired by
 - "A career is like a frog in boiling water."
 - "Quick question: What's the difference between debugging code and my follow-up
   game? One actually gets results 😅"
+- ![Woody stepping out of box gif]($recruiter1.gif)
+- ![Obi Wan "hello there" gif]($recruiter2.gif)
