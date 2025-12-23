@@ -1,9 +1,9 @@
 ---
-title: 'Actual Lines From Tech Recruiter Emails'
+title: 'Actual Lines (And GIFs) From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
-  updated: 2025-12-20
+  updated: 2025-12-23
 ---
 
 Inspired by
