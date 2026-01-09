@@ -3,7 +3,7 @@ title: 'Actual Lines (And GIFs) From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
-  updated: 2025-12-23
+  updated: 2026-01-08
 ---
 
 Inspired by
@@ -29,5 +29,8 @@ I promise!
 - "A career is like a frog in boiling water."
 - "Quick question: What's the difference between debugging code and my follow-up
   game? One actually gets results 😅"
+- "With this software, there's no way in hell Ferris Bueller would've had so
+  many days off."
 - ![Woody stepping out of box gif]($recruiter1.gif)
 - ![Obi Wan "hello there" gif]($recruiter2.gif)
+- ![Sad Charmander gif]($recruiter3.gif)
