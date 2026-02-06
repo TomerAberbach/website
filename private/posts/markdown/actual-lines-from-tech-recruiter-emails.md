@@ -3,7 +3,7 @@ title: 'Actual Lines (And GIFs) From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
-  updated: 2026-01-08
+  updated: 2026-02-05
 ---
 
 Inspired by
@@ -31,6 +31,8 @@ I promise!
   game? One actually gets results 😅"
 - "With this software, there's no way in hell Ferris Bueller would've had so
   many days off."
+- "Yo yo yo!!"
+- "Dropping some more heat 🔥..."
 - ![Woody stepping out of box gif]($recruiter1.gif)
 - ![Obi Wan "hello there" gif]($recruiter2.gif)
 - ![Sad Charmander gif]($recruiter3.gif)
