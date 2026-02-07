@@ -3,7 +3,7 @@ title: 'Actual Lines (And GIFs) From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
-  updated: 2026-02-05
+  updated: 2026-02-06
 ---
 
 Inspired by
@@ -33,6 +33,8 @@ I promise!
   many days off."
 - "Yo yo yo!!"
 - "Dropping some more heat 🔥..."
+- "Trust me I don't want to be a pest here, Tomer, but I'd be silly if I didn't
+  insist on getting your attention."
 - ![Woody stepping out of box gif]($recruiter1.gif)
 - ![Obi Wan "hello there" gif]($recruiter2.gif)
 - ![Sad Charmander gif]($recruiter3.gif)
