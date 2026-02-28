@@ -3,7 +3,7 @@ title: 'Actual Lines (And GIFs) From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
-  updated: 2026-02-06
+  updated: 2026-02-28
 ---
 
 Inspired by
