@@ -39,3 +39,8 @@ I promise!
 - ![Obi Wan "hello there" gif]($recruiter2.gif)
 - ![Sad Charmander gif]($recruiter3.gif)
 - ![Tom Hanks Thanks gif]($recruiter4.gif)
+- "P.S. Here's another attempt to make my emails more enjoyable: The glass is
+  your inbox. The manatee is my email. Together they create the aforementioned
+  bump!"
+
+  ![Manatee boop gif]($recruiter5.gif)
