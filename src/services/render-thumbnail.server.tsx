@@ -1,3 +1,5 @@
+/* eslint-disable id-length */
+
 import fs from 'node:fs/promises'
 import { ColorTranslator } from 'colortranslator'
 import { htmlEscape } from 'escape-goat'
@@ -107,7 +109,7 @@ const renderThumbnailContent = async (post: MarkdownPost) => {
       height: CONTENT_BOX_HEIGHT,
       fit: `contain`,
       position: `left`,
-      background: { r: 255, b: 255, g: 255, alpha: 0 },
+      background: { r: 255, g: 255, b: 255, alpha: 0 },
     }),
   )
 }

@@ -42,7 +42,10 @@ export const getOrderedPosts: () => Promise<Map<string, Ordered<Post>>> = cache(
         mapConcur(([, key]) => getPost(key)),
         reduceConcur(toArray()),
       )
-    ).sort((a, b) => b.dates.published.getTime() - a.dates.published.getTime())
+    ).sort(
+      (post1, post2) =>
+        post2.dates.published.getTime() - post1.dates.published.getTime(),
+    )
 
     pipe(
       posts,
@@ -80,9 +83,9 @@ export const getOrderedPosts: () => Promise<Map<string, Ordered<Post>>> = cache(
     for (const post of posts.values()) {
       post.referencedBy = new Map(
         [...post.referencedBy].sort(
-          ([a], [b]) =>
-            (postById.get(b)?.dates.published.getTime() ?? 0) -
-            (postById.get(a)?.dates.published.getTime() ?? 0),
+          ([postId1], [postId2]) =>
+            (postById.get(postId2)?.dates.published.getTime() ?? 0) -
+            (postById.get(postId1)?.dates.published.getTime() ?? 0),
         ),
       )
     }

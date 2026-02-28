@@ -163,6 +163,7 @@ const components: Components = {
   h5: createHeading(`h5`),
   h6: createHeading(`h6`),
   table: Table,
+  // eslint-disable-next-line id-length
   a: Anchor,
   div: Div,
   pre: Pre,

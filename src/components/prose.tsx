@@ -35,6 +35,7 @@ const Details: Components[`details`] = props => {
 }
 
 const components: Components = {
+  // eslint-disable-next-line id-length
   a: ({ ref, href, children, ...props }) => {
     invariant(href, `Expected href`)
     invariant(children, `Expected children`)
