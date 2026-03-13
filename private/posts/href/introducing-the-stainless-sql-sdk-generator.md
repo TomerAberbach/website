@@ -1,6 +1,6 @@
 ---
 title: 'Introducing the (experimental!) Stainless SQL SDK generator'
-tags: ['code', 'libraries', 'stainless', 'sql']
+tags: ['api', 'code', 'libraries', 'stainless', 'sql']
 dates:
   published: 2026-02-18
 href: 'https://www.stainless.com/blog/introducing-stainless-sql-sdk-generator-from-openapi'

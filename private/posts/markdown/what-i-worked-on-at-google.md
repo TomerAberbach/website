@@ -17,8 +17,15 @@ tags:
   ]
 dates:
   published: 2023-04-23
-  updated: 2024-10-09
+  updated: 2026-03-21
 ---
+
+:::note
+
+I now work at [Stainless](https://www.stainless.com).
+[Check out what I'm up to!](/what-ive-worked-on-at-stainless)
+
+:::
 
 Naturally this list only includes projects I'm allowed to talk about! For many
 projects I was not the only person who worked on it. Projects I worked on as
