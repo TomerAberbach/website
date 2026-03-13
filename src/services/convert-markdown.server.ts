@@ -99,7 +99,6 @@ const remarkGif = () => (tree: MdRoot) =>
   })
 
 const remarkAudio = () => (tree: MdRoot) =>
-  // @ts-expect-error Types are no good.
   visit(
     tree,
     [`leafDirective`, `textDirective`] as const,
