@@ -3,7 +3,7 @@ title: 'Actual Lines (And GIFs) From Tech Recruiter Emails'
 tags: ['engineering', 'recruiting']
 dates:
   published: 2025-12-13
-  updated: 2026-03-12
+  updated: 2026-03-27
 ---
 
 Inspired by
@@ -36,6 +36,8 @@ I promise!
 - "Trust me I don't want to be a pest here, Tomer, but I'd be silly if I didn't
   insist on getting your attention."
 - "This could be a **legacy** building role." (yes, in bold)
+- "if your still with me, you survived yet another recruiting email and fully
+  expect you to delete this in the next second."
 - ![Woody stepping out of box gif]($recruiter1.gif)
 - ![Obi Wan "hello there" gif]($recruiter2.gif)
 - ![Sad Charmander gif]($recruiter3.gif)
