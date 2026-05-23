@@ -56,7 +56,6 @@
     "mdast-util-heading-range": "^4.0.0",
     "mdast-util-to-hast": "^13.2.1",
     "mdast-util-to-string": "^4.0.0",
-    "memoize": "^11.0.0",
     "mermaid-isomorphic": "^3.1.0",
     "morgan": "^1.10.1",
     "ngraph.forcelayout": "^3.3.1",

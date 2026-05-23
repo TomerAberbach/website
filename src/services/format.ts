@@ -25,3 +25,20 @@ export type Dates = {
 
 export const formatMinutesToRead = (minutesToRead: number): string =>
   `${minutesToRead} min read`
+
+export const truncateAtWordBoundary = (
+  text: string,
+  maxLength = 200,
+): string => {
+  if (text.length <= maxLength) {
+    return text
+  }
+
+  for (let offset = 0; offset < 15; offset++) {
+    if (/\s/u.test(text.charAt(maxLength - offset))) {
+      return `${text.slice(0, Math.max(0, maxLength - offset))}…`
+    }
+  }
+
+  return text.slice(0, Math.max(0, maxLength))
+}

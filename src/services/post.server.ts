@@ -12,6 +12,7 @@ import {
   convertMarkdownToText,
 } from './convert-markdown.server.ts'
 import type { Dates } from './format.ts'
+import { truncateAtWordBoundary } from './format.ts'
 import { parseHrefs, parseReferences } from './parse-references.server.ts'
 import { getPostPath } from './post-keys.server.ts'
 import type { PostKey } from './post-keys.server.ts'
@@ -58,7 +59,7 @@ export const getMarkdownPost = async (key: PostKey): Promise<MarkdownPost> => {
     references: parseReferences(parseHrefs(htmlAst)),
     minutesToRead: Math.max(1, Math.round(readingTime(content).minutes)),
     html: renderPost(htmlAst),
-    description: truncate(convertMarkdownToText(content)),
+    description: truncateAtWordBoundary(convertMarkdownToText(content)),
     features: extractMarkdownPostFeatures(htmlAst),
   }
   return post
@@ -75,22 +76,6 @@ const extractMarkdownPostFeatures = (
 
   return features
 }
-
-const truncate = (text: string): string => {
-  if (text.length <= MAX_LENGTH) {
-    return text
-  }
-
-  for (let offset = 0; offset < 15; offset++) {
-    if (/\s/u.test(text.charAt(MAX_LENGTH - offset))) {
-      return `${text.slice(0, Math.max(0, MAX_LENGTH - offset))}…`
-    }
-  }
-
-  return text.slice(0, Math.max(0, MAX_LENGTH))
-}
-
-const MAX_LENGTH = 200
 
 const readPost = (key: PostKey): Promise<string> =>
   fs.readFile(getPostPath(key), `utf8`)

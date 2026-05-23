@@ -25,6 +25,7 @@ import {
   formatDateForDisplay,
   formatDateISO,
   formatMinutesToRead,
+  truncateAtWordBoundary,
 } from '~/services/format.ts'
 import { getMeta } from '~/services/meta.ts'
 import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
@@ -219,7 +220,7 @@ export const meta = createMeta<typeof loader>(({ location, data }) => [
     data
       ? {
           title: data.post.title,
-          description: truncate(data.post.description),
+          description: truncateAtWordBoundary(data.post.description),
           keywords: data.post.tags,
           post: data.post,
           type: `article`,
@@ -234,22 +235,6 @@ export const meta = createMeta<typeof loader>(({ location, data }) => [
     ? [{ tagName: `link`, rel: `stylesheet`, href: katexStylesPath }]
     : []),
 ])
-
-const truncate = (text: string): string => {
-  if (text.length <= MAX_LENGTH) {
-    return text
-  }
-
-  for (let offset = 0; offset < 15; offset++) {
-    if (/\s/u.test(text.charAt(MAX_LENGTH - offset))) {
-      return `${text.slice(0, Math.max(0, MAX_LENGTH - offset))}…`
-    }
-  }
-
-  return text.slice(0, Math.max(0, MAX_LENGTH))
-}
-
-const MAX_LENGTH = 200
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const postId = params[`*`]
