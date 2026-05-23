@@ -26,7 +26,7 @@ export const getPost = (key: PostKey): Promise<Post> => {
   }
 }
 
-export const getHrefPost = async (key: PostKey): Promise<HrefPost> => {
+const getHrefPost = async (key: PostKey): Promise<HrefPost> => {
   invariant(
     key.type === `href`,
     `Expected \`${key.id}\` to be an \`href\` post.`,

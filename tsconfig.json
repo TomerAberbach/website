@@ -27,7 +27,6 @@
     "jsx": "react-jsx",
     "types": ["@react-router/node", "vite/client"],
     "rootDirs": [".", "./.react-router/types"],
-    "baseUrl": ".",
     "paths": {
       "~/private/*": ["./private/*"],
       "~/*": ["./src/*"]
