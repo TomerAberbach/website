@@ -37,6 +37,7 @@ express()
   )
   .use(
     createRequestHandler({
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       build: (await import(`./build/server/index.js` as string)) as ServerBuild,
     }),
   )

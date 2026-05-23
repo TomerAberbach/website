@@ -11,14 +11,15 @@ import {
 } from 'lfi'
 import { arrayIncludes } from 'ts-extras'
 
-const ASSET_PATH_TO_URL: Readonly<Record<string, string>> = import.meta.glob(
-  [`/private/media/*`, `/src/styles/fonts.css`],
-  { eager: true, query: `?url`, import: `default` },
-)
+const ASSET_PATH_TO_MODULES: Readonly<Record<string, { default: string }>> =
+  import.meta.glob([`/private/media/*`, `/src/styles/fonts.css`], {
+    eager: true,
+    query: `?url`,
+  })
 
 export const ASSET_NAME_TO_URL: ReadonlyMap<string, string> = pipe(
-  entries(ASSET_PATH_TO_URL),
-  map(([path, url]) => [basename(path), url]),
+  entries(ASSET_PATH_TO_MODULES),
+  map(([path, module]) => [basename(path), module.default]),
   reduce(toMap()),
 )
 

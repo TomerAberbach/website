@@ -1,6 +1,3 @@
-export const formatDatesISO = ({ published, updated }: Dates): string =>
-  formatDateISO(updated ?? published)
-
 export const formatDateISO = (date: Date): string => date.toISOString()
 
 export const formatDatesUTC = ({ published, updated }: Dates): string =>
