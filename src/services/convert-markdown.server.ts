@@ -59,7 +59,7 @@ const remarkFlex = () => (tree: MdRoot) =>
     node.data ??= {}
     const { data } = node
     data.hName = `div`
-    data.hProperties = { class: `flex max-w-full flex-wrap child:flex-1` }
+    data.hProperties = { class: `flex max-w-full flex-wrap child:flex-1 gap-4` }
   })
 
 const remarkGif = () => (tree: MdRoot) =>

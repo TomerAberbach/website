@@ -13,7 +13,7 @@ export const renderPost = (htmlAst: HtmlRoot): string =>
   renderToString(renderHtml(htmlAst, components))
 
 const Section: Components[`section`] = props => {
-  if (props[`data-footnotes`]) {
+  if (`data-footnotes` in props) {
     return (
       <section
         {...props}
