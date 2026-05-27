@@ -133,6 +133,17 @@
   --color-yellow-700: hsl(36, 77%, 48%);
   --color-yellow-800: hsl(29, 80%, 44%);
   --color-yellow-900: hsl(22, 82%, 39%);
+
+  --animate-fade-in: fade-in 300ms ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @custom-variant child (& > *);
