@@ -1,5 +1,5 @@
 ---
-title: What I've Worked On at Stainless
+title: What I Worked On at Stainless
 tags:
   [
     'api',
@@ -16,21 +16,28 @@ tags:
   ]
 dates:
   published: 2026-03-21
+  updated: 2026-05-26
 ---
 
-At [Stainless](https://www.stainless.com), I build compiler-like generators that
+:::note
+
+[Anthropic has acquired Stainless](https://www.anthropic.com/news/anthropic-acquires-stainless).
+I'm now the tech lead of Anthropic's new SDKs team!
+
+:::
+
+At [Stainless](https://www.stainless.com), I built compiler-like generators that
 transform [API specifications](https://www.openapis.org) into idiomatic client
 libraries that feel as though they were hand-written by a language expert who
 had the time to get it right.
 
-I also serve as the primary maintainer of the
+I also served as the primary maintainer of the
 [Anthropic](https://github.com/anthropics/anthropic-sdk-java) and
 [OpenAI](https://github.com/openai/openai-java) Java SDKs, triaging issues,
 reviewing PRs, and implementing features across both libraries.
 
-I've contributed to nearly every Stainless generator, but here are my notable
-projects, ordered from most to least recent. If any of this sounds interesting
-to you, [we're hiring!](https://jobs.ashbyhq.com/stainlessapi)
+I contributed to nearly every Stainless generator, but here are my notable
+projects, ordered from most to least recent.
 
 - Led the development of the
   [Stainless C# SDK generator](https://www.stainless.com/docs/sdks/csharp),
