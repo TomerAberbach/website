@@ -51,7 +51,7 @@ export const PostSwitcher = ({
   return (
     <div className='h-39'>
       <div className='flex h-full -translate-y-6 items-center justify-between gap-3'>
-        <div className='ml-auto flex items-center has-[:disabled]:invisible'>
+        <div className='ml-auto flex items-center has-disabled:invisible'>
           <Tooltip content='Previous post'>
             {tooltipId => (
               <button
@@ -80,7 +80,7 @@ export const PostSwitcher = ({
             <TagsFilterForm targetId={graphId} tags={tags} />
           </div>
         </div>
-        <div className='mr-auto flex items-center has-[:disabled]:invisible'>
+        <div className='mr-auto flex items-center has-disabled:invisible'>
           <Tooltip content='Next post'>
             {tooltipId => (
               <button

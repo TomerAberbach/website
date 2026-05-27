@@ -18,7 +18,7 @@ const Header = () => {
   const homeHref = useHomeHref()
   return (
     <header className='relative self-center'>
-      <Logo className='-z-10 h-40 w-32 sm:h-[200px] sm:w-40' />
+      <Logo className='-z-10 h-40 w-32 sm:h-50 sm:w-40' />
       {/* Ensures that the width of the `header` element matches its contents. */}
       <div className='invisible h-0 pl-2 text-2xl font-bold'>
         {SITE_TITLE_AND_AUTHOR}
@@ -39,11 +39,11 @@ const Footer = () => {
   const homeHref = useHomeHref()
   return (
     <footer className='mx-auto flex flex-col items-center gap-y-3 text-xs text-gray-600'>
-      <div className='flex h-[70px] items-end'>
+      <div className='flex h-17.5 items-end'>
         <p className='text-center'>
           ©&nbsp;
           <span className='relative inline-block'>
-            <Logo className='absolute bottom-[0.3125rem] -left-[0.125rem] -z-10 h-[70px] w-14' />
+            <Logo className='absolute bottom-1.25 -left-0.5 -z-10 h-17.5 w-14' />
             <InternalLink
               href={homeHref}
               className='underlined font-semibold text-gray-800'

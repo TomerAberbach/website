@@ -27,7 +27,7 @@ export const LogicalOperatorRadioButtonGroup = ({
     <div className='flex items-center gap-1.5'>
       <fieldset aria-describedby={tooltipId} className='h-full'>
         <legend className='sr-only'>Logical operator</legend>
-        <div className='flex h-full -space-x-[2px] rounded-2xl'>
+        <div className='flex h-full -space-x-0.5 rounded-2xl'>
           {LOGICAL_OPERATORS.map(currentLogicalOperator => {
             const checked = currentLogicalOperator === logicalOperator
             return (

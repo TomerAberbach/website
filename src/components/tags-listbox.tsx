@@ -63,7 +63,7 @@ export const TagsListbox = ({
       </div>
       <ListboxOptions
         anchor='bottom'
-        className='!max-h-76 min-w-[var(--button-width)] rounded-lg border-2 border-gray-300 bg-white py-2 font-medium text-gray-500 outline-hidden transition duration-200 [--anchor-gap:calc(var(--spacing)*3)] focus-visible:border-blue-600'
+        className='max-h-76! min-w-(--button-width) rounded-lg border-2 border-gray-300 bg-white py-2 font-medium text-gray-500 outline-hidden transition duration-200 [--anchor-gap:--spacing(3)] focus-visible:border-blue-600'
       >
         {pipe(
           tags,
@@ -71,9 +71,9 @@ export const TagsListbox = ({
             <ListboxOption
               key={tag}
               value={tag}
-              className='group flex cursor-pointer items-center gap-1.5 py-0.5 pr-8.5 pl-2 outline-none data-[active]:bg-blue-200 data-[focus]:bg-blue-100 data-[hover]:bg-blue-100 data-[selected]:text-blue-700'
+              className='group flex cursor-pointer items-center gap-1.5 py-0.5 pr-8.5 pl-2 outline-none data-active:bg-blue-200 data-focus:bg-blue-100 data-hover:bg-blue-100 data-selected:text-blue-700'
             >
-              <CheckmarkIcon className='invisible group-data-[selected]:visible' />
+              <CheckmarkIcon className='invisible group-data-selected:visible' />
               {tag}
             </ListboxOption>
           )),
