@@ -2,7 +2,8 @@
 /html/post/:splat*(\.html)?   /:splat*
 
 # Post renames
-/what-ive-worked-on-at-google /what-i-worked-on-at-google
+/what-ive-worked-on-at-stainless /what-i-worked-on-at-stainless
+/what-ive-worked-on-at-google    /what-i-worked-on-at-google
 
 # Profiles
 /github/:splat*               https://github.com/TomerAberbach/:splat*
