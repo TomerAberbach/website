@@ -127,6 +127,9 @@ importers:
       panzoom:
         specifier: ^9.4.4
         version: 9.4.4(patch_hash=23ec836b14dae66404958f219d1d49b8e9e0c56226c4a79543a47edf707050c9)
+      plur:
+        specifier: ^6.0.0
+        version: 6.0.0
       react:
         specifier: ^19.2.6
         version: 19.2.6
@@ -4204,6 +4207,10 @@ packages:
     resolution: {integrity: sha512-1ANGLZ+Nkv1ptFb2pa8oG8Lem4krflKuX/gINiHJHjJUKaJHk/SXk5x6K3J+39/p0h1RQ2saROclJJ+QLvETCQ==}
     engines: {node: '>=8'}
 
+  irregular-plurals@4.2.0:
+    resolution: {integrity: sha512-bW9UXHL7bnUcNtTo+9ccSngbxc+V40H32IgvdVin0Xs8gbo+AVYD5g/72ce/54Kjfhq66vcZr8H8TKEvsifeOw==}
+    engines: {node: '>=18.20'}
+
   is-absolute-url@4.0.1:
     resolution: {integrity: sha512-/51/TKE88Lmm7Gc4/8btclNXWS+g50wXhYJq8HWIBAGUBnoAdRu1aXeh364t/O7wXDAcTJDP8PNuNKWUDWie+A==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -5533,6 +5540,10 @@ packages:
   plur@5.1.0:
     resolution: {integrity: sha512-VP/72JeXqak2KiOzjgKtQen5y3IZHn+9GOuLDafPv0eXa47xq0At93XahYBs26MsifCQ4enGKwbjBTKgb9QJXg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  plur@6.0.0:
+    resolution: {integrity: sha512-Y9wXQivjRX0REtwpA9+n0bYYypWESn3cWtW2vazymw711qn+AQXxzZjRqhANYGBLIMC1UzVdpwe/1hHQwHfwng==}
+    engines: {node: '>=20'}
 
   pluralize@8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
@@ -11825,6 +11836,8 @@ snapshots:
 
   irregular-plurals@3.5.0: {}
 
+  irregular-plurals@4.2.0: {}
+
   is-absolute-url@4.0.1: {}
 
   is-absolute@1.0.0:
@@ -13427,6 +13440,10 @@ snapshots:
   plur@5.1.0:
     dependencies:
       irregular-plurals: 3.5.0
+
+  plur@6.0.0:
+    dependencies:
+      irregular-plurals: 4.2.0
 
   pluralize@8.0.0: {}
 

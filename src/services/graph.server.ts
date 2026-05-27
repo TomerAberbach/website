@@ -20,6 +20,8 @@ import {
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
 import { cache } from './cache.server.ts'
+import { computeGraphFacts } from './graph-facts.server.ts'
+import type { GraphFact } from './graph-facts.server.ts'
 import { getOrderedPosts } from './ordered.server.ts'
 
 export const getGraph = cache(async (): Promise<Graph> => {
@@ -130,14 +132,16 @@ export const getGraph = cache(async (): Promise<Graph> => {
   }
 
   const layout = layoutGraph({ vertices, edges })
+  const facts = computeGraphFacts({ vertices, edges })
 
-  return { vertices, edges, layout }
+  return { vertices, edges, layout, facts }
 })
 
 export type Graph = {
   vertices: Map<string, Vertex>
   edges: Map<string, Edge>
   layout: GraphLayout
+  facts: GraphFact[]
 }
 
 export type Vertex = InternalVertex | ExternalVertex
@@ -267,7 +271,9 @@ const findSimilarInternalVertexPair = ({
     get,
   )
 
-const findConnectedComponents = (edges: Graph[`edges`]): Set<string>[] => {
+export const findConnectedComponents = (
+  edges: Graph[`edges`],
+): Set<string>[] => {
   const graph = pipe(
     values(edges),
     flatMap(({ fromId, toId }) => [
