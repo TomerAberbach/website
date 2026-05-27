@@ -11,7 +11,7 @@ https://www.youtube.com/watch?v=mOxsT5-jnc8
 
 You can also find the track on
 [Spotify](https://open.spotify.com/track/4vGt77KgylifG6aawGa3sM),
-[Apple Music](https://music.apple.com/us/album/leverage-single/1729510141),
+[Apple Music](https://music.apple.com/us/song/leverage/1729510142),
 [YouTube Music](https://music.youtube.com/watch?v=mOxsT5-jnc8), and other music
 streaming services. Special thanks to
 [Tiana Rogers](https://www.instagram.com/happy_lil_paintings) for the album
