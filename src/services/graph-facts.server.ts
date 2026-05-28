@@ -20,7 +20,7 @@ import {
   values,
 } from 'lfi'
 import plur from 'plur'
-import type { ExternalVertex, Graph, Vertex } from './graph.server.ts'
+import type { Graph, Vertex } from './graph.server.ts'
 import { findConnectedComponents } from './graph.server.ts'
 
 export type GraphFact = { text: GraphFactSegment[] }
@@ -49,10 +49,9 @@ export const computeGraphFacts = ({
     largestComponent(components),
     density(vertices, edges),
     mostPopularTag(vertices),
-    tagWithMostCrossings(edges),
+    tagWithMostEdges(edges),
     isolatedVertices(degreeMap),
     bidirectionalPairs(edges),
-    mostLinkedExternal(vertices, inDegreeMap),
     diameter(components, adjacency),
     averageDegree(degreeMap),
     mostTaggedVertex(vertices),
@@ -61,7 +60,6 @@ export const computeGraphFacts = ({
     clusteringCoefficient(adjacency),
     longestTagChain(edges),
     bridgeEdgeCount(edges),
-    multiTagEdges(edges),
     tagPairCoOccurrence(vertices),
     externalVertexRatioPerTag(vertices),
   ]
@@ -159,10 +157,7 @@ const highestInDegree = (
 const componentCount = (components: Set<string>[]): GraphFact => ({
   text: [
     `The graph has ${components.length} `,
-    wiki(
-      `weakly connected ${plur(`component`, components.length)}`,
-      `Weak_component`,
-    ),
+    wiki(`weak ${plur(`component`, components.length)}`, `Weak_component`),
     `.`,
   ],
 })
@@ -180,8 +175,10 @@ const largestComponent = (components: Set<string>[]): GraphFact | null => {
   return {
     text: [
       `The largest `,
-      wiki(`weakly connected component`, `Weak_component`),
-      ` has ${largestComponent.size} ${plur(`vertex`, largestComponent.size)}.`,
+      wiki(`weak component`, `Weak_component`),
+      ` has ${largestComponent.size}`,
+      wiki(plur(`vertex`, largestComponent.size), `Vertex_(graph_theory)`),
+      `.`,
     ],
   }
 }
@@ -205,30 +202,30 @@ const density = (
 const mostPopularTag = (vertices: Graph[`vertices`]): GraphFact | null => {
   const tagCounts = pipe(
     values(vertices),
+    filter(vertex => vertex.type === `internal`),
     flatMap(vertex => vertex.tags),
     map((tag): [string, string] => [tag, tag]),
     reduce(toGrouped(toCount(), toMap())),
   )
-
   if (tagCounts.size === 0) {
     return null
   }
-  const [tags, tagCount] = allMaxBy(tagCounts)
 
+  const [tags, tagCount] = allMaxBy(tagCounts)
   return {
     text: [
-      `The most popular ${plur(`tag`, tags.length)} ${
-        tags.length === 1 ? `is` : `are`
-      } `,
+      `The `,
       tagList(tags),
-      ` with ${tagCount} ${plur(`vertex`, tagCount)}${
-        tags.length === 1 ? `` : ` each`
-      }.`,
+      ` ${plur(`tag`, tags.length)} ${
+        tags.length === 1 ? `is` : `are`
+      } the most popular with ${tagCount} internal `,
+      wiki(plur(`vertex`, tagCount), `Vertex_(graph_theory)`),
+      `${tags.length === 1 ? `` : ` each`}.`,
     ],
   }
 }
 
-const tagWithMostCrossings = (edges: Graph[`edges`]): GraphFact | null => {
+const tagWithMostEdges = (edges: Graph[`edges`]): GraphFact | null => {
   const tagEdgeCounts = pipe(
     values(edges),
     flatMap(edge => edge.tags),
@@ -242,9 +239,9 @@ const tagWithMostCrossings = (edges: Graph[`edges`]): GraphFact | null => {
   const [tags, edgeCount] = allMaxBy(tagEdgeCounts)
   return {
     text: [
-      `The ${plur(`tag`, tags.length)} `,
+      `The `,
       tagList(tags),
-      ` ${tags.length === 1 ? `has` : `have`} the most `,
+      ` ${plur(`tag`, tags.length)} ${tags.length === 1 ? `has` : `have`} the most `,
       wiki(`edges`, `Edge_(graph_theory)`),
       ` at ${edgeCount}.`,
     ],
@@ -277,40 +274,9 @@ const bidirectionalPairs = (edges: Graph[`edges`]): GraphFact => {
 
   return {
     text: [
-      `The graph has ${pairCount} `,
-      wiki(`bidirectional`, `Directed_graph`),
-      ` edge ${plur(`pair`, pairCount)}.`,
-    ],
-  }
-}
-
-const mostLinkedExternal = (
-  vertices: Graph[`vertices`],
-  inDegreeMap: Map<string, number>,
-): GraphFact | null => {
-  const externals = pipe(
-    values(vertices),
-    filter((vertex): vertex is ExternalVertex => vertex.type === `external`),
-    reduce(toArray()),
-  )
-  if (externals.length === 0) {
-    return null
-  }
-
-  const externalDegreeMap = new Map(
-    externals.map(vertex => [vertex.id, inDegreeMap.get(vertex.id) ?? 0]),
-  )
-  const [ids, degree] = allMaxBy(externalDegreeMap)
-
-  return {
-    text: [
-      `The most linked external `,
-      wiki(plur(`vertex`, ids.length), `Vertex_(graph_theory)`),
-      ` ${ids.length === 1 ? `is` : `are`} `,
-      ...vertexList(ids, vertices),
-      ` with `,
-      wiki(`in-degree`, `In-degree`),
-      ` ${degree}.`,
+      `The graph has ${pairCount} bidirectional `,
+      wiki(`edge`, `Edge_(graph_theory)`),
+      ` ${plur(`pair`, pairCount)}.`,
     ],
   }
 }
@@ -332,10 +298,10 @@ const diameter = (
 
   return {
     text: [
-      `The `,
+      `The largest `,
+      wiki(`weak component`, `Weak_component`),
+      `'s `,
       wiki(`diameter`, `Diameter_(graph_theory)`),
-      ` of the largest `,
-      wiki(`weakly connected component`, `Weak_component`),
       ` is ${diameter}.`,
     ],
   }
@@ -411,11 +377,18 @@ const radius = (
 
   return {
     text: [
-      `The `,
+      `The largest `,
+      wiki(`weak component`, `Weak_component`),
+      `'s `,
       wiki(`radius`, `Radius_(graph_theory)`),
-      ` of the largest component is ${minEcc} and its most connected `,
+      ` is ${minEcc} and its most connected `,
       wiki(`center`, `Graph_center`),
-      ` ${plur(`vertex`, mostConnectedCenterIds.length)} ${mostConnectedCenterIds.length === 1 ? `is` : `are`} `,
+      ` `,
+      wiki(
+        plur(`vertex`, mostConnectedCenterIds.length),
+        `Vertex_(graph_theory)`,
+      ),
+      ` ${mostConnectedCenterIds.length === 1 ? `is` : `are`} `,
       ...vertexList(mostConnectedCenterIds, vertices),
       `.`,
     ],
@@ -453,9 +426,11 @@ const averagePathLength = (
   const avg = (totalDist / pairCount).toFixed(2)
   return {
     text: [
-      `The `,
+      `The largest `,
+      wiki(`weak component`, `Weak_component`),
+      `'s `,
       wiki(`average path length`, `Average_path_length`),
-      ` in the largest component is ${avg}.`,
+      ` is ${avg}.`,
     ],
   }
 }
@@ -540,9 +515,13 @@ const longestTagChain = (edges: Graph[`edges`]): GraphFact | null => {
 
   return {
     text: [
-      `The tag with the longest chain is `,
+      `The `,
       tagList([bestTag]),
-      ` at ${bestLength} ${plur(`edge`, bestLength)}.`,
+      ` tag's `,
+      wiki(`induced subgraph`, `Induced_subgraph`),
+      ` has the highest `,
+      wiki(`diameter`, `Diameter_(graph_theory)`),
+      ` at ${bestLength}.`,
     ],
   }
 }
@@ -553,7 +532,7 @@ const bridgeEdgeCount = (edges: Graph[`edges`]): GraphFact | null => {
   return {
     text: [
       `The graph has ${bridges} `,
-      wiki(`bridge ${plur(`edge`, bridges)}`, `Bridge_(graph_theory)`),
+      wiki(plur(`bridge`, bridges), `Bridge_(graph_theory)`),
       `.`,
     ],
   }
@@ -603,22 +582,13 @@ const findBridges = (edges: Graph[`edges`]): number => {
   return bridgeCount
 }
 
-const multiTagEdges = (edges: Graph[`edges`]): GraphFact => {
-  const multiCount = pipe(
-    values(edges),
-    filter(edge => edge.tags.size > 1),
-    count,
-  )
-  return {
-    text: [
-      `${multiCount} ${plur(`edge`, multiCount)} ${multiCount === 1 ? `carries` : `carry`} more than one tag.`,
-    ],
-  }
-}
-
 const tagPairCoOccurrence = (vertices: Graph[`vertices`]): GraphFact | null => {
   const pairCounts = new Map<string, number>()
   for (const vertex of vertices.values()) {
+    if (vertex.type === `external`) {
+      continue
+    }
+
     const tags = [...vertex.tags].sort()
     for (let i = 0; i < tags.length; i++) {
       for (let j = i + 1; j < tags.length; j++) {
@@ -638,7 +608,9 @@ const tagPairCoOccurrence = (vertices: Graph[`vertices`]): GraphFact | null => {
     text: [
       `The most common tag pair is `,
       tagList([tagA!, tagB!], `and`),
-      `, appearing together on ${maxCount} ${plur(`vertex`, maxCount)}.`,
+      `, appearing together on ${maxCount} internal `,
+      wiki(plur(`vertex`, maxCount), `Vertex_(graph_theory)`),
+      `.`,
     ],
   }
 }
@@ -676,9 +648,11 @@ const externalVertexRatioPerTag = (
   const pct = (bestRatio * 100).toFixed(0)
   return {
     text: [
-      `The tag `,
+      `The `,
       tagList([bestTag]),
-      ` has the highest external vertex ratio at ${pct}%.`,
+      ` tag has the highest external `,
+      wiki(`vertex`, `Vertex_(graph_theory)`),
+      ` ratio at ${pct}%.`,
     ],
   }
 }
