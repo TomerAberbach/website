@@ -62,6 +62,10 @@ export const computeGraphFacts = ({
     bridgeEdgeCount(edges),
     tagPairCoOccurrence(vertices),
     externalVertexRatioPerTag(vertices),
+    heaviestEdge(edges, vertices),
+    averageEdgeWeight(edges),
+    heaviestVertex(edges, vertices),
+    multiReferenceEdgeCount(edges),
   ]
 
   return facts.filter((fact): fact is GraphFact => fact !== null)
@@ -653,6 +657,111 @@ const externalVertexRatioPerTag = (
       ` tag has the highest external `,
       wiki(`vertex`, `Vertex_(graph_theory)`),
       ` ratio at ${pct}%.`,
+    ],
+  }
+}
+
+const heaviestEdge = (
+  edges: Graph[`edges`],
+  vertices: Graph[`vertices`],
+): GraphFact | null => {
+  if (edges.size === 0) {
+    return null
+  }
+
+  const weightMap = new Map(
+    pipe(
+      entries(edges),
+      map(([key, edge]): [string, number] => [key, edge.hrefs.size]),
+      reduce(toArray()),
+    ),
+  )
+  const [edgeKeys, weight] = allMaxBy(weightMap)
+  const edge = edges.get(edgeKeys[0]!)!
+
+  return {
+    text: [
+      `The heaviest `,
+      wiki(`edge`, `Edge_(graph_theory)`),
+      ` goes from `,
+      vertexLink(vertices.get(edge.fromId)!),
+      ` to `,
+      vertexLink(vertices.get(edge.toId)!),
+      ` with `,
+      wiki(`weight`, `Weight_(graph theory)`),
+      ` ${weight}.`,
+    ],
+  }
+}
+
+const averageEdgeWeight = (edges: Graph[`edges`]): GraphFact | null => {
+  if (edges.size === 0) {
+    return null
+  }
+
+  const totalWeight = pipe(
+    values(edges),
+    map(edge => edge.hrefs.size),
+    sum,
+  )
+  const avg = (totalWeight / edges.size).toFixed(2)
+
+  return {
+    text: [
+      `The average `,
+      wiki(`edge`, `Edge_(graph_theory)`),
+      ` `,
+      wiki(`weight`, `Weight_(graph theory)`),
+      ` is ${avg}.`,
+    ],
+  }
+}
+
+const heaviestVertex = (
+  edges: Graph[`edges`],
+  vertices: Graph[`vertices`],
+): GraphFact | null => {
+  if (edges.size === 0) {
+    return null
+  }
+
+  const vertexWeights = new Map<string, number>()
+  for (const edge of edges.values()) {
+    const weight = edge.hrefs.size
+    vertexWeights.set(
+      edge.fromId,
+      (vertexWeights.get(edge.fromId) ?? 0) + weight,
+    )
+    vertexWeights.set(edge.toId, (vertexWeights.get(edge.toId) ?? 0) + weight)
+  }
+  const [ids, totalWeight] = allMaxBy(vertexWeights)
+
+  return {
+    text: [
+      ...vertexList(ids, vertices),
+      ` ${ids.length === 1 ? `has` : `have`} the highest total `,
+      wiki(`edge`, `Edge_(graph_theory)`),
+      ` `,
+      wiki(`weight`, `Weight_(graph theory)`),
+      ` at ${totalWeight}.`,
+    ],
+  }
+}
+
+const multiReferenceEdgeCount = (edges: Graph[`edges`]): GraphFact => {
+  const multiRefCount = pipe(
+    values(edges),
+    filter(edge => edge.hrefs.size > 1),
+    count,
+  )
+
+  return {
+    text: [
+      `${multiRefCount} of ${edges.size} `,
+      wiki(`edges`, `Edge_(graph_theory)`),
+      ` `,
+      wiki(`weight`, `Weight_(graph theory)`),
+      ` > 1.`,
     ],
   }
 }
