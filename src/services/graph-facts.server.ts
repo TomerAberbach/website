@@ -759,7 +759,7 @@ const multiReferenceEdgeCount = (edges: Graph[`edges`]): GraphFact => {
     text: [
       `${multiRefCount} of ${edges.size} `,
       wiki(`edges`, `Edge_(graph_theory)`),
-      ` `,
+      ` have `,
       wiki(`weight`, `Weight_(graph theory)`),
       ` > 1.`,
     ],
