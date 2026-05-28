@@ -176,7 +176,7 @@ const largestComponent = (components: Set<string>[]): GraphFact | null => {
     text: [
       `The largest `,
       wiki(`weak component`, `Weak_component`),
-      ` has ${largestComponent.size}`,
+      ` has ${largestComponent.size} `,
       wiki(plur(`vertex`, largestComponent.size), `Vertex_(graph_theory)`),
       `.`,
     ],

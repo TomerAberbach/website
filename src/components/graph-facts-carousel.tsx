@@ -47,7 +47,7 @@ const GraphFactsCarousel = ({
     <p
       role='status'
       aria-live='polite'
-      className='inline-block max-w-prose items-center text-center text-sm text-balance text-gray-600'
+      className='flex max-h-[2lh] min-h-[2lh] max-w-prose items-center text-center text-sm text-balance text-gray-600'
     >
       <span
         className={`motion-safe:transition-opacity motion-safe:duration-300 ${visible ? `opacity-100` : `opacity-0`}`}
