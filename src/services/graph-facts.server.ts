@@ -56,7 +56,7 @@ export const computeGraphFacts = ({
     diameter(components, adjacency),
     averageDegree(degreeMap),
     mostTaggedVertex(vertices),
-    radius(components, adjacency, vertices),
+    radius(components, adjacency, vertices, degreeMap),
     averagePathLength(components, adjacency),
     clusteringCoefficient(adjacency),
     longestTagChain(edges),
@@ -382,6 +382,7 @@ const radius = (
   components: Set<string>[],
   adjacency: Map<string, Set<string>>,
   vertices: Graph[`vertices`],
+  degreeMap: Map<string, number>,
 ): GraphFact | null => {
   if (components.length === 0) {
     return null
@@ -403,15 +404,19 @@ const radius = (
     map(([id]) => id),
     reduce(toArray()),
   )
+  const centerDegrees = new Map(
+    centerIds.map(id => [id, degreeMap.get(id) ?? 0]),
+  )
+  const [mostConnectedCenterIds] = allMaxBy(centerDegrees)
 
   return {
     text: [
       `The `,
       wiki(`radius`, `Radius_(graph_theory)`),
-      ` of the largest component is ${minEcc} and its `,
+      ` of the largest component is ${minEcc} and its most connected `,
       wiki(`center`, `Graph_center`),
-      ` ${centerIds.length === 1 ? `is` : `includes`} `,
-      ...vertexList(centerIds, vertices),
+      ` ${plur(`vertex`, mostConnectedCenterIds.length)} ${mostConnectedCenterIds.length === 1 ? `is` : `are`} `,
+      ...vertexList(mostConnectedCenterIds, vertices),
       `.`,
     ],
   }
