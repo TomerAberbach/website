@@ -48,3 +48,5 @@ I promise!
   bump!"
 
   ![Manatee boop gif]($recruiter5.gif)
+
+- ![Pablo Escobar waiting gif]($recruiter6.gif)
