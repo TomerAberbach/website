@@ -131,22 +131,5 @@
     "vite-plugin-restart": "^2.0.0",
     "vitest": "^4.1.7",
     "zx": "^8.8.5"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "esbuild",
-      "gifsicle",
-      "jpegtran-bin",
-      "optipng-bin",
-      "puppeteer",
-      "sharp",
-      "unrs-resolver"
-    ],
-    "patchedDependencies": {
-      "glyphhanger@5.0.0": "patches/glyphhanger@5.0.0.patch",
-      "@zachleat/spider-pig@3.0.0": "patches/@zachleat__spider-pig@3.0.0.patch",
-      "panzoom": "patches/panzoom.patch"
-    }
   }
 }
