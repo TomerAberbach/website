@@ -19,6 +19,7 @@ tags:
   ]
 dates:
   published: 2026-06-11
+  updated: 2026-06-12
 ---
 
 This code would easily pass a cursory review:
@@ -168,7 +169,7 @@ for the sentinel:
 // `open` signals failure via a -1 return value. The caller may not check for -1
 // if they're unaware it's a possible return value.
 int fd = open("config.json", O_RDONLY);
-// Undefined behavior if `fd == -1`.
+// If `fd == -1`, this fails at runtime with `EBADF`.
 read(fd, buf, sizeof(buf));
 ```
 
