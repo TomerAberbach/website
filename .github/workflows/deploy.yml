@@ -5,9 +5,6 @@ on:
     branches:
       - main
 
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
 concurrency:
   # Ensure only a single deployment occurs at any given time.
   group: deploy
@@ -17,7 +14,42 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    # The build needs Chromium (Mermaid), Pango/sharp (OG thumbnails), and a
+    # headless crawl (font subsetting) — none of which Cloudflare's build
+    # container reliably provides, so we build here and Direct Upload.
+    env:
+      # Let fontconfig/Pango find Kantumruy Pro (used by the thumbnails).
+      FONTCONFIG_PATH: private/fonts
     steps:
-      - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - uses: actions/checkout@v6
+
+      - name: Install Pango (sharp text rendering for thumbnails)
+        run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0
+          libpangocairo-1.0-0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          cache: true
+          run_install: true
+
+      - name: Install Playwright Chromium (Mermaid)
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        # The Pages project must exist in Direct Upload mode. Set the
+        # `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets,
+        # and update `--project-name` to match the project.
+        run: pnpm exec wrangler pages deploy dist --project-name=website
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

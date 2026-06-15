@@ -1,13 +1,13 @@
 import { any, filter, first, get, or, pipe } from 'lfi'
-import { useCallback } from 'react'
-import { useSearchParams } from 'react-router'
+import { useCallback } from 'preact/compat'
 import { setHas } from 'ts-extras'
 import { Link } from './link.tsx'
 import ShrinkWrap from './shrink-wrap.tsx'
 import { TagsFilterForm } from './tags-filter-form.tsx'
-import { useSelectedTags } from './tags-listbox.tsx'
 import Tooltip from './tooltip.tsx'
-import type { Graph, InternalVertex } from '~/services/graph.server.ts'
+import { useSearchParams } from '~/hooks/use-search-params.ts'
+import { useSelectedTags } from '~/hooks/use-selected-tags.ts'
+import type { Graph, InternalVertex } from '~/lib/graph.ts'
 
 export const PostSwitcher = ({
   selectedPostId,
@@ -71,7 +71,6 @@ export const PostSwitcher = ({
         <div className='relative flex w-60 flex-col items-center gap-3'>
           <Link
             href={vertex.href}
-            reloadDocument={vertex.reloadDocument}
             className='max-w-full text-center font-medium text-balance text-gray-700 hover:ring-3'
           >
             <ShrinkWrap>{vertex.label}</ShrinkWrap>
@@ -216,10 +215,7 @@ export const useSelectedPostId = ({
         newSearchParams.set(`post`, newSelectedPostId)
       }
 
-      setSearchParams(newSearchParams, {
-        replace: true,
-        preventScrollReset: true,
-      })
+      setSearchParams(newSearchParams)
     },
     [searchParams, setSearchParams, sanitizePostId, firstPostId],
   )

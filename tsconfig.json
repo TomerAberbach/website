@@ -23,14 +23,18 @@
     "noEmit": true,
     // Runtime
     "lib": ["esnext", "dom", "dom.iterable"],
-    // Web application
+    // Preact islands (via `@astrojs/preact` compat)
     "jsx": "react-jsx",
-    "types": ["@react-router/node", "vite/client"],
-    "rootDirs": [".", "./.react-router/types"],
+    "jsxImportSource": "preact",
     "paths": {
+      "react": ["./node_modules/preact/compat/"],
+      "react/jsx-runtime": ["./node_modules/preact/jsx-runtime/"],
+      "react-dom": ["./node_modules/preact/compat/"],
+      "react-dom/*": ["./node_modules/preact/compat/*"],
       "~/private/*": ["./private/*"],
       "~/*": ["./src/*"]
     }
   },
-  "include": ["**/*"]
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
 }

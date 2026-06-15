@@ -1,14 +1,14 @@
 import cssesc from 'cssesc'
 import { join, map, pipe } from 'lfi'
-import { useCallback } from 'react'
-import type { FormEventHandler } from 'react'
-import { Form } from 'react-router'
-import type { LogicalOperator } from './logical-operator-radio-button-group.ts'
+import type { GenericEventHandler } from 'preact'
+import { useCallback } from 'preact/compat'
+import { TagsListbox } from './custom-listbox.tsx'
+import type { LogicalOperator } from './logical-operator-radio-button-group.tsx'
 import {
   LogicalOperatorRadioButtonGroup,
   useLogicalOperator,
 } from './logical-operator-radio-button-group.tsx'
-import { TagsListbox, useSelectedTags } from './tags-listbox.tsx'
+import { useSelectedTags } from '~/hooks/use-selected-tags.ts'
 
 export const TagsFilterForm = ({
   targetId,
@@ -21,13 +21,13 @@ export const TagsFilterForm = ({
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
   // Prevent form submission when JavaScript is enabled.
-  const preventFormSubmission = useCallback<FormEventHandler<HTMLFormElement>>(
+  const preventFormSubmission = useCallback<GenericEventHandler<HTMLFormElement>>(
     e => e.preventDefault(),
     [],
   )
 
   return (
-    <Form
+    <form
       className='mx-auto flex max-w-full flex-col items-center gap-2'
       onSubmit={preventFormSubmission}
     >
@@ -49,7 +49,7 @@ export const TagsFilterForm = ({
           selectedTags={selectedTags}
         />
       )}
-    </Form>
+    </form>
   )
 }
 

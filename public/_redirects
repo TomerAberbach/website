@@ -1,0 +1,44 @@
+# Cloudflare Pages native redirects. See:
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+# Previous website post URL format (https://github.com/TomerAberbach/tomeraberbach.github.io)
+# Placeholders stop at `.`, so `:slug.html` strips the old `.html` suffix.
+/html/post/:slug.html  /:slug   301
+/html/post/*           /:splat  301
+
+# Post renames
+/what-ive-worked-on-at-stainless  /what-i-worked-on-at-stainless  301
+/what-ive-worked-on-at-google     /what-i-worked-on-at-google     301
+
+# Profiles (bare path + nested splat, since Cloudflare splats need a trailing segment)
+/github     https://github.com/TomerAberbach             301
+/github/*   https://github.com/TomerAberbach/:splat      301
+/npm        https://www.npmjs.com/~tomeraberbach         301
+/npm/*      https://www.npmjs.com/~tomeraberbach/:splat  301
+/twitter    https://x.com/TomerAberbach                  301
+/twitter/*  https://x.com/TomerAberbach/:splat           301
+/x          https://x.com/TomerAberbach                  301
+/x/*        https://x.com/TomerAberbach/:splat           301
+/edin       https://www.linkedin.com/in/tomer-a          301
+/edin/*     https://www.linkedin.com/in/tomer-a/:splat   301
+
+# Convenience redirects
+/resume  /resume.pdf  301
+/s       https://github.com/TomerAberbach/website/blob/main/public/_redirects  301
+
+# tunelink.to
+/ffk  https://tunelink.to/ffk  301
+
+# GitHub Pages redirects
+/mano-simulator       https://tomeraberbach.github.io/mano-simulator  301
+/spotify-true-random  https://spotify-true-random.tomeraberba.ch       301
+
+# Other Tomers
+/burg       http://arctic.som.ou.edu/tburg/         301
+/burg/*     http://arctic.som.ou.edu/tburg/:splat   301
+/weather    http://arctic.som.ou.edu/tburg/         301
+/weather/*  http://arctic.som.ou.edu/tburg/:splat   301
+/wx         http://polarwx.com/                     301
+/wx/*       http://polarwx.com/:splat               301
+/singal     https://singalt16.github.io/            301
+/singal/*   https://singalt16.github.io/:splat      301

@@ -1,6 +1,6 @@
 import StyleObserver from '@bramus/style-observer'
-import { createElement, useCallback, useEffect, useRef } from 'react'
-import type { ReactNode } from 'react'
+import { createElement, useCallback, useEffect, useRef } from 'preact/compat'
+import type { ElementType, ReactNode } from 'preact/compat'
 
 const ShrinkWrap = ({
   as = `div`,
@@ -8,7 +8,7 @@ const ShrinkWrap = ({
   nonce,
   children,
 }: {
-  as?: React.ElementType
+  as?: ElementType
   ssr?: boolean
   nonce?: string
   children?: ReactNode
@@ -75,11 +75,7 @@ const ShrinkWrap = ({
   return createElement(
     as,
     {},
-    <div
-      suppressHydrationWarning={ssr}
-      ref={elementRef}
-      style={{ boxSizing: `content-box` }}
-    >
+    <div ref={elementRef} style={{ boxSizing: `content-box` }}>
       {children}
     </div>,
     ssr && (

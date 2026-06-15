@@ -3,4 +3,5 @@ node_modules
 .env
 **/build/
 coverage
-.react-router
+/dist
+/.astro

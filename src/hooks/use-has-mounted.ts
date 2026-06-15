@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'preact/compat'
 
 const useHasMounted = (): boolean => {
   const [hasMounted, setHasMounted] = useState(false)

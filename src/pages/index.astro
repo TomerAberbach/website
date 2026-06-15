@@ -1,0 +1,52 @@
+---
+import { filter, first, flatMap, get, map, pipe, reduce, toArray } from 'lfi'
+import HomeIsland from '~/components/home-island.tsx'
+import Base from '~/layouts/Base.astro'
+import { graphToJson } from '~/lib/graph-json.ts'
+import { getGraph } from '~/lib/graph.ts'
+import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/lib/meta.ts'
+import { getOrderedPosts } from '~/lib/ordered.ts'
+import type { MarkdownPost, Post } from '~/lib/post.ts'
+
+const getTags = (posts: Map<string, Post>): Set<string> =>
+  new Set(
+    pipe(
+      posts,
+      flatMap(([, { tags }]) => tags),
+      reduce(toArray()),
+    ).sort(),
+  )
+
+const getLatestMarkdownPost = (posts: Map<string, Post>): MarkdownPost =>
+  pipe(
+    posts,
+    map(([, post]) => post),
+    filter(post => post.type === `markdown`),
+    first,
+    get,
+  )
+
+// The 12,500-iteration force layout in `getGraph()` runs exactly once per build.
+const [posts, graph] = await Promise.all([getOrderedPosts(), getGraph()])
+const postIds = [...posts.keys()]
+const tags = [...getTags(posts)]
+const latestPost = getLatestMarkdownPost(posts)
+const graphJson = graphToJson(graph)
+
+---
+
+<Base
+  seo={{
+    title: SITE_TITLE_AND_AUTHOR,
+    description: SITE_DESCRIPTION,
+    post: latestPost,
+    type: `website`,
+  }}
+>
+  <HomeIsland
+    client:idle
+    graph={graphJson}
+    postIds={postIds}
+    tags={tags}
+  />
+</Base>

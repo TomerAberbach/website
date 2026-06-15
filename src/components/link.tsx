@@ -1,20 +1,14 @@
 import clsx from 'clsx'
-import type { AnchorHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react'
-import { Link as RouterLink } from 'react-router'
+import type { AnchorHTMLAttributes } from 'preact'
+import type { ReactNode } from 'preact/compat'
 
-export const Link = (props: LinkProps) =>
-  isExternalUrl(props.href) ? (
-    <ExternalLink {...props} />
-  ) : (
-    <InternalLink
-      {...props}
-      href={
-        props.href.startsWith(`/`) || props.href.startsWith(`#`)
-          ? props.href
-          : `/${props.href}`
-      }
-    />
-  )
+// The site is a multi-page app under Astro, so links are plain anchors (every
+// navigation is a full document load).
+export type LinkProps = Omit<AnchorHTMLAttributes, `className`> & {
+  href: string
+  className?: string
+  children?: ReactNode
+}
 
 const isExternalUrl = (href: string): boolean => {
   try {
@@ -26,34 +20,28 @@ const isExternalUrl = (href: string): boolean => {
   }
 }
 
-export const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
+export const ExternalLink = ({ className, ...rest }: LinkProps) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content
   <a
-    {...withFocusRingClassName(rest)}
+    {...rest}
+    className={clsx(className, `focus-ring`)}
     target='_blank'
     rel='noopener noreferrer'
   />
 )
 
-export const InternalLink = ({ href, reloadDocument, ...props }: LinkProps) =>
-  typeof document === `undefined` ? (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    <a data-discover='true' href={href} {...withFocusRingClassName(props)} />
+export const InternalLink = ({ href, className, ...rest }: LinkProps) => (
+  // eslint-disable-next-line jsx-a11y/anchor-has-content
+  <a
+    {...rest}
+    href={href.startsWith(`/`) || href.startsWith(`#`) ? href : `/${href}`}
+    className={clsx(className, `focus-ring`)}
+  />
+)
+
+export const Link = (props: LinkProps) =>
+  isExternalUrl(props.href) ? (
+    <ExternalLink {...props} />
   ) : (
-    <RouterLink
-      to={href}
-      reloadDocument={reloadDocument}
-      {...withFocusRingClassName(props)}
-    />
+    <InternalLink {...props} />
   )
-
-const withFocusRingClassName = <Props extends { className?: string }>({
-  className,
-  ...restProps
-}: Props) => ({ ...restProps, className: clsx(className, `focus-ring`) })
-
-export type LinkProps = Omit<Parameters<typeof RouterLink>[0], `to`> &
-  DetailedHTMLProps<
-    AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  > & { href: string; children: ReactNode }
