@@ -1,0 +1,66 @@
+name: Preview
+
+on:
+  pull_request:
+
+concurrency:
+  # One preview build per PR; cancel superseded pushes.
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write # to post the preview URL comment
+
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    # Same heavy build as the production deploy: Chromium (Mermaid), Pango/sharp
+    # (OG thumbnails), and a headless crawl (font subsetting). We build here and
+    # Direct Upload to a preview deployment keyed on the PR's branch.
+    env:
+      # Let fontconfig/Pango find Kantumruy Pro (used by the thumbnails).
+      FONTCONFIG_PATH: private/fonts
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Pango (sharp text rendering for thumbnails)
+        run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0
+          libpangocairo-1.0-0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          cache: true
+          run_install: true
+
+      - name: Install Playwright Chromium (Mermaid)
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy preview to Cloudflare Pages
+        id: deploy
+        # Any branch other than the project's production branch (main) becomes a
+        # preview deployment. wrangler-action exposes the resulting URL as an
+        # output; the build itself is unchanged from deploy.yml.
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=website --branch=${{ github.head_ref }}
+
+      - name: Comment preview URL
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            🚀 Preview deployed: ${{ steps.deploy.outputs.deployment-url }}
+          comment-tag: preview-url

@@ -1,0 +1,79 @@
+---
+import { map, pipe, reduce, toArray } from 'lfi'
+import Base from '~/layouts/Base.astro'
+import { getOrderedMarkdownPosts } from '~/lib/ordered.ts'
+
+const posts = pipe(
+  await getOrderedMarkdownPosts(),
+  map(([id, post]): { id: string; title: string } => ({ id, title: post.title })),
+  reduce(toArray()),
+)
+
+---
+
+<Base seo={{ title: `404`, description: `Not found!`, type: `website` }}>
+  <div
+    class="flex flex-1 flex-col items-center justify-center gap-5 text-center"
+  >
+    <h1 class="not-prose text-9xl font-semibold">404</h1>
+    <p class="text-3xl">
+      Oh no! It appears you’ve been{` `}
+      <strong>
+        <em>bamboozled!</em>
+      </strong>
+    </p>
+    <p id="did-you-mean" class="prose text-lg italic" hidden>
+      Did you mean{` `}
+      <a id="did-you-mean-link" class="focus-ring"></a>?
+    </p>
+  </div>
+
+  <script is:inline define:vars={{ posts }}>
+    // @ts-nocheck — `posts` is injected by `define:vars`, invisible to the
+    // type-checker's view of this inline script.
+    // Sørensen–Dice coefficient (an inlined `string-similarity`) to suggest the
+    // closest post for the attempted path, computed client-side.
+    const compareTwoStrings = (first, second) => {
+      first = first.replace(/\s+/g, ``)
+      second = second.replace(/\s+/g, ``)
+      if (first === second) return 1
+      if (first.length < 2 || second.length < 2) return 0
+
+      const firstBigrams = new Map()
+      for (let i = 0; i < first.length - 1; i++) {
+        const bigram = first.substring(i, i + 2)
+        firstBigrams.set(bigram, (firstBigrams.get(bigram) ?? 0) + 1)
+      }
+
+      let intersectionSize = 0
+      for (let i = 0; i < second.length - 1; i++) {
+        const bigram = second.substring(i, i + 2)
+        const count = firstBigrams.get(bigram) ?? 0
+        if (count > 0) {
+          firstBigrams.set(bigram, count - 1)
+          intersectionSize++
+        }
+      }
+
+      return (2 * intersectionSize) / (first.length + second.length - 2)
+    }
+
+    const attempted = location.pathname.slice(1).toLowerCase()
+    let best = null
+    let bestRating = -1
+    for (const post of posts) {
+      const rating = compareTwoStrings(attempted, post.id)
+      if (rating > bestRating) {
+        bestRating = rating
+        best = post
+      }
+    }
+
+    if (best) {
+      const link = document.getElementById(`did-you-mean-link`)
+      link.href = `/${best.id}`
+      link.textContent = best.title
+      document.getElementById(`did-you-mean`).hidden = false
+    }
+  </script>
+</Base>

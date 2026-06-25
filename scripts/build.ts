@@ -9,25 +9,31 @@ const fromRoot = (path: string): string => join(rootPath, path)
 
 // Clean
 const buildPaths = [
+  `dist`,
   `src/styles/build`,
-  `build`,
   `private/fonts/build`,
   `public/build`,
 ].map(fromRoot)
 await $`rm -rf ${buildPaths}`
 
-// Generate font subsets
-await $`react-router build`
+// Pass 1: build the site so we can crawl it for the glyphs actually used.
+await $`astro build`
+
+// Generate font subsets by spidering the built site.
 const fontsBuildPath = fromRoot(`private/fonts/build`)
 await $`mkdir -p ${fontsBuildPath}`
-const runServerCommand = `react-router-serve ${fromRoot(`build/server/index.js`)}`
-const glyphhangerCommand = `glyphhanger http://localhost:3000 --spider-limit=0 --formats=woff,woff2 --subset=${fromRoot(`private/fonts/*.ttf`)} --output=${fontsBuildPath}`
+const port = 4321
+const runServerCommand = `sirv ${fromRoot(`dist`)} --port ${port} --quiet`
+const glyphhangerCommand = `glyphhanger http://localhost:${port} --spider-limit=0 --formats=woff,woff2 --subset=${fromRoot(`private/fonts/*.ttf`)} --output=${fontsBuildPath}`
 await $({
   // `get-stdin` hangs inside `glyphhanger` without this.
   stdio: `inherit`,
-})`start-server-and-test ${runServerCommand} http-get://localhost:3000 ${glyphhangerCommand}`
+})`start-server-and-test ${runServerCommand} http-get://localhost:${port} ${glyphhangerCommand}`
 
-// Rebuild with new fonts and minify
-await $`react-router build`
-await $`imagemin build/client/assets -o build/client/assets`
-await $`find build/client -name \\*.js -exec terser --module -c keep_fargs=false -o {} -- {} \\;`
+// Pass 2: rebuild now that the subset fonts exist (the production `postcss`
+// font gate picks them up).
+await $`astro build`
+
+// Minify
+await $`imagemin dist/_astro -o dist/_astro`
+await $`find dist -name \\*.js -exec terser --module -c keep_fargs=false -o {} -- {} \\;`

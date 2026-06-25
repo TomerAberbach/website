@@ -3,11 +3,11 @@ import cssesc from 'cssesc'
 import { first, get, keys, map, max, pipe, reduce, toArray, values } from 'lfi'
 import panzoom from 'panzoom'
 import type { PanZoom } from 'panzoom'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
-import type { ReactNode, RefObject } from 'react'
-import closeSvgPath from './close.svg'
+import { useCallback, useEffect, useId, useRef, useState } from 'preact/compat'
+import type { ReactNode, RefObject } from 'preact/compat'
 import { Link } from './link.tsx'
 import { createTagClassName } from './tags-filter-form.tsx'
+import closeSvgPath from '~/assets/media/close.svg?url'
 import useHasMounted from '~/hooks/use-has-mounted.ts'
 import usePrevious from '~/hooks/use-previous.ts'
 import type {
@@ -16,7 +16,7 @@ import type {
   GraphLayout,
   Vertex as GraphVertex,
   Position,
-} from '~/services/graph.server.ts'
+} from '~/lib/graph.ts'
 
 const GraphWidget = ({
   id,
@@ -435,9 +435,7 @@ const Vertex = ({
         {vertexNode}
       </div>
       {vertex.type === `internal` ? (
-        <LinkVertex href={vertex.href} reloadDocument={vertex.reloadDocument}>
-          {vertexNode}
-        </LinkVertex>
+        <LinkVertex href={vertex.href}>{vertexNode}</LinkVertex>
       ) : vertex.hrefToTags.size === 1 ? (
         <LinkVertex href={get(first(keys(vertex.hrefToTags)))}>
           {vertexNode}
@@ -458,23 +456,20 @@ const Vertex = ({
 const LinkVertex = ({
   id,
   href,
-  reloadDocument,
   children,
 }: {
   id?: string
   href: string
-  reloadDocument?: boolean
   children: ReactNode
 }) => {
-  const preventDefault = useCallback<React.EventHandler<React.SyntheticEvent>>(
-    e => e.preventDefault(),
+  const preventDefault = useCallback(
+    (event: { preventDefault: () => void }) => event.preventDefault(),
     [],
   )
   return (
     <Link
       id={id}
       href={href}
-      reloadDocument={reloadDocument}
       // Prevent dragging vertex text, which conflicts with graph panning.
       onMouseDown={preventDefault}
       onMouseMove={preventDefault}

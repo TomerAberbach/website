@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { useId } from 'react'
+import type { ReactNode } from 'preact/compat'
+import { useId } from 'preact/compat'
 
 const Tooltip = ({
   id,
@@ -7,20 +7,23 @@ const Tooltip = ({
   children,
 }: {
   id?: string
-  content: ReactNode
+  // Optional because `.astro` callers supply it via a `content` named slot,
+  // which Astro maps to this prop at runtime but TypeScript can't see.
+  content?: ReactNode
   children: ReactNode | ((tooltipId: string) => ReactNode)
 }) => {
-  if (id && typeof children === `function`) {
-    children = children(id)
-  }
+  const resolvedChildren =
+    id && typeof children === `function`
+      ? (children as (tooltipId: string) => ReactNode)(id)
+      : children
 
-  return typeof children === `function` ? (
+  return typeof resolvedChildren === `function` ? (
     <TooltipWithGeneratedId content={content}>
-      {children}
+      {resolvedChildren as (tooltipId: string) => ReactNode}
     </TooltipWithGeneratedId>
   ) : (
     <BaseTooltip id={id} content={content}>
-      {children}
+      {resolvedChildren}
     </BaseTooltip>
   )
 }
@@ -29,7 +32,7 @@ const TooltipWithGeneratedId = ({
   content,
   children,
 }: {
-  content: ReactNode
+  content?: ReactNode
   children: (tooltipId: string) => ReactNode
 }) => {
   const id = useId()
@@ -46,7 +49,7 @@ const BaseTooltip = ({
   children,
 }: {
   id?: string
-  content: ReactNode
+  content?: ReactNode
   children: ReactNode
 }) => (
   <span className='relative inline-flex'>

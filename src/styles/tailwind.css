@@ -1,6 +1,11 @@
 @import 'tailwindcss' source('..');
 @plugin '@tailwindcss/typography';
 
+/* Opt into cross-document (MPA) view transitions between page navigations. */
+@view-transition {
+  navigation: auto;
+}
+
 @layer base {
   html {
     @apply font-sans;

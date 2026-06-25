@@ -1,1 +1,17 @@
 shellEmulator: true
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - esbuild
+  - gifsicle
+  - jpegtran-bin
+  - optipng-bin
+  - puppeteer
+  - sharp
+  - unrs-resolver
+  - workerd
+
+patchedDependencies:
+  glyphhanger@5.0.0: patches/glyphhanger@5.0.0.patch
+  '@zachleat/spider-pig@3.0.0': patches/@zachleat__spider-pig@3.0.0.patch
+  panzoom: patches/panzoom.patch

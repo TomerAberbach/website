@@ -1,11 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
+import { useCallback, useEffect, useState } from 'preact/compat'
+import type { ReactNode } from 'preact/compat'
 import { Link } from './link.tsx'
 import useCarouselIndex from '~/hooks/use-carousel.ts'
-import type {
-  GraphFact,
-  GraphFactSegment,
-} from '~/services/graph-facts.server.ts'
+import type { GraphFact, GraphFactSegment } from '~/lib/graph-facts.ts'
 
 const GraphFactsCarousel = ({
   facts,

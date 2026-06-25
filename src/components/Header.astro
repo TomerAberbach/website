@@ -1,0 +1,27 @@
+---
+import logoSvgHref from '~/assets/media/logo.svg?url'
+import { SITE_TITLE_AND_AUTHOR } from '~/lib/meta.ts'
+
+const postId = Astro.url.pathname.slice(1).replace(/\.html$/u, ``)
+const homeHref = postId ? `/?post=${encodeURIComponent(postId)}` : `/`
+---
+
+<header class="relative self-center">
+  <img
+    src={logoSvgHref}
+    aria-label="Palm tree"
+    class="-z-10 h-40 w-32 sm:h-50 sm:w-40"
+  />
+  {/* Ensures that the width of the `header` element matches its contents. */}
+  <div class="invisible h-0 pl-2 text-2xl font-bold">
+    {SITE_TITLE_AND_AUTHOR}
+  </div>
+  <a
+    href={homeHref}
+    class="underlined focus-ring absolute bottom-0 left-2 inline-block text-gray-800/90 focus:outline-hidden"
+  >
+    <h1 class="inline text-2xl leading-none font-bold whitespace-nowrap">
+      {SITE_TITLE_AND_AUTHOR}
+    </h1>
+  </a>
+</header>

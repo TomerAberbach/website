@@ -1,0 +1,74 @@
+---
+import katexHref from 'katex/dist/katex.min.css?url'
+import logoIcoHref from '~/assets/media/logo.ico?url'
+import logoSvgHref from '~/assets/media/logo.svg?url'
+import Footer from '~/components/Footer.astro'
+import Header from '~/components/Header.astro'
+import Seo from '~/components/Seo.astro'
+import type { SeoProps } from '~/lib/meta.ts'
+import fontsHref from '~/styles/fonts.css?url'
+import tailwindHref from '~/styles/tailwind.css?url'
+
+interface Props {
+  seo: SeoProps
+  /** Whether to include the KaTeX stylesheet (math posts only). */
+  katex?: boolean
+}
+
+const { seo, katex = false } = Astro.props
+
+// Load the custom fonts and reveal them at once to prevent a flicker.
+const fontFamilies: Record<string, string[]> = {
+  'Kantumruy Pro': Array.from({ length: 7 }, (_, index) => (index + 1) * 100)
+    .flatMap(weight => [String(weight), `italic ${weight}`]),
+  dm: [``, `italic`, `bold`],
+}
+const fontLoads = Object.entries(fontFamilies).flatMap(([family, styles]) =>
+  styles.map(style => `${style} 1rem ${family}`.trim()),
+)
+const fontScript = `Promise.all([${fontLoads
+  .map(font => `document.fonts.load('${font}')`)
+  .join(`,`)}]).then(()=>document.documentElement.classList.add('fonts'))`
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <Seo {...seo} />
+    <link rel="preload" href={fontsHref} as="style" />
+    <link rel="stylesheet" href={fontsHref} />
+    <link rel="stylesheet" href={tailwindHref} />
+    {katex && <link rel="stylesheet" href={katexHref} />}
+    <link rel="icon" href={logoIcoHref} sizes="any" />
+    <link rel="icon" href={logoSvgHref} type="image/svg+xml" />
+    <script is:inline set:html={fontScript} />
+    <script
+      type="speculationrules"
+      is:inline
+      set:html={JSON.stringify({
+        prerender: [{ where: { href_matches: `/*` }, eagerness: `moderate` }],
+      })}
+    />
+  </head>
+  <body>
+    <div
+      class="flex flex-1 flex-col gap-8 p-8 text-gray-800 sm:gap-y-10 sm:px-10 md:gap-y-16 md:px-16"
+    >
+      <Header />
+      <main class="flex flex-1 flex-col"><slot /></main>
+      <Footer />
+    </div>
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          src="https://cdn.usefathom.com/script.js"
+          data-spa="auto"
+          data-site="RAOMNART"
+          defer
+        />
+      )
+    }
+  </body>
+</html>
