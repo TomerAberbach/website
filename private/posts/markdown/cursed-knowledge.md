@@ -103,7 +103,7 @@ echo $a;
 This is cursed because it's an unnecessary feature that enables writing
 incomprehensible code.
 
-Credit goes to [Stephen Downward](https://www.scd31.com) for telling me about
+Credit goes to [Sophie D](https://www.scd31.com) for telling me about
 it!
 
 ## > GitHub Actions's `sleep` command is cursed
