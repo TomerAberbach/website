@@ -9,16 +9,20 @@ beforeEach(() => {
 
 const importModule = () => import(`./parse-references.server.ts`)
 
-test.each([`#heading`, `#`, fontsStylesPath])(
-  `parseReferences ignores the href %j`,
-  async href => {
-    const { parseReferences } = await importModule()
+test.each([
+  `#heading`,
+  `#`,
+  `/`,
+  `/?tags=tracks`,
+  `https://tomeraberba.ch`,
+  fontsStylesPath,
+])(`parseReferences ignores the href %j`, async href => {
+  const { parseReferences } = await importModule()
 
-    const references = parseReferences([href])
+  const references = parseReferences([href])
 
-    expect(references).toEqual(new Map())
-  },
-)
+  expect(references).toEqual(new Map())
+})
 
 test.each([
   [`https://tomeraberba.ch/some-post`, `some-post`],
