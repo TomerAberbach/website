@@ -25,9 +25,7 @@ import { findConnectedComponents } from './graph.server.ts'
 
 export type GraphFact = { text: GraphFactSegment[] }
 export type GraphFactSegment =
-  | string
-  | { text: string; href: string }
-  | { text: string; vertexId: string }
+  string | { text: string; href: string } | { text: string; vertexId: string }
 
 export const computeGraphFacts = ({
   vertices,

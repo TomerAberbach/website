@@ -50,12 +50,10 @@ export const getOrderedPosts: () => Promise<Map<string, Ordered<Post>>> = cache(
     pipe(
       posts,
       filter(post => post.type === `markdown`),
-      window(3),
-      forEach(([nextPost, post, previousPost]) => {
+      window(2),
+      forEach(([nextPost, post]) => {
         nextPost!.previous = includeKeys(post!, [`id`, `title`])
         post!.next = includeKeys(nextPost!, [`id`, `title`])
-        post!.previous = includeKeys(previousPost!, [`id`, `title`])
-        previousPost!.next = includeKeys(post!, [`id`, `title`])
       }),
     )
 

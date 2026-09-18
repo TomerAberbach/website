@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from './link.tsx'
 import useCarouselIndex from '~/hooks/use-carousel.ts'
@@ -15,11 +15,13 @@ const GraphFactsCarousel = ({
   onSelectVertex: (vertexId: string) => void
 }) => {
   const index = useCarouselIndex({ length: facts.length })
+  // The displayed fact is visible while it is the current one and fades out
+  // once the index moves past it.
   const [displayedIndex, setDisplayedIndex] = useState(index)
-  const [visible, setVisible] = useState(true)
+  const visible = displayedIndex === index
 
   useEffect(() => {
-    if (index === displayedIndex) {
+    if (visible) {
       return
     }
 
@@ -31,15 +33,12 @@ const GraphFactsCarousel = ({
       return
     }
 
-    setVisible(false)
-  }, [index, displayedIndex])
-
-  const handleTransitionEnd = useCallback(() => {
-    if (!visible) {
-      setDisplayedIndex(index)
-      setVisible(true)
-    }
-  }, [visible, index])
+    // Swap the fact once it has faded out. A timer is used instead of the
+    // transition end event, which never fires when the fade has no visible
+    // transition, such as before the first paint.
+    const id = setTimeout(() => setDisplayedIndex(index), FADE_MS)
+    return () => clearTimeout(id)
+  }, [index, visible])
 
   const fact = facts[displayedIndex]!
 
@@ -51,7 +50,6 @@ const GraphFactsCarousel = ({
     >
       <span
         className={`motion-safe:transition-opacity motion-safe:duration-300 ${visible ? `opacity-100` : `opacity-0`}`}
-        onTransitionEnd={handleTransitionEnd}
       >
         {fact.text.map((segment, i) => (
           <FactSegment
@@ -94,5 +92,7 @@ const FactSegment = ({
     </button>
   )
 }
+
+const FADE_MS = 300
 
 export default GraphFactsCarousel

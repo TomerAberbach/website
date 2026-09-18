@@ -1,6 +1,33 @@
 @import 'tailwindcss' source('..');
 @plugin '@tailwindcss/typography';
 
+/*
+ * WebKit skips style invalidation on hover for a rule whose `:hover` selector
+ * is nested inside a rule that also nests an at-rule, which is how the
+ * built-in hover variants are emitted. Emit the media query outside instead.
+ */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+@custom-variant group-hover {
+  @media (hover: hover) {
+    &:is(:where(.group):hover *) {
+      @slot;
+    }
+  }
+}
+@custom-variant peer-hover {
+  @media (hover: hover) {
+    &:is(:where(.peer):hover ~ *) {
+      @slot;
+    }
+  }
+}
+
 @layer base {
   html {
     @apply font-sans;

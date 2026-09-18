@@ -6,5 +6,3 @@ const createPath =
     join(process.cwd(), dirname, ...paths)
 
 export const privatePath = createPath(`private`)
-
-export const publicPath = createPath(`public`)

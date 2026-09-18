@@ -1,47 +1,37 @@
 import { beforeEach, expect, test, vitest } from 'vitest'
 
-const originalDocument = document
 beforeEach(() => {
-  // @ts-expect-error Simulating the server
-  delete globalThis.document
   delete process.env.SITE_URL
   vitest.resetModules()
 })
 
-test(`SITE_URL is set to localhost on the server when the environment variable is unset`, async () => {
-  const { SITE_URL } = await import(`./site-url`)
+test(`SITE_URL is localhost when the environment variable is unset`, async () => {
+  const { SITE_URL } = await import(`./site-url.ts`)
 
   expect(SITE_URL).toBe(`http://localhost:3000`)
 })
 
-const BASE_URL = `https://example.com`
-const FULL_URL = `${BASE_URL}/some/path/`
+test(`SITE_URL is the origin of the environment variable when it is set`, async () => {
+  process.env.SITE_URL = `https://example.com/some/path/`
 
-test(`SITE_URL is set based on the environment variable on the server when it is set`, async () => {
-  process.env.SITE_URL = FULL_URL
+  const { SITE_URL } = await import(`./site-url.ts`)
 
-  const { SITE_URL } = await import(`./site-url`)
-
-  expect(SITE_URL).toBe(BASE_URL)
+  expect(SITE_URL).toBe(`https://example.com`)
 })
 
-test(`SITE_URL is set based on the current href in the browser`, async () => {
-  globalThis.document = Object.create(originalDocument) as typeof document
-  Object.defineProperty(globalThis.document, `location`, {
-    value: { href: FULL_URL },
-  })
-
-  const { SITE_URL } = await import(`./site-url`)
-
-  expect(SITE_URL).toBe(BASE_URL)
-})
-
-test.each([`/some/path`, `/some/path/`])(
-  `getSiteUrl returns the SITE_URL with the given path appended with any trailing slash removed`,
+test.each([`/some/path`, `/some/path/`, `some/path`])(
+  `getSiteUrl appends %j to SITE_URL without a trailing slash`,
   async path => {
-    const { getSiteUrl } = await import(`./site-url`)
-    const url = getSiteUrl(path)
+    const { getSiteUrl } = await import(`./site-url.ts`)
 
-    expect(url).toBe(`http://localhost:3000/some/path`)
+    expect(getSiteUrl(path)).toBe(`http://localhost:3000/some/path`)
   },
 )
+
+test(`getSiteUrl keeps a query string and hash`, async () => {
+  const { getSiteUrl } = await import(`./site-url.ts`)
+
+  expect(getSiteUrl(`/posts?tags=a#top`)).toBe(
+    `http://localhost:3000/posts?tags=a#top`,
+  )
+})

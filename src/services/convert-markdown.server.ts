@@ -10,13 +10,11 @@ import rehypeShiki from '@shikijs/rehype'
 import type { RehypeShikiOptions } from '@shikijs/rehype'
 import escapeStringRegExp from 'escape-string-regexp'
 import type { Root as HtmlRoot } from 'hast'
-import { toHtml } from 'hast-util-to-html'
 import { h } from 'hastscript'
 import { forEach, join, keys, map, pipe } from 'lfi'
-import type { Root as MdRoot } from 'mdast'
+import type { Root as MdRoot, RootContent as MdRootContent } from 'mdast'
 import type { LeafDirective, TextDirective } from 'mdast-util-directive'
 import { headingRange } from 'mdast-util-heading-range'
-import { toHast } from 'mdast-util-to-hast'
 import { toString as mdToText } from 'mdast-util-to-string'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeKatex from 'rehype-katex'
@@ -46,9 +44,13 @@ export const convertMarkdownToHtml = async (
 ): Promise<HtmlRoot> =>
   markdownToHtmlProcessor.run(markdownToHtmlProcessor.parse(markdown))
 
-const remarkEmbedderCache =
-  // @ts-expect-error Type definitions are wrong.
-  new (RemarkEmbedderCache.default as unknown)() as RemarkEmbedderCache
+// The `@remark-embedder` packages are CommonJS with an `__esModule` flag, so
+// their default export is the module object under Node's interop and the
+// export itself under a bundler's.
+const unwrapDefault = <Module>(module: Module): Module =>
+  (module as { default?: Module }).default ?? module
+
+const remarkEmbedderCache = new (unwrapDefault(RemarkEmbedderCache))()
 
 const remarkFlex = () => (tree: MdRoot) =>
   visit(tree, `containerDirective`, node => {
@@ -167,12 +169,19 @@ const remarkReplace = () => {
     )
 }
 
-const remarkCollapsibleHeading = () => (tree: MdRoot) => {
+const remarkCollapsibleHeading = () => (tree: MdRoot) => collapseHeadings(tree)
+
+type HeadingRangeTree = Parameters<typeof headingRange>[0]
+
+// Wraps each heading starting with `> `, along with the content up to the next
+// heading of the same or a higher level, in a details element. The content is
+// collapsed recursively so that collapsible headings nest.
+const collapseHeadings = (parent: HeadingRangeTree): void => {
   let modified: boolean
   do {
     modified = false
     headingRange(
-      tree,
+      parent,
       (text: string) => text.startsWith(`> `),
       (start, nodes, end) => {
         modified = true
@@ -184,32 +193,32 @@ const remarkCollapsibleHeading = () => (tree: MdRoot) => {
         )
         firstChild.value = firstChild.value.slice(`> `.length)
 
-        return [
-          {
-            type: `html`,
-            data: {
-              hName: `details`,
-              hChildren: [
-                {
-                  type: `element`,
-                  tagName: `summary`,
-                  properties: {},
-                  children: [{ type: `raw`, value: toHtml(toHast(start)) }],
-                },
-                {
-                  type: `raw`,
-                  value: nodes.map(node => toHtml(toHast(node))).join(``),
-                },
-              ],
-            },
-            value: ``,
-          },
-          end,
-        ]
+        const details = {
+          type: `details`,
+          data: { hName: `details` },
+          children: [
+            { type: `summary`, data: { hName: `summary` }, children: [start] },
+            ...nodes,
+          ],
+        } as unknown as HeadingRangeTree & MdRootContent
+        collapseHeadings(details)
+
+        return [details, end]
       },
     )
   } while (modified) // eslint-disable-line @typescript-eslint/no-unnecessary-condition
 }
+
+// `rehype-raw` reparses the tree and drops node data, so the code meta is kept
+// in a property that survives and that the syntax highlighter reads.
+const rehypeCodeMeta = () => (tree: HtmlRoot) =>
+  visit(tree, `element`, node => {
+    if (node.tagName !== `code` || typeof node.data?.meta !== `string`) {
+      return
+    }
+
+    node.properties.metastring = node.data.meta
+  })
 
 const markdownToHtmlProcessor = unified()
   .use(remarkParse)
@@ -245,20 +254,14 @@ const markdownToHtmlProcessor = unified()
   .use(remarkReplace)
   .use(remarkSmartypants)
   .use(remarkA11yEmoji)
-  .use(
-    // @ts-expect-error Type definitions are wrong.
-    remarkEmbedder.default as unknown,
-    {
-      cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
-      transformers: [
-        // @ts-expect-error Type definitions are wrong.
-        remarkTransformerOembed.default,
-      ],
-    },
-  )
+  .use(unwrapDefault(remarkEmbedder), {
+    cache: remarkEmbedderCache as unknown as RemarkEmbedderOptions[`cache`],
+    transformers: [unwrapDefault(remarkTransformerOembed)],
+  })
   .use(remarkMath)
   .use(remarkCollapsibleHeading)
   .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: `` })
+  .use(rehypeCodeMeta)
   .use(rehypeRaw)
   .use(rehypeExternalLinks)
   .use(rehypeSlug)

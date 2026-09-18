@@ -37,9 +37,11 @@ export const createMeta =
       location: Location<unknown>
     }) => MetaDescriptor[],
   ): MetaFunction =>
-  ({ data, params, location }) =>
+  ({ loaderData, params, location }) =>
     meta({
-      data: data ? superjson.deserialize(data as SuperJSONResult) : undefined,
+      data: loaderData
+        ? superjson.deserialize(loaderData as SuperJSONResult)
+        : undefined,
       params,
       location,
     })

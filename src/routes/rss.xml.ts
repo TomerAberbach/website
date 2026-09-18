@@ -1,5 +1,9 @@
 import { first, get, join, map, pipe, values } from 'lfi'
-import { formatDatesUTC, formatDateUTC } from '~/services/format.ts'
+import {
+  formatDateISO,
+  formatDatesUTC,
+  formatDateUTC,
+} from '~/services/format.ts'
 import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
 import { getSiteUrl, SITE_URL } from '~/services/site-url.ts'
@@ -42,9 +46,7 @@ export const loader = async (): Promise<Response> => {
                 <pubDate>${formatDateUTC(post.dates.published)}</pubDate>
                 ${
                   post.dates.updated
-                    ? `<lastBuildDate>${formatDateUTC(
-                        post.dates.updated,
-                      )}</lastBuildDate>`
+                    ? `<atom:updated>${formatDateISO(post.dates.updated)}</atom:updated>`
                     : ``
                 }
               </item>

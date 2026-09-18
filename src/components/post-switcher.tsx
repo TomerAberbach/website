@@ -123,7 +123,7 @@ const useAdjacentVertex = ({
     }
 
     const adjacentVertex = graph.vertices.get(adjacentVertexId)
-    if (!adjacentVertexId) {
+    if (!adjacentVertex) {
       return undefined
     }
 

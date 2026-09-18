@@ -1,1 +1,13 @@
+allowBuilds:
+  '@tailwindcss/oxide': true
+  esbuild: true
+  gifsicle: true
+  jpegtran-bin: true
+  optipng-bin: true
+  puppeteer: true
+  sharp: true
+  unrs-resolver: true
+patchedDependencies:
+  glyphhanger@6.0.0: patches/glyphhanger@6.0.0.patch
+  'panzoom': patches/panzoom.patch
 shellEmulator: true
