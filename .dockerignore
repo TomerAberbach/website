@@ -6,3 +6,5 @@ fly.toml
 /.cache
 /public/build
 /build
+/dist
+/.astro

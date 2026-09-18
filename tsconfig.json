@@ -25,12 +25,12 @@
     "lib": ["esnext", "dom", "dom.iterable"],
     // Web application
     "jsx": "react-jsx",
-    "types": ["@react-router/node", "vite/client"],
-    "rootDirs": [".", "./.react-router/types"],
+    "types": ["vite/client"],
     "paths": {
       "~/private/*": ["./private/*"],
       "~/*": ["./src/*"]
     }
   },
-  "include": ["**/*"]
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "build"]
 }

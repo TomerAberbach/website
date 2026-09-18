@@ -2,15 +2,15 @@ import { expect, test } from 'vitest'
 import { page } from 'vitest/browser'
 import { createTagClassName, TagsFilterForm } from './tags-filter-form.tsx'
 import {
-  renderWithRouter,
+  renderAtUrl,
   searchParamsProbe,
   searchParamsText,
-} from '~/test/router.tsx'
+} from '~/test/url.tsx'
 
 const TAGS = new Set([`a`, `b`, `c`, `d`, `e`])
 
 const renderForm = (url: string) =>
-  renderWithRouter(<TagsFilterForm targetId='graph' tags={TAGS} />, { url })
+  renderAtUrl(<TagsFilterForm targetId='graph' tags={TAGS} />, { url })
 
 test(`tags and operator in the URL are selected on load`, async () => {
   await renderForm(`/?tags=b,a&op=and`)
@@ -96,7 +96,7 @@ test.each([
 test(`three tags are summarized with a count when that form is shorter`, async () => {
   const longTags = new Set([`alpha-long`, `beta-long`, `gamma-long`])
 
-  await renderWithRouter(<TagsFilterForm targetId='graph' tags={longTags} />, {
+  await renderAtUrl(<TagsFilterForm targetId='graph' tags={longTags} />, {
     url: `/?tags=alpha-long,beta-long,gamma-long&op=and`,
   })
 
@@ -134,7 +134,7 @@ const FilteredElements = () => (
 )
 
 const renderFormWithFilteredElements = (url: string) =>
-  renderWithRouter(
+  renderAtUrl(
     <>
       <TagsFilterForm targetId='graph' tags={TAGS} />
       <FilteredElements />

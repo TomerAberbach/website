@@ -1,8 +1,9 @@
+import { renderToString } from 'react-dom/server'
 import { afterEach, expect, test, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import GraphFactsCarousel from './graph-facts-carousel.tsx'
 import type { GraphFact } from '~/services/graph-facts.server.ts'
-import { renderWithRouter } from '~/test/router.tsx'
+import { renderAtUrl } from '~/test/url.tsx'
 
 const FIRST_FACT: GraphFact = {
   text: [
@@ -29,6 +30,21 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
+const SECOND_FACT_TEXT = `Second fact`
+
+/** The text of the fact once it has faded in. */
+const visibleFactText = async (): Promise<string> => {
+  const status = page.getByRole(`status`).element()
+  await expect
+    .poll(() => getComputedStyle(status.querySelector(`span`)!).opacity)
+    .toBe(`1`)
+  return status.textContent
+}
+
+/** The text of the fact that is not the given one. */
+const otherFactText = (text: string): string =>
+  text === FIRST_FACT_TEXT ? SECOND_FACT_TEXT : FIRST_FACT_TEXT
+
 // A fade only transitions once the browser has painted the current state.
 const awaitPaint = () =>
   new Promise(resolve => {
@@ -46,14 +62,26 @@ const preferReducedMotion = () =>
       }) as unknown as MediaQueryList,
   )
 
-test(`the first fact is shown as a status with links and vertex buttons`, async () => {
-  await renderWithRouter(
-    <GraphFactsCarousel facts={FACTS} onSelectVertex={() => {}} />,
+test(`the server render keeps the fact invisible until the client fades it in`, async () => {
+  const html = renderToString(
+    <GraphFactsCarousel facts={[FIRST_FACT]} onSelectVertex={() => {}} />,
+  )
+
+  expect(html).toContain(`opacity-0`)
+  expect(html).toContain(`Post b`)
+})
+
+test(`a fact fades in as a status with links and vertex buttons`, async () => {
+  await renderAtUrl(
+    <GraphFactsCarousel facts={[FIRST_FACT]} onSelectVertex={() => {}} />,
   )
 
   await expect
     .element(page.getByRole(`status`))
     .toHaveTextContent(FIRST_FACT_TEXT)
+  await expect
+    .element(page.getByText(FIRST_FACT_TEXT))
+    .toHaveStyle({ opacity: `1` })
   await expect
     .element(page.getByRole(`link`, { name: `diameter` }))
     .toHaveAttribute(
@@ -67,8 +95,8 @@ test(`the first fact is shown as a status with links and vertex buttons`, async 
 
 test(`clicking a vertex segment selects that vertex`, async () => {
   const onSelectVertex = vi.fn()
-  await renderWithRouter(
-    <GraphFactsCarousel facts={FACTS} onSelectVertex={onSelectVertex} />,
+  await renderAtUrl(
+    <GraphFactsCarousel facts={[FIRST_FACT]} onSelectVertex={onSelectVertex} />,
   )
 
   await page.getByRole(`button`, { name: `Post b` }).click()
@@ -76,50 +104,47 @@ test(`clicking a vertex segment selects that vertex`, async () => {
   expect(onSelectVertex).toHaveBeenCalledExactlyOnceWith(`b`)
 })
 
-test(`the carousel advances to the next fact after the interval`, async () => {
+test(`the carousel advances to another fact after the interval`, async () => {
   vi.useFakeTimers({ toFake: [`setInterval`, `clearInterval`] })
-  await renderWithRouter(
+  await renderAtUrl(
     <GraphFactsCarousel facts={FACTS} onSelectVertex={() => {}} />,
   )
-  await awaitPaint()
+  const initialText = await visibleFactText()
 
   vi.advanceTimersByTime(INTERVAL_MS)
 
   await expect
     .element(page.getByRole(`status`))
-    .toHaveTextContent(`Second fact`)
+    .toHaveTextContent(otherFactText(initialText))
 })
 
-test(`the carousel wraps around to the first fact`, async () => {
+test(`the carousel wraps around to the initial fact`, async () => {
   vi.useFakeTimers({ toFake: [`setInterval`, `clearInterval`] })
-  await renderWithRouter(
+  await renderAtUrl(
     <GraphFactsCarousel facts={FACTS} onSelectVertex={() => {}} />,
   )
-  await awaitPaint()
+  const initialText = await visibleFactText()
   vi.advanceTimersByTime(INTERVAL_MS)
   await expect
-    .element(page.getByText(`Second fact`))
+    .element(page.getByText(otherFactText(initialText)))
     .toHaveStyle({ opacity: `1` })
   await awaitPaint()
 
   vi.advanceTimersByTime(INTERVAL_MS)
 
-  await expect
-    .element(page.getByRole(`status`))
-    .toHaveTextContent(FIRST_FACT_TEXT)
+  await expect.element(page.getByRole(`status`)).toHaveTextContent(initialText)
 })
 
 test(`the carousel never advances when reduced motion is preferred`, async () => {
   preferReducedMotion()
   vi.useFakeTimers({ toFake: [`setInterval`, `clearInterval`] })
-  await renderWithRouter(
+  await renderAtUrl(
     <GraphFactsCarousel facts={FACTS} onSelectVertex={() => {}} />,
   )
+  const initialText = await visibleFactText()
 
   vi.advanceTimersByTime(INTERVAL_MS)
 
   expect(vi.getTimerCount()).toBe(0)
-  await expect
-    .element(page.getByRole(`status`))
-    .toHaveTextContent(FIRST_FACT_TEXT)
+  await expect.element(page.getByRole(`status`)).toHaveTextContent(initialText)
 })

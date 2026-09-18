@@ -1,5 +1,6 @@
 import { basename, extname } from 'node:path'
 import {
+  concat,
   entries,
   filterMap,
   map,
@@ -10,16 +11,30 @@ import {
   toObject,
 } from 'lfi'
 import { arrayIncludes } from 'ts-extras'
+import fontsStylesPath from '~/styles/fonts.css?url'
 
-const ASSET_PATH_TO_MODULES: Readonly<Record<string, { default: string }>> =
-  import.meta.glob([`/private/media/*`, `/src/styles/fonts.css`], {
-    eager: true,
-    query: `?url`,
-  })
+// Astro resolves an image to its metadata rather than a URL, even when a URL
+// is asked for.
+const ASSET_PATH_TO_MODULES: Readonly<
+  Record<string, { default: string | { src: string } }>
+> = import.meta.glob(`/private/media/*`, { eager: true, query: `?url` })
+
+const getUrl = (asset: string | { src: string }): string =>
+  typeof asset === `string` ? asset : asset.src
+
+const FONTS_STYLES_ASSET: [string, { default: string }] = [
+  `fonts.css`,
+  { default: fontsStylesPath },
+]
 
 export const ASSET_NAME_TO_URL: ReadonlyMap<string, string> = pipe(
-  entries(ASSET_PATH_TO_MODULES),
-  map(([path, module]) => [basename(path), module.default]),
+  concat(
+    entries(ASSET_PATH_TO_MODULES),
+    // A stylesheet is imported directly, because a glob does not resolve it
+    // to a URL in a production build.
+    [FONTS_STYLES_ASSET],
+  ),
+  map(([path, module]) => [basename(path), getUrl(module.default)]),
   reduce(toMap()),
 )
 

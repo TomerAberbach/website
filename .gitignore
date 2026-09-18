@@ -2,6 +2,8 @@ node_modules
 /.cache
 .env
 **/build/
+/dist/
+/.astro/
 coverage
 .react-router
 .vitest

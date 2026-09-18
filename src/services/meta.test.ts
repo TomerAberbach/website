@@ -1,8 +1,7 @@
-import type { Location } from 'react-router'
 import { expect, test } from 'vitest'
 import { getMeta, SITE_KEYWORDS, SITE_TITLE_AND_AUTHOR } from './meta.ts'
 
-const location = { pathname: `/some-post` } as Location
+const pathname = `/some-post`
 
 const post = {
   id: `some-post`,
@@ -29,7 +28,7 @@ const withName = (prefix: string): unknown =>
   })
 
 test(`getMeta includes the title, canonical link, description, and author`, () => {
-  const meta = getMeta(location, website)
+  const meta = getMeta(pathname, website)
 
   expect(meta).toEqual(
     expect.arrayContaining([
@@ -40,13 +39,13 @@ test(`getMeta includes the title, canonical link, description, and author`, () =
         href: `http://localhost:3000/some-post`,
       },
       { name: `description`, content: `Description` },
-      { name: `author`, author: SITE_TITLE_AND_AUTHOR },
+      { name: `author`, content: SITE_TITLE_AND_AUTHOR },
     ]),
   )
 })
 
 test(`getMeta uses the site keywords when none are given`, () => {
-  const meta = getMeta(location, website)
+  const meta = getMeta(pathname, website)
 
   expect(meta).toContainEqual({
     name: `keywords`,
@@ -55,7 +54,7 @@ test(`getMeta uses the site keywords when none are given`, () => {
 })
 
 test(`getMeta appends the given keywords to the site keywords without duplicates`, () => {
-  const meta = getMeta(location, {
+  const meta = getMeta(pathname, {
     ...website,
     keywords: new Set([`code`, `jazz`]),
   })
@@ -67,14 +66,14 @@ test(`getMeta appends the given keywords to the site keywords without duplicates
 })
 
 test(`getMeta without a post has no open graph or twitter meta`, () => {
-  const meta = getMeta(location, website)
+  const meta = getMeta(pathname, website)
 
   expect(meta).not.toContainEqual(withProperty(`og:`))
   expect(meta).not.toContainEqual(withName(`twitter:`))
 })
 
 test(`getMeta with a post adds open graph meta with the post thumbnail`, () => {
-  const meta = getMeta(location, { ...website, post })
+  const meta = getMeta(pathname, { ...website, post })
 
   expect(meta).toEqual(
     expect.arrayContaining([
@@ -88,7 +87,7 @@ test(`getMeta with a post adds open graph meta with the post thumbnail`, () => {
 })
 
 test(`getMeta with a post adds twitter meta with the post thumbnail`, () => {
-  const meta = getMeta(location, { ...website, post })
+  const meta = getMeta(pathname, { ...website, post })
 
   expect(meta).toEqual(
     expect.arrayContaining([
@@ -100,7 +99,7 @@ test(`getMeta with a post adds twitter meta with the post thumbnail`, () => {
 })
 
 test(`getMeta describes the thumbnail with the title, date, reading time, and author`, () => {
-  const meta = getMeta(location, { ...website, post })
+  const meta = getMeta(pathname, { ...website, post })
 
   expect(meta).toContainEqual({
     property: `og:image:alt`,
@@ -109,13 +108,13 @@ test(`getMeta describes the thumbnail with the title, date, reading time, and au
 })
 
 test(`getMeta with a website post has no article meta`, () => {
-  const meta = getMeta(location, { ...website, post })
+  const meta = getMeta(pathname, { ...website, post })
 
   expect(meta).not.toContainEqual(withProperty(`article:`))
 })
 
 test(`getMeta with an article adds the published time and author`, () => {
-  const meta = getMeta(location, article)
+  const meta = getMeta(pathname, article)
 
   expect(meta).toEqual(
     expect.arrayContaining([
@@ -130,7 +129,7 @@ test(`getMeta with an article adds the published time and author`, () => {
 })
 
 test(`getMeta with an article adds one tag meta per tag`, () => {
-  const meta = getMeta(location, article)
+  const meta = getMeta(pathname, article)
 
   expect(
     meta.filter(
@@ -144,13 +143,13 @@ test(`getMeta with an article adds one tag meta per tag`, () => {
 })
 
 test(`getMeta with an article omits the modified time when there is no updated date`, () => {
-  const meta = getMeta(location, article)
+  const meta = getMeta(pathname, article)
 
   expect(meta).not.toContainEqual(withProperty(`article:modified_time`))
 })
 
 test(`getMeta with an updated article adds the modified time`, () => {
-  const meta = getMeta(location, {
+  const meta = getMeta(pathname, {
     ...article,
     post: {
       ...post,

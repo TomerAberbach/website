@@ -9,7 +9,7 @@ test.each([`h1`, `h2`, `h3`, `h4`, `h5`, `h6`])(
 
     expect(html).toMatch(
       new RegExp(
-        `^<${tagName} id="intro" class="[^"]*"><a data-discover="true" href="#intro" class="[^"]*"><img src="[^"]+" class="[^"]*" alt="Intro permalink"/></a>Intro</${tagName}>$`,
+        `^<${tagName} id="intro" class="[^"]*"><a href="#intro" class="[^"]*"><img src="[^"]+" class="[^"]*" alt="Intro permalink"/></a>Intro</${tagName}>$`,
         `u`,
       ),
     )

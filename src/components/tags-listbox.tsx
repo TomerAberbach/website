@@ -7,8 +7,8 @@ import {
 import clsx from 'clsx'
 import { filter, flatMap, map, pipe, reduce, toArray, unique } from 'lfi'
 import { useCallback, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router'
 import { useLogicalOperator } from './logical-operator-radio-button-group.tsx'
+import useSearchParams from '~/hooks/use-search-params.ts'
 
 export const TagsListbox = ({
   tags,
@@ -167,10 +167,7 @@ export const useSelectedTags = (
         newSearchParams.delete(`tags`)
       }
 
-      setSearchParams(newSearchParams, {
-        replace: true,
-        preventScrollReset: true,
-      })
+      setSearchParams(newSearchParams)
     },
     [tags, searchParams, setSearchParams],
   )

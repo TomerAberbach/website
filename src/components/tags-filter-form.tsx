@@ -2,7 +2,6 @@ import cssesc from 'cssesc'
 import { join, map, pipe } from 'lfi'
 import { useCallback } from 'react'
 import type { FormEventHandler } from 'react'
-import { Form } from 'react-router'
 import type { LogicalOperator } from './logical-operator-radio-button-group.tsx'
 import {
   LogicalOperatorRadioButtonGroup,
@@ -27,7 +26,9 @@ export const TagsFilterForm = ({
   )
 
   return (
-    <Form
+    <form
+      action='/'
+      method='get'
       className='mx-auto flex max-w-full flex-col items-center gap-2'
       onSubmit={preventFormSubmission}
     >
@@ -49,7 +50,7 @@ export const TagsFilterForm = ({
           selectedTags={selectedTags}
         />
       )}
-    </Form>
+    </form>
   )
 }
 

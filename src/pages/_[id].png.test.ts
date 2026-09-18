@@ -8,17 +8,24 @@ import { usePostsFixture } from '~/test/posts-fixture.ts'
 
 usePostsFixture()
 
-const load = async (postId: string) => {
-  const { loader } = await import(`./post.png.tsx`)
-  return loader({
-    params: { postId },
-    request: new Request(`http://localhost:3000/${postId}.png`),
-    context: {},
-  } as unknown as Parameters<typeof loader>[0])
-}
+test(`every markdown post gets a thumbnail path`, async () => {
+  const { getStaticPaths } = await import(`./[id].png.ts`)
 
-test(`a known markdown post renders a png thumbnail`, async () => {
-  const response = await load(`newer-post`)
+  const paths = await getStaticPaths()
+
+  expect(paths.map(({ params }) => params.id)).toEqual([
+    `newer-post`,
+    `older-post`,
+    `oldest-post`,
+  ])
+})
+
+test(`a markdown post renders a png thumbnail`, async () => {
+  const { GET, getStaticPaths } = await import(`./[id].png.ts`)
+  const { props } = (await getStaticPaths())[0]!
+
+  // eslint-disable-next-line new-cap
+  const response = await GET({ props } as Parameters<typeof GET>[0])
 
   expect(response.headers.get(`Content-Type`)).toBe(`image/png`)
   const image = Buffer.from(await response.arrayBuffer())
@@ -29,12 +36,3 @@ test(`a known markdown post renders a png thumbnail`, async () => {
     height: THUMBNAIL_HEIGHT,
   })
 })
-
-test.each([`missing`, `elsewhere`])(
-  `a post with id %j has no thumbnail`,
-  async postId => {
-    const response = await load(postId)
-
-    expect(response.status).toBe(404)
-  },
-)

@@ -1,8 +1,8 @@
 import type { ChangeEventHandler } from 'react'
 import { useCallback, useId } from 'react'
-import { useSearchParams } from 'react-router'
 import { arrayIncludes } from 'ts-extras'
 import Tooltip from './tooltip.tsx'
+import useSearchParams from '~/hooks/use-search-params.ts'
 
 export const LogicalOperatorRadioButtonGroup = ({
   logicalOperator,
@@ -99,10 +99,7 @@ export const useLogicalOperator = (): [
         newSearchParams.delete(`op`)
       }
 
-      setSearchParams(newSearchParams, {
-        replace: true,
-        preventScrollReset: true,
-      })
+      setSearchParams(newSearchParams)
     },
     [searchParams, setSearchParams],
   )

@@ -15,13 +15,22 @@ const GraphFactsCarousel = ({
   onSelectVertex: (vertexId: string) => void
 }) => {
   const index = useCarouselIndex({ length: facts.length })
+
+  // The facts are shuffled on the client so that every visit starts from a
+  // different one. Until then nothing is visible, so the server rendered fact
+  // fades in instead of being swapped out.
+  const [shuffledFacts, setShuffledFacts] = useState<GraphFact[] | null>(null)
+  useEffect(() => {
+    setShuffledFacts(shuffle(facts))
+  }, [facts])
+
   // The displayed fact is visible while it is the current one and fades out
   // once the index moves past it.
   const [displayedIndex, setDisplayedIndex] = useState(index)
-  const visible = displayedIndex === index
+  const visible = shuffledFacts !== null && displayedIndex === index
 
   useEffect(() => {
-    if (visible) {
+    if (shuffledFacts === null || visible) {
       return
     }
 
@@ -38,9 +47,9 @@ const GraphFactsCarousel = ({
     // transition, such as before the first paint.
     const id = setTimeout(() => setDisplayedIndex(index), FADE_MS)
     return () => clearTimeout(id)
-  }, [index, visible])
+  }, [index, visible, shuffledFacts])
 
-  const fact = facts[displayedIndex]!
+  const fact = (shuffledFacts ?? facts)[displayedIndex]!
 
   return (
     <p
@@ -94,5 +103,14 @@ const FactSegment = ({
 }
 
 const FADE_MS = 300
+
+const shuffle = <Value,>(values: readonly Value[]): Value[] => {
+  const shuffled = [...values]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!]
+  }
+  return shuffled
+}
 
 export default GraphFactsCarousel

@@ -1,0 +1,43 @@
+---
+import { filter, first, flatMap, get, map, pipe, reduce, toArray } from 'lfi'
+import HomeWidgets from '~/components/home-widgets.tsx'
+import Layout from '~/layouts/layout.astro'
+import { getGraph } from '~/services/graph.server.ts'
+import {
+  getMeta,
+  SITE_DESCRIPTION,
+  SITE_TITLE_AND_AUTHOR,
+} from '~/services/meta.ts'
+import { getPagePathname } from '~/services/pathname.ts'
+import { getOrderedPosts } from '~/services/ordered.server.ts'
+import type { MarkdownPost, Post } from '~/services/post.server.ts'
+
+const [posts, graph] = await Promise.all([getOrderedPosts(), getGraph()])
+
+const postIds = new Set(posts.keys())
+const tags = new Set(
+  pipe(
+    posts,
+    flatMap(([, { tags }]) => tags),
+    reduce(toArray()),
+  ).sort(),
+)
+const latestPost: MarkdownPost = pipe(
+  posts,
+  map(([, post]: [string, Post]) => post),
+  filter(post => post.type === `markdown`),
+  first,
+  get,
+)
+
+const meta = getMeta(getPagePathname(Astro.url.pathname), {
+  title: SITE_TITLE_AND_AUTHOR,
+  description: SITE_DESCRIPTION,
+  post: latestPost,
+  type: `website`,
+})
+---
+
+<Layout meta={meta}>
+  <HomeWidgets client:load postIds={postIds} tags={tags} graph={graph} />
+</Layout>
