@@ -3,10 +3,10 @@ import { page } from 'vitest/browser'
 import { PostSwitcher, useSelectedPostId } from './post-switcher.tsx'
 import { createGraph } from '~/test/graph.ts'
 import {
-  renderWithRouter,
+  renderAtUrl,
   searchParamsProbe,
   searchParamsText,
-} from '~/test/router.tsx'
+} from '~/test/url.tsx'
 
 // Newest first, as `getOrderedPosts` orders them.
 const GRAPH = createGraph({
@@ -28,7 +28,7 @@ const renderSwitcher = ({
   setSelectedPostId?: (postId: string) => void
   url?: string
 }) =>
-  renderWithRouter(
+  renderAtUrl(
     <PostSwitcher
       selectedPostId={selectedPostId}
       setSelectedPostId={setSelectedPostId}
@@ -120,7 +120,7 @@ test.each([
   [`/?tags=code`, `middle`],
   [`/?post=unknown&tags=code`, `middle`],
 ])(`at %s the selected post is %s`, async (url, selectedPostId) => {
-  await renderWithRouter(<SelectedPostProbe postIdToSelect='newest' />, {
+  await renderAtUrl(<SelectedPostProbe postIdToSelect='newest' />, {
     url,
   })
 
@@ -130,7 +130,7 @@ test.each([
 })
 
 test(`selecting a post other than the first stores it in the URL`, async () => {
-  await renderWithRouter(<SelectedPostProbe postIdToSelect='oldest' />)
+  await renderAtUrl(<SelectedPostProbe postIdToSelect='oldest' />)
 
   await page.getByRole(`button`, { name: `Select` }).click()
 
@@ -140,7 +140,7 @@ test(`selecting a post other than the first stores it in the URL`, async () => {
 })
 
 test(`selecting the first post removes it from the URL`, async () => {
-  await renderWithRouter(<SelectedPostProbe postIdToSelect='newest' />, {
+  await renderAtUrl(<SelectedPostProbe postIdToSelect='newest' />, {
     url: `/?post=oldest`,
   })
 
@@ -152,7 +152,7 @@ test(`selecting the first post removes it from the URL`, async () => {
 })
 
 test(`selecting an unknown post falls back to the first post`, async () => {
-  await renderWithRouter(<SelectedPostProbe postIdToSelect='unknown' />, {
+  await renderAtUrl(<SelectedPostProbe postIdToSelect='unknown' />, {
     url: `/?post=oldest`,
   })
 

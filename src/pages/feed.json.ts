@@ -1,11 +1,12 @@
+import type { APIRoute } from 'astro'
 import { map, pipe, reduce, toArray } from 'lfi'
-import avatarPath from '~/private/media/avatar.png'
+import avatarPath from '~/private/media/avatar.png?url'
 import { formatDateISO } from '~/services/format.ts'
 import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
 import { getSiteUrl, SITE_URL } from '~/services/site-url.ts'
 
-export const loader = async (): Promise<Record<string, unknown>> => ({
+export const getFeed = async (): Promise<Record<string, unknown>> => ({
   version: `https://jsonfeed.org/version/1.1`,
   title: SITE_TITLE_AND_AUTHOR,
   home_page_url: SITE_URL,
@@ -36,3 +37,8 @@ export const loader = async (): Promise<Record<string, unknown>> => ({
     reduce(toArray()),
   ),
 })
+
+export const GET: APIRoute = async () =>
+  new Response(JSON.stringify(await getFeed()), {
+    headers: { 'Content-Type': `application/json; charset=utf-8` },
+  })

@@ -1,12 +1,11 @@
 import { concat, join, map } from 'lfi'
-import type { Location, MetaDescriptor } from 'react-router'
 import { formatDatesForDisplay, formatMinutesToRead } from './format.ts'
 import type { MarkdownPost } from './post.server.ts'
 import { getSiteUrl } from './site-url.ts'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
 
 export const getMeta = (
-  location: Location,
+  pathname: string,
   {
     title,
     description,
@@ -24,7 +23,7 @@ export const getMeta = (
     type: `website` | `article`
   },
 ): MetaDescriptor[] => {
-  const url = getSiteUrl(location.pathname)
+  const url = getSiteUrl(pathname)
   const baseMeta: MetaDescriptor[] = [
     { title },
     { tagName: `link`, rel: `canonical`, href: url },
@@ -33,7 +32,7 @@ export const getMeta = (
       name: `keywords`,
       content: join(`, `, new Set(concat(SITE_KEYWORDS, keywords))),
     },
-    { name: `author`, author: SITE_TITLE_AND_AUTHOR },
+    { name: `author`, content: SITE_TITLE_AND_AUTHOR },
   ]
 
   if (!post) {
@@ -96,6 +95,13 @@ const getArticleMeta = ({
     map(tag => ({ property: `article:tag`, content: tag }), tags),
   )
 }
+
+/** A `title`, `link`, or `meta` element in the head. */
+export type MetaDescriptor =
+  | { title: string }
+  | { tagName: `link`; rel: string; href: string }
+  | { name: string; content: string }
+  | { property: string; content: string }
 
 export const SITE_TITLE_AND_AUTHOR = `Tomer Aberbach`
 export const SITE_DESCRIPTION = `The portfolio website and blog of Tomer Aberbach, a New Jersey based software engineer, composer, and music producer.`

@@ -1,0 +1,202 @@
+---
+import { map, pipe, reduce, toArray } from 'lfi'
+import { Link } from '~/components/link.tsx'
+import ShrinkWrap from '~/components/shrink-wrap.tsx'
+import Tooltip from '~/components/tooltip.astro'
+import Layout from '~/layouts/layout.astro'
+import katexStylesPath from 'katex/dist/katex.min.css?url'
+import arrowRightSvgPath from '~/private/media/arrow-right.svg?url'
+import arrowUpLeftSvgPath from '~/private/media/arrow-up-left.svg?url'
+import arrowUpRightSvgPath from '~/private/media/arrow-up-right.svg?url'
+import arrowUpSvgPath from '~/private/media/arrow-up.svg?url'
+import {
+  formatDateForDisplay,
+  formatDateISO,
+  formatMinutesToRead,
+  truncateAtWordBoundary,
+} from '~/services/format.ts'
+import { getMeta } from '~/services/meta.ts'
+import { getPagePathname } from '~/services/pathname.ts'
+import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
+import { renderProse } from '~/services/render-prose.server.tsx'
+import type { Ordered } from '~/services/ordered.server.ts'
+import type { MarkdownPost } from '~/services/post.server.ts'
+
+export const getStaticPaths = async () =>
+  pipe(
+    await getOrderedMarkdownPosts(),
+    map(([id, post]) => ({ params: { id }, props: { post } })),
+    reduce(toArray()),
+  )
+
+type Props = { post: Ordered<MarkdownPost> }
+
+const { post } = Astro.props
+const {
+  id,
+  title,
+  tags,
+  dates,
+  referencedBy,
+  minutesToRead,
+  html,
+  previous: previousPost,
+  next: nextPost,
+} = post
+
+const meta = [
+  ...getMeta(getPagePathname(Astro.url.pathname), {
+    title,
+    description: truncateAtWordBoundary(post.description),
+    keywords: tags,
+    post,
+    type: `article`,
+  }),
+  ...(post.features.has(`math`)
+    ? [{ tagName: `link`, rel: `stylesheet`, href: katexStylesPath } as const]
+    : []),
+]
+const suggestEditId = `suggest-edit`
+---
+
+<Layout meta={meta}>
+  <article class='prose mx-auto w-[80ch] max-w-full text-base'>
+    <header>
+      <h1 class='m-0!'>{title}</h1>
+      <p class='m-0! mt-1.5! ml-[-1ch]! border-l-[1ch] border-white text-gray-600'>
+        <span class='mr-[1ch] inline-block whitespace-nowrap'>
+          {dates.updated ? (
+            <Tooltip>
+              {`Updated `}
+              <time datetime={formatDateISO(dates.updated)}>
+                {formatDateForDisplay(dates.updated)}
+              </time>
+              <Fragment slot='content'>
+                {`Published `}
+                <time datetime={formatDateISO(dates.published)}>
+                  {formatDateForDisplay(dates.published)}
+                </time>
+              </Fragment>
+            </Tooltip>
+          ) : (
+            <Fragment>
+              {`Published `}
+              <time datetime={formatDateISO(dates.published)}>
+                {formatDateForDisplay(dates.published)}
+              </time>
+            </Fragment>
+          )}
+        </span>
+        <span class='ml-[-1ch] whitespace-nowrap'>
+          <span class='relative -z-10 font-medium'>{` · `}</span>
+          <span class='inline-flex items-center gap-2'>
+            <time datetime={`${minutesToRead}m`}>
+              {formatMinutesToRead(minutesToRead)}
+            </time>
+            <Tooltip id={suggestEditId}>
+              <a
+                class='focus-ring inline-block size-[1em] hover:ring-3'
+                href={`https://github.com/TomerAberbach/website/edit/main/private/posts/${id}.md`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <span class='not-prose'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 20 20'
+                    fill='currentColor'
+                    class='w-[1em] fill-gray-500'
+                    aria-labelledby={suggestEditId}
+                  >
+                    <path d='M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z'></path>
+                    <path d='M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z'></path>
+                  </svg>
+                </span>
+              </a>
+              <Fragment slot='content'>Suggest an edit</Fragment>
+            </Tooltip>
+          </span>
+        </span>
+      </p>
+      <ul class='not-prose m-0 mt-2 flex list-none flex-wrap gap-2 pl-0 text-sm'>
+        {[...tags].map(tag => (
+          <li>
+            <a
+              href={`/?tags=${encodeURIComponent(tag)}`}
+              class='focus-ring relative block rounded-2xl p-2.5 leading-none font-medium hover:bg-gray-50 hover:ring-3'
+            >
+              <div class='absolute top-0 left-0 size-full rounded-2xl border-2 border-gray-300' />
+              <span class='text-gray-600'>{tag}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </header>
+    <Fragment set:html={renderProse(html)} />
+    {(previousPost ?? nextPost) && (
+      <footer class='not-prose mt-8 flex items-center font-medium text-gray-700'>
+        {previousPost && (
+          <a
+            href={`/${previousPost.id}`}
+            rel='prev'
+            class='focus-ring mr-auto flex max-w-[50%] items-center gap-3 hover:ring-3'
+          >
+            <img
+              src={arrowRightSvgPath}
+              alt='Previous'
+              class='size-6 -scale-x-100'
+            />
+            <div class='text-balance'>
+              <ShrinkWrap client:load>{previousPost.title}</ShrinkWrap>
+            </div>
+          </a>
+        )}
+        {nextPost && (
+          <a
+            href={`/${nextPost.id}`}
+            rel='next'
+            class='focus-ring ml-auto flex max-w-[50%] items-center justify-end gap-3 text-right hover:ring-3'
+          >
+            <div class='text-balance'>
+              <ShrinkWrap client:load>{nextPost.title}</ShrinkWrap>
+            </div>
+            <img src={arrowRightSvgPath} alt='Next' class='size-6' />
+          </a>
+        )}
+      </footer>
+    )}
+    {referencedBy.size > 0 && (
+      <aside class='not-prose m-auto mt-12 flex flex-col items-center text-center'>
+        <div class='m-auto inline-flex items-end gap-14'>
+          <img src={arrowUpLeftSvgPath} alt='' class='size-6' />
+          <img src={arrowUpSvgPath} alt='' class='mb-3 size-6' />
+          <img src={arrowUpRightSvgPath} alt='' class='size-6' />
+        </div>
+        <h3 class='mt-2 text-lg font-semibold'>Linked from</h3>
+        <ul class='text-base'>
+          {[...referencedBy].map(([reference, title]) => (
+            <li>
+              <Link href={reference} className='underline'>
+                {title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+  </article>
+</Layout>
+
+<script>
+  // Opens the collapsed section containing the element the URL hash points to.
+  document.addEventListener(`astro:page-load`, () => {
+    const { hash } = location
+    const target =
+      hash && document.getElementById(decodeURIComponent(hash.slice(1)))
+    const details = target && target.closest(`details`)
+    if (details && target) {
+      details.open = true
+      target.scrollIntoView()
+    }
+  })
+</script>

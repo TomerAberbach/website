@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { createRoutesStub } from 'react-router'
 import superjson from 'superjson'
 import { expect, test } from 'vitest'
 import { commands, page } from 'vitest/browser'
@@ -32,22 +31,14 @@ const GRAPH = createGraph({
 
 const renderWidget = ({
   selectedVertexId = `a`,
-}: { selectedVertexId?: string } = {}) => {
-  const Stub = createRoutesStub([
-    {
-      path: `/`,
-      Component: () => (
-        <GraphWidget
-          id='graph'
-          graph={GRAPH}
-          selectedVertexId={selectedVertexId}
-        />
-      ),
-    },
-    { path: `/:postId`, Component: () => <h1>Navigated</h1> },
-  ])
-  return render(<Stub initialEntries={[`/`]} />)
-}
+}: { selectedVertexId?: string } = {}) =>
+  render(
+    <GraphWidget
+      id='graph'
+      graph={GRAPH}
+      selectedVertexId={selectedVertexId}
+    />,
+  )
 
 // Panning to a vertex is a smooth animation, which takes a while on a busy
 // machine.
@@ -97,14 +88,12 @@ test(`the dialog closes with its close button`, async () => {
   await expect.element(page.getByRole(`dialog`)).not.toBeInTheDocument()
 })
 
-test(`clicking an internal vertex navigates to the post`, async () => {
+test(`an internal vertex links to the post's page`, async () => {
   await renderWidget()
 
-  await page.getByRole(`link`, { name: `Post b` }).click()
-
   await expect
-    .element(page.getByRole(`heading`, { name: `Navigated` }))
-    .toBeInTheDocument()
+    .element(page.getByRole(`link`, { name: `Post b` }))
+    .toHaveAttribute(`href`, `/b`)
 })
 
 test(`each edge is labeled with the number of links it stands for`, async () => {
@@ -184,8 +173,7 @@ const SelectableWidget = () => {
 }
 
 test(`changing the selected vertex pans it to the center`, async () => {
-  const Stub = createRoutesStub([{ path: `/`, Component: SelectableWidget }])
-  const screen = await render(<Stub initialEntries={[`/`]} />)
+  const screen = await render(<SelectableWidget />)
   const viewport = screen.container.firstElementChild!
 
   await page.getByRole(`button`, { name: `Select c` }).click()
@@ -207,19 +195,9 @@ test(
   { timeout: REAL_POSTS_TIMEOUT_MS },
   async () => {
     const graph = superjson.parse<Graph>(await commands.getGraph())
-    const Stub = createRoutesStub([
-      {
-        path: `/`,
-        Component: () => (
-          <GraphWidget
-            id='graph'
-            graph={graph}
-            selectedVertexId={REAL_POST_ID}
-          />
-        ),
-      },
-    ])
-    const screen = await render(<Stub initialEntries={[`/`]} />)
+    const screen = await render(
+      <GraphWidget id='graph' graph={graph} selectedVertexId={REAL_POST_ID} />,
+    )
     const viewport = screen.container.firstElementChild!
     const vertex = page
       .getByRole(`link`, { name: graph.vertices.get(REAL_POST_ID)!.label })

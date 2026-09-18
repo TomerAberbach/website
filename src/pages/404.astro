@@ -1,0 +1,70 @@
+---
+import { map, pipe, reduce, toArray } from 'lfi'
+import Layout from '~/layouts/layout.astro'
+import { getMeta } from '~/services/meta.ts'
+import { getPagePathname } from '~/services/pathname.ts'
+import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
+
+const posts = pipe(
+  await getOrderedMarkdownPosts(),
+  map(([id, { title }]) => ({ id, title })),
+  reduce(toArray()),
+)
+const meta = getMeta(getPagePathname(Astro.url.pathname), {
+  title: `404`,
+  description: `Not found!`,
+  type: `website`,
+})
+---
+
+<Layout meta={meta}>
+  <div class='flex flex-1 flex-col items-center justify-center gap-5 text-center'>
+    <h1 class='not-prose text-9xl font-semibold'>404</h1>
+    <p class='text-3xl'>
+      Oh no! It appears you’ve been{` `}
+      <strong>
+        <em>bamboozled!</em>
+      </strong>
+    </p>
+    <p class='prose text-lg italic' hidden data-did-you-mean>
+      Did you mean{` `}
+      <a class='focus-ring' href='/' data-did-you-mean-link></a>?
+    </p>
+    <script
+      type='application/json'
+      id='posts'
+      set:html={JSON.stringify(posts)}
+    ></script>
+  </div>
+</Layout>
+
+<script>
+  import { findMostSimilar } from '~/services/similarity.ts'
+
+  // Suggests the post whose id is closest to the requested path.
+  document.addEventListener(`astro:page-load`, () => {
+    const postsElement = document.getElementById(`posts`)
+    if (!postsElement) {
+      return
+    }
+
+    const posts = JSON.parse(postsElement.textContent ?? `[]`) as {
+      id: string
+      title: string
+    }[]
+    const closestId = findMostSimilar(
+      location.pathname.slice(1).toLowerCase(),
+      posts.map(({ id }) => id),
+    )
+    const post = posts.find(({ id }) => id === closestId)
+    const paragraph = document.querySelector<HTMLElement>(`[data-did-you-mean]`)
+    const link = document.querySelector<HTMLAnchorElement>(
+      `[data-did-you-mean-link]`,
+    )
+    if (post && paragraph && link) {
+      link.href = `/${post.id}`
+      link.textContent = post.title
+      paragraph.hidden = false
+    }
+  })
+</script>

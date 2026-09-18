@@ -31,7 +31,6 @@ export default defineConfig({
           include: [
             `react`,
             `react-dom`,
-            `react-router`,
             `react/jsx-dev-runtime`,
             `superjson`,
             `vitest-browser-react`,

@@ -1,30 +1,25 @@
 import type { ReactNode } from 'react'
-import { createRoutesStub, useSearchParams } from 'react-router'
 import { page } from 'vitest/browser'
 import type { Locator } from 'vitest/browser'
 import { render } from 'vitest-browser-react'
 import type { RenderResult } from 'vitest-browser-react'
+import useSearchParams from '~/hooks/use-search-params.ts'
 
 /**
- * Renders the element inside a router at the given URL, with a probe that
- * shows the current search params as JSON.
+ * Renders the element with the browser at the given URL, alongside a probe
+ * that shows the current search params as JSON.
  */
-export const renderWithRouter = (
+export const renderAtUrl = (
   element: ReactNode,
   { url = `/` }: { url?: string } = {},
 ): Promise<RenderResult> => {
-  const Stub = createRoutesStub([
-    {
-      path: `/`,
-      Component: () => (
-        <>
-          {element}
-          <SearchParamsProbe />
-        </>
-      ),
-    },
-  ])
-  return render(<Stub initialEntries={[url]} />)
+  globalThis.history.replaceState(null, ``, url)
+  return render(
+    <>
+      {element}
+      <SearchParamsProbe />
+    </>,
+  )
 }
 
 export const searchParamsProbe = (): Locator =>

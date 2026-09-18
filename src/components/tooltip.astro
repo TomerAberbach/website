@@ -1,0 +1,19 @@
+---
+/** A tooltip shown below its trigger on hover or focus. */
+type Props = { id?: string }
+
+const { id } = Astro.props
+---
+
+<span class='relative inline-flex'>
+  <span class='peer' tabindex='-1'>
+    <slot />
+  </span>
+  <span
+    id={id}
+    class="pointer-events-none absolute top-full left-1/2 z-10 mt-2 inline-block w-max -translate-x-1/2 rounded-md bg-gray-800 p-2 text-center text-xs text-white opacity-0 transition-opacity duration-200 peer-hover:pointer-events-auto peer-hover:opacity-100 peer-focus:pointer-events-auto peer-focus:opacity-100 peer-[:has(:focus-visible)]:pointer-events-auto peer-[:has(:focus-visible)]:opacity-100 after:absolute after:top-0 after:left-1/2 after:-translate-x-1/2 after:-translate-y-full after:border-8 after:border-solid after:border-transparent after:border-b-gray-800 after:content-[''] hover:pointer-events-auto hover:opacity-100"
+    aria-hidden={Boolean(id)}
+  >
+    <slot name='content' />
+  </span>
+</span>

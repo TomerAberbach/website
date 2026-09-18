@@ -1,3 +1,4 @@
+import type { APIRoute } from 'astro'
 import { first, get, join, map, pipe, values } from 'lfi'
 import {
   formatDateISO,
@@ -8,7 +9,7 @@ import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
 import { getSiteUrl, SITE_URL } from '~/services/site-url.ts'
 
-export const loader = async (): Promise<Response> => {
+export const GET: APIRoute = async () => {
   const posts = await getOrderedMarkdownPosts()
   const rss = `
     <rss version="2.0"

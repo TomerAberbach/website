@@ -34,6 +34,21 @@ test(`a gif directive without an alt has no aria label`, async () => {
   expect(html).not.toContain(`aria-label`)
 })
 
+test.each([
+  [
+    `Between 11:00pm and 11:59pm (PT)`,
+    `<p>Between 11:00pm and 11:59pm (PT)</p>`,
+  ],
+  [`Ratio 3:2 and ::1 here`, `<p>Ratio 3:2 and ::1 here</p>`],
+])(
+  `a colon before a non-identifier in %j is plain text`,
+  async (markdown, expected) => {
+    const html = await convert(markdown)
+
+    expect(html).toBe(expected)
+  },
+)
+
 test(`a gif directive with an unknown name throws`, async () => {
   await expect(convert(`::gif[missing]`)).rejects.toThrow(
     `Expected GIF to exist`,

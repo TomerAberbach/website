@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import type { AnchorHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react'
-import { Link as RouterLink } from 'react-router'
 
 export const Link = (props: LinkProps) =>
   isExternalUrl(props.href) ? (
@@ -26,7 +25,7 @@ const isExternalUrl = (href: string): boolean => {
   }
 }
 
-export const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
+const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content
   <a
     {...withFocusRingClassName(rest)}
@@ -35,25 +34,17 @@ export const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
   />
 )
 
-export const InternalLink = ({ href, reloadDocument, ...props }: LinkProps) =>
-  typeof document === `undefined` ? (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    <a data-discover='true' href={href} {...withFocusRingClassName(props)} />
-  ) : (
-    <RouterLink
-      to={href}
-      reloadDocument={reloadDocument}
-      {...withFocusRingClassName(props)}
-    />
-  )
+const InternalLink = ({ reloadDocument, ...props }: LinkProps) => (
+  // eslint-disable-next-line jsx-a11y/anchor-has-content
+  <a {...withFocusRingClassName(props)} />
+)
 
 const withFocusRingClassName = <Props extends { className?: string }>({
   className,
   ...restProps
 }: Props) => ({ ...restProps, className: clsx(className, `focus-ring`) })
 
-export type LinkProps = Omit<Parameters<typeof RouterLink>[0], `to`> &
-  DetailedHTMLProps<
-    AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  > & { href: string; children: ReactNode }
+export type LinkProps = DetailedHTMLProps<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+> & { href: string; children: ReactNode; reloadDocument?: boolean }

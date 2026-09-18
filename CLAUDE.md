@@ -1,7 +1,7 @@
 # Website
 
-The portfolio website and blog at https://tomeraberba.ch, built with React
-Router in framework mode and deployed to Fly.io as a Docker image.
+The portfolio website and blog at https://tomeraberba.ch, built with Astro as a
+static site with React islands and deployed to Fly.io as a Docker image.
 
 ## Project structure
 
@@ -15,9 +15,9 @@ website
 │   ├── fonts/               # Font files and the fontconfig used to render thumbnails
 │   └── redirects.txt        # Redirects from old URLs
 ├── src/
-│   ├── routes.ts            # Route configuration
-│   ├── routes/              # One module per route, with its loader and meta
-│   ├── components/          # React components
+│   ├── pages/               # Astro pages and endpoints, one per route
+│   ├── layouts/layout.astro # The document, head, header, and footer
+│   ├── components/          # React islands and Astro components
 │   ├── hooks/               # React hooks
 │   ├── services/            # Server-side content pipeline and shared helpers
 │   │   ├── post-keys.server.ts        # Lists the posts in `private/posts`
@@ -31,7 +31,7 @@ website
 │   ├── styles/              # Tailwind and font stylesheets
 │   └── test/                # Test fixtures, helpers, and browser commands
 ├── scripts/build.ts         # Production build, including font subsetting
-├── server.ts                # The Express server that serves the build
+├── server.ts                # The Express server that serves `dist` with redirects
 └── types/                   # Ambient type declarations
 ```
 
@@ -47,8 +47,9 @@ website
 ## Testing
 
 Tests are colocated with the code. Files ending in `.test.ts` run in the `node`
-vitest project. Files ending in `.browser.test.tsx` run in real browsers through
-vitest browser mode, with Tailwind applied. Screenshot references are stored in
+vitest project. Tests of pages start with `_` so Astro does not route them.
+Files ending in `.browser.test.tsx` run in real browsers through vitest browser
+mode, with Tailwind applied. Screenshot references are stored in
 `__screenshots__` directories per platform. Only macOS references are committed,
 so CI runs the browser tests on macOS.
 

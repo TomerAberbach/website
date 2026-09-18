@@ -35,14 +35,14 @@ import stripMarkdown from 'strip-markdown'
 import { unified } from 'unified'
 import { visit } from 'unist-util-visit'
 import { ASSET_NAME_TO_URL, VIDEO_NAME_TO_URL } from './assets.server.ts'
-import infoSvgPath from './images/info.svg'
-import warningSvgPath from './images/warning.svg'
+import infoSvgPath from './images/info.svg?url'
+import warningSvgPath from './images/warning.svg?url'
 import 'mdast-util-directive'
 
 export const convertMarkdownToHtml = async (
   markdown: string,
 ): Promise<HtmlRoot> =>
-  markdownToHtmlProcessor.run(markdownToHtmlProcessor.parse(markdown))
+  markdownToHtmlProcessor.run(markdownToHtmlProcessor.parse(markdown), markdown)
 
 // The `@remark-embedder` packages are CommonJS with an `__esModule` flag, so
 // their default export is the module object under Node's interop and the
@@ -51,6 +51,32 @@ const unwrapDefault = <Module>(module: Module): Module =>
   (module as { default?: Module }).default ?? module
 
 const remarkEmbedderCache = new (unwrapDefault(RemarkEmbedderCache))()
+
+// Restores a directive whose name is not an identifier to the text it was
+// parsed from, so that a time such as `11:00pm` is not read as a directive.
+const remarkDirectiveNames =
+  () => (tree: MdRoot, file: { toString: () => string }) => {
+    const source = String(file)
+    visit(
+      tree,
+      [`textDirective`, `leafDirective`, `containerDirective`],
+      (node, index, parent) => {
+        if (!(`name` in node) || IDENTIFIER_REGEXP.test(node.name ?? ``)) {
+          return
+        }
+
+        const { position } = node
+        invariant(position?.start.offset !== undefined, `Expected a position`)
+        invariant(position.end.offset !== undefined, `Expected a position`)
+        parent!.children[index!] = {
+          type: `text`,
+          value: source.slice(position.start.offset, position.end.offset),
+        }
+      },
+    )
+  }
+
+const IDENTIFIER_REGEXP = /^[A-Za-z_$][\w$]*$/u
 
 const remarkFlex = () => (tree: MdRoot) =>
   visit(tree, `containerDirective`, node => {
@@ -224,6 +250,7 @@ const markdownToHtmlProcessor = unified()
   .use(remarkParse)
   .use(remarkGfm)
   .use(remarkDirective)
+  .use(remarkDirectiveNames)
   .use(remarkFlex)
   .use(remarkGif)
   .use(remarkAudio)

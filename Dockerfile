@@ -59,8 +59,10 @@ COPY --from=production-dependencies /root/.cache /root/.cache
 COPY --from=production-dependencies /app/package.json /app/package.json
 COPY --from=production-dependencies /app/pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY --from=production-dependencies /app/pnpm-workspace.yaml /app/pnpm-workspace.yaml
-COPY --from=build /app/build /app/build
+COPY --from=build /app/dist /app/dist
 COPY --from=build /app/private /app/private
 COPY --from=build /app/public /app/public
 COPY --from=build /app/server.ts /app/server.ts
+COPY --from=build /app/src/services/redirect-url.server.ts /app/src/services/redirect-url.server.ts
+COPY --from=build /app/src/services/path.server.ts /app/src/services/path.server.ts
 CMD ["pnpm", "run", "start"]

@@ -4,8 +4,9 @@ import { usePostsFixture } from '~/test/posts-fixture.ts'
 usePostsFixture()
 
 const loadRss = async () => {
-  const { loader } = await import(`./rss.xml.ts`)
-  const response = await loader()
+  const { GET } = await import(`./rss.xml.ts`)
+  // eslint-disable-next-line new-cap
+  const response = await GET({} as Parameters<typeof GET>[0])
   const body = await response.text()
   return { response, body, items: body.split(`<item>`).slice(1) }
 }
