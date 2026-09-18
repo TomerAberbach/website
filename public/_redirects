@@ -14,7 +14,7 @@
 /twitter/*                       https://x.com/TomerAberbach/:splat
 /x                               https://x.com/TomerAberbach
 /x/*                             https://x.com/TomerAberbach/:splat
-/edin                            https://www.linkedin.com/in/tomer-a/
+/edin                            https://www.linkedin.com/in/tomer-a
 /edin/*                          https://www.linkedin.com/in/tomer-a/:splat
 
 # Convenience redirects
@@ -29,9 +29,9 @@
 /spotify-true-random             https://spotify-true-random.tomeraberba.ch
 
 # Other Tomers
-/burg                            https://arctic.som.ou.edu/tburg/
+/burg                            https://arctic.som.ou.edu/tburg
 /burg/*                          https://arctic.som.ou.edu/tburg/:splat
-/weather                         https://arctic.som.ou.edu/tburg/
+/weather                         https://arctic.som.ou.edu/tburg
 /weather/*                       https://arctic.som.ou.edu/tburg/:splat
 /wx                              https://polarwx.com/
 /wx/*                            https://polarwx.com/:splat
