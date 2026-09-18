@@ -49,6 +49,14 @@ const renderWidget = ({
   return render(<Stub initialEntries={[`/`]} />)
 }
 
+// Panning to a vertex is a smooth animation, which takes a while on a busy
+// machine.
+const PAN_POLL = { timeout: 10_000 }
+
+// The real posts run through the whole markdown pipeline, which renders
+// diagrams in a browser and fetches embeds.
+const REAL_POSTS_TIMEOUT_MS = 120_000
+
 const center = (element: Element): { x: number; y: number } => {
   const { left, top, width, height } = element.getBoundingClientRect()
   return { x: left + width / 2, y: top + height / 2 }
@@ -151,8 +159,12 @@ test(`the selected vertex is centered in the viewport after mount`, async () => 
 
   const viewport = screen.container.firstElementChild!
   const vertex = page.getByRole(`link`, { name: `Post c` }).element()
-  await expect.poll(() => center(vertex).x).toBeCloseTo(center(viewport).x, 0)
-  await expect.poll(() => center(vertex).y).toBeCloseTo(center(viewport).y, 0)
+  await expect
+    .poll(() => center(vertex).x, PAN_POLL)
+    .toBeCloseTo(center(viewport).x, 0)
+  await expect
+    .poll(() => center(vertex).y, PAN_POLL)
+    .toBeCloseTo(center(viewport).y, 0)
 })
 
 const SelectableWidget = () => {
@@ -179,37 +191,51 @@ test(`changing the selected vertex pans it to the center`, async () => {
   await page.getByRole(`button`, { name: `Select c` }).click()
 
   const vertex = page.getByRole(`link`, { name: `Post c` }).element()
-  await expect.poll(() => center(vertex).x).toBeCloseTo(center(viewport).x, 0)
-  await expect.poll(() => center(vertex).y).toBeCloseTo(center(viewport).y, 0)
+  await expect
+    .poll(() => center(vertex).x, PAN_POLL)
+    .toBeCloseTo(center(viewport).x, 0)
+  await expect
+    .poll(() => center(vertex).y, PAN_POLL)
+    .toBeCloseTo(center(viewport).y, 0)
 })
 
 // A published post, selected so the real graph is centered on it.
 const REAL_POST_ID = `avoid-layout-shifts-caused-by-web-fonts-with-postcss-fontpie`
 
-test(`the widget showing the real posts matches the reference screenshot`, async () => {
-  const graph = superjson.parse<Graph>(await commands.getGraph())
-  const Stub = createRoutesStub([
-    {
-      path: `/`,
-      Component: () => (
-        <GraphWidget id='graph' graph={graph} selectedVertexId={REAL_POST_ID} />
-      ),
-    },
-  ])
-  const screen = await render(<Stub initialEntries={[`/`]} />)
-  const viewport = screen.container.firstElementChild!
-  const vertex = page
-    .getByRole(`link`, { name: graph.vertices.get(REAL_POST_ID)!.label })
-    .element()
-  await expect.poll(() => center(vertex).x).toBeCloseTo(center(viewport).x, 0)
+test(
+  `the widget showing the real posts matches the reference screenshot`,
+  { timeout: REAL_POSTS_TIMEOUT_MS },
+  async () => {
+    const graph = superjson.parse<Graph>(await commands.getGraph())
+    const Stub = createRoutesStub([
+      {
+        path: `/`,
+        Component: () => (
+          <GraphWidget
+            id='graph'
+            graph={graph}
+            selectedVertexId={REAL_POST_ID}
+          />
+        ),
+      },
+    ])
+    const screen = await render(<Stub initialEntries={[`/`]} />)
+    const viewport = screen.container.firstElementChild!
+    const vertex = page
+      .getByRole(`link`, { name: graph.vertices.get(REAL_POST_ID)!.label })
+      .element()
+    await expect
+      .poll(() => center(vertex).x, PAN_POLL)
+      .toBeCloseTo(center(viewport).x, 0)
 
-  await expect(page.elementLocator(viewport)).toMatchScreenshot(
-    `graph-widget`,
-    {
-      // The labels are text, whose antialiasing differs between WebKit builds
-      // for different macOS versions.
-      comparatorOptions: { allowedMismatchedPixelRatio: 0.02 },
-      screenshotOptions: { animations: `disabled` },
-    },
-  )
-})
+    await expect(page.elementLocator(viewport)).toMatchScreenshot(
+      `graph-widget`,
+      {
+        // The labels are text, whose antialiasing differs between WebKit builds
+        // for different macOS versions.
+        comparatorOptions: { allowedMismatchedPixelRatio: 0.02 },
+        screenshotOptions: { animations: `disabled` },
+      },
+    )
+  },
+)
