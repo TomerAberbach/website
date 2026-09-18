@@ -1,5 +1,8 @@
-import { dirname, join } from 'node:path'
-import { $ } from 'zx'
+import { readFile, writeFile } from 'node:fs/promises'
+import { dirname, extname, join } from 'node:path'
+import sharp from 'sharp'
+import { optimize } from 'svgo'
+import { $, glob } from 'zx'
 
 $.preferLocal = true
 $.verbose = true
@@ -26,5 +29,26 @@ await $({
 
 // Rebuild with new fonts and minify
 await $`astro build`
-await $`imagemin dist/_astro -o dist/_astro`
+const optimizeImage = async (path: string): Promise<void> => {
+  const original = await readFile(path)
+  let optimized: Uint8Array
+  switch (extname(path)) {
+    case `.svg`:
+      optimized = Buffer.from(
+        optimize(original.toString(), { multipass: true }).data,
+      )
+      break
+    case `.png`:
+      optimized = await sharp(original)
+        .png({ compressionLevel: 9, palette: false })
+        .toBuffer()
+      break
+    default:
+      return
+  }
+  if (optimized.byteLength < original.byteLength) {
+    await writeFile(path, optimized)
+  }
+}
+await Promise.all((await glob(fromRoot(`dist/_astro/*`))).map(optimizeImage))
 await $`find dist -name \\*.js -exec terser --module -c keep_fargs=false -o {} -- {} ';'`
