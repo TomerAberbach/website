@@ -1,4 +1,5 @@
 import { invariant } from '@epic-web/invariant'
+import { closest } from 'fastest-levenshtein'
 // eslint-disable-next-line depend/ban-dependencies
 import { includeKeys } from 'filter-obj'
 import katexStylesPath from 'katex/dist/katex.min.css?url'
@@ -6,7 +7,6 @@ import { filter, map, pipe, reduce, toArray, toMap } from 'lfi'
 import { useId } from 'react'
 import type { LoaderFunctionArgs } from 'react-router'
 import { isRouteErrorResponse } from 'react-router'
-import { findBestMatch } from 'string-similarity'
 import { ErrorCrashView, ErrorView } from '~/components/error.tsx'
 import { ExternalLink, InternalLink, Link } from '~/components/link.tsx'
 import Prose from '~/components/prose.tsx'
@@ -237,7 +237,8 @@ export const meta = createMeta<typeof loader>(({ location, data }) => [
 ])
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const postId = params[`*`]
+  // Prerendering requests each page with a trailing slash.
+  const postId = params[`*`]?.replace(/\/$/u, ``)
   invariant(
     postId,
     `Expected a non-empty postId in params: ${JSON.stringify(params)}`,
@@ -284,9 +285,8 @@ const findBestPostMatchKey = (
   id: string,
   keys: Map<string, PostKey>,
 ): PostKey => {
-  const ids = [...keys.keys()]
-  const { bestMatchIndex } = findBestMatch(id.toLowerCase(), ids)
-  return keys.get(ids[bestMatchIndex]!)!
+  const closestId = closest(id.toLowerCase(), [...keys.keys()])
+  return keys.get(closestId)!
 }
 
 type ErrorBoundaryData = { didYouMeanPost: Pick<Post, `id` | `title`> }

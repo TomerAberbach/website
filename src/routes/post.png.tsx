@@ -13,7 +13,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   const postKey = (await getPostKeys()).get(postId)
   if (postKey?.type !== `markdown`) {
-    return new Response(`Not found`, { status: 400 })
+    return new Response(`Not found`, { status: 404 })
   }
 
   const post = await getMarkdownPost(postKey)

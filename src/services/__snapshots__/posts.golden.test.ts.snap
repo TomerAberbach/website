@@ -1,0 +1,1427 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the metadata derived from the real posts is unchanged 1`] = `
+[
+  {
+    "dates": {
+      "published": 2026-06-11T00:00:00.000Z,
+      "updated": 2026-06-12T00:00:00.000Z,
+    },
+    "description": "This code would easily pass a cursory review: Then one day the endpoint returns a 500, flags becomes { error: 'Internal Server Error' }, no key matches a real option, and the server silently starts…",
+    "features": Set {},
+    "id": "your-interface-has-two-channels",
+    "minutesToRead": 11,
+    "previous": {
+      "id": "insignificant",
+      "title": "Insignificant",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch",
+        "https://developer.mozilla.org/en-US/docs/Web/API/Response/ok",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#throwing_a_generic_error",
+        "https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf",
+      },
+      "blog.codinghorror.com" => Set {
+        "https://blog.codinghorror.com/falling-into-the-pit-of-success/",
+      },
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Signaling_(telecommunications)#In-band_and_out-of-band_signaling",
+        "https://en.wikipedia.org/wiki/Tagged_union",
+        "https://en.wikipedia.org/wiki/Exception_handling_(programming)#Checked_exceptions",
+        "https://en.wikipedia.org/wiki/Sentinel_value",
+        "https://en.wikipedia.org/wiki/UTF-8",
+      },
+      "doc.rust-lang.org" => Set {
+        "https://doc.rust-lang.org/std/result/",
+        "https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html",
+        "https://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock",
+      },
+      "docs.oracle.com" => Set {
+        "https://docs.oracle.com/javase/tutorial/essential/exceptions/declaring.html",
+        "https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html",
+        "https://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html",
+        "https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#String-byte:A-java.nio.charset.Charset-",
+        "https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#String-byte:A-",
+        "https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html",
+      },
+      "artima.com" => Set {
+        "https://www.artima.com/articles/the-trouble-with-checked-exceptions",
+      },
+      "vimeo.com" => Set {
+        "https://vimeo.com/14313378",
+      },
+      "typescriptlang.org" => Set {
+        "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#working-with-union-types",
+      },
+      "github.com" => Set {
+        "https://github.com/google/guava",
+      },
+      "guava.dev" => Set {
+        "https://guava.dev/releases/19.0/api/docs/com/google/common/io/ByteSource.html#asCharSource(java.nio.charset.Charset)",
+      },
+      "eaftan.github.io" => Set {
+        "https://eaftan.github.io/hash-ordering/",
+      },
+      "go.dev" => Set {
+        "https://go.dev/doc/go1#iteration",
+      },
+      "googleblog.com" => Set {
+        "https://workspaceupdates.googleblog.com/2023/05/google-chat-upgrading-conversations-grouped-by-topic-to-inline-threading.html",
+      },
+      "docs.python.org" => Set {
+        "https://docs.python.org/3/library/functions.html#open",
+      },
+      "developer.android.com" => Set {
+        "https://developer.android.com/training/permissions/requesting",
+      },
+      "nodejs.org" => Set {
+        "https://nodejs.org/api/tls.html#tlscreateserveroptions-secureconnectionlistener",
+      },
+      "ozlabs.org" => Set {
+        "https://ozlabs.org/~rusty/index.cgi/tech/2008-03-30.html",
+        "https://ozlabs.org/~rusty/index.cgi/tech/2008-04-01.html",
+      },
+      "hyrumslaw.com" => Set {
+        "https://www.hyrumslaw.com/",
+      },
+    },
+    "tags": Set {
+      "api",
+      "bugs",
+      "c",
+      "c#",
+      "code",
+      "engineering",
+      "java",
+      "javascript",
+      "libraries",
+      "programming languages",
+      "python",
+      "rust",
+      "typescript",
+      "ux",
+    },
+    "title": "Your Interface Has Two Channels",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2026-05-06T00:00:00.000Z,
+    },
+    "description": "I composed, produced, and released an instrumental progressive rock track! https://www.youtube.com/watch?v=MN3W5RqM3EU You can also find the track on Spotify, Apple Music, YouTube Music, and other…",
+    "features": Set {},
+    "id": "insignificant",
+    "minutesToRead": 1,
+    "next": {
+      "id": "your-interface-has-two-channels",
+      "title": "Your Interface Has Two Channels",
+    },
+    "previous": {
+      "id": "what-i-worked-on-at-stainless",
+      "title": "What I Worked On at Stainless",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "spotify.com" => Set {
+        "https://open.spotify.com/track/17JA57grqPVBZ9G7Kj1utm",
+      },
+      "music.apple.com" => Set {
+        "https://music.apple.com/us/song/insignificant/6764415966",
+      },
+      "music.youtube.com" => Set {
+        "https://music.youtube.com/watch?v=MN3W5RqM3EU",
+      },
+      "instagram.com" => Set {
+        "https://www.instagram.com/happy_lil_paintings",
+      },
+    },
+    "tags": Set {
+      "music",
+      "piano",
+      "tracks",
+    },
+    "title": "Insignificant",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2026-03-21T00:00:00.000Z,
+      "updated": 2026-05-26T00:00:00.000Z,
+    },
+    "description": ":::note Anthropic has acquired Stainless. I'm now the tech lead of Anthropic's new SDKs team! ::: At Stainless, I built compiler-like generators that transform API specifications into idiomatic client…",
+    "features": Set {},
+    "id": "what-i-worked-on-at-stainless",
+    "minutesToRead": 1,
+    "next": {
+      "id": "insignificant",
+      "title": "Insignificant",
+    },
+    "previous": {
+      "id": "actual-lines-from-tech-recruiter-emails",
+      "title": "Actual Lines (And GIFs) From Tech Recruiter Emails",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "anthropic.com" => Set {
+        "https://www.anthropic.com/news/anthropic-acquires-stainless",
+      },
+      "stainless.com" => Set {
+        "https://www.stainless.com",
+        "https://www.stainless.com/docs/sdks/csharp",
+        "https://www.stainless.com/docs/sdks/php",
+        "https://www.stainless.com/docs/cli",
+        "https://www.stainless.com/docs/quickstart-cli",
+        "https://www.stainless.com/docs/enterprise/breaking-change-detection",
+        "https://www.stainless.com/docs/sdks/java",
+        "https://www.stainless.com/docs/sdks/kotlin",
+      },
+      "openapis.org" => Set {
+        "https://www.openapis.org",
+      },
+      "github.com" => Set {
+        "https://github.com/anthropics/anthropic-sdk-java",
+        "https://github.com/openai/openai-java",
+        "https://github.com/anthropics/anthropic-sdk-csharp",
+        "https://github.com/browserbase/stagehand-net",
+        "https://github.com/search?q=%22%5B%5C%22X-Stainless-Lang%5C%22%5D+%3D+%5C%22csharp%5C%22%22&type=code",
+        "https://github.com/anthropics",
+        "https://github.com/cloudflare",
+        "https://github.com/openai",
+        "https://github.com/llamastack/llama-stack-client-kotlin",
+        "https://github.com/search?q=%2F%22X-Stainless-Lang%22%2C%20%22(java%7Ckotlin)%22%2F&type=code",
+      },
+      "what-i-worked-on-at-google" => Set {
+        "/what-i-worked-on-at-google",
+      },
+    },
+    "tags": Set {
+      "ai",
+      "api",
+      "c#",
+      "cli",
+      "code",
+      "engineering",
+      "java",
+      "kotlin",
+      "libraries",
+      "resume",
+      "stainless",
+    },
+    "title": "What I Worked On at Stainless",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2026-02-18T00:00:00.000Z,
+    },
+    "href": "https://www.stainless.com/blog/introducing-stainless-sql-sdk-generator-from-openapi",
+    "id": "https://www.stainless.com/blog/introducing-stainless-sql-sdk-generator-from-openapi",
+    "referencedBy": Map {},
+    "references": Map {
+      "github.com" => Set {
+        "https://github.com/stainless-commons/stripe-sql",
+      },
+      "stripe.com" => Set {
+        "https://stripe.com",
+      },
+      "wiki.postgresql.org" => Set {
+        "https://wiki.postgresql.org/wiki/Foreign_data_wrappers",
+      },
+      "postgresql.org" => Set {
+        "https://www.postgresql.org/docs/current/plpython.html",
+        "https://www.postgresql.org/docs/current/rowtypes.html",
+        "https://www.postgresql.org/docs/current/sql-createextension.html",
+      },
+    },
+    "tags": Set {
+      "api",
+      "code",
+      "libraries",
+      "sql",
+      "stainless",
+    },
+    "title": "Introducing the (experimental!) Stainless SQL SDK generator",
+    "type": "href",
+  },
+  {
+    "dates": {
+      "published": 2025-12-13T00:00:00.000Z,
+      "updated": 2026-05-16T00:00:00.000Z,
+    },
+    "description": "Inspired by CJ Quines's original blog post, which may or may not be a joke, hard to tell... Anyway, the following are real, I promise! "Tomer?" (this was the whole email) "Transform an unsexy…",
+    "features": Set {},
+    "id": "actual-lines-from-tech-recruiter-emails",
+    "minutesToRead": 2,
+    "next": {
+      "id": "what-i-worked-on-at-stainless",
+      "title": "What I Worked On at Stainless",
+    },
+    "previous": {
+      "id": "cursed-knowledge",
+      "title": "Cursed Knowledge",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "blog.cjquines.com" => Set {
+        "https://blog.cjquines.com/post/tech-recruiter-emails",
+      },
+    },
+    "tags": Set {
+      "engineering",
+      "recruiting",
+    },
+    "title": "Actual Lines (And GIFs) From Tech Recruiter Emails",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2025-08-25T00:00:00.000Z,
+      "updated": 2025-12-03T00:00:00.000Z,
+    },
+    "description": "Cursed knowledge I have learned over time that I wish I never knew. Inspired by Immich's Cursed Knowledge. The knowledge is ordered from most to least recently learned. \\> Ajv multipleOf validation is…",
+    "features": Set {},
+    "id": "cursed-knowledge",
+    "minutesToRead": 5,
+    "next": {
+      "id": "actual-lines-from-tech-recruiter-emails",
+      "title": "Actual Lines (And GIFs) From Tech Recruiter Emails",
+    },
+    "previous": {
+      "id": "schoenberg",
+      "title": "Schoenberg: The MIDI Esoteric Programming Language",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "immich.app" => Set {
+        "https://immich.app/cursed-knowledge",
+      },
+      "github.com" => Set {
+        "https://github.com/ajv-validator",
+        "https://github.com/ajv-validator/ajv/issues/2561",
+        "https://github.com/microsoft/TypeScript/issues/62625",
+        "https://github.com/actions/runner/blob/main/src/Misc/layoutroot/safe_sleep.sh",
+        "https://github.com/actions/runner/issues/2380",
+        "https://github.com/actions/runner/issues/3792",
+        "https://github.com/ms-jpq",
+        "https://github.com/actions/runner/issues/3792#issuecomment-3597495291",
+        "https://github.com/microsoft/TypeScript/issues/13347",
+        "https://github.com/microsoft/TypeScript/pull/58296",
+        "https://github.com/rubocop/rubocop/issues/6492#issuecomment-439306272",
+        "https://github.com/rubocop/rubocop/issues/2280",
+      },
+      "json-schema.org" => Set {
+        "https://json-schema.org/understanding-json-schema/reference/numeric#multiples",
+      },
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth#description",
+      },
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Liskov_substitution_principle",
+        "https://en.wikipedia.org/wiki/Busy_waiting",
+      },
+      "scd31.com" => Set {
+        "https://www.scd31.com",
+      },
+      "joshwcomeau.com" => Set {
+        "https://www.joshwcomeau.com/css/rules-of-margin-collapse#only-vertical-margins-collapse-1",
+      },
+      "fostersamuel.com" => Set {
+        "https://fostersamuel.com",
+      },
+      "learn.microsoft.com" => Set {
+        "https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement#methods",
+        "https://learn.microsoft.com/en-us/dotnet/api/system.byte",
+        "https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonvaluekind",
+      },
+      "typescriptlang.org" => Set {
+        "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties",
+      },
+      "maven.apache.org" => Set {
+        "https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Transitive_Dependencies",
+      },
+      "stainless.com" => Set {
+        "https://www.stainless.com/blog/escaping-maven-dependency-hell",
+      },
+      "docs.rubocop.org" => Set {
+        "https://docs.rubocop.org",
+        "https://docs.rubocop.org/rubocop/cops.html",
+      },
+      "the-29-days-per-year-bug" => Set {
+        "/the-29-days-per-year-bug",
+      },
+      "docs.python.org" => Set {
+        "https://docs.python.org/3.13/reference/compound_stmts.html#:~:text=Default%20parameter%20values%20are%20evaluated%20from%20left%20to%20right%20when%20the%20function%20definition%20is%20executed",
+      },
+      "docs.oracle.com" => Set {
+        "https://docs.oracle.com/javase/8/docs/api/java/net/URL.html#equals-java.lang.Object-",
+        "https://docs.oracle.com/javase/8/docs/api/java/net/URL.html#hashCode--",
+        "https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html",
+      },
+    },
+    "tags": Set {
+      "bugs",
+      "c#",
+      "code",
+      "dates",
+      "engineering",
+      "java",
+      "javascript",
+      "learning",
+      "performance",
+      "php",
+      "python",
+      "ruby",
+      "typescript",
+    },
+    "title": "Cursed Knowledge",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2025-07-03T00:00:00.000Z,
+    },
+    "href": "https://www.stainless.com/blog/escaping-maven-dependency-hell",
+    "id": "https://www.stainless.com/blog/escaping-maven-dependency-hell",
+    "referencedBy": Map {
+      "cursed-knowledge" => "Cursed Knowledge",
+    },
+    "references": Map {
+      "docs.gradle.org" => Set {
+        "https://docs.gradle.org/current/userguide/dependency_constraints_conflicts.html#sub:resolving-version-conflicts",
+        "https://docs.gradle.org/current/userguide/dependency_locking.html",
+      },
+      "docs.npmjs.com" => Set {
+        "https://docs.npmjs.com/about-semantic-versioning#using-semantic-versioning-to-specify-update-types-your-package-can-accept",
+      },
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Half-open_interval",
+      },
+      "en.wiktionary.org" => Set {
+        "https://en.wiktionary.org/wiki/footgun",
+      },
+      "github.com" => Set {
+        "https://github.com/FasterXML/jackson",
+        "https://github.com/FasterXML/jackson-databind/issues/562",
+        "https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.13.4",
+        "https://github.com/openai/openai-java",
+        "https://github.com/openai/openai-java/blob/1c6e8759bf7e6b8a7e3b245c5a2365edf2388fca/openai-java-core/build.gradle.kts#L6-L17",
+        "https://github.com/openai/openai-java/blob/1c6e8759bf7e6b8a7e3b245c5a2365edf2388fca/openai-java-core/src/main/kotlin/com/openai/core/Check.kt#L49-L96",
+        "https://github.com/openai/openai-java/issues/301",
+      },
+      "go.dev" => Set {
+        "https://go.dev/doc/modules/gomod-ref#require",
+      },
+      "gradle.org" => Set {
+        "https://gradle.org",
+      },
+      "guides.rubygems.org" => Set {
+        "https://guides.rubygems.org/patterns/#pessimistic-version-constraint",
+      },
+      "issues.apache.org" => Set {
+        "https://issues.apache.org/jira/browse/MNG-2672",
+        "https://issues.apache.org/jira/browse/MNG-3072",
+        "https://issues.apache.org/jira/browse/MNG-7852",
+      },
+      "javadoc.io" => Set {
+        "https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com.fasterxml.jackson.annotation/com/fasterxml/jackson/annotation/JsonAnySetter.html",
+        "https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com.fasterxml.jackson.annotation/com/fasterxml/jackson/annotation/JsonCreator.html",
+      },
+      "learn.microsoft.com" => Set {
+        "https://learn.microsoft.com/en-us/nuget/concepts/package-versioning?tabs=semver20sort#references-in-project-files-packagereference",
+      },
+      "maven.apache.org" => Set {
+        "https://maven.apache.org",
+        "https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Transitive_Dependencies",
+        "https://maven.apache.org/pom.html#Dependency_Version_Requirement_Specification",
+        "https://maven.apache.org/pom.html#Version_Order_Specification",
+      },
+      "mvnrepository.com" => Set {
+        "https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind",
+      },
+      "pip.pypa.io" => Set {
+        "https://pip.pypa.io/en/stable/reference/requirement-specifiers/#requirement-specifiers",
+      },
+      "platform.openai.com" => Set {
+        "https://platform.openai.com/docs/api-reference/chat",
+        "https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat",
+      },
+      "softwareengineering.stackexchange.com" => Set {
+        "https://softwareengineering.stackexchange.com/questions/297276/what-is-a-shaded-java-dependency",
+      },
+      "industrialempathy.com" => Set {
+        "https://www.industrialempathy.com/posts/version-skew",
+      },
+    },
+    "tags": Set {
+      "ai",
+      "code",
+      "java",
+      "libraries",
+      "stainless",
+    },
+    "title": "Escaping Maven dependency hell",
+    "type": "href",
+  },
+  {
+    "dates": {
+      "published": 2025-06-23T00:00:00.000Z,
+    },
+    "description": "Schoenberg is an esoteric programming language where programs are written as MIDI files. A MIDI file is basically digital sheet music that tells a computer which notes to play when and how loudly. The…",
+    "features": Set {
+      "math",
+    },
+    "id": "schoenberg",
+    "minutesToRead": 5,
+    "next": {
+      "id": "cursed-knowledge",
+      "title": "Cursed Knowledge",
+    },
+    "previous": {
+      "id": "frogs-flying-kites",
+      "title": "Frogs Flying Kites",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Esoteric_programming_language",
+        "https://en.wikipedia.org/wiki/MIDI",
+        "https://en.wikipedia.org/wiki/Source-to-source_compiler",
+        "https://en.wikipedia.org/wiki/Operational_semantics",
+        "https://en.wikipedia.org/wiki/Turing_completeness",
+        "https://en.wikipedia.org/wiki/Syntax_(programming_languages)",
+        "https://en.wikipedia.org/wiki/Pitch_class",
+        "https://en.wikipedia.org/wiki/MIDI#Messages",
+        "https://en.wikipedia.org/wiki/Rhythm",
+        "https://en.wikipedia.org/wiki/Chord_(music)",
+        "https://en.wikipedia.org/wiki/TiMidity%2B%2B",
+        "https://en.wikipedia.org/wiki/Echo_(command)",
+        "https://en.wikipedia.org/wiki/Wc_(Unix)",
+        "https://en.wikipedia.org/wiki/Fibonacci_sequence",
+        "https://en.wikipedia.org/wiki/Bubble_sort",
+        "https://en.wikipedia.org/wiki/Insertion_sort",
+        "https://en.wikipedia.org/wiki/Quicksort",
+        "https://en.wikipedia.org/wiki/Arnold_Schoenberg",
+        "https://en.wikipedia.org/wiki/Atonality",
+        "https://en.wikipedia.org/wiki/Tonality#Tonal_musics",
+        "https://en.wikipedia.org/wiki/Key_(music)",
+        "https://en.wikipedia.org/wiki/Steganography",
+        "https://en.wikipedia.org/wiki/Transposition_(music)",
+        "https://en.wikipedia.org/wiki/Algebraic_data_type",
+      },
+      "esolangs.org" => Set {
+        "https://esolangs.org/wiki/Brainfuck",
+        "https://esolangs.org/wiki/Brainfuck#Hello,_World!",
+        "https://esolangs.org/wiki/Brainfuck#Cell_size",
+      },
+      "github.com" => Set {
+        "https://github.com/TomerAberbach/schoenberg",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/hello_world.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/hello_world.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/cell_width.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/cell_width.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/echo.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/echo.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/wc.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/wc.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/fib.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/fib.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/bubble_sort.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/bubble_sort.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/insertion_sort.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/insertion_sort.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/quick_sort.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/quick_sort.mp3",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/brainfuck_interpreter.mid",
+        "https://github.com/TomerAberbach/schoenberg/raw/refs/heads/main/samples/brainfuck_interpreter.mp3",
+        "https://github.com/TomerAberbach/schoenberg/tree/main/samples",
+      },
+      "ableton.com" => Set {
+        "https://www.ableton.com",
+      },
+      "brainfuck.org" => Set {
+        "https://brainfuck.org",
+      },
+      "dangermouse.net" => Set {
+        "https://www.dangermouse.net/esoteric/piet.html",
+      },
+      "" => Set {
+        "/?tags=tracks",
+      },
+      "copy.sh" => Set {
+        "https://copy.sh/brainfuck/text.html",
+      },
+      "doc.rust-lang.org" => Set {
+        "https://doc.rust-lang.org/std/keyword.enum.html",
+      },
+      "docs.rs" => Set {
+        "https://docs.rs/midly/latest/midly",
+      },
+      "apple.com" => Set {
+        "https://www.apple.com/mac/garageband",
+      },
+      "image-line.com" => Set {
+        "https://www.image-line.com",
+      },
+    },
+    "tags": Set {
+      "code",
+      "music",
+      "programming languages",
+      "rust",
+    },
+    "title": "Schoenberg: The MIDI Esoteric Programming Language",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2025-02-10T00:00:00.000Z,
+    },
+    "href": "https://www.stainless.com/blog/making-java-enums-forwards-compatible",
+    "id": "https://www.stainless.com/blog/making-java-enums-forwards-compatible",
+    "referencedBy": Map {},
+    "references": Map {
+      "docs.oracle.com" => Set {
+        "https://docs.oracle.com/en/java/javase/17/language/switch-expressions-and-statements.html",
+        "https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html#valueOf-java.lang.Class-java.lang.String-",
+      },
+      "industrialempathy.com" => Set {
+        "https://www.industrialempathy.com/posts/version-skew",
+      },
+    },
+    "tags": Set {
+      "api",
+      "code",
+      "compatibility",
+      "java",
+      "libraries",
+      "stainless",
+    },
+    "title": "Making Java enums forwards compatible",
+    "type": "href",
+  },
+  {
+    "dates": {
+      "published": 2025-01-29T00:00:00.000Z,
+    },
+    "href": "https://www.stainless.com/blog/making-java-nullable-fields-backwards-compatible",
+    "id": "https://www.stainless.com/blog/making-java-nullable-fields-backwards-compatible",
+    "referencedBy": Map {},
+    "references": Map {
+      "docs.gradle.org" => Set {
+        "https://docs.gradle.org/current/userguide/dependency_constraints_conflicts.html#sub:resolving-version-conflicts",
+      },
+      "docs.oracle.com" => Set {
+        "https://docs.oracle.com/javase/8/docs/api/java/lang/NoSuchMethodError.html",
+        "https://docs.oracle.com/javase/8/docs/jdk/api/jpda/jdi/com/sun/jdi/doc-files/signature.html",
+        "https://docs.oracle.com/javase/specs/jls/se10/html/jls-5.html#jls-5.1",
+      },
+    },
+    "tags": Set {
+      "code",
+      "compatibility",
+      "java",
+      "libraries",
+      "stainless",
+    },
+    "title": "Making Java nullable fields backwards compatible",
+    "type": "href",
+  },
+  {
+    "dates": {
+      "published": 2024-10-09T00:00:00.000Z,
+    },
+    "description": "I composed, produced, and released an instrumental track using the royal road progression! https://www.youtube.com/watch?v=BrTf-Izx\\_qk You can also find the track on Spotify, Apple Music, YouTube…",
+    "features": Set {},
+    "id": "frogs-flying-kites",
+    "minutesToRead": 1,
+    "next": {
+      "id": "schoenberg",
+      "title": "Schoenberg: The MIDI Esoteric Programming Language",
+    },
+    "previous": {
+      "id": "engineering-mindset",
+      "title": "Engineering Mindset",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Royal_road_progression",
+      },
+      "spotify.com" => Set {
+        "https://open.spotify.com/track/5XF9ABC5G4Oi2swq7ryI4g",
+      },
+      "music.apple.com" => Set {
+        "https://music.apple.com/us/song/frogs-flying-kites/1770222222",
+      },
+      "music.youtube.com" => Set {
+        "https://music.youtube.com/watch?v=BrTf-Izx_qk",
+      },
+      "instagram.com" => Set {
+        "https://www.instagram.com/hello._neko",
+      },
+    },
+    "tags": Set {
+      "music",
+      "piano",
+      "tracks",
+    },
+    "title": "Frogs Flying Kites",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2024-09-20T00:00:00.000Z,
+    },
+    "description": "I recently left Google and during my last two weeks several people asked me the same question: How did you get to where you are? What they were asking is how I developed my software engineering skills…",
+    "features": Set {},
+    "id": "engineering-mindset",
+    "minutesToRead": 3,
+    "next": {
+      "id": "frogs-flying-kites",
+      "title": "Frogs Flying Kites",
+    },
+    "previous": {
+      "id": "the-1-hour-per-year-bug",
+      "title": "The 1 Hour per Year Bug (But Only in Pacific Time!)",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Mental_model",
+      },
+    },
+    "tags": Set {
+      "code",
+      "engineering",
+      "learning",
+    },
+    "title": "Engineering Mindset",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2024-08-15T00:00:00.000Z,
+      "updated": 2024-08-21T00:00:00.000Z,
+    },
+    "description": ":::note This article was updated in response to some helpful comments on Hacker News. I originally incorrectly formatted the Pacific Time Zone daylight saving times relative to the Eastern Time Zone!…",
+    "features": Set {},
+    "id": "the-1-hour-per-year-bug",
+    "minutesToRead": 4,
+    "next": {
+      "id": "engineering-mindset",
+      "title": "Engineering Mindset",
+    },
+    "previous": {
+      "id": "lonely-cosmopolite",
+      "title": "lonely cosmopolite",
+    },
+    "referencedBy": Map {
+      "https://news.ycombinator.com/item?id=41267894" => "Hacker News",
+      "https://stackoverflow.blog/newsletter/issue-243-battling-ticket-bots" => "The Overflow: Issue 234",
+      "https://www.pointer.io/archives/post_60f563f3-67fa-49c6-9928-c5e53fe7e4cf" => "Pointer: Issue 543",
+      "https://tldr.tech/webdev/2024-08-22" => "TLDR Web Dev: 2024-08-22 Issue",
+      "https://www.detect.sh/blog/detect-6-kafka-data-loss-real-debugging-stories-all-things-ebpf-incidents-at-openai-anthropic-hubspot-google" => "Detect.sh: September Issue",
+      "https://www.nibbles.dev/p/74" => "The Nibble: Issue 74",
+    },
+    "references": Map {
+      "news.ycombinator.com" => Set {
+        "https://news.ycombinator.com/item?id=41267894",
+      },
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Bug_triage",
+        "https://en.wikipedia.org/wiki/Pacific_Time_Zone",
+        "https://en.wikipedia.org/wiki/Daylight_saving_time",
+        "https://en.wikipedia.org/wiki/UTC",
+        "https://en.wikipedia.org/wiki/Sunshine_Protection_Act",
+      },
+      "github.com" => Set {
+        "https://github.com/google/closure-library/blob/334543f9e480564fcc8b9a38dee0fe13a3f42fc0/closure/goog/date/relative.js#L386-L419",
+        "https://github.com/google/closure-library/commit/84c93721c3ced2271541ae86fec9f85e9c24d991",
+      },
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#parameters",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset",
+      },
+    },
+    "tags": Set {
+      "bugs",
+      "code",
+      "dates",
+      "docs",
+      "engineering",
+      "google",
+    },
+    "title": "The 1 Hour per Year Bug (But Only in Pacific Time!)",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2024-08-05T00:00:00.000Z,
+    },
+    "description": "I composed, produced, and released an instrumental lofi track! https://www.youtube.com/watch?v=g54wSssQCTA You can also find the track on Spotify, Apple Music, YouTube Music, and other music streaming…",
+    "features": Set {},
+    "id": "lonely-cosmopolite",
+    "minutesToRead": 1,
+    "next": {
+      "id": "the-1-hour-per-year-bug",
+      "title": "The 1 Hour per Year Bug (But Only in Pacific Time!)",
+    },
+    "previous": {
+      "id": "to-dedupe-then-sort-or-sort-then-dedupe",
+      "title": "To Dedupe Then Sort or Sort Then Dedupe?",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "spotify.com" => Set {
+        "https://open.spotify.com/track/62D6HKfuNWbQQQHXiIhXOn",
+      },
+      "music.apple.com" => Set {
+        "https://music.apple.com/us/song/lonely-cosmopolite/1759658607",
+      },
+      "music.youtube.com" => Set {
+        "https://music.youtube.com/watch?v=g54wSssQCTA",
+      },
+      "instagram.com" => Set {
+        "https://www.instagram.com/hello._neko",
+      },
+    },
+    "tags": Set {
+      "jazz",
+      "lofi",
+      "music",
+      "piano",
+      "tracks",
+    },
+    "title": "lonely cosmopolite",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2024-06-30T00:00:00.000Z,
+    },
+    "description": "I recently came across a deceptively simple problem. I wanted to dedupe and sort a list of integers in-place. My initial instinct was to first remove duplicates and then sort using the programming…",
+    "features": Set {
+      "math",
+    },
+    "id": "to-dedupe-then-sort-or-sort-then-dedupe",
+    "minutesToRead": 6,
+    "next": {
+      "id": "lonely-cosmopolite",
+      "title": "lonely cosmopolite",
+    },
+    "previous": {
+      "id": "the-29-days-per-year-bug",
+      "title": "The 29 Days per Year Bug (30 Days for Leap Years!)",
+    },
+    "referencedBy": Map {
+      "https://news.ycombinator.com/item?id=40917215" => "Hacker News",
+    },
+    "references": Map {
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/In-place_algorithm",
+        "https://en.wikipedia.org/wiki/Computational_complexity",
+        "https://en.wikipedia.org/wiki/Time_complexity#Constant_time",
+        "https://en.wikipedia.org/wiki/Time_complexity#Quasilinear_time",
+        "https://en.wikipedia.org/wiki/Hash_table",
+        "https://en.wikipedia.org/wiki/Timsort",
+      },
+      "stackoverflow.com" => Set {
+        "https://stackoverflow.com/a/33614512/5195839",
+      },
+      "github.com" => Set {
+        "https://github.com/TomerAberbach/to-dedupe-then-sort-or-sort-then-dedupe",
+      },
+    },
+    "tags": Set {
+      "code",
+      "data structures",
+      "javascript",
+      "performance",
+    },
+    "title": "To Dedupe Then Sort or Sort Then Dedupe?",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2024-04-23T00:00:00.000Z,
+    },
+    "description": "A few years ago my coworker was working on a Google Docs feature when they came across a bewildering bug. The feature 📅 For one component of this feature, users were able to pick any date, save it,…",
+    "features": Set {},
+    "id": "the-29-days-per-year-bug",
+    "minutesToRead": 4,
+    "next": {
+      "id": "to-dedupe-then-sort-or-sort-then-dedupe",
+      "title": "To Dedupe Then Sort or Sort Then Dedupe?",
+    },
+    "previous": {
+      "id": "leverage",
+      "title": "Leverage",
+    },
+    "referencedBy": Map {
+      "cursed-knowledge" => "Cursed Knowledge",
+    },
+    "references": Map {
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Test-driven_development",
+        "https://en.wikipedia.org/wiki/Common_year",
+        "https://en.wikipedia.org/wiki/Leap_year",
+      },
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMonth#description",
+      },
+    },
+    "tags": Set {
+      "bugs",
+      "code",
+      "dates",
+      "docs",
+      "engineering",
+      "google",
+    },
+    "title": "The 29 Days per Year Bug (30 Days for Leap Years!)",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2024-02-26T00:00:00.000Z,
+    },
+    "description": "I composed, produced, and released an instrumental jazz track! https://www.youtube.com/watch?v=mOxsT5-jnc8 You can also find the track on Spotify, Apple Music, YouTube Music, and other music streaming…",
+    "features": Set {},
+    "id": "leverage",
+    "minutesToRead": 1,
+    "next": {
+      "id": "the-29-days-per-year-bug",
+      "title": "The 29 Days per Year Bug (30 Days for Leap Years!)",
+    },
+    "previous": {
+      "id": "when-two-bugs-cancel-out",
+      "title": "When Two Bugs Cancel Out",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "spotify.com" => Set {
+        "https://open.spotify.com/track/4vGt77KgylifG6aawGa3sM",
+      },
+      "music.apple.com" => Set {
+        "https://music.apple.com/us/song/leverage/1729510142",
+      },
+      "music.youtube.com" => Set {
+        "https://music.youtube.com/watch?v=mOxsT5-jnc8",
+      },
+      "instagram.com" => Set {
+        "https://www.instagram.com/happy_lil_paintings",
+      },
+    },
+    "tags": Set {
+      "jazz",
+      "music",
+      "piano",
+      "tracks",
+    },
+    "title": "Leverage",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2023-09-18T00:00:00.000Z,
+    },
+    "description": "I encountered a perplexing bug while implementing table cell splitting in Google Docs. The bug report 🐛 The QA team found a bug where some of a table's borders would be missing after a table cell…",
+    "features": Set {},
+    "id": "when-two-bugs-cancel-out",
+    "minutesToRead": 2,
+    "next": {
+      "id": "leverage",
+      "title": "Leverage",
+    },
+    "previous": {
+      "id": "the-making-of-keyalesce",
+      "title": "The Making of Keyalesce",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "googleblog.com" => Set {
+        "https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2021/05/Google-Docs-Canvas-Based-Rendering-Update.html",
+      },
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Incremental_computing",
+      },
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table",
+      },
+    },
+    "tags": Set {
+      "bugs",
+      "code",
+      "docs",
+      "engineering",
+      "google",
+    },
+    "title": "When Two Bugs Cancel Out",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2023-07-02T00:00:00.000Z,
+      "updated": 2024-11-16T00:00:00.000Z,
+    },
+    "description": "Have you ever wanted to use tuples or objects for the keys of a Map or the values of a Set? It's a very common question because the following code doesn't do what you might expect: The code behaves…",
+    "features": Set {},
+    "id": "the-making-of-keyalesce",
+    "minutesToRead": 7,
+    "next": {
+      "id": "when-two-bugs-cancel-out",
+      "title": "When Two Bugs Cancel Out",
+    },
+    "previous": {
+      "id": "avoid-layout-shifts-caused-by-web-fonts-with-postcss-fontpie",
+      "title": "Avoid Layout Shifts Caused by Web Fonts With PostCSS Fontpie",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "typescriptlang.org" => Set {
+        "https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types",
+      },
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#key_equality",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze",
+      },
+      "stackoverflow.com" => Set {
+        "https://stackoverflow.com/questions/43592760/typescript-javascript-using-tuple-as-key-of-map",
+        "https://stackoverflow.com/questions/21838436/map-using-tuples-or-objects",
+        "https://stackoverflow.com/questions/63179867/set-of-tuples-in-javascript",
+      },
+      "github.com" => Set {
+        "https://github.com/TomerAberbach/keyalesce",
+      },
+      "en.wikipedia.org" => Set {
+        "https://en.wikipedia.org/wiki/Trie",
+        "https://en.wikipedia.org/wiki/Memory_leak",
+        "https://en.wikipedia.org/wiki/Unreachable_memory",
+        "https://en.wikipedia.org/wiki/Weak_reference",
+        "https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)",
+      },
+    },
+    "tags": Set {
+      "code",
+      "data structures",
+      "gc",
+      "javascript",
+      "libraries",
+      "performance",
+      "tries",
+      "typescript",
+    },
+    "title": "The Making of Keyalesce",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2023-05-24T00:00:00.000Z,
+    },
+    "description": "When your CSS references a web font before it finishes downloading, the browser renders text using a fallback system font instead, causing a layout shift if the text container's height changes once…",
+    "features": Set {},
+    "id": "avoid-layout-shifts-caused-by-web-fonts-with-postcss-fontpie",
+    "minutesToRead": 1,
+    "next": {
+      "id": "the-making-of-keyalesce",
+      "title": "The Making of Keyalesce",
+    },
+    "previous": {
+      "id": "what-i-worked-on-at-google",
+      "title": "What I Worked On at Google",
+    },
+    "referencedBy": Map {
+      "https://x.com/PostCSS/status/1663251368771977234" => "@PostCSS on X",
+      "https://frontender-ua.medium.com/frontend-weekly-digest-312-22-28-may-2023-6dc34fa067d6" => "Frontend Weekly Digest: Issue 312",
+    },
+    "references": Map {
+      "web.dev" => Set {
+        "https://web.dev/cls",
+      },
+      "simonhearne.com" => Set {
+        "https://simonhearne.com/2021/layout-shifts-webfonts#optimise-font-files",
+        "https://simonhearne.com/2021/layout-shifts-webfonts#deliver-your-fonts-fast",
+      },
+      "github.com" => Set {
+        "https://github.com/pixel-point/fontpie",
+        "https://github.com/postcss/postcss",
+        "https://github.com/TomerAberbach/postcss-fontpie",
+        "https://github.com/TomerAberbach/website/blob/main/postcss.config.js",
+        "https://github.com/TomerAberbach/postcss-fontpie#usage",
+      },
+    },
+    "tags": Set {
+      "code",
+      "fonts",
+      "javascript",
+      "libraries",
+      "performance",
+      "postcss",
+    },
+    "title": "Avoid Layout Shifts Caused by Web Fonts With PostCSS Fontpie",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2023-04-23T00:00:00.000Z,
+      "updated": 2026-03-21T00:00:00.000Z,
+    },
+    "description": ":::note I now work at Stainless. Check out what I'm up to! ::: Naturally this list only includes projects I'm allowed to talk about! For many projects I was not the only person who worked on it.…",
+    "features": Set {},
+    "id": "what-i-worked-on-at-google",
+    "minutesToRead": 3,
+    "next": {
+      "id": "avoid-layout-shifts-caused-by-web-fonts-with-postcss-fontpie",
+      "title": "Avoid Layout Shifts Caused by Web Fonts With PostCSS Fontpie",
+    },
+    "previous": {
+      "id": "complexity",
+      "title": "Complexity",
+    },
+    "referencedBy": Map {
+      "what-i-worked-on-at-stainless" => "What I Worked On at Stainless",
+      "publications" => "Publications",
+    },
+    "references": Map {
+      "stainless.com" => Set {
+        "https://www.stainless.com",
+      },
+      "what-ive-worked-on-at-stainless" => Set {
+        "/what-ive-worked-on-at-stainless",
+      },
+      "builtin.com" => Set {
+        "https://builtin.com/software-engineering-perspectives/20-percent-time",
+      },
+      "googleblog.com" => Set {
+        "https://workspaceupdates.googleblog.com/2024/07/import-and-export-markdown-in-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2024/10/tabs-in-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2022/12/format-display-code-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2022/07/edit-notifications-for-document-content-changes.html",
+        "https://workspaceupdates.googleblog.com/2022/03/compose-with-markdown-in-google-docs-on.html",
+        "https://workspaceupdates.googleblog.com/2021/09/comment-size-increasing-in-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2021/02/improvements-for-locating-new-comments-important-conversations-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2019/11/feedback-google-sites.html",
+      },
+      "arstechnica.com" => Set {
+        "https://arstechnica.com/gadgets/2024/07/real-actual-markdown-support-is-arriving-in-google-docs-not-a-moment-too-soon",
+      },
+      "howtogeek.com" => Set {
+        "https://www.howtogeek.com/google-docs-markdown-import-export",
+      },
+      "news.ycombinator.com" => Set {
+        "https://news.ycombinator.com/item?id=40982118",
+      },
+      "theverge.com" => Set {
+        "https://www.theverge.com/2024/10/8/24265025/google-docs-tabs-organization-feature-availability",
+        "https://www.theverge.com/2023/3/14/23639273/google-ai-features-docs-gmail-slides-sheets-workspace",
+        "https://www.theverge.com/2022/12/14/23509936/google-docs-code-blocks-smart-canvas",
+        "https://www.theverge.com/2022/3/29/23002138/google-docs-markdown-support-formatting-update",
+      },
+      "instagram.com" => Set {
+        "https://www.instagram.com/reel/Cx3jQFbL072",
+        "https://www.instagram.com/p/C2g0I3dt3LV",
+      },
+      "workspace.google.com" => Set {
+        "https://workspace.google.com/blog/product-announcements/generative-ai",
+      },
+      "forbes.com" => Set {
+        "https://www.forbes.com/sites/qai/2023/03/15/google-stock-jumps-as-it-unveils-new-ai-powered-tools-for-workspace",
+      },
+      "fortune.com" => Set {
+        "https://fortune.com/2023/03/14/gpt-4-debuts-and-google-beats-microsoft-in-race-to-add-generative-a-i-to-consumer-office-tools",
+      },
+      "reuters.com" => Set {
+        "https://www.reuters.com/technology/google-unveils-magic-wand-draft-documents-ai-race-tightens-2023-03-14",
+      },
+      "usatoday.com" => Set {
+        "https://www.usatoday.com/story/tech/2023/03/14/google-ai-announcement-gmail-docs/11470811002",
+        "https://www.usatoday.com/story/tech/2021/02/23/google-docs-comments-feature-make-collaboration-easier/4554035001",
+      },
+      "washingtonpost.com" => Set {
+        "https://www.washingtonpost.com/technology/2023/03/14/google-workspace-ai",
+      },
+      "wired.com" => Set {
+        "https://www.wired.com/story/how-to-use-markdown-google-docs",
+      },
+      "techcrunch.com" => Set {
+        "https://techcrunch.com/2022/03/30/google-adds-limited-markdown-support-to-google-docs",
+      },
+      "x.com" => Set {
+        "https://x.com/TomerAberbach/status/1508895335200043021",
+        "https://x.com/googledocs/status/1471555730364846083",
+      },
+      "blog.google" => Set {
+        "https://blog.google/products/gmail/take-action-and-stay-up-to-date-with-dynamic-email-in-gmail",
+      },
+      "support.google.com" => Set {
+        "https://support.google.com/drive/answer/2494822",
+      },
+      "9to5google.com" => Set {
+        "https://9to5google.com/2019/09/18/google-docs-link-previews",
+      },
+      "sites.google.com" => Set {
+        "https://sites.google.com",
+      },
+      "drawings.google.com" => Set {
+        "https://drawings.google.com",
+      },
+    },
+    "tags": Set {
+      "ai",
+      "code",
+      "docs",
+      "drawings",
+      "drive",
+      "engineering",
+      "google",
+      "markdown",
+      "resume",
+      "sheets",
+      "sites",
+      "slides",
+    },
+    "title": "What I Worked On at Google",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2023-01-14T00:00:00.000Z,
+    },
+    "description": "I composed, produced, and released an instrumental piano track! https://www.youtube.com/watch?v=Mzu5StfzBw8 You can also find the track on Spotify, Apple Music, YouTube Music, and other music…",
+    "features": Set {},
+    "id": "complexity",
+    "minutesToRead": 1,
+    "next": {
+      "id": "what-i-worked-on-at-google",
+      "title": "What I Worked On at Google",
+    },
+    "previous": {
+      "id": "the-hero-archetype",
+      "title": "The Hero Archetype",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "spotify.com" => Set {
+        "https://open.spotify.com/track/5zsCMG0tDwifrXXk9HLEDI",
+      },
+      "music.apple.com" => Set {
+        "https://music.apple.com/us/song/complexity/1663586183",
+      },
+      "music.youtube.com" => Set {
+        "https://music.youtube.com/watch?v=Mzu5StfzBw8",
+      },
+    },
+    "tags": Set {
+      "music",
+      "piano",
+      "tracks",
+    },
+    "title": "Complexity",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2022-09-02T00:00:00.000Z,
+    },
+    "description": "I composed, produced, and released an instrumental piano track! https://www.youtube.com/watch?v=6eAIubjV4qw You can also find the track on Spotify, Apple Music, YouTube Music, and other music…",
+    "features": Set {},
+    "id": "the-hero-archetype",
+    "minutesToRead": 1,
+    "next": {
+      "id": "complexity",
+      "title": "Complexity",
+    },
+    "previous": {
+      "id": "publications",
+      "title": "Publications",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "spotify.com" => Set {
+        "https://open.spotify.com/track/1DucGzpQKsr6qrQXZx5E4M",
+      },
+      "music.apple.com" => Set {
+        "https://music.apple.com/us/song/the-hero-archetype/1644752210",
+      },
+      "music.youtube.com" => Set {
+        "https://music.youtube.com/watch?v=6eAIubjV4qw",
+      },
+      "jillmarbach.com" => Set {
+        "https://jillmarbach.com",
+      },
+    },
+    "tags": Set {
+      "music",
+      "piano",
+      "tracks",
+    },
+    "title": "The Hero Archetype",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2022-08-16T00:00:00.000Z,
+      "updated": 2024-10-03T00:00:00.000Z,
+    },
+    "description": "I've had a few publications over the years. The publications are ordered from most to least recent. Generation of Personalized and Structured Content Using a Collaborative Online Generator · October…",
+    "features": Set {},
+    "id": "publications",
+    "minutesToRead": 5,
+    "next": {
+      "id": "the-hero-archetype",
+      "title": "The Hero Archetype",
+    },
+    "previous": {
+      "id": "checking-for-the-absence-of-a-value-in-javascript",
+      "title": "Checking for the Absence of a Value in JavaScript",
+    },
+    "referencedBy": Map {},
+    "references": Map {
+      "patents.google.com" => Set {
+        "https://patents.google.com/patent/US20240330580A1",
+        "https://patents.google.com/patent/US20240119224A1",
+      },
+      "what-i-worked-on-at-google" => Set {
+        "/what-i-worked-on-at-google",
+      },
+      "tdcommons.org" => Set {
+        "https://www.tdcommons.org/dpubs_series/7077",
+        "https://www.tdcommons.org/dpubs_series/5207",
+      },
+      "pubmed.ncbi.nlm.nih.gov" => Set {
+        "https://pubmed.ncbi.nlm.nih.gov/38669847",
+      },
+      "par.nsf.gov" => Set {
+        "https://par.nsf.gov/servlets/purl/10285027",
+      },
+    },
+    "tags": Set {
+      "biology",
+      "code",
+      "google",
+      "publications",
+      "resume",
+    },
+    "title": "Publications",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 2018-08-16T00:00:00.000Z,
+      "updated": 2023-01-11T00:00:00.000Z,
+    },
+    "description": "JavaScript has a lot of similar-looking ways to check for the absence of a value: Which one is right? Absent values JavaScript has two representations of an absent value. Undefined undefined is a…",
+    "features": Set {},
+    "id": "checking-for-the-absence-of-a-value-in-javascript",
+    "minutesToRead": 10,
+    "next": {
+      "id": "publications",
+      "title": "Publications",
+    },
+    "referencedBy": Map {
+      "https://github.com/leonardomso/33-js-concepts" => "33 Concepts Every JavaScript Developer Should Know",
+    },
+    "references": Map {
+      "developer.mozilla.org" => Set {
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void",
+        "https://developer.mozilla.org/en-US/docs/Glossary/Global_object",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/null",
+        "https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#Loose_equality_using",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined#:~:text=Note%3A%20While%20you%20can%20use%20undefined%20as%20an%20identifier%20(variable%20name)%20in%20any%20scope%20other%20than%20the%20global%20scope%20(because%20undefined%20is%20not%20a%20reserved%20word)%2C%20doing%20so%20is%20a%20very%20bad%20idea%20that%20will%20make%20your%20code%20difficult%20to%20maintain%20and%20debug.",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+        "https://developer.mozilla.org/en-US/docs/Web/API/Window",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#interaction_with_undeclared_and_uninitialized_variables",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void#examples",
+      },
+      "2ality.com" => Set {
+        "https://2ality.com/2013/10/typeof-null.html",
+      },
+      "web.archive.org" => Set {
+        "https://web.archive.org/web/20160331031419/http://wiki.ecmascript.org:80/doku.php?id=harmony:typeof_null",
+      },
+      "sitepoint.com" => Set {
+        "https://www.sitepoint.com/javascript-truthy-falsy",
+      },
+      "dorey.github.io" => Set {
+        "https://dorey.github.io/JavaScript-Equality-Table/unified",
+      },
+      "caniuse.com" => Set {
+        "https://caniuse.com/mdn-javascript_builtins_object_hasown",
+      },
+      "coffeescript.org" => Set {
+        "https://coffeescript.org/#existential-operator",
+      },
+    },
+    "tags": Set {
+      "code",
+      "javascript",
+    },
+    "title": "Checking for the Absence of a Value in JavaScript",
+    "type": "markdown",
+  },
+  {
+    "dates": {
+      "published": 1900-11-30T00:00:00.000Z,
+    },
+    "href": "/resume.pdf",
+    "id": "/resume.pdf",
+    "referencedBy": Map {},
+    "references": Map {
+      "adonisjs.com" => Set {
+        "https://adonisjs.com",
+      },
+      "github.com" => Set {
+        "https://github.com/TomerAberbach",
+        "https://github.com/TomerAberbach/keyalesce",
+        "https://github.com/TomerAberbach/lfi",
+        "https://github.com/TomerAberbach/parse-imports",
+        "https://github.com/gajus/eslint-plugin-jsdoc",
+      },
+      "workspace.google.com" => Set {
+        "https://workspace.google.com/blog/product-announcements/generative-ai",
+      },
+      "googleblog.com" => Set {
+        "https://workspaceupdates.googleblog.com/2021/02/improvements-for-locating-new-comments-important-conversations-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2022/03/compose-with-markdown-in-google-docs-on.html",
+        "https://workspaceupdates.googleblog.com/2022/07/edit-notifications-for-document-content-changes.html",
+        "https://workspaceupdates.googleblog.com/2022/10/split-table-cells-in-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2022/12/format-display-code-google-docs.html",
+        "https://workspaceupdates.googleblog.com/2024/07/import-and-export-markdown-in-google-docs.html",
+      },
+      "linkedin.com" => Set {
+        "https://www.linkedin.com/in/tomer-a",
+      },
+    },
+    "tags": Set {
+      "code",
+      "google",
+      "libraries",
+      "resume",
+      "stainless",
+    },
+    "title": "Resume",
+    "type": "href",
+  },
+]
+`;

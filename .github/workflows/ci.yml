@@ -11,38 +11,58 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Node.js v${{ matrix.nodejs }} (${{ matrix.os }})
-    timeout-minutes: 5
+  check:
+    name: Check (${{ matrix.os }})
+    timeout-minutes: 15
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       matrix:
-        nodejs: [24]
         os: [ubuntu-latest, macOS-latest]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Install Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: ${{ matrix.nodejs }}
+          node-version: 24
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
-          version: 10
+          version: 11
           cache: true
           run_install: true
 
-      - name: Lint
-        run: pnpm lint --no-fix
+      - name: Check
+        run: pnpm check:light
 
-      - name: Format
-        run: pnpm format --no-write --check
+      - name: Test in Node.js
+        run: pnpm test:node --run
 
-      - name: Typecheck
-        run: pnpm typecheck
+  browser:
+    # Screenshot references are committed for macOS only.
+    name: Test in browsers
+    timeout-minutes: 15
+    runs-on: macOS-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 24
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 11
+          cache: true
+          run_install: true
 
       - name: Test
-        run: pnpm test
+        run: pnpm test:browser --run

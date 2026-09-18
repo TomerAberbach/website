@@ -44,12 +44,10 @@ export const getGraph = cache(async (): Promise<Graph> => {
   pipe(
     values(posts),
     map(post => vertices.get(post.id) as InternalVertex),
-    window(3),
-    forEach(([nextVertex, vertex, previousVertex]) => {
+    window(2),
+    forEach(([nextVertex, vertex]) => {
       nextVertex!.previous = vertex!.id
       vertex!.next = nextVertex!.id
-      vertex!.previous = previousVertex!.id
-      previousVertex!.next = vertex!.id
     }),
   )
 
