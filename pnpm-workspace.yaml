@@ -1,9 +1,9 @@
 allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
-  gifsicle: true
-  jpegtran-bin: true
-  optipng-bin: true
+  gifsicle: set this to true or false
+  jpegtran-bin: set this to true or false
+  optipng-bin: set this to true or false
   puppeteer: true
   sharp: true
   unrs-resolver: true
@@ -11,3 +11,5 @@ patchedDependencies:
   glyphhanger@6.0.0: patches/glyphhanger@6.0.0.patch
   'panzoom': patches/panzoom.patch
 shellEmulator: true
+overrides:
+  'uuid@<11.1.1': ^11.1.1

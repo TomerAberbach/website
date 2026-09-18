@@ -120,7 +120,6 @@
     "cssnano": "^9.0.4",
     "eslint": "^10.10.0",
     "glyphhanger": "^6.0.0",
-    "imagemin-cli": "^8.0.0",
     "knip": "^6.36.0",
     "npm-run-all2": "^9.0.3",
     "playwright": "~1.60.0",
