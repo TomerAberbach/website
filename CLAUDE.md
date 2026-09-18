@@ -1,7 +1,8 @@
 # Website
 
 The portfolio website and blog at https://tomeraberba.ch, built with Astro as a
-static site with React islands and deployed to Fly.io as a Docker image.
+static site with React islands and deployed to Cloudflare Workers as static
+assets.
 
 ## Project structure
 
@@ -12,8 +13,10 @@ website
 │   │   ├── markdown/*.md    # Blog posts, with front matter for the metadata
 │   │   └── href/*.md        # Posts that link elsewhere, front matter only
 │   ├── media/               # Images and videos referenced by posts and pages
-│   ├── fonts/               # Font files and the fontconfig used to render thumbnails
-│   └── redirects.txt        # Redirects from old URLs
+│   └── fonts/               # Font files and the fontconfig used to render thumbnails
+├── public/
+│   ├── _redirects           # Redirects from old URLs, in Cloudflare `_redirects` syntax
+│   └── _headers             # Cache headers for the fingerprinted `_astro` files
 ├── src/
 │   ├── pages/               # Astro pages and endpoints, one per route
 │   ├── layouts/layout.astro # The document, head, header, and footer
@@ -31,7 +34,7 @@ website
 │   ├── styles/              # Tailwind and font stylesheets
 │   └── test/                # Test fixtures, helpers, and browser commands
 ├── scripts/build.ts         # Production build, including font subsetting
-├── server.ts                # The Express server that serves `dist` with redirects
+├── wrangler.jsonc           # Serves `dist` on Cloudflare Workers with its `_redirects` and `_headers`
 └── types/                   # Ambient type declarations
 ```
 
@@ -43,6 +46,8 @@ website
   `pnpm test:browser --run <file>` runs a component test file in Chromium and
   WebKit.
 - `pnpm build` produces the production build, which requires `fonttools`.
+- `pnpm preview` serves the production build the way Cloudflare does.
+- `pnpm deploy` deploys the production build. CI deploys every push to `main`.
 
 ## Testing
 

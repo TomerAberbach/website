@@ -1,0 +1,39 @@
+# Previous website post URL format (https://github.com/TomerAberbach/tomeraberbach.github.io)
+/html/post/*                     /:splat 301
+
+# Post renames
+/what-ive-worked-on-at-stainless /what-i-worked-on-at-stainless
+/what-ive-worked-on-at-google    /what-i-worked-on-at-google
+
+# Profiles
+/github                          https://github.com/TomerAberbach
+/github/*                        https://github.com/TomerAberbach/:splat
+/npm                             https://www.npmjs.com/~tomeraberbach
+/npm/*                           https://www.npmjs.com/~tomeraberbach/:splat
+/twitter                         https://x.com/TomerAberbach
+/twitter/*                       https://x.com/TomerAberbach/:splat
+/x                               https://x.com/TomerAberbach
+/x/*                             https://x.com/TomerAberbach/:splat
+/edin                            https://www.linkedin.com/in/tomer-a/
+/edin/*                          https://www.linkedin.com/in/tomer-a/:splat
+
+# Convenience redirects
+/resume                          /resume.pdf
+/s                               https://github.com/TomerAberbach/website/blob/main/public/_redirects
+
+# tunelink.to
+/ffk                             https://tunelink.to/ffk
+
+# GitHub Pages redirects
+/mano-simulator                  https://tomeraberbach.github.io/mano-simulator
+/spotify-true-random             https://spotify-true-random.tomeraberba.ch
+
+# Other Tomers
+/burg                            https://arctic.som.ou.edu/tburg/
+/burg/*                          https://arctic.som.ou.edu/tburg/:splat
+/weather                         https://arctic.som.ou.edu/tburg/
+/weather/*                       https://arctic.som.ou.edu/tburg/:splat
+/wx                              https://polarwx.com/
+/wx/*                            https://polarwx.com/:splat
+/singal                          https://singalt16.github.io/
+/singal/*                        https://singalt16.github.io/:splat

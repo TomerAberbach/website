@@ -8,5 +8,5 @@
     "glyphhanger",
     "start-server-and-test"
   ],
-  "ignoreBinaries": ["fly"]
+  "ignoreBinaries": []
 }
