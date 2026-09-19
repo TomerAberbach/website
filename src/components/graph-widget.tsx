@@ -187,10 +187,16 @@ const usePanning = ({
     }
   }, [hydrated, panningElementRef])
 
-  // Jumps to the first vertex and pans to each vertex selected after it.
+  // Jumps to the first vertex and pans to each vertex selected after it. The
+  // effect depends on `hydrated` because the selected vertex may be the same
+  // in the hydration render and the render that creates panzoom.
   useLayoutEffect(() => {
     const panzoom = panzoomRef.current
-    if (!panzoom || positionedVertexIdRef.current === selectedVertexId) {
+    if (
+      !hydrated ||
+      !panzoom ||
+      positionedVertexIdRef.current === selectedVertexId
+    ) {
       return
     }
 
@@ -204,7 +210,7 @@ const usePanning = ({
       panzoom.smoothMoveTo(x, y)
     }
     positionedVertexIdRef.current = selectedVertexId
-  }, [getPanzoomPosition, selectedVertexId])
+  }, [hydrated, getPanzoomPosition, selectedVertexId])
 
   const panningState = paused ? `paused` : panning ? `panning` : `idle`
   return [panningState, setPaused] as const
