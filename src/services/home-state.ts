@@ -1,5 +1,5 @@
 import cssesc from 'cssesc'
-import type { Graph } from './graph.server.ts'
+import type { Graph } from './graph.ts'
 
 /**
  * The state the home page derives from its URL, and the stylesheet that shows

@@ -24,15 +24,15 @@ website
 │   ├── hooks/               # React hooks
 │   ├── scripts/             # Blocking scripts inlined into pages
 │   ├── services/            # Server-side content pipeline and shared helpers
-│   │   ├── post-keys.server.ts        # Lists the posts in `private/posts`
-│   │   ├── post.server.ts             # Parses a post's front matter and content
-│   │   ├── convert-markdown.server.ts # The remark and rehype pipeline
-│   │   ├── ordered.server.ts          # Orders posts and links neighbors and references
-│   │   ├── graph.server.ts            # Builds and lays out the post graph
-│   │   ├── graph-facts.server.ts      # Computes the facts shown above the graph
+│   │   ├── post-keys.ts        # Lists the posts in `private/posts`
+│   │   ├── post.ts             # Parses a post's front matter and content
+│   │   ├── convert-markdown.ts # The remark and rehype pipeline
+│   │   ├── ordered.ts          # Orders posts and links neighbors and references
+│   │   ├── graph.ts            # Builds and lays out the post graph
+│   │   ├── graph-facts.ts      # Computes the facts shown above the graph
 │   │   ├── home-state.ts              # Parses the home page's URL state and styles the page for it
-│   │   ├── render-post.server.tsx     # Renders post HTML with custom elements
-│   │   └── render-thumbnail.server.tsx # Renders a post's Open Graph image
+│   │   ├── render-post.tsx     # Renders post HTML with custom elements
+│   │   └── render-thumbnail.tsx # Renders a post's Open Graph image
 │   ├── styles/              # Tailwind and font stylesheets
 │   └── test/                # Test fixtures, helpers, and browser commands
 ├── scripts/build.ts         # Production build, including font subsetting

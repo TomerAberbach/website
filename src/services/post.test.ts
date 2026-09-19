@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import type { HrefPost, MarkdownPost } from './post.server.ts'
+import type { HrefPost, MarkdownPost } from './post.ts'
 import {
   frontMatter,
   postFrontMatter,
@@ -9,13 +9,13 @@ import {
 const { writePost } = usePostsDirectory()
 
 const getHrefPost = async (id: string) =>
-  (await import(`./post.server.ts`)).getPost({
+  (await import(`./post.ts`)).getPost({
     id,
     type: `href`,
   }) as Promise<HrefPost>
 
 const getMarkdownPost = async (id: string) =>
-  (await import(`./post.server.ts`)).getPost({
+  (await import(`./post.ts`)).getPost({
     id,
     type: `markdown`,
   }) as Promise<MarkdownPost>

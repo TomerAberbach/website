@@ -1,17 +1,17 @@
 import { expect, test, vi } from 'vitest'
-import { findConnectedComponents, getGraph } from './graph.server.ts'
+import { findConnectedComponents, getGraph } from './graph.ts'
 import type {
   Edge,
   ExternalVertex,
   GraphLayout,
   InternalVertex,
   Position,
-} from './graph.server.ts'
-import type { Post } from './post.server.ts'
+} from './graph.ts'
+import type { Post } from './post.ts'
 
 // Posts are read from the filesystem and rendered, so they are replaced with
 // fixtures.
-vi.mock(`./ordered.server.ts`, () => ({
+vi.mock(`./ordered.ts`, () => ({
   getOrderedPosts: () => Promise.resolve(posts),
 }))
 
@@ -85,13 +85,11 @@ test(`every post becomes an internal vertex`, async () => {
     label: `Title of newest`,
     tags: new Set([`a`, `b`]),
     href: `/newest`,
-    reloadDocument: false,
   })
   expect(vertices.get(hrefPostUrl)).toMatchObject({
     type: `internal`,
     label: `Elsewhere article`,
     href: hrefPostUrl,
-    reloadDocument: true,
   })
 })
 

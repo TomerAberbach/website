@@ -8,10 +8,10 @@ import {
 const { writePost } = usePostsDirectory()
 
 const getOrderedPosts = async () =>
-  (await import(`./ordered.server.ts`)).getOrderedPosts()
+  (await import(`./ordered.ts`)).getOrderedPosts()
 
 const getOrderedMarkdownPosts = async () =>
-  (await import(`./ordered.server.ts`)).getOrderedMarkdownPosts()
+  (await import(`./ordered.ts`)).getOrderedMarkdownPosts()
 
 // Published in this order: oldest, external, middle, newest.
 const writeFixturePosts = async () => {

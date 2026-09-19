@@ -14,8 +14,8 @@ import {
   toGrouped,
   toMap,
 } from 'lfi'
-import { cache } from './cache.server.ts'
-import { privatePath } from './path.server.ts'
+import { cache } from './cache.ts'
+import { privatePath } from './path.ts'
 
 export const getPostPath = (key: PostKey): string =>
   privatePath(`posts`, key.type, `${key.id}.md`)

@@ -1,10 +1,10 @@
 import { expect, test, vi } from 'vitest'
-import { computeGraphFacts } from './graph-facts.server.ts'
-import type { GraphFact } from './graph-facts.server.ts'
-import type { Edge, Graph, Vertex } from './graph.server.ts'
+import { computeGraphFacts } from './graph-facts.ts'
+import type { GraphFact } from './graph-facts.ts'
+import type { Edge, Graph, Vertex } from './graph.ts'
 
 // Importing the graph module eagerly builds the graph from the posts on disk.
-vi.mock(`./ordered.server.ts`, () => ({
+vi.mock(`./ordered.ts`, () => ({
   getOrderedPosts: () => Promise.resolve(new Map()),
 }))
 
@@ -45,7 +45,6 @@ const buildGraph = ({
             label: id.toUpperCase(),
             tags: new Set(tags),
             href: `/${id}`,
-            reloadDocument: false,
           },
     ]),
   ),

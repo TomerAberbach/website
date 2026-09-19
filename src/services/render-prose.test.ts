@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { renderProse } from './render-prose.server.tsx'
+import { renderProse } from './render-prose.tsx'
 
 test(`an internal link gets a focus ring`, () => {
   const html = renderProse(`<p><a href="/post">Post</a></p>`)

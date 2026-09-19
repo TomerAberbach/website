@@ -19,10 +19,10 @@ import {
 } from 'lfi'
 import createLayout from 'ngraph.forcelayout'
 import createGraph from 'ngraph.graph'
-import { cache } from './cache.server.ts'
-import { computeGraphFacts } from './graph-facts.server.ts'
-import type { GraphFact } from './graph-facts.server.ts'
-import { getOrderedPosts } from './ordered.server.ts'
+import { cache } from './cache.ts'
+import { computeGraphFacts } from './graph-facts.ts'
+import type { GraphFact } from './graph-facts.ts'
+import { getOrderedPosts } from './ordered.ts'
 
 export const getGraph = cache(async (): Promise<Graph> => {
   const posts = await getOrderedPosts()
@@ -36,7 +36,6 @@ export const getGraph = cache(async (): Promise<Graph> => {
         label: title,
         tags,
         href: rest.type === `href` ? rest.href : `/${id}`,
-        reloadDocument: rest.type === `href`,
       },
     ]),
     reduce(toMap()),
@@ -149,7 +148,6 @@ export type InternalVertex = BaseVertex & {
   previous?: string
   next?: string
   href: string
-  reloadDocument: boolean
 }
 
 export type ExternalVertex = BaseVertex & {

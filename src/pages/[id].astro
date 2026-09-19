@@ -15,12 +15,10 @@ import {
   formatMinutesToRead,
   truncateAtWordBoundary,
 } from '~/services/format.ts'
-import { getMeta } from '~/services/meta.ts'
-import { getPagePathname } from '~/services/pathname.ts'
-import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
-import { renderProse } from '~/services/render-prose.server.tsx'
-import type { Ordered } from '~/services/ordered.server.ts'
-import type { MarkdownPost } from '~/services/post.server.ts'
+import { getOrderedMarkdownPosts } from '~/services/ordered.ts'
+import { renderProse } from '~/services/render-prose.tsx'
+import type { Ordered } from '~/services/ordered.ts'
+import type { MarkdownPost } from '~/services/post.ts'
 
 export const getStaticPaths = async () =>
   pipe(
@@ -44,22 +42,19 @@ const {
   next: nextPost,
 } = post
 
-const meta = [
-  ...getMeta(getPagePathname(Astro.url.pathname), {
-    title,
-    description: truncateAtWordBoundary(post.description),
-    keywords: tags,
-    post,
-    type: `article`,
-  }),
-  ...(post.features.has(`math`)
-    ? [{ tagName: `link`, rel: `stylesheet`, href: katexStylesPath } as const]
-    : []),
-]
 const suggestEditId = `suggest-edit`
 ---
 
-<Layout meta={meta}>
+<Layout
+  title={title}
+  description={truncateAtWordBoundary(post.description)}
+  keywords={tags}
+  post={post}
+  type='article'
+>
+  {post.features.has(`math`) && (
+    <link slot='head' rel='stylesheet' href={katexStylesPath} />
+  )}
   <article class='prose mx-auto w-[80ch] max-w-full text-base'>
     <header>
       <h1 class='m-0!'>{title}</h1>

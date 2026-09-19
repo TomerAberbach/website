@@ -25,16 +25,16 @@ const isExternalUrl = (href: string): boolean => {
   }
 }
 
-const ExternalLink = ({ reloadDocument, ...rest }: LinkProps) => (
+const ExternalLink = (props: LinkProps) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content
   <a
-    {...withFocusRingClassName(rest)}
+    {...withFocusRingClassName(props)}
     target='_blank'
     rel='noopener noreferrer'
   />
 )
 
-const InternalLink = ({ reloadDocument, ...props }: LinkProps) => (
+const InternalLink = (props: LinkProps) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content
   <a {...withFocusRingClassName(props)} />
 )
@@ -47,4 +47,4 @@ const withFocusRingClassName = <Props extends { className?: string }>({
 export type LinkProps = DetailedHTMLProps<
   AnchorHTMLAttributes<HTMLAnchorElement>,
   HTMLAnchorElement
-> & { href: string; children: ReactNode; reloadDocument?: boolean }
+> & { href: string; children: ReactNode }

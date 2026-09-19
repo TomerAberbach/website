@@ -3,7 +3,7 @@ import GraphFactsCarousel from './graph-facts-carousel.tsx'
 import GraphWidget from './graph-widget.tsx'
 import { PostSwitcher, useSelectedPostId } from './post-switcher.tsx'
 import useHydrated from '~/hooks/use-hydrated.ts'
-import type { Graph } from '~/services/graph.server.ts'
+import type { Graph } from '~/services/graph.ts'
 import {
   HOME_ELEMENT_ID,
   HOME_GRAPH_ELEMENT_ID,

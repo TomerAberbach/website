@@ -1,10 +1,10 @@
 import { join } from 'node:path'
 import superjson from 'superjson'
 import type { BrowserCommand } from 'vitest/node'
-import type * as GraphModule from '~/services/graph.server.ts'
-import type * as PostKeysModule from '~/services/post-keys.server.ts'
-import type * as PostModule from '~/services/post.server.ts'
-import type * as RenderThumbnailModule from '~/services/render-thumbnail.server.tsx'
+import type * as GraphModule from '~/services/graph.ts'
+import type * as PostKeysModule from '~/services/post-keys.ts'
+import type * as PostModule from '~/services/post.ts'
+import type * as RenderThumbnailModule from '~/services/render-thumbnail.tsx'
 
 /** Renders the thumbnail of the markdown post with the given id as base64 PNG. */
 export const renderThumbnail: BrowserCommand<[postId: string]> = async (
@@ -14,10 +14,10 @@ export const renderThumbnail: BrowserCommand<[postId: string]> = async (
   useProductionFonts()
   const [{ getPostKeys }, { getMarkdownPost }, { renderThumbnail }] =
     await Promise.all([
-      project.import<typeof PostKeysModule>(servicePath(`post-keys.server.ts`)),
-      project.import<typeof PostModule>(servicePath(`post.server.ts`)),
+      project.import<typeof PostKeysModule>(servicePath(`post-keys.ts`)),
+      project.import<typeof PostModule>(servicePath(`post.ts`)),
       project.import<typeof RenderThumbnailModule>(
-        servicePath(`render-thumbnail.server.tsx`),
+        servicePath(`render-thumbnail.tsx`),
       ),
     ])
 
@@ -33,7 +33,7 @@ export const renderThumbnail: BrowserCommand<[postId: string]> = async (
 /** Builds the graph of the real posts and returns it serialized with superjson. */
 export const getGraph: BrowserCommand = async ({ project }) => {
   const { getGraph } = await project.import<typeof GraphModule>(
-    servicePath(`graph.server.ts`),
+    servicePath(`graph.ts`),
   )
   return superjson.stringify(await getGraph())
 }

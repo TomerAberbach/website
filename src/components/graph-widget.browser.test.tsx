@@ -4,7 +4,7 @@ import { expect, test } from 'vitest'
 import { commands, page } from 'vitest/browser'
 import { render } from 'vitest-browser-react'
 import GraphWidget from './graph-widget.tsx'
-import type { Graph } from '~/services/graph.server.ts'
+import type { Graph } from '~/services/graph.ts'
 import { createTagClassName } from '~/services/home-state.ts'
 import { createGraph } from '~/test/graph.ts'
 

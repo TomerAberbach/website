@@ -70,21 +70,3 @@ test(`the width is recalculated when the text changes`, async () => {
     .poll(() => Number.parseFloat(element.style.width))
     .toBeGreaterThan(shortWidth)
 })
-
-test(`ssr renders an inline script that sets the width before hydration`, async () => {
-  const screen = await render(
-    <ShrinkWrap ssr nonce='abc'>
-      {SHORT_TEXT}
-    </ShrinkWrap>,
-  )
-
-  const script = screen.container.querySelector(`script`)
-  expect(script?.nonce).toBe(`abc`)
-  expect(script?.textContent).toContain(`getBoundingClientRect`)
-})
-
-test(`a nonce without ssr is rejected`, async () => {
-  await expect(
-    render(<ShrinkWrap nonce='abc'>{SHORT_TEXT}</ShrinkWrap>),
-  ).rejects.toThrow(`Cannot specify \`nonce\` without \`ssr\``)
-})

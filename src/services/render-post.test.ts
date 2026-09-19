@@ -1,6 +1,6 @@
 import { h } from 'hastscript'
 import { expect, test } from 'vitest'
-import { renderPost } from './render-post.server.tsx'
+import { renderPost } from './render-post.tsx'
 
 test.each([`h1`, `h2`, `h3`, `h4`, `h5`, `h6`])(
   `a %s with an id gets a permalink link before its text`,

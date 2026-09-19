@@ -1,23 +1,16 @@
 ---
 import { map, pipe, reduce, toArray } from 'lfi'
 import Layout from '~/layouts/layout.astro'
-import { getMeta } from '~/services/meta.ts'
-import { getPagePathname } from '~/services/pathname.ts'
-import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
+import { getOrderedMarkdownPosts } from '~/services/ordered.ts'
 
 const posts = pipe(
   await getOrderedMarkdownPosts(),
   map(([id, { title }]) => ({ id, title })),
   reduce(toArray()),
 )
-const meta = getMeta(getPagePathname(Astro.url.pathname), {
-  title: `404`,
-  description: `Not found!`,
-  type: `website`,
-})
 ---
 
-<Layout meta={meta}>
+<Layout title='404' description='Not found!' type='website'>
   <div class='flex flex-1 flex-col items-center justify-center gap-5 text-center'>
     <h1 class='not-prose text-9xl font-semibold'>404</h1>
     <p class='text-3xl'>

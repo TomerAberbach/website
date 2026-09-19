@@ -5,6 +5,5 @@ node_modules
 /dist/
 /.astro/
 coverage
-.react-router
 .vitest
 /.wrangler

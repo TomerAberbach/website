@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, vi } from 'vitest'
-import type { PostType } from '~/services/post-keys.server.ts'
+import type { PostType } from '~/services/post-keys.ts'
 
 /**
  * Points the private directory at a fresh temporary directory for each test

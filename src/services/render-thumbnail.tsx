@@ -6,8 +6,8 @@ import { htmlEscape } from 'escape-goat'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { Sharp } from 'sharp'
 import sharp from 'sharp'
-import { cache } from './cache.server.ts'
-import type { MarkdownPost } from './post.server.ts'
+import { cache } from './cache.ts'
+import type { MarkdownPost } from './post.ts'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
 import type { Dates } from '~/services/format.ts'
 import {
@@ -15,7 +15,7 @@ import {
   formatMinutesToRead,
 } from '~/services/format.ts'
 import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
-import { privatePath } from '~/services/path.server.ts'
+import { privatePath } from '~/services/path.ts'
 
 const blue400 = new ColorTranslator(`hsl(201, 97%, 67%)`).HEX
 const gray600 = new ColorTranslator(`hsl(201, 5%, 39%)`).HEX

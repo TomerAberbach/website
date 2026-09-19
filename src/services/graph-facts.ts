@@ -20,8 +20,8 @@ import {
   values,
 } from 'lfi'
 import plur from 'plur'
-import type { Graph, Vertex } from './graph.server.ts'
-import { findConnectedComponents } from './graph.server.ts'
+import type { Graph, Vertex } from './graph.ts'
+import { findConnectedComponents } from './graph.ts'
 
 export type GraphFact = { text: GraphFactSegment[] }
 export type GraphFactSegment =

@@ -1,10 +1,10 @@
 import { toHtml } from 'hast-util-to-html'
 import { expect, test } from 'vitest'
-import { ASSET_NAME_TO_URL } from './assets.server.ts'
+import { ASSET_NAME_TO_URL } from './assets.ts'
 import {
   convertMarkdownToHtml,
   convertMarkdownToText,
-} from './convert-markdown.server.ts'
+} from './convert-markdown.ts'
 
 const convert = async (markdown: string): Promise<string> =>
   toHtml(await convertMarkdownToHtml(markdown))

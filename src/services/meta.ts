@@ -1,32 +1,34 @@
 import { concat, join, map } from 'lfi'
 import { formatDatesForDisplay, formatMinutesToRead } from './format.ts'
-import type { MarkdownPost } from './post.server.ts'
+import type { MarkdownPost } from './post.ts'
 import { getSiteUrl } from './site-url.ts'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
 
+/** What a page's head says about it. */
+export type MetaOptions = {
+  title: string
+  description: string
+  keywords?: ReadonlySet<string>
+  post?: Pick<MarkdownPost, `id` | `title` | `tags` | `dates` | `minutesToRead`>
+  type: `website` | `article`
+}
+
+export type Meta = {
+  title: string
+  canonicalUrl: string
+  tags: MetaTag[]
+}
+
+/** A `meta` element in the head. */
+type MetaTag =
+  { name: string; content: string } | { property: string; content: string }
+
 export const getMeta = (
   pathname: string,
-  {
-    title,
-    description,
-    keywords = new Set(),
-    post,
-    type,
-  }: {
-    title: string
-    description: string
-    keywords?: ReadonlySet<string>
-    post?: Pick<
-      MarkdownPost,
-      `id` | `title` | `tags` | `dates` | `minutesToRead`
-    >
-    type: `website` | `article`
-  },
-): MetaDescriptor[] => {
+  { title, description, keywords = new Set(), post, type }: MetaOptions,
+): Meta => {
   const url = getSiteUrl(pathname)
-  const baseMeta: MetaDescriptor[] = [
-    { title },
-    { tagName: `link`, rel: `canonical`, href: url },
+  const baseMeta: MetaTag[] = [
     { name: `description`, content: description },
     {
       name: `keywords`,
@@ -36,7 +38,7 @@ export const getMeta = (
   ]
 
   if (!post) {
-    return baseMeta
+    return { title, canonicalUrl: url, tags: baseMeta }
   }
 
   const postImageUrl = getSiteUrl(`${post.id}.png`)
@@ -44,7 +46,7 @@ export const getMeta = (
     post.dates,
   )}. ${formatMinutesToRead(post.minutesToRead)}. By ${SITE_TITLE_AND_AUTHOR}.`
 
-  return [
+  const tags = [
     ...baseMeta,
     // https://ogp.me
     { property: `og:title`, content: title },
@@ -68,13 +70,14 @@ export const getMeta = (
     { name: `twitter:image`, content: postImageUrl },
     { name: `twitter:image:alt`, content: postImageAlt },
   ]
+  return { title, canonicalUrl: url, tags }
 }
 
 const getArticleMeta = ({
   tags,
   dates,
-}: Pick<MarkdownPost, `tags` | `dates`>): Iterable<MetaDescriptor> => {
-  const baseMeta: MetaDescriptor[] = [
+}: Pick<MarkdownPost, `tags` | `dates`>): Iterable<MetaTag> => {
+  const baseMeta: MetaTag[] = [
     {
       property: `article:published_time`,
       content: dates.published.toISOString(),
@@ -95,13 +98,6 @@ const getArticleMeta = ({
     map(tag => ({ property: `article:tag`, content: tag }), tags),
   )
 }
-
-/** A `title`, `link`, or `meta` element in the head. */
-export type MetaDescriptor =
-  | { title: string }
-  | { tagName: `link`; rel: string; href: string }
-  | { name: string; content: string }
-  | { property: string; content: string }
 
 export const SITE_TITLE_AND_AUTHOR = `Tomer Aberbach`
 export const SITE_DESCRIPTION = `The portfolio website and blog of Tomer Aberbach, a New Jersey based software engineer, composer, and music producer.`

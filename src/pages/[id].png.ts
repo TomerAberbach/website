@@ -1,9 +1,9 @@
 import type { APIRoute } from 'astro'
 import { filter, map, pipe, reduce, toArray } from 'lfi'
-import { getPostKeys } from '~/services/post-keys.server.ts'
-import type { PostKey } from '~/services/post-keys.server.ts'
-import { getMarkdownPost } from '~/services/post.server.ts'
-import { renderThumbnail } from '~/services/render-thumbnail.server.tsx'
+import { getPostKeys } from '~/services/post-keys.ts'
+import type { PostKey } from '~/services/post-keys.ts'
+import { getMarkdownPost } from '~/services/post.ts'
+import { renderThumbnail } from '~/services/render-thumbnail.tsx'
 
 export const getStaticPaths = async (): Promise<
   { params: { id: string }; props: { key: PostKey } }[]

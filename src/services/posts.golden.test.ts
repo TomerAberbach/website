@@ -1,6 +1,6 @@
 import { map, pipe, reduce, toArray, values } from 'lfi'
 import { expect, test } from 'vitest'
-import { getOrderedPosts } from './ordered.server.ts'
+import { getOrderedPosts } from './ordered.ts'
 
 const excludeHtml = ({ html: _, ...post }: { html: string }) => post
 

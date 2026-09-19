@@ -1,7 +1,7 @@
 import sharp from 'sharp'
 import { expect, test } from 'vitest'
-import type { MarkdownPost } from './post.server.ts'
-import { renderThumbnail } from './render-thumbnail.server.tsx'
+import type { MarkdownPost } from './post.ts'
+import { renderThumbnail } from './render-thumbnail.tsx'
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from './thumbnail-constants.ts'
 
 const post: MarkdownPost = {

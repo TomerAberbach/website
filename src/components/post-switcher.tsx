@@ -7,7 +7,7 @@ import { useSelectedTags } from './tags-listbox.tsx'
 import Tooltip from './tooltip.tsx'
 import useHydrated from '~/hooks/use-hydrated.ts'
 import useSearchParams from '~/hooks/use-search-params.ts'
-import type { Graph, InternalVertex } from '~/services/graph.server.ts'
+import type { Graph, InternalVertex } from '~/services/graph.ts'
 import {
   getAdjacentPostId,
   getFirstPostId,
@@ -82,26 +82,19 @@ export const PostSwitcher = ({
         </div>
         <div className='relative flex w-60 flex-col items-center gap-3'>
           {hydrated ? (
-            <Link
-              href={vertex.href}
-              reloadDocument={vertex.reloadDocument}
-              className={TITLE_CLASS_NAME}
-            >
+            <Link href={vertex.href} className={TITLE_CLASS_NAME}>
               <ShrinkWrap>{vertex.label}</ShrinkWrap>
             </Link>
           ) : (
             // Before hydration every title is in the document, so that the
             // stylesheet from the preload script can show the selected one.
             data.posts.map(({ id }) => {
-              const { href, reloadDocument, label } = graph.vertices.get(
-                id,
-              ) as InternalVertex
+              const { href, label } = graph.vertices.get(id) as InternalVertex
               return (
                 <Link
                   key={id}
                   data-home-post-title={id}
                   href={href}
-                  reloadDocument={reloadDocument}
                   className={clsx(
                     TITLE_CLASS_NAME,
                     id !== selectedPostId && `hidden`,

@@ -7,7 +7,7 @@ beforeEach(() => {
   vi.resetModules()
 })
 
-const importModule = () => import(`./parse-references.server.ts`)
+const importModule = () => import(`./parse-references.ts`)
 
 test.each([
   `#heading`,

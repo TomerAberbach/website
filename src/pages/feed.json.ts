@@ -3,7 +3,7 @@ import { map, pipe, reduce, toArray } from 'lfi'
 import avatarPath from '~/private/media/avatar.png?url'
 import { formatDateISO } from '~/services/format.ts'
 import { SITE_DESCRIPTION, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
-import { getOrderedMarkdownPosts } from '~/services/ordered.server.ts'
+import { getOrderedMarkdownPosts } from '~/services/ordered.ts'
 import { getSiteUrl, SITE_URL } from '~/services/site-url.ts'
 
 export const getFeed = async (): Promise<Record<string, unknown>> => ({

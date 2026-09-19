@@ -17,10 +17,10 @@ import {
   window,
 } from 'lfi'
 import type { Simplify } from 'type-fest'
-import { cache } from './cache.server.ts'
-import { getPostKeys } from './post-keys.server.ts'
-import { getPost } from './post.server.ts'
-import type { MarkdownPost, Post } from './post.server.ts'
+import { cache } from './cache.ts'
+import { getPostKeys } from './post-keys.ts'
+import { getPost } from './post.ts'
+import type { MarkdownPost, Post } from './post.ts'
 
 export const getOrderedMarkdownPosts = async (): Promise<
   Map<string, Ordered<MarkdownPost>>

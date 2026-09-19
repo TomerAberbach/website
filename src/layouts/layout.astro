@@ -12,17 +12,18 @@ import {
 import logoIcoPath from '~/logo.ico'
 import logoSvgPath from '~/private/media/logo.svg?url'
 import { ClientRouter } from 'astro:transitions'
-import type { MetaDescriptor } from '~/services/meta.ts'
-import { SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
+import type { MetaOptions } from '~/services/meta.ts'
+import { getMeta, SITE_TITLE_AND_AUTHOR } from '~/services/meta.ts'
 import { getPagePathname } from '~/services/pathname.ts'
 import '~/styles/fonts.css'
 import '~/styles/tailwind.css'
 
-type Props = { meta: MetaDescriptor[] }
+type Props = MetaOptions
 
-const { meta } = Astro.props
+const pathname = getPagePathname(Astro.url.pathname)
+const { title, canonicalUrl, tags } = getMeta(pathname, Astro.props)
 
-const postId = getPagePathname(Astro.url.pathname).slice(1)
+const postId = pathname.slice(1)
 const homeHref =
   postId && postId !== `404` ? `/?post=${encodeURIComponent(postId)}` : `/`
 
@@ -51,15 +52,11 @@ const fontsScript = `Promise.all([${pipe(
   <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width,initial-scale=1' />
-    {meta.map(descriptor =>
-      `title` in descriptor ? (
-        <title>{descriptor.title}</title>
-      ) : `tagName` in descriptor ? (
-        <link rel={descriptor.rel} href={descriptor.href} />
-      ) : (
-        <meta {...descriptor} />
-      ),
-    )}
+    <title>{title}</title>
+    <link rel='canonical' href={canonicalUrl} />
+    {tags.map(tag => (
+      <meta {...tag} />
+    ))}
     <link rel='icon' href={logoIcoPath} sizes='any' />
     <link rel='icon' href={logoSvgPath} type='image/svg+xml' />
     <script is:inline set:html={fontsScript}></script>

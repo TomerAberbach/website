@@ -5,10 +5,5 @@ export const getSiteUrl = (path: string): string =>
   removeTrailingSlash(new URL(path, SITE_URL).toString())
 
 export const SITE_URL: string = removeTrailingSlash(
-  new URL(
-    `/`,
-    typeof document === `undefined`
-      ? (process.env.SITE_URL ?? `http://localhost:3000`)
-      : document.location.href,
-  ).toString(),
+  new URL(`/`, process.env.SITE_URL ?? `http://localhost:3000`).toString(),
 )

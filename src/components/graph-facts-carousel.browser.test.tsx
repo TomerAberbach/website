@@ -2,7 +2,7 @@ import { renderToString } from 'react-dom/server'
 import { afterEach, expect, test, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import GraphFactsCarousel from './graph-facts-carousel.tsx'
-import type { GraphFact } from '~/services/graph-facts.server.ts'
+import type { GraphFact } from '~/services/graph-facts.ts'
 import { renderAtUrl } from '~/test/url.tsx'
 
 const FIRST_FACT: GraphFact = {

@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from './link.tsx'
 import useCarouselIndex from '~/hooks/use-carousel.ts'
-import type {
-  GraphFact,
-  GraphFactSegment,
-} from '~/services/graph-facts.server.ts'
+import type { GraphFact, GraphFactSegment } from '~/services/graph-facts.ts'
 
 const GraphFactsCarousel = ({
   facts,

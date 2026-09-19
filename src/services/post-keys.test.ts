@@ -3,8 +3,7 @@ import { usePostsDirectory } from '~/test/posts-directory.ts'
 
 const { writePost, postPath } = usePostsDirectory()
 
-const getPostKeys = async () =>
-  (await import(`./post-keys.server.ts`)).getPostKeys()
+const getPostKeys = async () => (await import(`./post-keys.ts`)).getPostKeys()
 
 test(`getPostKeys maps each file basename to its post type`, async () => {
   await writePost(`markdown`, `first.md`)
@@ -45,7 +44,7 @@ test(`getPostKeys throws when the same id exists in both types`, async () => {
 })
 
 test(`getPostPath joins the private posts directory, type, and id`, async () => {
-  const { getPostPath } = await import(`./post-keys.server.ts`)
+  const { getPostPath } = await import(`./post-keys.ts`)
 
   const path = getPostPath({ id: `some-post`, type: `markdown` })
 

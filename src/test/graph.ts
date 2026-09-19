@@ -3,7 +3,7 @@ import type {
   ExternalVertex,
   Graph,
   InternalVertex,
-} from '~/services/graph.server.ts'
+} from '~/services/graph.ts'
 
 /**
  * Builds a graph whose internal vertices are chained in the given order, with
@@ -26,7 +26,6 @@ export const createGraph = ({
       label: `Post ${id}`,
       tags: new Set(tags),
       href: href ?? `/${id}`,
-      reloadDocument: href !== undefined,
       previous: posts[index + 1]?.id,
       next: posts[index - 1]?.id,
     })

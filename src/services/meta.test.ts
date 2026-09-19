@@ -27,17 +27,15 @@ const withName = (prefix: string): unknown =>
     name: expect.stringMatching(`^${prefix}`) as unknown,
   })
 
-test(`getMeta includes the title, canonical link, description, and author`, () => {
+test(`getMeta includes the title, canonical URL, description, and author`, () => {
   const meta = getMeta(pathname, website)
 
-  expect(meta).toEqual(
+  expect(meta).toMatchObject({
+    title: `Title`,
+    canonicalUrl: `http://localhost:3000/some-post`,
+  })
+  expect(meta.tags).toEqual(
     expect.arrayContaining([
-      { title: `Title` },
-      {
-        tagName: `link`,
-        rel: `canonical`,
-        href: `http://localhost:3000/some-post`,
-      },
       { name: `description`, content: `Description` },
       { name: `author`, content: SITE_TITLE_AND_AUTHOR },
     ]),
@@ -45,37 +43,37 @@ test(`getMeta includes the title, canonical link, description, and author`, () =
 })
 
 test(`getMeta uses the site keywords when none are given`, () => {
-  const meta = getMeta(pathname, website)
+  const { tags } = getMeta(pathname, website)
 
-  expect(meta).toContainEqual({
+  expect(tags).toContainEqual({
     name: `keywords`,
     content: [...SITE_KEYWORDS].join(`, `),
   })
 })
 
 test(`getMeta appends the given keywords to the site keywords without duplicates`, () => {
-  const meta = getMeta(pathname, {
+  const { tags } = getMeta(pathname, {
     ...website,
     keywords: new Set([`code`, `jazz`]),
   })
 
-  expect(meta).toContainEqual({
+  expect(tags).toContainEqual({
     name: `keywords`,
     content: [...SITE_KEYWORDS, `jazz`].join(`, `),
   })
 })
 
 test(`getMeta without a post has no open graph or twitter meta`, () => {
-  const meta = getMeta(pathname, website)
+  const { tags } = getMeta(pathname, website)
 
-  expect(meta).not.toContainEqual(withProperty(`og:`))
-  expect(meta).not.toContainEqual(withName(`twitter:`))
+  expect(tags).not.toContainEqual(withProperty(`og:`))
+  expect(tags).not.toContainEqual(withName(`twitter:`))
 })
 
 test(`getMeta with a post adds open graph meta with the post thumbnail`, () => {
-  const meta = getMeta(pathname, { ...website, post })
+  const { tags } = getMeta(pathname, { ...website, post })
 
-  expect(meta).toEqual(
+  expect(tags).toEqual(
     expect.arrayContaining([
       { property: `og:title`, content: `Title` },
       { property: `og:description`, content: `Description` },
@@ -87,9 +85,9 @@ test(`getMeta with a post adds open graph meta with the post thumbnail`, () => {
 })
 
 test(`getMeta with a post adds twitter meta with the post thumbnail`, () => {
-  const meta = getMeta(pathname, { ...website, post })
+  const { tags } = getMeta(pathname, { ...website, post })
 
-  expect(meta).toEqual(
+  expect(tags).toEqual(
     expect.arrayContaining([
       { name: `twitter:card`, content: `summary_large_image` },
       { name: `twitter:title`, content: `Title` },
@@ -99,24 +97,24 @@ test(`getMeta with a post adds twitter meta with the post thumbnail`, () => {
 })
 
 test(`getMeta describes the thumbnail with the title, date, reading time, and author`, () => {
-  const meta = getMeta(pathname, { ...website, post })
+  const { tags } = getMeta(pathname, { ...website, post })
 
-  expect(meta).toContainEqual({
+  expect(tags).toContainEqual({
     property: `og:image:alt`,
     content: `Some Post. Published January 5, 2024. 4 min read. By ${SITE_TITLE_AND_AUTHOR}.`,
   })
 })
 
 test(`getMeta with a website post has no article meta`, () => {
-  const meta = getMeta(pathname, { ...website, post })
+  const { tags } = getMeta(pathname, { ...website, post })
 
-  expect(meta).not.toContainEqual(withProperty(`article:`))
+  expect(tags).not.toContainEqual(withProperty(`article:`))
 })
 
 test(`getMeta with an article adds the published time and author`, () => {
-  const meta = getMeta(pathname, article)
+  const { tags } = getMeta(pathname, article)
 
-  expect(meta).toEqual(
+  expect(tags).toEqual(
     expect.arrayContaining([
       { property: `og:type`, content: `article` },
       {
@@ -129,13 +127,10 @@ test(`getMeta with an article adds the published time and author`, () => {
 })
 
 test(`getMeta with an article adds one tag meta per tag`, () => {
-  const meta = getMeta(pathname, article)
+  const { tags } = getMeta(pathname, article)
 
   expect(
-    meta.filter(
-      descriptor =>
-        `property` in descriptor && descriptor.property === `article:tag`,
-    ),
+    tags.filter(tag => `property` in tag && tag.property === `article:tag`),
   ).toEqual([
     { property: `article:tag`, content: `code` },
     { property: `article:tag`, content: `music` },
@@ -143,13 +138,13 @@ test(`getMeta with an article adds one tag meta per tag`, () => {
 })
 
 test(`getMeta with an article omits the modified time when there is no updated date`, () => {
-  const meta = getMeta(pathname, article)
+  const { tags } = getMeta(pathname, article)
 
-  expect(meta).not.toContainEqual(withProperty(`article:modified_time`))
+  expect(tags).not.toContainEqual(withProperty(`article:modified_time`))
 })
 
 test(`getMeta with an updated article adds the modified time`, () => {
-  const meta = getMeta(pathname, {
+  const { tags } = getMeta(pathname, {
     ...article,
     post: {
       ...post,
@@ -157,7 +152,7 @@ test(`getMeta with an updated article adds the modified time`, () => {
     },
   })
 
-  expect(meta).toContainEqual({
+  expect(tags).toContainEqual({
     property: `article:modified_time`,
     content: `2024-03-17T00:00:00.000Z`,
   })

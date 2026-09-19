@@ -22,7 +22,7 @@ const components: Components = {
     invariant(children, `Expected children`)
 
     return (
-      <Link href={href} {...props} reloadDocument={href.endsWith(`.css`)}>
+      <Link href={href} {...props}>
         {children}
       </Link>
     )

@@ -21,7 +21,7 @@ import type {
   GraphLayout,
   Vertex as GraphVertex,
   Position,
-} from '~/services/graph.server.ts'
+} from '~/services/graph.ts'
 import { createTagClassName } from '~/services/home-state.ts'
 
 const GraphWidget = ({
@@ -456,9 +456,7 @@ const Vertex = ({
         {vertexNode}
       </div>
       {vertex.type === `internal` ? (
-        <LinkVertex href={vertex.href} reloadDocument={vertex.reloadDocument}>
-          {vertexNode}
-        </LinkVertex>
+        <LinkVertex href={vertex.href}>{vertexNode}</LinkVertex>
       ) : vertex.hrefToTags.size === 1 ? (
         <LinkVertex href={get(first(keys(vertex.hrefToTags)))}>
           {vertexNode}
@@ -479,12 +477,10 @@ const Vertex = ({
 const LinkVertex = ({
   id,
   href,
-  reloadDocument,
   children,
 }: {
   id?: string
   href: string
-  reloadDocument?: boolean
   children: ReactNode
 }) => {
   const preventDefault = useCallback<React.EventHandler<React.SyntheticEvent>>(
@@ -495,7 +491,6 @@ const LinkVertex = ({
     <Link
       id={id}
       href={href}
-      reloadDocument={reloadDocument}
       // Prevent dragging vertex text, which conflicts with graph panning.
       onMouseDown={preventDefault}
       onMouseMove={preventDefault}

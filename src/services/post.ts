@@ -10,13 +10,13 @@ import { z } from 'zod'
 import {
   convertMarkdownToHtml,
   convertMarkdownToText,
-} from './convert-markdown.server.ts'
+} from './convert-markdown.ts'
 import type { Dates } from './format.ts'
 import { truncateAtWordBoundary } from './format.ts'
-import { parseHrefs, parseReferences } from './parse-references.server.ts'
-import { getPostPath } from './post-keys.server.ts'
-import type { PostKey } from './post-keys.server.ts'
-import { renderPost } from './render-post.server.tsx'
+import { parseHrefs, parseReferences } from './parse-references.ts'
+import { getPostPath } from './post-keys.ts'
+import type { PostKey } from './post-keys.ts'
+import { renderPost } from './render-post.tsx'
 
 export const getPost = (key: PostKey): Promise<Post> => {
   switch (key.type) {
