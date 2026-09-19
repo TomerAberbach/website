@@ -3,6 +3,8 @@ import { useCallback, useId } from 'react'
 import { arrayIncludes } from 'ts-extras'
 import Tooltip from './tooltip.tsx'
 import useSearchParams from '~/hooks/use-search-params.ts'
+import { parseLogicalOperator } from '~/services/home-state.ts'
+import type { LogicalOperator } from '~/services/home-state.ts'
 
 export const LogicalOperatorRadioButtonGroup = ({
   logicalOperator,
@@ -33,6 +35,7 @@ export const LogicalOperatorRadioButtonGroup = ({
             return (
               <label
                 key={currentLogicalOperator}
+                data-home-operator={currentLogicalOperator}
                 className='group relative text-center font-mono leading-none font-medium first:rounded-l-xl last:rounded-r-xl'
               >
                 <input
@@ -88,7 +91,7 @@ export const useLogicalOperator = (): [
 ] => {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const logicalOperator = searchParams.get(`op`) === `and` ? `&&` : `||`
+  const logicalOperator = parseLogicalOperator(searchParams)
   const setLogicalOperator = useCallback(
     (newLogicalOperator: LogicalOperator) => {
       const newSearchParams = new URLSearchParams(searchParams)
@@ -108,4 +111,3 @@ export const useLogicalOperator = (): [
 }
 
 const LOGICAL_OPERATORS: readonly LogicalOperator[] = [`||`, `&&`]
-export type LogicalOperator = `||` | `&&`

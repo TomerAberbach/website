@@ -22,6 +22,7 @@ website
 │   ├── layouts/layout.astro # The document, head, header, and footer
 │   ├── components/          # React islands and Astro components
 │   ├── hooks/               # React hooks
+│   ├── scripts/             # Blocking scripts inlined into pages
 │   ├── services/            # Server-side content pipeline and shared helpers
 │   │   ├── post-keys.server.ts        # Lists the posts in `private/posts`
 │   │   ├── post.server.ts             # Parses a post's front matter and content
@@ -29,6 +30,7 @@ website
 │   │   ├── ordered.server.ts          # Orders posts and links neighbors and references
 │   │   ├── graph.server.ts            # Builds and lays out the post graph
 │   │   ├── graph-facts.server.ts      # Computes the facts shown above the graph
+│   │   ├── home-state.ts              # Parses the home page's URL state and styles the page for it
 │   │   ├── render-post.server.tsx     # Renders post HTML with custom elements
 │   │   └── render-thumbnail.server.tsx # Renders a post's Open Graph image
 │   ├── styles/              # Tailwind and font stylesheets
@@ -61,6 +63,15 @@ so CI runs the browser tests on macOS.
 The markdown pipeline renders mermaid diagrams in a browser and fetches embed
 data over the network, so tests keep fixtures free of both unless the test is
 about the real posts.
+
+## Home page state
+
+The home page's post, tags, and operator come from the query string, which the
+static HTML cannot know. The HTML is rendered for the default state with every
+post title in it, and `src/scripts/home-preload.ts`, inlined into the head,
+inserts a stylesheet from `home-state.ts` that restyles it into the URL's state
+before the first paint. The components render that state-independent markup
+until `useHydrated` is true, and then drop the stylesheet.
 
 ## Fonts
 

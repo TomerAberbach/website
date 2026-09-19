@@ -1,13 +1,14 @@
 import { expect, test } from 'vitest'
 import { page } from 'vitest/browser'
-import { createTagClassName, TagsFilterForm } from './tags-filter-form.tsx'
+import { TagsFilterForm } from './tags-filter-form.tsx'
+import { createTagClassName } from '~/services/home-state.ts'
 import {
   renderAtUrl,
   searchParamsProbe,
   searchParamsText,
 } from '~/test/url.tsx'
 
-const TAGS = new Set([`a`, `b`, `c`, `d`, `e`])
+const TAGS = [`a`, `b`, `c`, `d`, `e`]
 
 const renderForm = (url: string) =>
   renderAtUrl(<TagsFilterForm targetId='graph' tags={TAGS} />, { url })
@@ -94,7 +95,7 @@ test.each([
 )
 
 test(`three tags are summarized with a count when that form is shorter`, async () => {
-  const longTags = new Set([`alpha-long`, `beta-long`, `gamma-long`])
+  const longTags = [`alpha-long`, `beta-long`, `gamma-long`]
 
   await renderAtUrl(<TagsFilterForm targetId='graph' tags={longTags} />, {
     url: `/?tags=alpha-long,beta-long,gamma-long&op=and`,

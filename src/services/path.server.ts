@@ -5,4 +5,5 @@ const createPath =
   (...paths: readonly string[]) =>
     join(process.cwd(), dirname, ...paths)
 
+export const rootPath = createPath(`.`)
 export const privatePath = createPath(`private`)

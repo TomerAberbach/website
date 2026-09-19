@@ -1,6 +1,7 @@
 import { expect, test, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import { PostSwitcher, useSelectedPostId } from './post-switcher.tsx'
+import { getHomeData } from '~/services/home-state.ts'
 import { createGraph } from '~/test/graph.ts'
 import {
   renderAtUrl,
@@ -16,8 +17,7 @@ const GRAPH = createGraph({
     { id: `oldest`, tags: [`music`, `code`] },
   ],
 })
-const TAGS = new Set([`music`, `code`])
-const POST_IDS = new Set(GRAPH.vertices.keys())
+const DATA = getHomeData(GRAPH.vertices.keys(), GRAPH)
 
 const renderSwitcher = ({
   selectedPostId,
@@ -32,7 +32,7 @@ const renderSwitcher = ({
     <PostSwitcher
       selectedPostId={selectedPostId}
       setSelectedPostId={setSelectedPostId}
-      tags={TAGS}
+      data={DATA}
       graph={GRAPH}
       graphId='graph'
     />,
@@ -98,11 +98,7 @@ test(`the next button is disabled when no remaining post passes the tag filter`,
 })
 
 const SelectedPostProbe = ({ postIdToSelect }: { postIdToSelect: string }) => {
-  const [selectedPostId, setSelectedPostId] = useSelectedPostId({
-    postIds: POST_IDS,
-    tags: TAGS,
-    graph: GRAPH,
-  })
+  const [selectedPostId, setSelectedPostId] = useSelectedPostId(DATA)
   return (
     <>
       <div data-testid='selected-post'>{selectedPostId}</div>

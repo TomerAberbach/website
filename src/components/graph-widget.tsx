@@ -3,13 +3,18 @@ import cssesc from 'cssesc'
 import { first, get, keys, map, max, pipe, reduce, toArray, values } from 'lfi'
 import panzoom from 'panzoom'
 import type { PanZoom } from 'panzoom'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import type { ReactNode, RefObject } from 'react'
 import closeSvgPath from './close.svg?url'
 import { Link } from './link.tsx'
-import { createTagClassName } from './tags-filter-form.tsx'
-import useHasMounted from '~/hooks/use-has-mounted.ts'
-import usePrevious from '~/hooks/use-previous.ts'
+import useHydrated from '~/hooks/use-hydrated.ts'
 import type {
   Graph,
   Edge as GraphEdge,
@@ -17,6 +22,7 @@ import type {
   Vertex as GraphVertex,
   Position,
 } from '~/services/graph.server.ts'
+import { createTagClassName } from '~/services/home-state.ts'
 
 const GraphWidget = ({
   id,
@@ -36,10 +42,11 @@ const GraphWidget = ({
 
   const panningElementRef = useRef<HTMLDivElement>(null)
   const viewportElementRef = useRef<HTMLDivElement>(null)
-  const hasMounted = useHasMounted()
+  const hydrated = useHydrated()
   const [panningState, setPanningPaused] = usePanning({
     graph,
     selectedVertexId,
+    hydrated,
     panningElementRef,
     viewportElementRef,
   })
@@ -71,13 +78,16 @@ const GraphWidget = ({
             aspectRatio: `${width} / ${height}`,
             // Before panzoom loads, "fake" the centering in the user's viewport
             // by shifting the graph based on the selected vertex's relative
-            // position.
-            ...(!hasMounted && {
+            // position. The stylesheet from the preload script overrides the
+            // shift with the URL's selected vertex through the variables.
+            ...(!hydrated && {
               left: `50vw`,
               top: `30vh`,
-              transform: `translate(${
+              transform: `translate(var(--home-graph-x, ${
                 (-100 * selectedVertexPosition.x) / width
-              }%, ${(-100 * selectedVertexPosition.y) / height}%)`,
+              }%), var(--home-graph-y, ${
+                (-100 * selectedVertexPosition.y) / height
+              }%))`,
             }),
           }}
         >
@@ -92,11 +102,13 @@ const GraphWidget = ({
 const usePanning = ({
   graph,
   selectedVertexId,
+  hydrated,
   panningElementRef,
   viewportElementRef,
 }: {
   graph: Graph
   selectedVertexId: string
+  hydrated: boolean
   panningElementRef: RefObject<HTMLElement | null>
   viewportElementRef: RefObject<HTMLElement | null>
 }) => {
@@ -131,10 +143,6 @@ const usePanning = ({
       viewportElementRef,
     ],
   )
-  const getInitialPanzoomPositionRef = useRef(() =>
-    getPanzoomPosition(selectedVertexId),
-  )
-
   const [paused, setPaused] = useState(false)
   useEffect(() => {
     if (paused) {
@@ -144,9 +152,18 @@ const usePanning = ({
     }
   }, [paused])
 
-  useEffect(() => {
-    const panningElement = panningElementRef.current!
+  // The vertex panzoom was last moved to, or null before panzoom exists.
+  const positionedVertexIdRef = useRef<string | null>(null)
 
+  // Panzoom is created once the render shows the URL's state, in a layout
+  // effect so that it positions the graph in the same frame that drops the
+  // pre-hydration shift.
+  useLayoutEffect(() => {
+    if (!hydrated) {
+      return undefined
+    }
+
+    const panningElement = panningElementRef.current!
     const panzoomInstance = panzoom(panningElement, {
       // Disable zooming.
       minZoom: 1,
@@ -162,34 +179,32 @@ const usePanning = ({
     panzoomInstance.on(`panstart`, () => setPanning(true))
     panzoomInstance.on(`panend`, () => setPanning(false))
 
-    const { x, y } = getInitialPanzoomPositionRef.current()
-    panzoomInstance.moveTo(x, y)
-
     panzoomRef.current = panzoomInstance
     return () => {
       panzoomInstance.dispose()
       panzoomRef.current = null
+      positionedVertexIdRef.current = null
     }
-  }, [panningElementRef])
+  }, [hydrated, panningElementRef])
 
-  const previousSelectedVertexId = usePrevious(selectedVertexId)
-  useEffect(() => {
-    if (
-      previousSelectedVertexId === null ||
-      selectedVertexId === previousSelectedVertexId
-    ) {
+  // Jumps to the first vertex and pans to each vertex selected after it.
+  useLayoutEffect(() => {
+    const panzoom = panzoomRef.current
+    if (!panzoom || positionedVertexIdRef.current === selectedVertexId) {
       return
     }
 
     const { x, y } = getPanzoomPosition(selectedVertexId)
-    const panzoom = panzoomRef.current!
-
-    if (globalThis.matchMedia(`(prefers-reduced-motion)`).matches) {
+    if (
+      positionedVertexIdRef.current === null ||
+      globalThis.matchMedia(`(prefers-reduced-motion)`).matches
+    ) {
       panzoom.moveTo(x, y)
     } else {
       panzoom.smoothMoveTo(x, y)
     }
-  }, [getPanzoomPosition, selectedVertexId, previousSelectedVertexId])
+    positionedVertexIdRef.current = selectedVertexId
+  }, [getPanzoomPosition, selectedVertexId])
 
   const panningState = paused ? `paused` : panning ? `panning` : `idle`
   return [panningState, setPaused] as const

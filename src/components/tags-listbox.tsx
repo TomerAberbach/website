@@ -5,17 +5,22 @@ import {
   ListboxOptions,
 } from '@headlessui/react'
 import clsx from 'clsx'
-import { filter, flatMap, map, pipe, reduce, toArray, unique } from 'lfi'
+import { map, pipe, reduce, toArray } from 'lfi'
 import { useCallback, useRef, useState } from 'react'
 import { useLogicalOperator } from './logical-operator-radio-button-group.tsx'
 import useSearchParams from '~/hooks/use-search-params.ts'
+import {
+  filterKnownTags,
+  formatSelectedTags,
+  parseSelectedTags,
+} from '~/services/home-state.ts'
 
 export const TagsListbox = ({
   tags,
   selectedTags,
   setSelectedTags,
 }: {
-  tags: Set<string>
+  tags: readonly string[]
   selectedTags: string[]
   setSelectedTags: (newSelectedTags: string[]) => void
 }) => {
@@ -46,15 +51,17 @@ export const TagsListbox = ({
         >
           <SelectedTags tags={selectedTags} />
         </ListboxButton>
-        {selectedTags.length > 0 && (
-          <button
-            type='button'
-            onClick={resetSelectedTags}
-            className='focus-ring absolute -bottom-0.5 translate-y-full cursor-pointer text-sm font-medium text-gray-600 transition hover:text-blue-700 hover:ring-3'
-          >
-            Reset
-          </button>
-        )}
+        <button
+          type='button'
+          data-home-tags-reset
+          onClick={resetSelectedTags}
+          className={clsx(
+            `focus-ring absolute -bottom-0.5 translate-y-full cursor-pointer text-sm font-medium text-gray-600 transition hover:text-blue-700 hover:ring-3`,
+            selectedTags.length === 0 && `hidden`,
+          )}
+        >
+          Reset
+        </button>
         {recentlyReset ? (
           <span role='alert' className='sr-only'>
             All tags not selected
@@ -86,22 +93,17 @@ export const TagsListbox = ({
 
 const SelectedTags = ({ tags }: { tags: string[] }) => {
   const [logicalOperator] = useLogicalOperator()
-  const conjunction = logicalOperator === `&&` ? `and` : `or`
-  switch (tags.length) {
-    case 0:
-      return <FilterIcon />
-    case 1:
-      return tags[0]!
-    case 2:
-      return tags.join(` ${conjunction} `)
-    case 3: {
-      const text1 = `${tags[0]}, ${tags[1]}, ${conjunction} ${tags[2]}`
-      const text2 = `${tags[0]} ${conjunction} 2 others`
-      return text1.length <= text2.length ? text1 : text2
-    }
-    default:
-      return `${tags[0]}, ${tags[1]}, ${conjunction} ${tags.length - 2} others`
+  const text = formatSelectedTags(tags, logicalOperator)
+  if (text !== null) {
+    return text
   }
+  // The stylesheet from the preload script fills the label before hydration.
+  return (
+    <>
+      <FilterIcon />
+      <span data-home-tags-label />
+    </>
+  )
 }
 
 const FilterIcon = () => (
@@ -111,6 +113,7 @@ const FilterIcon = () => (
     fill='currentColor'
     className='size-4.5'
     aria-label='Filter'
+    data-home-tags-icon
   >
     <path
       fillRule='evenodd'
@@ -136,28 +139,15 @@ const CheckmarkIcon = ({ className }: { className: string }) => (
 )
 
 export const useSelectedTags = (
-  tags: Set<string>,
+  tags: readonly string[],
 ): [string[], (newSelectedTags: string[]) => void] => {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const selectedTags = pipe(
-    searchParams.getAll(`tags`),
-    flatMap(tags => tags.split(`,`)),
-    unique,
-    filter(tag => tags.has(tag)),
-    reduce(toArray()),
-  ).sort()
+  const selectedTags = parseSelectedTags(searchParams, tags)
 
   const setSelectedTags = useCallback(
     (newSelectedTags: string[]) => {
-      const searchTags = pipe(
-        newSelectedTags,
-        unique,
-        filter(tag => tags.has(tag)),
-        reduce(toArray()),
-      )
-        .sort()
-        .join(`,`)
+      const searchTags = filterKnownTags(newSelectedTags, tags).join(`,`)
 
       const newSearchParams = new URLSearchParams(searchParams)
       newSearchParams.delete(`post`)

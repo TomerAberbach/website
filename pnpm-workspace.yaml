@@ -1,9 +1,6 @@
 allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
-  gifsicle: set this to true or false
-  jpegtran-bin: set this to true or false
-  optipng-bin: set this to true or false
   puppeteer: true
   sharp: true
   unrs-resolver: true

@@ -1,27 +1,23 @@
 ---
-import { filter, first, flatMap, get, map, pipe, reduce, toArray } from 'lfi'
+import { build } from 'esbuild'
+import { filter, first, get, map, pipe } from 'lfi'
 import HomeWidgets from '~/components/home-widgets.tsx'
 import Layout from '~/layouts/layout.astro'
 import { getGraph } from '~/services/graph.server.ts'
+import { getHomeData } from '~/services/home-state.ts'
 import {
   getMeta,
   SITE_DESCRIPTION,
   SITE_TITLE_AND_AUTHOR,
 } from '~/services/meta.ts'
+import { rootPath } from '~/services/path.server.ts'
 import { getPagePathname } from '~/services/pathname.ts'
 import { getOrderedPosts } from '~/services/ordered.server.ts'
 import type { MarkdownPost, Post } from '~/services/post.server.ts'
 
 const [posts, graph] = await Promise.all([getOrderedPosts(), getGraph()])
 
-const postIds = new Set(posts.keys())
-const tags = new Set(
-  pipe(
-    posts,
-    flatMap(([, { tags }]) => tags),
-    reduce(toArray()),
-  ).sort(),
-)
+const data = getHomeData(posts.keys(), graph)
 const latestPost: MarkdownPost = pipe(
   posts,
   map(([, post]: [string, Post]) => post),
@@ -36,8 +32,30 @@ const meta = getMeta(getPagePathname(Astro.url.pathname), {
   post: latestPost,
   type: `website`,
 })
+
+// The script that paints the page in the URL's state before hydration must
+// run before the body is parsed, so it is bundled and inlined into the head.
+const {
+  outputFiles: [preloadScript],
+} = await build({
+  entryPoints: [rootPath(`src/scripts/home-preload.ts`)],
+  tsconfig: rootPath(`tsconfig.json`),
+  bundle: true,
+  minify: true,
+  write: false,
+  format: `iife`,
+  globalName: `homePreload`,
+})
+const preloadData = JSON.stringify(data).replaceAll(`<`, `\\u003c`)
 ---
 
 <Layout meta={meta}>
-  <HomeWidgets client:load postIds={postIds} tags={tags} graph={graph} />
+  <Fragment slot='head'>
+    <script
+      is:inline
+      data-astro-rerun
+      set:html={`${preloadScript!.text}homePreload.default(${preloadData})`}
+    ></script>
+  </Fragment>
+  <HomeWidgets client:load data={data} graph={graph} />
 </Layout>

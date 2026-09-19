@@ -1,66 +1,78 @@
-import { any, filter, first, get, or, pipe } from 'lfi'
+import clsx from 'clsx'
 import { useCallback } from 'react'
-import { setHas } from 'ts-extras'
 import { Link } from './link.tsx'
 import ShrinkWrap from './shrink-wrap.tsx'
 import { TagsFilterForm } from './tags-filter-form.tsx'
 import { useSelectedTags } from './tags-listbox.tsx'
 import Tooltip from './tooltip.tsx'
+import useHydrated from '~/hooks/use-hydrated.ts'
 import useSearchParams from '~/hooks/use-search-params.ts'
 import type { Graph, InternalVertex } from '~/services/graph.server.ts'
+import {
+  getAdjacentPostId,
+  getFirstPostId,
+  parseSelectedPostId,
+} from '~/services/home-state.ts'
+import type { HomeData } from '~/services/home-state.ts'
 
 export const PostSwitcher = ({
   selectedPostId,
   setSelectedPostId,
-  tags,
+  data,
   graph,
   graphId,
 }: {
   selectedPostId: string
   setSelectedPostId: (newSelectedPostId: string) => void
-  tags: Set<string>
+  data: HomeData
   graph: Graph
   graphId: string
 }) => {
   const vertex = graph.vertices.get(selectedPostId) as InternalVertex
+  const [selectedTags] = useSelectedTags(data.tags)
 
-  const previousVertex = useAdjacentVertex({
-    vertex,
-    direction: `previous`,
-    tags,
-    graph,
-  })
+  const previousPostId = getAdjacentPostId(
+    data.posts,
+    selectedPostId,
+    `previous`,
+    selectedTags,
+  )
   const selectPreviousPost = useCallback(() => {
-    if (previousVertex) {
-      setSelectedPostId(previousVertex.id)
+    if (previousPostId) {
+      setSelectedPostId(previousPostId)
     }
-  }, [previousVertex, setSelectedPostId])
+  }, [previousPostId, setSelectedPostId])
 
-  const nextVertex = useAdjacentVertex({
-    vertex,
-    direction: `next`,
-    tags,
-    graph,
-  })
+  const nextPostId = getAdjacentPostId(
+    data.posts,
+    selectedPostId,
+    `next`,
+    selectedTags,
+  )
   const selectNextPost = useCallback(() => {
-    if (nextVertex) {
-      setSelectedPostId(nextVertex.id)
+    if (nextPostId) {
+      setSelectedPostId(nextPostId)
     }
-  }, [nextVertex, setSelectedPostId])
+  }, [nextPostId, setSelectedPostId])
+
+  const hydrated = useHydrated()
 
   return (
     <div className='h-39'>
       <div className='flex h-full -translate-y-6 items-center justify-between gap-3'>
-        <div className='ml-auto flex items-center has-disabled:invisible'>
+        <div
+          data-home-adjacent='previous'
+          className='ml-auto flex items-center has-disabled:invisible'
+        >
           <Tooltip content='Previous post'>
             {tooltipId => (
               <button
                 // Prevent flash of disappearing focus ring when clicking.
-                key={previousVertex?.id}
+                key={previousPostId}
                 type='button'
                 onClick={selectPreviousPost}
                 aria-labelledby={tooltipId}
-                disabled={!previousVertex}
+                disabled={!previousPostId}
                 className='focus-ring cursor-pointer hover:ring-3'
               >
                 <ChevronLeft />
@@ -69,27 +81,54 @@ export const PostSwitcher = ({
           </Tooltip>
         </div>
         <div className='relative flex w-60 flex-col items-center gap-3'>
-          <Link
-            href={vertex.href}
-            reloadDocument={vertex.reloadDocument}
-            className='max-w-full text-center font-medium text-balance text-gray-700 hover:ring-3'
-          >
-            <ShrinkWrap>{vertex.label}</ShrinkWrap>
-          </Link>
+          {hydrated ? (
+            <Link
+              href={vertex.href}
+              reloadDocument={vertex.reloadDocument}
+              className={TITLE_CLASS_NAME}
+            >
+              <ShrinkWrap>{vertex.label}</ShrinkWrap>
+            </Link>
+          ) : (
+            // Before hydration every title is in the document, so that the
+            // stylesheet from the preload script can show the selected one.
+            data.posts.map(({ id }) => {
+              const { href, reloadDocument, label } = graph.vertices.get(
+                id,
+              ) as InternalVertex
+              return (
+                <Link
+                  key={id}
+                  data-home-post-title={id}
+                  href={href}
+                  reloadDocument={reloadDocument}
+                  className={clsx(
+                    TITLE_CLASS_NAME,
+                    id !== selectedPostId && `hidden`,
+                  )}
+                >
+                  {label}
+                </Link>
+              )
+            })
+          )}
           <div className='absolute -bottom-3 translate-y-full'>
-            <TagsFilterForm targetId={graphId} tags={tags} />
+            <TagsFilterForm targetId={graphId} tags={data.tags} />
           </div>
         </div>
-        <div className='mr-auto flex items-center has-disabled:invisible'>
+        <div
+          data-home-adjacent='next'
+          className='mr-auto flex items-center has-disabled:invisible'
+        >
           <Tooltip content='Next post'>
             {tooltipId => (
               <button
                 // Prevent flash of disappearing focus ring when clicking.
-                key={nextVertex?.id}
+                key={nextPostId}
                 type='button'
                 onClick={selectNextPost}
                 aria-labelledby={tooltipId}
-                disabled={!nextVertex}
+                disabled={!nextPostId}
                 className='focus-ring cursor-pointer hover:ring-3'
               >
                 <ChevronRight />
@@ -102,43 +141,7 @@ export const PostSwitcher = ({
   )
 }
 
-const useAdjacentVertex = ({
-  vertex,
-  direction,
-  tags,
-  graph,
-}: {
-  vertex: InternalVertex
-  direction: `previous` | `next`
-  tags: Set<string>
-  graph: Graph
-}): InternalVertex | undefined => {
-  const [selectedTags] = useSelectedTags(tags)
-  const selectedTagsSet = new Set(selectedTags)
-
-  while (true) {
-    const adjacentVertexId = vertex[direction]
-    if (!adjacentVertexId) {
-      return undefined
-    }
-
-    const adjacentVertex = graph.vertices.get(adjacentVertexId)
-    if (!adjacentVertex) {
-      return undefined
-    }
-
-    vertex = adjacentVertex as InternalVertex
-    if (
-      selectedTagsSet.size === 0 ||
-      pipe(
-        vertex.tags,
-        any(tag => selectedTagsSet.has(tag)),
-      )
-    ) {
-      return vertex
-    }
-  }
-}
+const TITLE_CLASS_NAME = `max-w-full text-center font-medium text-balance text-gray-700 hover:ring-3`
 
 const ChevronLeft = () => (
   <svg
@@ -175,50 +178,31 @@ const ChevronRight = () => (
 )
 
 export const useSelectedPostId = ({
-  postIds,
+  posts,
   tags,
-  graph,
-}: {
-  postIds: Set<string>
-  tags: Set<string>
-
-  graph: Graph
-}): [string, (newSelectedPostId: string) => void] => {
+}: HomeData): [string, (newSelectedPostId: string) => void] => {
   const [selectedTags] = useSelectedTags(tags)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const selectedTagsSet = new Set(selectedTags)
-  const firstPostId = pipe(
-    postIds,
-    filter(postId =>
-      pipe(
-        graph.vertices.get(postId)!.tags,
-        any(tag => selectedTagsSet.has(tag)),
-      ),
-    ),
-    first,
-    or(() => get(first(postIds))),
-  )
-  const sanitizePostId = useCallback(
-    (postId: string | null) => (setHas(postIds, postId) ? postId : firstPostId),
-    [postIds, firstPostId],
-  )
-
-  const selectedPostId = sanitizePostId(searchParams.get(`post`))
+  const selectedPostId = parseSelectedPostId(searchParams, posts, selectedTags)
   const setSelectedPostId = useCallback(
     (newSelectedPostId: string) => {
       const newSearchParams = new URLSearchParams(searchParams)
+      newSearchParams.set(`post`, newSelectedPostId)
 
-      newSelectedPostId = sanitizePostId(newSelectedPostId)
+      const firstPostId = getFirstPostId(posts, selectedTags)
+      newSelectedPostId = parseSelectedPostId(
+        newSearchParams,
+        posts,
+        selectedTags,
+      )
       if (newSelectedPostId === firstPostId) {
         newSearchParams.delete(`post`)
-      } else {
-        newSearchParams.set(`post`, newSelectedPostId)
       }
 
       setSearchParams(newSearchParams)
     },
-    [searchParams, setSearchParams, sanitizePostId, firstPostId],
+    [searchParams, setSearchParams, posts, selectedTags],
   )
 
   return [selectedPostId, setSelectedPostId]

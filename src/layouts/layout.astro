@@ -63,6 +63,7 @@ const fontsScript = `Promise.all([${pipe(
     <link rel='icon' href={logoIcoPath} sizes='any' />
     <link rel='icon' href={logoSvgPath} type='image/svg+xml' />
     <script is:inline set:html={fontsScript}></script>
+    <slot name='head' />
     <ClientRouter />
     <script>
       // The web fonts stay loaded across client side navigations, so the new

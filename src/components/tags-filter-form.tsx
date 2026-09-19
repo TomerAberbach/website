@@ -1,20 +1,19 @@
-import cssesc from 'cssesc'
-import { join, map, pipe } from 'lfi'
 import { useCallback } from 'react'
 import type { FormEventHandler } from 'react'
-import type { LogicalOperator } from './logical-operator-radio-button-group.tsx'
 import {
   LogicalOperatorRadioButtonGroup,
   useLogicalOperator,
 } from './logical-operator-radio-button-group.tsx'
 import { TagsListbox, useSelectedTags } from './tags-listbox.tsx'
+import { renderTagsFilterStyle } from '~/services/home-state.ts'
+import type { LogicalOperator } from '~/services/home-state.ts'
 
 export const TagsFilterForm = ({
   targetId,
   tags,
 }: {
   targetId: string
-  tags: Set<string>
+  tags: readonly string[]
 }) => {
   const [logicalOperator, setLogicalOperator] = useLogicalOperator()
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
@@ -62,41 +61,16 @@ const TagsFilterStyle = ({
   targetId: string
   logicalOperator: LogicalOperator
   selectedTags: string[]
-}) => {
-  const tagClassSelectors = pipe(
-    selectedTags,
-    map(tag => `.${cssesc(createTagClassName(tag), { isIdentifier: true })}`),
-  )
-  const matchingTagsSelector =
-    logicalOperator === `&&`
-      ? join(``, tagClassSelectors)
-      : `:is(${join(`,`, tagClassSelectors)})`
-  const selector = `#${targetId} :is([class^='${TAG_CLASS_PREFIX}'], [class*=' ${TAG_CLASS_PREFIX}']):not(${matchingTagsSelector})`
-
-  return (
-    <style
-      // Safe because all user inputted tags have been filtered to known tags
-      // and the tags have been escaped for use in CSS identifiers.
-      dangerouslySetInnerHTML={{
-        __html: `
-          ${selector} {
-            opacity: 0.25;
-          }
-
-          ${selector} > :is(a, button) {
-            visibility: hidden;
-          }
-
-          ${selector} > :not(:is(a, button, dialog)) {
-            display: initial;
-          }
-        `,
-      }}
-    />
-  )
-}
-
-export const createTagClassName = (tag: string): string =>
-  `${TAG_CLASS_PREFIX}${tag.replaceAll(` `, `-`)}`
-
-const TAG_CLASS_PREFIX = `tag:`
+}) => (
+  <style
+    // Safe because all user inputted tags have been filtered to known tags
+    // and the tags have been escaped for use in CSS identifiers.
+    dangerouslySetInnerHTML={{
+      __html: renderTagsFilterStyle({
+        targetId,
+        tags: selectedTags,
+        operator: logicalOperator,
+      }),
+    }}
+  />
+)
