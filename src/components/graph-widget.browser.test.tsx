@@ -97,13 +97,13 @@ test(`an internal vertex links to the post's page`, async () => {
     .toHaveAttribute(`href`, `/b`)
 })
 
-test(`each edge is labeled with the number of links it stands for`, async () => {
+test(`only an edge standing for more than one link is labeled with the count`, async () => {
   const screen = await renderWidget()
 
   const weights = [...screen.container.querySelectorAll(`svg text`)]
     .map(text => text.textContent)
     .sort()
-  expect(weights).toEqual([`1`, `1`, `2`])
+  expect(weights).toEqual([`2`])
 })
 
 test(`vertices are placed at their layout position within the graph`, async () => {

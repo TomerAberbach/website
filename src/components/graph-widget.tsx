@@ -17,6 +17,7 @@ import closeSvgPath from './close.svg?url'
 import { Link } from './link.tsx'
 import useHydrated from '~/hooks/use-hydrated.ts'
 import { computeAltitudes, getEdgeAltitude } from '~/services/altitude.ts'
+import { placeEdgeLabels } from '~/services/edge-labels.ts'
 import {
   INTERNAL_LABEL_WIDTH,
   LABEL_OFFSET,
@@ -257,6 +258,7 @@ const Edges = ({
     max,
     get,
   )
+  const labelFractions = useMemo(() => placeEdgeLabels(graph), [graph])
   const markerId = useId()
   const { width, height } = layout.boundingBox
 
@@ -298,6 +300,7 @@ const Edges = ({
               markerId={markerId}
               layout={layout}
               maxWeight={maxWeight}
+              labelFraction={labelFractions.get(`${edge.fromId} ${edge.toId}`)}
               altitude={altitude}
               edge={edge}
             />
@@ -311,12 +314,14 @@ const Edge = ({
   markerId,
   layout: { positions },
   maxWeight,
+  labelFraction = 0.5,
   altitude,
   edge: { fromId, toId, tags, hrefs },
 }: {
   markerId: string
   layout: GraphLayout
   maxWeight: number
+  labelFraction: number | undefined
   altitude: number
   edge: GraphEdge
 }) => {
@@ -338,9 +343,14 @@ const Edge = ({
     VERTEX_RADIUS,
   )
 
+  // The label sits at the spot along the edge with the most room around it.
   const labelPosition = {
-    x: (intersectedFromPosition.x + intersectedToPosition.x) / 2,
-    y: (intersectedFromPosition.y + intersectedToPosition.y) / 2,
+    x:
+      intersectedFromPosition.x +
+      (intersectedToPosition.x - intersectedFromPosition.x) * labelFraction,
+    y:
+      intersectedFromPosition.y +
+      (intersectedToPosition.y - intersectedFromPosition.y) * labelFraction,
   }
   const beforeLabelPosition = translatePosition(
     labelPosition,
@@ -361,6 +371,24 @@ const Edge = ({
     (FLOOR_EDGE_WIDTH + (1 - FLOOR_EDGE_WIDTH) * altitude)
   const lineClassName = `stroke-gray-500 transition duration-200`
 
+  // An edge with one link is the common case, so only heavier edges are
+  // labeled with their weight.
+  if (weight === 1) {
+    return (
+      <g {...groupProps}>
+        <line
+          strokeWidth={lineStrokeWidth}
+          markerEnd={`url(#${cssesc(markerId, { isIdentifier: true })})`}
+          x1={intersectedFromPosition.x}
+          y1={intersectedFromPosition.y}
+          x2={intersectedToPosition.x}
+          y2={intersectedToPosition.y}
+          className={lineClassName}
+        />
+      </g>
+    )
+  }
+
   return (
     <g {...groupProps}>
       <line
@@ -376,7 +404,12 @@ const Edge = ({
         y={labelPosition.y}
         textAnchor='middle'
         alignmentBaseline='middle'
-        className='overflow-visible fill-gray-500 text-xl'
+        // A halo in the page's background color keeps the number legible
+        // where other edges pass under it.
+        strokeWidth={EDGE_LABEL_HALO_WIDTH}
+        strokeLinejoin='round'
+        style={{ paintOrder: `stroke` }}
+        className='overflow-visible fill-gray-500 stroke-white text-xl'
         aria-hidden
       >
         {weight}
@@ -419,6 +452,7 @@ const translatePosition = (
 }
 
 const EDGE_LABEL_PADDING = 18.75
+const EDGE_LABEL_HALO_WIDTH = 8
 const MIN_EDGE_STROKE_WIDTH = 2
 const MAX_EDGE_STROKE_WIDTH = 4.5
 // The arrowhead's size in stroke widths.
