@@ -176,6 +176,15 @@
 @custom-variant child (& > *);
 
 @layer utilities {
+  /*
+   * A graph vertex or edge drawn nearer the viewer the higher its altitude,
+   * which the tag filter and the selection set through the variables.
+   */
+  .altitude {
+    --altitude: var(--altitude-distance);
+    z-index: calc(var(--altitude) * 20);
+  }
+
   .fade-y {
     mask-image: linear-gradient(
       transparent,

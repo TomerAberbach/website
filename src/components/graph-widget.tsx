@@ -8,13 +8,15 @@ import {
   useEffect,
   useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
-import type { ReactNode, RefObject } from 'react'
+import type { CSSProperties, ReactNode, RefObject } from 'react'
 import closeSvgPath from './close.svg?url'
 import { Link } from './link.tsx'
 import useHydrated from '~/hooks/use-hydrated.ts'
+import { computeAltitudes, getEdgeAltitude } from '~/services/altitude.ts'
 import type {
   Graph,
   Edge as GraphEdge,
@@ -34,11 +36,23 @@ const GraphWidget = ({
   selectedVertexId: string
 }) => {
   const {
+    vertices,
+    edges,
     layout: {
       positions,
       boundingBox: { width, height },
     },
   } = graph
+
+  const altitudes = useMemo(
+    () =>
+      computeAltitudes({
+        vertexIds: vertices.keys(),
+        edges: [...edges.values()].map(({ fromId, toId }) => [fromId, toId]),
+        selectedVertexId,
+      }),
+    [vertices, edges, selectedVertexId],
+  )
 
   const panningElementRef = useRef<HTMLDivElement>(null)
   const viewportElementRef = useRef<HTMLDivElement>(null)
@@ -91,8 +105,13 @@ const GraphWidget = ({
             }),
           }}
         >
-          <Edges graph={graph} />
-          <Vertices graph={graph} setPanningPaused={setPanningPaused} />
+          <Edges graph={graph} altitudes={altitudes} />
+          <Vertices
+            graph={graph}
+            altitudes={altitudes}
+            selectedVertexId={selectedVertexId}
+            setPanningPaused={setPanningPaused}
+          />
         </div>
       </div>
     </div>
@@ -216,7 +235,14 @@ const usePanning = ({
   return [panningState, setPaused] as const
 }
 
-const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
+const Edges = ({
+  graph,
+  altitudes,
+}: {
+  graph: Graph
+  altitudes: Map<string, number>
+}) => {
+  const { edges, layout } = graph
   const maxWeight = pipe(
     values(edges),
     map(({ hrefs }) => hrefs.size),
@@ -239,8 +265,8 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
           refX='8.5'
           refY='5'
           markerUnits='strokeWidth'
-          markerWidth='17'
-          markerHeight='7.5'
+          markerWidth={ARROW_SIZE}
+          markerHeight={ARROW_SIZE}
           orient='auto'
           className='fill-gray-500'
         >
@@ -250,17 +276,24 @@ const Edges = ({ graph: { edges, layout } }: { graph: Graph }) => {
       <g>
         {pipe(
           values(edges),
-          map(edge => (
+          map(edge => ({
+            edge,
+            altitude: getEdgeAltitude(altitudes, [edge.fromId, edge.toId]),
+          })),
+          reduce(toArray()),
+        )
+          // Nearer edges paint later, so they pass over farther ones.
+          .sort((entry1, entry2) => entry1.altitude - entry2.altitude)
+          .map(({ edge, altitude }) => (
             <Edge
               key={`${edge.fromId} ${edge.toId}`}
               markerId={markerId}
               layout={layout}
               maxWeight={maxWeight}
+              altitude={altitude}
               edge={edge}
             />
-          )),
-          reduce(toArray()),
-        )}
+          ))}
       </g>
     </svg>
   )
@@ -270,13 +303,20 @@ const Edge = ({
   markerId,
   layout: { positions },
   maxWeight,
+  altitude,
   edge: { fromId, toId, tags, hrefs },
 }: {
   markerId: string
   layout: GraphLayout
   maxWeight: number
+  altitude: number
   edge: GraphEdge
 }) => {
+  const groupProps = {
+    className: clsx(`altitude`, getTagClassNames(tags)),
+    style: getAltitudeStyle(altitude),
+    'data-home-edge': `${fromId} ${toId}`,
+  }
   const fromPosition = positions.get(fromId)!
   const toPosition = positions.get(toId)!
   const intersectedFromPosition = intersectCircle(
@@ -306,13 +346,15 @@ const Edge = ({
   )
 
   const weight = hrefs.size
+  // Farther edges are thinner, so a nearer edge shows over one it crosses.
   const lineStrokeWidth =
-    MIN_EDGE_STROKE_WIDTH +
-    (weight / maxWeight) * (MAX_EDGE_STROKE_WIDTH - MIN_EDGE_STROKE_WIDTH)
+    (MIN_EDGE_STROKE_WIDTH +
+      (weight / maxWeight) * (MAX_EDGE_STROKE_WIDTH - MIN_EDGE_STROKE_WIDTH)) *
+    (FLOOR_EDGE_WIDTH + (1 - FLOOR_EDGE_WIDTH) * altitude)
   const lineClassName = `stroke-gray-500 transition duration-200`
 
   return (
-    <g className={clsx(getTagClassNames(tags))}>
+    <g {...groupProps}>
       <line
         strokeWidth={lineStrokeWidth}
         x1={intersectedFromPosition.x}
@@ -369,14 +411,20 @@ const translatePosition = (
 }
 
 const EDGE_LABEL_PADDING = 18.75
-const MIN_EDGE_STROKE_WIDTH = 2.5
-const MAX_EDGE_STROKE_WIDTH = 5.5
+const MIN_EDGE_STROKE_WIDTH = 2
+const MAX_EDGE_STROKE_WIDTH = 4.5
+// The arrowhead's size in stroke widths.
+const ARROW_SIZE = 8
 
 const Vertices = ({
   graph: { vertices, layout },
+  altitudes,
+  selectedVertexId,
   setPanningPaused,
 }: {
   graph: Graph
+  altitudes: Map<string, number>
+  selectedVertexId: string
   setPanningPaused: (value: boolean) => void
 }) => (
   <div>
@@ -387,6 +435,8 @@ const Vertices = ({
           key={id}
           layout={layout}
           vertex={vertex}
+          altitude={altitudes.get(id)!}
+          selected={id === selectedVertexId}
           setPanningPaused={setPanningPaused}
         />
       )),
@@ -401,10 +451,14 @@ const Vertex = ({
     positions,
   },
   vertex,
+  altitude,
+  selected,
   setPanningPaused,
 }: {
   layout: GraphLayout
   vertex: GraphVertex
+  altitude: number
+  selected: boolean
   setPanningPaused: (value: boolean) => void
 }) => {
   const { x, y } = positions.get(vertex.id)!
@@ -423,12 +477,16 @@ const Vertex = ({
   )
   const vertexNode = (
     <>
-      <div className='size-full rounded-full bg-gray-500 group-hover/link:bg-gray-600' />
+      <div
+        className='size-full rounded-full bg-gray-500 group-hover/link:bg-gray-600'
+        style={{ scale: `var(--altitude-scale)` }}
+      />
       <div
         className={clsx(
-          `absolute bottom-[150%] left-1/2 -translate-x-1/2 text-center text-sm font-medium md:text-base`,
+          `absolute bottom-[150%] left-1/2 origin-bottom -translate-x-1/2 text-center text-sm font-medium md:text-base`,
           vertex.type === `internal` ? `z-20` : `z-10`,
         )}
+        style={{ scale: `var(--altitude-scale)` }}
       >
         {vertex.type === `internal` ? (
           <div className='inline-block w-52 text-balance'>{labelNode}</div>
@@ -442,7 +500,7 @@ const Vertex = ({
   return (
     <div
       className={clsx(
-        `group/vertex absolute rounded-full transition duration-200 hover:z-30`,
+        `group/vertex altitude absolute rounded-full transition duration-200 hover:z-30`,
         getTagClassNames(vertex.tags),
       )}
       style={{
@@ -450,7 +508,11 @@ const Vertex = ({
         top: getScaledCalc(y - VERTEX_RADIUS, height),
         width: getScaledCalc(VERTEX_SIZE, width),
         height: getScaledCalc(VERTEX_SIZE, height),
+        ...getAltitudeStyle(altitude),
+        // The selected vertex is nearest whatever the tag filter says.
+        ...(selected && { [`--altitude`]: 1 }),
       }}
+      data-home-vertex={vertex.id}
     >
       <div className='pointer-events-none absolute inset-0 hidden'>
         {vertexNode}
@@ -583,6 +645,24 @@ const DialogVertex = ({
 
 const VERTEX_RADIUS = 10
 const VERTEX_SIZE = VERTEX_RADIUS * 2
+
+/**
+ * The altitude an element has from its distance to the selected vertex, and
+ * the opacity that follows from its altitude. The opacity is inline so that
+ * it wins over the tag filter's, which fades elements outside the graph.
+ */
+const getAltitudeStyle = (altitude: number): CSSProperties =>
+  ({
+    [`--altitude-distance`]: altitude,
+    [`--altitude-scale`]: `calc(${FLOOR_SCALE} + ${1 - FLOOR_SCALE} * var(--altitude))`,
+    opacity: `calc(${FLOOR_OPACITY} + ${1 - FLOOR_OPACITY} * var(--altitude))`,
+  }) as CSSProperties
+
+/** The opacity and the size of an element at the lowest altitude. */
+const FLOOR_OPACITY = 0.5
+const FLOOR_SCALE = 0.65
+/** The width of an edge at the lowest altitude relative to its full width. */
+const FLOOR_EDGE_WIDTH = 0.6
 
 const getScaledCalc = (value: number, limit: number) =>
   `calc(${(100 * value) / limit}%)`

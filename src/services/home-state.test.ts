@@ -25,6 +25,7 @@ test(`getHomeData lists the posts in order with their tags and relative position
       { id: `oldest`, tags: [`music`, `code`], x: 5 / 6, y: 5 / 6 },
     ],
     tags: [`code`, `music`],
+    edges: [],
   })
 })
 
@@ -128,6 +129,26 @@ describe(`renderPreloadStyle`, () => {
     expect(style).toContain(
       `[data-home-operator="||"] > input { z-index: auto;`,
     )
+  })
+
+  test(`raises the selected vertex and lowers the default one`, () => {
+    const style = renderPreloadStyle(parseHomeState(`?post=middle`, DATA), DATA)
+
+    expect(style).toContain(
+      `[data-home-vertex="middle"] { --altitude: 1 !important; }`,
+    )
+    expect(style).toContain(
+      `[data-home-vertex="newest"] { --altitude: var(--altitude-distance) !important; }`,
+    )
+    expect(style).toContain(
+      `[data-home-vertex="middle"] { --altitude-distance: 1 !important; }`,
+    )
+  })
+
+  test(`leaves the altitudes alone for the default post`, () => {
+    const style = renderPreloadStyle(parseHomeState(``, DATA), DATA)
+
+    expect(style).not.toContain(`--altitude`)
   })
 
   test(`leaves the tags listbox alone without selected tags`, () => {

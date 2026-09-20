@@ -131,6 +131,19 @@ test(`hydration keeps the URL's state, reports no mismatch, and drops the styles
   expect(onRecoverableError).not.toHaveBeenCalled()
 })
 
+test(`the preload stylesheet raises the URL's post above the default one`, async () => {
+  const container = renderStatic(`?post=oldest`)
+  cleanup = () => container.remove()
+
+  const vertex = (name: string) =>
+    page.getByRole(`link`, { name, includeHidden: true }).last().element()
+      .parentElement!
+  const opacity = (element: Element) =>
+    Number(getComputedStyle(element).opacity)
+  await expect.poll(() => opacity(vertex(`Post oldest`))).toBe(1)
+  expect(opacity(vertex(`Post newest`))).toBeLessThan(1)
+})
+
 // The selected vertex may or may not change between the hydration render,
 // which sees no search params, and the render after it.
 test.each([

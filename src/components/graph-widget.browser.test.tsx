@@ -143,6 +143,30 @@ test(`vertices carry a class per tag so the tag filter can style them`, async ()
   expect(vertex.classList.contains(createTagClassName(`music`))).toBe(true)
 })
 
+test(`vertices fade and stack by their distance from the selected vertex`, async () => {
+  await renderWidget({ selectedVertexId: `a` })
+
+  const vertex = (name: string) =>
+    page.getByRole(`link`, { name }).element().parentElement!
+  const opacity = (element: Element) =>
+    Number(getComputedStyle(element).opacity)
+  const zIndex = (element: Element) => Number(getComputedStyle(element).zIndex)
+  expect(opacity(vertex(`Post a`))).toBe(1)
+  expect(opacity(vertex(`Post b`))).toBeLessThan(opacity(vertex(`Post a`)))
+  expect(opacity(vertex(`Post c`))).toBeLessThan(opacity(vertex(`Post b`)))
+  expect(zIndex(vertex(`Post c`))).toBeLessThan(zIndex(vertex(`Post a`)))
+})
+
+test(`edges paint from farthest to nearest`, async () => {
+  const screen = await renderWidget({ selectedVertexId: `a` })
+
+  const edgeIds = [
+    ...screen.container.querySelectorAll(`[data-home-edge]`),
+  ].map(element => element.getAttribute(`data-home-edge`))
+  // The edge from b is one step farther from a than the edges out of a.
+  expect(edgeIds[0]).toBe(`b multi.com`)
+})
+
 test(`the selected vertex is centered in the viewport after mount`, async () => {
   const screen = await renderWidget({ selectedVertexId: `c` })
 

@@ -1,4 +1,9 @@
 import cssesc from 'cssesc'
+import {
+  computeAltitudes,
+  getEdgeAltitude,
+  MATCHING_ALTITUDE,
+} from './altitude.ts'
 import type { Graph } from './graph.ts'
 
 /**
@@ -16,8 +21,15 @@ import type { Graph } from './graph.ts'
 /** A post on the home page, with its vertex's position as ratios of the graph's size. */
 export type HomePost = { id: string; tags: string[]; x: number; y: number }
 
-/** The posts, newest first, and the sorted tags across them. */
-export type HomeData = { posts: HomePost[]; tags: string[] }
+/**
+ * The posts, newest first, the sorted tags across them, and the graph's edges
+ * as pairs of vertex ids, from which the altitude of every vertex follows.
+ */
+export type HomeData = {
+  posts: HomePost[]
+  tags: string[]
+  edges: [string, string][]
+}
 
 export type LogicalOperator = `||` | `&&`
 
@@ -44,8 +56,15 @@ export const getHomeData = (
     }
   })
   const tags = [...new Set(posts.flatMap(post => post.tags))].sort()
-  return { posts, tags }
+  const edges = [...graph.edges.values()].map(
+    ({ fromId, toId }): [string, string] => [fromId, toId],
+  )
+  return { posts, tags, edges }
 }
+
+/** Every vertex in the home data: the posts and the endpoints of the edges. */
+const getVertexIds = (data: HomeData): Set<string> =>
+  new Set([...data.posts.map(post => post.id), ...data.edges.flat()])
 
 export const parseHomeState = (search: string, data: HomeData): HomeState => {
   const searchParams = new URLSearchParams(search)
@@ -178,11 +197,13 @@ export const renderTagsFilterStyle = ({
     operator === `&&`
       ? tagClassSelectors.join(``)
       : `:is(${tagClassSelectors.join(`,`)})`
-  const selector = `#${cssesc(targetId, { isIdentifier: true })} :is([class^='${TAG_CLASS_PREFIX}'], [class*=' ${TAG_CLASS_PREFIX}']):not(${matchingTagsSelector})`
+  const taggedSelector = `#${cssesc(targetId, { isIdentifier: true })} :is([class^='${TAG_CLASS_PREFIX}'], [class*=' ${TAG_CLASS_PREFIX}'])`
+  const selector = `${taggedSelector}:not(${matchingTagsSelector})`
 
   return `
     ${selector} {
       opacity: 0.25;
+      --altitude: 0;
     }
 
     ${selector} > :is(a, button) {
@@ -191,6 +212,10 @@ export const renderTagsFilterStyle = ({
 
     ${selector} > :not(:is(a, button, dialog)) {
       display: initial;
+    }
+
+    ${taggedSelector}${matchingTagsSelector} {
+      --altitude: max(${MATCHING_ALTITUDE}, var(--altitude-distance));
     }
   `
 }
@@ -220,6 +245,7 @@ export const renderPreloadStyle = (
     `${home} [data-home-adjacent="previous"] { visibility: ${state.previousPostId ? `visible` : `hidden`}; }`,
     `${home} [data-home-adjacent="next"] { visibility: ${state.nextPostId ? `visible` : `hidden`}; }`,
     `#${HOME_GRAPH_ELEMENT_ID} { --home-graph-x: ${-100 * post.x}%; --home-graph-y: ${-100 * post.y}%; }`,
+    ...renderAltitudeRules(state.postId, defaultPostId, data),
   ]
 
   for (const operator of [`||`, `&&`] as const) {
@@ -254,6 +280,39 @@ export const renderPreloadStyle = (
   }
 
   return rules.join(`\n`)
+}
+
+/**
+ * Overrides the altitudes the static HTML has inline, which are for the
+ * default post, with the altitudes for the selected post. The rules are
+ * important so that they win over the inline values until hydration.
+ */
+const renderAltitudeRules = (
+  postId: string,
+  defaultPostId: string,
+  data: HomeData,
+): string[] => {
+  if (postId === defaultPostId) {
+    return []
+  }
+  const graph = `#${HOME_GRAPH_ELEMENT_ID}`
+  const altitudes = computeAltitudes({
+    vertexIds: getVertexIds(data),
+    edges: data.edges,
+    selectedVertexId: postId,
+  })
+  return [
+    `${graph} [data-home-vertex=${quote(defaultPostId)}] { --altitude: var(--altitude-distance) !important; }`,
+    `${graph} [data-home-vertex=${quote(postId)}] { --altitude: 1 !important; }`,
+    ...[...altitudes].map(
+      ([id, altitude]) =>
+        `${graph} [data-home-vertex=${quote(id)}] { --altitude-distance: ${altitude} !important; }`,
+    ),
+    ...data.edges.map(
+      edge =>
+        `${graph} [data-home-edge=${quote(edge.join(` `))}] { --altitude-distance: ${getEdgeAltitude(altitudes, edge)} !important; }`,
+    ),
+  ]
 }
 
 const quote = (value: string): string =>

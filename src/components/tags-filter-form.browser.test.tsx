@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { expect, test } from 'vitest'
 import { page } from 'vitest/browser'
 import { TagsFilterForm } from './tags-filter-form.tsx'
@@ -108,7 +109,11 @@ test(`three tags are summarized with a count when that form is shorter`, async (
 
 const FilteredElements = () => (
   <div id='graph'>
-    <div data-testid='only-a' className={createTagClassName(`a`)}>
+    <div
+      data-testid='only-a'
+      className={createTagClassName(`a`)}
+      style={{ [`--altitude-distance`]: 0.5 } as CSSProperties}
+    >
       <a data-testid='only-a-link' href='/a'>
         only a
       </a>
@@ -170,6 +175,17 @@ test(`the stylesheet hides links inside faded elements`, async () => {
   await expect
     .element(page.getByTestId(`only-a-link`))
     .toHaveStyle({ visibility: `visible` })
+})
+
+test(`the stylesheet lowers filtered elements and raises matching ones`, async () => {
+  await renderFormWithFilteredElements(`/?tags=a`)
+
+  const altitude = (testId: string) =>
+    getComputedStyle(page.getByTestId(testId).element())
+      .getPropertyValue(`--altitude`)
+      .trim()
+  await expect.poll(() => altitude(`only-c`)).toBe(`0`)
+  await expect.poll(() => altitude(`only-a`)).toBe(`max(0.8, 0.5)`)
 })
 
 test(`nothing is faded without selected tags`, async () => {
