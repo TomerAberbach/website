@@ -59,8 +59,6 @@
     "mdast-util-directive": "^3.1.0",
     "mdast-util-heading-range": "^4.0.0",
     "mdast-util-to-string": "^4.0.0",
-    "ngraph.forcelayout": "^3.3.1",
-    "ngraph.graph": "^20.1.2",
     "panzoom": "^9.4.4",
     "plur": "^6.0.0",
     "react": "^19.3.0",

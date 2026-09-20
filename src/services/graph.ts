@@ -4,10 +4,7 @@ import {
   filter,
   flatMap,
   forEach,
-  get,
-  keys,
   map,
-  maxWith,
   pipe,
   reduce,
   toArray,
@@ -17,11 +14,11 @@ import {
   values,
   window,
 } from 'lfi'
-import createLayout from 'ngraph.forcelayout'
-import createGraph from 'ngraph.graph'
 import { cache } from './cache.ts'
 import { computeGraphFacts } from './graph-facts.ts'
 import type { GraphFact } from './graph-facts.ts'
+import { layoutGraph } from './graph-layout.ts'
+import type { GraphLayout } from './graph-layout.ts'
 import { getOrderedPosts } from './ordered.ts'
 
 export const getGraph = cache(async (): Promise<Graph> => {
@@ -168,105 +165,6 @@ export type Edge = {
   hrefs: Set<string>
 }
 
-const layoutGraph = ({
-  vertices,
-  edges,
-}: Pick<Graph, `vertices` | `edges`>): GraphLayout => {
-  const ngraph = createGraph<string, string>()
-  for (const id of vertices.keys()) {
-    ngraph.addNode(id)
-  }
-  for (const { fromId, toId } of edges.values()) {
-    ngraph.addLink(fromId, toId)
-  }
-
-  // Ensure the graph is still compact when there's more than one connected
-  // component by an edge between connected components.
-  const connectedComponents = findConnectedComponents(edges)
-  const layoutOnlyEdges = pipe(
-    connectedComponents,
-    window(2),
-    map(([previousComponent, nextComponent]) =>
-      findSimilarInternalVertexPair({
-        vertices,
-        vertexIds1: previousComponent!,
-        vertexIds2: nextComponent!,
-      }),
-    ),
-    reduce(toArray()),
-  )
-  for (const [fromId, toId] of layoutOnlyEdges) {
-    ngraph.addLink(fromId, toId)
-  }
-
-  const layout = createLayout(ngraph, {
-    theta: 1,
-    springLength: SPRING_LENGTH,
-    dragCoefficient: 0.2,
-
-    // Decrease this number to spread out the vertices by making them repel each
-    // other more.
-    gravity: -5.25,
-    // Decrease this number to spread out the vertices by allowing the edges to
-    // grow more.
-    springCoefficient: 0.0045,
-  })
-  for (let iteration = 0; iteration < 12_500; iteration++) {
-    layout.step()
-  }
-
-  const {
-    min_x: minX,
-    min_y: minY,
-    max_x: maxX,
-    max_y: maxY,
-  } = layout.simulator.getBoundingBox()
-
-  return {
-    boundingBox: {
-      width: (maxX - minX) * SCALE + PADDING * 2,
-      height: (maxY - minY) * SCALE + PADDING * 2,
-    },
-    positions: pipe(
-      keys(vertices),
-      map(id => {
-        const { x, y } = layout.getNodePosition(id)
-        return [
-          id,
-          { x: (x - minX) * SCALE + PADDING, y: (y - minY) * SCALE + PADDING },
-        ]
-      }),
-      reduce(toMap()),
-    ),
-  }
-}
-
-const findSimilarInternalVertexPair = ({
-  vertices,
-  vertexIds1,
-  vertexIds2,
-}: {
-  vertices: Graph[`vertices`]
-  vertexIds1: Set<string>
-  vertexIds2: Set<string>
-}): [string, string] =>
-  pipe(
-    vertexIds1,
-    flatMap(id1 =>
-      pipe(
-        vertexIds2,
-        map(id2 => [id1, id2]),
-      ),
-    ),
-    filter(ids => ids.every(id => vertices.get(id)?.type === `internal`)),
-    maxWith(([id1, id2]) => {
-      const vertex1 = vertices.get(id1)!
-      const vertex2 = vertices.get(id2)!
-      return vertex1.tags.intersection(vertex2.tags).size
-    }),
-    get,
-  )
-
 export const findConnectedComponents = (
   edges: Graph[`edges`],
 ): Set<string>[] => {
@@ -281,21 +179,4 @@ export const findConnectedComponents = (
   return scc(graph)
 }
 
-const SPRING_LENGTH = 30
-const SCALE = 10
-const PADDING = 150
-
-export type GraphLayout = {
-  boundingBox: BoundingBox
-  positions: Map<string, Position>
-}
-
-export type BoundingBox = {
-  width: number
-  height: number
-}
-
-export type Position = {
-  x: number
-  y: number
-}
+export type { BoundingBox, GraphLayout, Position } from './graph-layout.ts'

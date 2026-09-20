@@ -32,6 +32,7 @@ export default defineConfig({
             `react`,
             `react-dom`,
             `react/jsx-dev-runtime`,
+            `@rtsao/scc`,
             `superjson`,
             `vitest-browser-react`,
           ],

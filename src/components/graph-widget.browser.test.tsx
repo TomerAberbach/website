@@ -4,6 +4,7 @@ import { expect, test } from 'vitest'
 import { commands, page } from 'vitest/browser'
 import { render } from 'vitest-browser-react'
 import GraphWidget from './graph-widget.tsx'
+import { getVertexBox } from '~/services/graph-layout.ts'
 import type { Graph } from '~/services/graph.ts'
 import { createTagClassName } from '~/services/home-state.ts'
 import { createGraph } from '~/test/graph.ts'
@@ -239,5 +240,51 @@ test(
         screenshotOptions: { animations: `disabled` },
       },
     )
+  },
+)
+
+/**
+ * The rendered labels that are not inside the box the layout estimates for
+ * them, given the graph's rendered size.
+ */
+const findLabelsOutsideEstimate = (
+  graph: Graph,
+  graphElement: Element,
+): string[] => {
+  const graphRect = graphElement.getBoundingClientRect()
+  const { width, height } = graph.layout.boundingBox
+  const scaleX = graphRect.width / width
+  const scaleY = graphRect.height / height
+  return [...graph.vertices.values()]
+    .filter(vertex => {
+      const label = page
+        .getByRole(`link`, { name: vertex.label, exact: true })
+        .or(page.getByRole(`button`, { name: vertex.label, exact: true }))
+        .element()
+        .querySelector(`span`)!
+        .getBoundingClientRect()
+      const box = getVertexBox(vertex, graph.layout.positions.get(vertex.id)!)
+      return (
+        label.left < graphRect.left + box.left * scaleX ||
+        label.right > graphRect.left + box.right * scaleX ||
+        label.top < graphRect.top + box.top * scaleY ||
+        label.bottom > graphRect.top + box.bottom * scaleY
+      )
+    })
+    .map(vertex => vertex.id)
+}
+
+test(
+  `every real label renders inside the box the layout estimates for it`,
+  { timeout: REAL_POSTS_TIMEOUT_MS },
+  async () => {
+    const graph = superjson.parse<Graph>(await commands.getGraph())
+    const screen = await render(
+      <GraphWidget id='graph' graph={graph} selectedVertexId={REAL_POST_ID} />,
+    )
+
+    const graphElement = screen.container.querySelector(`#graph`)!
+
+    expect(findLabelsOutsideEstimate(graph, graphElement)).toStrictEqual([])
   },
 )

@@ -17,6 +17,14 @@ import closeSvgPath from './close.svg?url'
 import { Link } from './link.tsx'
 import useHydrated from '~/hooks/use-hydrated.ts'
 import { computeAltitudes, getEdgeAltitude } from '~/services/altitude.ts'
+import {
+  INTERNAL_LABEL_WIDTH,
+  LABEL_OFFSET,
+  LABEL_PADDING_X_EM,
+  MIN_GRAPH_WIDTH_RATIO,
+  VERTEX_RADIUS,
+  VERTEX_SIZE,
+} from '~/services/graph-constants.ts'
 import type {
   Graph,
   Edge as GraphEdge,
@@ -87,7 +95,7 @@ const GraphWidget = ({
           id={id}
           className='relative m-auto w-full'
           style={{
-            minWidth: 0.75 * width,
+            minWidth: MIN_GRAPH_WIDTH_RATIO * width,
             maxWidth: width,
             aspectRatio: `${width} / ${height}`,
             // Before panzoom loads, "fake" the centering in the user's viewport
@@ -466,11 +474,14 @@ const Vertex = ({
   const labelNode = (
     <span
       className={clsx(
-        `box-decoration-clone py-[0.3em] wrap-break-word opacity-75 shadow-[-0.25em_0_0,0.25em_0_0] transition duration-200 group-hover/vertex:opacity-90 sm:py-[0.25em]`,
+        `box-decoration-clone py-[0.3em] opacity-75 shadow-[calc(-1*var(--label-padding-x))_0_0,calc(var(--label-padding-x))_0_0] transition duration-200 group-hover/vertex:opacity-90 sm:py-[0.25em]`,
         vertex.type === `internal`
-          ? `bg-blue-200 shadow-blue-200 group-hover/link:bg-blue-300 group-hover/link:shadow-blue-300 group-focus-visible/link:bg-blue-300 group-focus-visible/link:shadow-blue-300`
-          : `group-odd/vertex:bg-yellow-100 group-odd/vertex:shadow-yellow-100 group-even/vertex:bg-orange-200 group-even/vertex:shadow-orange-200 group-odd/vertex:group-hover/link:bg-yellow-200 group-odd/vertex:group-hover/link:shadow-yellow-200 group-even/vertex:group-hover/link:bg-orange-300 group-even/vertex:group-hover/link:shadow-orange-300 group-odd/vertex:group-focus-visible/link:bg-yellow-200 group-odd/vertex:group-focus-visible/link:shadow-yellow-200 group-even/vertex:group-focus-visible/link:bg-orange-300 group-even/vertex:group-focus-visible/link:shadow-orange-300`,
+          ? `bg-blue-200 wrap-break-word shadow-blue-200 group-hover/link:bg-blue-300 group-hover/link:shadow-blue-300 group-focus-visible/link:bg-blue-300 group-focus-visible/link:shadow-blue-300`
+          : `whitespace-nowrap group-odd/vertex:bg-yellow-100 group-odd/vertex:shadow-yellow-100 group-even/vertex:bg-orange-200 group-even/vertex:shadow-orange-200 group-odd/vertex:group-hover/link:bg-yellow-200 group-odd/vertex:group-hover/link:shadow-yellow-200 group-even/vertex:group-hover/link:bg-orange-300 group-even/vertex:group-hover/link:shadow-orange-300 group-odd/vertex:group-focus-visible/link:bg-yellow-200 group-odd/vertex:group-focus-visible/link:shadow-yellow-200 group-even/vertex:group-focus-visible/link:bg-orange-300 group-even/vertex:group-focus-visible/link:shadow-orange-300`,
       )}
+      style={
+        { [`--label-padding-x`]: `${LABEL_PADDING_X_EM}em` } as CSSProperties
+      }
     >
       {vertex.label}
     </span>
@@ -483,13 +494,21 @@ const Vertex = ({
       />
       <div
         className={clsx(
-          `absolute bottom-[150%] left-1/2 origin-bottom -translate-x-1/2 text-center text-sm font-medium md:text-base`,
+          `absolute left-1/2 origin-bottom -translate-x-1/2 text-center text-sm font-medium md:text-base`,
           vertex.type === `internal` ? `z-20` : `z-10`,
         )}
-        style={{ scale: `var(--altitude-scale)` }}
+        style={{
+          bottom: `${(100 * (VERTEX_RADIUS + LABEL_OFFSET)) / VERTEX_SIZE}%`,
+          scale: `var(--altitude-scale)`,
+        }}
       >
         {vertex.type === `internal` ? (
-          <div className='inline-block w-52 text-balance'>{labelNode}</div>
+          <div
+            className='inline-block text-balance'
+            style={{ width: INTERNAL_LABEL_WIDTH }}
+          >
+            {labelNode}
+          </div>
         ) : (
           labelNode
         )}
@@ -642,9 +661,6 @@ const DialogVertex = ({
     </>
   )
 }
-
-const VERTEX_RADIUS = 10
-const VERTEX_SIZE = VERTEX_RADIUS * 2
 
 /**
  * The altitude an element has from its distance to the selected vertex, and
