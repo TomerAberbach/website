@@ -40,5 +40,6 @@ export const truncateAtWordBoundary = (
     }
   }
 
-  return text.slice(0, Math.max(0, maxLength))
+  // A cut inside a surrogate pair leaves half of the character at the end.
+  return text.slice(0, Math.max(0, maxLength)).replace(/\p{Cs}$/u, ``)
 }

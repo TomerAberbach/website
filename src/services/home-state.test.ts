@@ -1,4 +1,5 @@
-import { describe, expect, test } from 'vitest'
+import { fc, test } from '@fast-check/vitest'
+import { describe, expect } from 'vitest'
 import {
   formatSelectedTags,
   getHomeData,
@@ -72,6 +73,47 @@ describe(`parseHomeState`, () => {
   ])(`at %s the operator is %s`, (search, operator) => {
     expect(parseHomeState(search, DATA).operator).toBe(operator)
   })
+
+  test.prop([fc.string()])(
+    `any query string renders a preload stylesheet`,
+    search => {
+      const state = parseHomeState(search, DATA)
+
+      const style = renderPreloadStyle(state, DATA)
+
+      expect(style).toBeTypeOf(`string`)
+    },
+  )
+
+  test.prop([
+    fc.array(
+      fc.tuple(
+        fc.constantFrom(`post`, `tags`, `op`),
+        fc.oneof(
+          fc.constantFrom(`newest`, `middle`, `music`, `code`, `and`),
+          fc.string(),
+        ),
+      ),
+    ),
+  ])(`any params select a known post and known tags`, params => {
+    const search = `?${new URLSearchParams(params)}`
+
+    const { postId, tags } = parseHomeState(search, DATA)
+
+    expect(DATA.posts.map(post => post.id)).toContain(postId)
+    expect(DATA.tags).toStrictEqual(expect.arrayContaining(tags))
+  })
+
+  test.prop([fc.subarray(DATA.tags)])(
+    `sorted known tags round trip through the tags param`,
+    tags => {
+      const search = `?tags=${tags.join(`,`)}`
+
+      const state = parseHomeState(search, DATA)
+
+      expect(state.tags).toStrictEqual(tags)
+    },
+  )
 })
 
 test.each([

@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest'
+import { fc, test } from '@fast-check/vitest'
+import { expect } from 'vitest'
 import {
   formatDateForDisplay,
   formatDatesForDisplay,
@@ -85,6 +86,33 @@ test.each([
     const text = `ab ${`c`.repeat(30)}`
 
     expect(truncateAtWordBoundary(text, maxLength)).toBe(truncated)
+  },
+)
+
+test.prop([fc.string(), fc.nat({ max: 20 })])(
+  `truncateAtWordBoundary exceeds the maximum length by at most the ellipsis`,
+  (text, maxLength) => {
+    const truncated = truncateAtWordBoundary(text, maxLength)
+
+    expect(truncated.length).toBeLessThanOrEqual(maxLength + 1)
+  },
+)
+
+test.prop([fc.string(), fc.nat({ max: 20 })])(
+  `truncateAtWordBoundary keeps a prefix of the text`,
+  (text, maxLength) => {
+    const truncated = truncateAtWordBoundary(text, maxLength)
+
+    expect(text.startsWith(truncated.replace(/…$/u, ``))).toBe(true)
+  },
+)
+
+test.prop([fc.string({ unit: `grapheme` }), fc.nat({ max: 20 })])(
+  `truncateAtWordBoundary keeps well-formed text well-formed`,
+  (text, maxLength) => {
+    const truncated = truncateAtWordBoundary(text, maxLength)
+
+    expect(truncated.isWellFormed()).toBe(true)
   },
 )
 
