@@ -1,9 +1,9 @@
-node_modules
-/.cache
-.env
+/node_modules/
+/.cache/
+/.env
 **/build/
 /dist/
 /.astro/
-coverage
-.vitest
-/.wrangler
+/coverage/
+/.vitest/
+/.wrangler/
