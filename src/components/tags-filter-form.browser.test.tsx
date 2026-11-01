@@ -7,7 +7,7 @@ import {
   renderAtUrl,
   searchParamsProbe,
   searchParamsText,
-} from '~/test/url.tsx'
+} from '~/testing/url.tsx'
 
 const TAGS = [`a`, `b`, `c`, `d`, `e`]
 

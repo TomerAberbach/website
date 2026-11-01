@@ -15,15 +15,7 @@ export const Link = (props: LinkProps) =>
     />
   )
 
-const isExternalUrl = (href: string): boolean => {
-  try {
-    // eslint-disable-next-line no-new
-    new URL(href)
-    return true
-  } catch {
-    return false
-  }
-}
+const isExternalUrl = (href: string): boolean => URL.canParse(href)
 
 const ExternalLink = (props: LinkProps) => (
   // eslint-disable-next-line jsx-a11y/anchor-has-content

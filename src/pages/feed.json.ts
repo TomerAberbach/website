@@ -39,6 +39,6 @@ export const getFeed = async (): Promise<Record<string, unknown>> => ({
 })
 
 export const GET: APIRoute = async () =>
-  new Response(JSON.stringify(await getFeed()), {
+  Response.json(await getFeed(), {
     headers: { 'Content-Type': `application/json; charset=utf-8` },
   })

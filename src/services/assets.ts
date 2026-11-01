@@ -46,11 +46,9 @@ export const VIDEO_NAME_TO_URL: ReadonlyMap<string, VideoUrls> = pipe(
   filterMap(([name, url]): [string, [keyof VideoUrls, string]] | null => {
     const ext = extname(name)
     const videoType = ext.slice(1)
-    if (!arrayIncludes(VIDEO_TYPES, videoType)) {
-      return null
-    }
-
-    return [basename(name, ext), [videoType, url]]
+    return arrayIncludes(VIDEO_TYPES, videoType)
+      ? [basename(name, ext), [videoType, url]]
+      : null
   }),
   reduce(
     toGrouped(

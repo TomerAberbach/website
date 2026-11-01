@@ -201,9 +201,8 @@ export const placeFan = ({
     const isRing = total > gapAngle && 2 * Math.PI - total < wrapGap
     const fanSpan = isRing ? 2 * Math.PI - wrapGap : Math.max(gapAngle, total)
     const extra = (fanSpan - total) / count
-    const first = isRing
-      ? gapStart + wrapGap / 2 + extra / 2
-      : gapStart + (gapAngle - fanSpan) / 2 + extra / 2
+    const first =
+      gapStart + (isRing ? wrapGap : gapAngle - fanSpan) / 2 + extra / 2
     angles = gaps.reduce(
       (angles, gap) => [...angles, angles.at(-1)! + gap + extra],
       [first],

@@ -39,9 +39,7 @@ import infoSvgPath from './images/info.svg?url'
 import warningSvgPath from './images/warning.svg?url'
 import 'mdast-util-directive'
 
-export const convertMarkdownToHtml = async (
-  markdown: string,
-): Promise<HtmlRoot> =>
+export const convertMarkdownToHtml = (markdown: string): Promise<HtmlRoot> =>
   markdownToHtmlProcessor.run(markdownToHtmlProcessor.parse(markdown), markdown)
 
 // The `@remark-embedder` packages are CommonJS with an `__esModule` flag, so
@@ -212,6 +210,7 @@ const collapseHeadings = (parent: HeadingRangeTree): void => {
       (start, nodes, end) => {
         modified = true
 
+        // eslint-disable-next-line unicorn/better-dom-traversing -- An mdast node, not a DOM element
         const firstChild = start.children[0]
         invariant(
           firstChild?.type === `text`,
@@ -331,7 +330,7 @@ const markdownToHtmlProcessor = unified()
           }
 
           pipe(
-            String(meta).split(`,`),
+            meta.split(`,`),
             map(value => {
               const values = value.split(`=`)
               invariant(values.length === 2, `Expected a pair`)

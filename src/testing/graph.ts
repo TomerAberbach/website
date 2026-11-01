@@ -41,10 +41,9 @@ export const createGraph = ({
   }
 
   const positions = new Map(
-    [...vertices.keys()].map((id, index) => [
-      id,
-      { x: 100 + index * 200, y: 100 + index * 200 },
-    ]),
+    vertices
+      .keys()
+      .map((id, index) => [id, { x: 100 + index * 200, y: 100 + index * 200 }]),
   )
   const size = 200 * vertices.size
 

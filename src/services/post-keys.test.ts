@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
-import { usePostsDirectory } from '~/test/posts-directory.ts'
+import { setUpPostsDirectory } from '~/testing/posts-directory.ts'
 
-const { writePost, postPath } = usePostsDirectory()
+const { writePost, postPath } = setUpPostsDirectory()
 
 const getPostKeys = async () => (await import(`./post-keys.ts`)).getPostKeys()
 
@@ -12,7 +12,7 @@ test(`getPostKeys maps each file basename to its post type`, async () => {
 
   const keys = await getPostKeys()
 
-  expect(keys).toEqual(
+  expect(keys).toStrictEqual(
     new Map([
       [`first`, { id: `first`, type: `markdown` }],
       [`second`, { id: `second`, type: `markdown` }],
@@ -27,7 +27,7 @@ test(`getPostKeys skips files starting with an underscore`, async () => {
 
   const keys = await getPostKeys()
 
-  expect([...keys.keys()]).toEqual([`published`])
+  expect(keys.keys().toArray()).toStrictEqual([`published`])
 })
 
 test(`getPostKeys throws for a file without the md extension`, async () => {

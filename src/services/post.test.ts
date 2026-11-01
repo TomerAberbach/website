@@ -3,10 +3,10 @@ import type { HrefPost, MarkdownPost } from './post.ts'
 import {
   frontMatter,
   postFrontMatter,
-  usePostsDirectory,
-} from '~/test/posts-directory.ts'
+  setUpPostsDirectory,
+} from '~/testing/posts-directory.ts'
 
-const { writePost } = usePostsDirectory()
+const { writePost } = setUpPostsDirectory()
 
 const getHrefPost = async (id: string) =>
   (await import(`./post.ts`)).getPost({
@@ -38,7 +38,7 @@ test(`getPost parses an href post from its front matter`, async () => {
 
   const post = await getHrefPost(`elsewhere`)
 
-  expect(post).toEqual({
+  expect(post).toStrictEqual({
     id: `https://example.com/elsewhere`,
     type: `href`,
     title: `Elsewhere`,
@@ -93,7 +93,7 @@ test(`getPost derives references from the links in a markdown post`, async () =>
 
   const post = await getMarkdownPost(`linked`)
 
-  expect(post.references).toEqual(
+  expect(post.references).toStrictEqual(
     new Map([
       [`example.com`, new Set([`https://example.com/thing`])],
       [`other-post`, new Set([`/other-post`])],
@@ -160,7 +160,7 @@ test.each([
 
   const post = await getMarkdownPost(`featured`)
 
-  expect(post.features).toEqual(features)
+  expect(post.features).toStrictEqual(features)
 })
 
 test(`getPost rejects duplicate tags`, async () => {
@@ -170,7 +170,7 @@ test(`getPost rejects duplicate tags`, async () => {
     `${postFrontMatter({ title: `Duplicate`, tags: [`code`, `code`] })}\nHi.\n`,
   )
 
-  await expect(getMarkdownPost(`duplicate-tags`)).rejects.toThrow()
+  await expect(getMarkdownPost(`duplicate-tags`)).rejects.toThrow(`"tags"`)
 })
 
 test(`getPost rejects a post without a title`, async () => {
@@ -180,5 +180,5 @@ test(`getPost rejects a post without a title`, async () => {
     `${frontMatter([`tags: []`, `dates:`, `  published: 2024-01-05`])}\nHi.\n`,
   )
 
-  await expect(getMarkdownPost(`untitled`)).rejects.toThrow()
+  await expect(getMarkdownPost(`untitled`)).rejects.toThrow(`"title"`)
 })

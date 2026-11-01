@@ -26,7 +26,7 @@ export const getPostKeys = cache(async (): Promise<Map<string, PostKey>> => {
     flatMapConcur(async type =>
       pipe(
         asConcur(await fs.readdir(privatePath(`posts`, type))),
-        mapConcur(async name => {
+        mapConcur(name => {
           const id = parseId(name)
           return [id, { id, type }]
         }),

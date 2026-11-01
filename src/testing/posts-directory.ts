@@ -8,7 +8,7 @@ import type { PostType } from '~/services/post-keys.ts'
  * Points the private directory at a fresh temporary directory for each test
  * and returns a function that writes a post file into it.
  */
-export const usePostsDirectory = (): {
+export const setUpPostsDirectory = (): {
   writePost: (type: PostType, name: string, content?: string) => Promise<void>
   postPath: (type: PostType, name: string) => string
 } => {

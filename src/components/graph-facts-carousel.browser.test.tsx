@@ -3,7 +3,7 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import GraphFactsCarousel from './graph-facts-carousel.tsx'
 import type { GraphFact } from '~/services/graph-facts.ts'
-import { renderAtUrl } from '~/test/url.tsx'
+import { renderAtUrl } from '~/testing/url.tsx'
 
 const FIRST_FACT: GraphFact = {
   text: [
@@ -62,7 +62,7 @@ const preferReducedMotion = () =>
       }) as unknown as MediaQueryList,
   )
 
-test(`the server render keeps the fact invisible until the client fades it in`, async () => {
+test(`the server render keeps the fact invisible until the client fades it in`, () => {
   const html = renderToString(
     <GraphFactsCarousel facts={[FIRST_FACT]} onSelectVertex={() => {}} />,
   )

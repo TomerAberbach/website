@@ -303,9 +303,9 @@ const descend = ({
     shapes,
     leafIds,
     leafOwners: leaves,
-    allLeafIds: [...leaves.keys()],
+    allLeafIds: leaves.keys().toArray(),
     leafShapes: new Map(
-      [...leaves.keys()].map(id => [id, getShape(vertices.get(id)!)]),
+      leaves.keys().map(id => [id, getShape(vertices.get(id)!)]),
     ),
     leafOffsets: new Map(),
     leafPositions: new Map(),
@@ -319,18 +319,18 @@ const descend = ({
         other[1] === fromId ||
         other[1] === toId
           ? []
-          : [index],
+          : index,
       ),
     ),
     ownEdgeIndices: new Map(
       ids.map(id => [
         id,
         coreEdges.flatMap((edge, index) =>
-          edge[0] === id || edge[1] === id ? [index] : [],
+          edge[0] === id || edge[1] === id ? index : [],
         ),
       ]),
     ),
-    maxReach: Math.max(...[...shapes.values()].map(shape => shape.reach)),
+    maxReach: Math.max(...shapes.values().map(shape => shape.reach)),
     neighborLists: new Map(ids.map(id => [id, [...neighbors.get(id)!]])),
     penaltyShare: 1,
     vertices,
@@ -356,7 +356,7 @@ const descend = ({
     // Fans point away from the post's neighbors. The directions are held for
     // the step so that every gradient is taken against a fixed picture.
     state.fanDirections = new Map(
-      [...fans.keys()].map(id => [id, getFanDirection(state, id)]),
+      fans.keys().map(id => [id, getFanDirection(state, id)]),
     )
     // The leaves are placed around their post for the step, and move with it,
     // so their boxes take part in the overlap and clearance terms.
@@ -423,11 +423,13 @@ const descend = ({
   return state
 }
 
+let lastViolations: Violations | undefined
+
 /**
  * The violations of each term in the last layout, for tuning against a real
  * graph.
  */
-export let lastViolations: Violations | undefined
+export const getLastViolations = (): Violations | undefined => lastViolations
 
 type Violations = {
   stress: number
@@ -879,14 +881,11 @@ const getOverlapEnergy = (
   const overlapY =
     Math.min(position1.y + shape1.bottom, position2.y + shape2.bottom) -
     Math.max(position1.y + shape1.top, position2.y + shape2.top)
-  if (overlapX <= 0 || overlapY <= 0) {
-    return 0
-  }
-  return (
-    state.penaltyShare *
-    OVERLAP_WEIGHT *
-    (Math.min(overlapX, overlapY) / IDEAL_EDGE_LENGTH) ** 2
-  )
+  return overlapX <= 0 || overlapY <= 0
+    ? 0
+    : state.penaltyShare *
+        OVERLAP_WEIGHT *
+        (Math.min(overlapX, overlapY) / IDEAL_EDGE_LENGTH) ** 2
 }
 
 /** How far the edge intrudes on the vertex's box, if it passes it at all. */
@@ -915,14 +914,11 @@ const getClearanceEnergy = (
     return 0
   }
   const needed = getShapeExtent(shape, Math.atan2(dy, dx))
-  if (distance >= needed) {
-    return 0
-  }
-  return (
-    state.penaltyShare *
-    CLEARANCE_WEIGHT *
-    ((needed - distance) / IDEAL_EDGE_LENGTH) ** 2
-  )
+  return distance >= needed
+    ? 0
+    : state.penaltyShare *
+        CLEARANCE_WEIGHT *
+        ((needed - distance) / IDEAL_EDGE_LENGTH) ** 2
 }
 
 /** How much closer than the minimum angle the vertex's edges are to each other. */
@@ -977,14 +973,11 @@ const getFanEnergy = (
   const offAxis = Math.abs(
     normalizeAngle(Math.atan2(other.y - post.y, other.x - post.x) - direction),
   )
-  if (offAxis >= halfSpan) {
-    return 0
-  }
-  return (
-    state.penaltyShare *
-    ANGLE_WEIGHT *
-    ((halfSpan - offAxis) / MIN_EDGE_ANGLE) ** 2
-  )
+  return offAxis >= halfSpan
+    ? 0
+    : state.penaltyShare *
+        ANGLE_WEIGHT *
+        ((halfSpan - offAxis) / MIN_EDGE_ANGLE) ** 2
 }
 
 /**

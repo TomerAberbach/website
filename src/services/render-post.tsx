@@ -44,7 +44,6 @@ const createHeading =
         <img
           src={linkSvgPath}
           className='not-prose m-0 size-6'
-          // eslint-disable-next-line react/jsx-no-useless-fragment
           alt={`${renderToString(<>{children}</>)} permalink`}
         />
       </Link>,
@@ -141,6 +140,7 @@ const Pre: Components[`pre`] = ({ [`data-title`]: title, style, ...props }) => {
 
   return (
     <>
+      {/* eslint-disable-next-line jsx-a11y/prefer-tag-over-role -- An h2 would take the prose heading styles */}
       <div
         role='heading'
         aria-level={2}

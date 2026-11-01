@@ -9,7 +9,7 @@ import {
   parseHomeState,
   renderPreloadStyle,
 } from '~/services/home-state.ts'
-import { createGraph } from '~/test/graph.ts'
+import { createGraph } from '~/testing/graph.ts'
 
 // Newest first, as `getOrderedPosts` orders them.
 const GRAPH = createGraph({

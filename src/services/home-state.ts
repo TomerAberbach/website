@@ -56,9 +56,10 @@ export const getHomeData = (
     }
   })
   const tags = [...new Set(posts.flatMap(post => post.tags))].sort()
-  const edges = [...graph.edges.values()].map(
-    ({ fromId, toId }): [string, string] => [fromId, toId],
-  )
+  const edges = graph.edges
+    .values()
+    .map(({ fromId, toId }): [string, string] => [fromId, toId])
+    .toArray()
   return { posts, tags, edges }
 }
 

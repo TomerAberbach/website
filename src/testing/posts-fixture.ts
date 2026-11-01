@@ -8,7 +8,7 @@ import { afterAll, beforeAll, vi } from 'vitest'
  * posts and one href post for the whole file, so post loading reads the fixture
  * instead of the real posts.
  */
-export const usePostsFixture = (): void => {
+export const setUpPostsFixture = (): void => {
   let root: string
 
   beforeAll(async () => {

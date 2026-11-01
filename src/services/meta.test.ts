@@ -34,7 +34,7 @@ test(`getMeta includes the title, canonical URL, description, and author`, () =>
     title: `Title`,
     canonicalUrl: `http://localhost:3000/some-post`,
   })
-  expect(meta.tags).toEqual(
+  expect(meta.tags).toStrictEqual(
     expect.arrayContaining([
       { name: `description`, content: `Description` },
       { name: `author`, content: SITE_TITLE_AND_AUTHOR },
@@ -73,7 +73,7 @@ test(`getMeta without a post has no open graph or twitter meta`, () => {
 test(`getMeta with a post adds open graph meta with the post thumbnail`, () => {
   const { tags } = getMeta(pathname, { ...website, post })
 
-  expect(tags).toEqual(
+  expect(tags).toStrictEqual(
     expect.arrayContaining([
       { property: `og:title`, content: `Title` },
       { property: `og:description`, content: `Description` },
@@ -87,7 +87,7 @@ test(`getMeta with a post adds open graph meta with the post thumbnail`, () => {
 test(`getMeta with a post adds twitter meta with the post thumbnail`, () => {
   const { tags } = getMeta(pathname, { ...website, post })
 
-  expect(tags).toEqual(
+  expect(tags).toStrictEqual(
     expect.arrayContaining([
       { name: `twitter:card`, content: `summary_large_image` },
       { name: `twitter:title`, content: `Title` },
@@ -114,7 +114,7 @@ test(`getMeta with a website post has no article meta`, () => {
 test(`getMeta with an article adds the published time and author`, () => {
   const { tags } = getMeta(pathname, article)
 
-  expect(tags).toEqual(
+  expect(tags).toStrictEqual(
     expect.arrayContaining([
       { property: `og:type`, content: `article` },
       {
@@ -131,7 +131,7 @@ test(`getMeta with an article adds one tag meta per tag`, () => {
 
   expect(
     tags.filter(tag => `property` in tag && tag.property === `article:tag`),
-  ).toEqual([
+  ).toStrictEqual([
     { property: `article:tag`, content: `code` },
     { property: `article:tag`, content: `music` },
   ])

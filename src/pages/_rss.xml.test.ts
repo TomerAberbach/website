@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
-import { usePostsFixture } from '~/test/posts-fixture.ts'
+import { setUpPostsFixture } from '~/testing/posts-fixture.ts'
 
-usePostsFixture()
+setUpPostsFixture()
 
 const loadRss = async () => {
   const { GET } = await import(`./rss.xml.ts`)
@@ -47,7 +47,7 @@ test(`the rss feed lists the markdown posts newest first`, async () => {
     items.map(
       item => /<title>(?<title>.*?)<\/title>/u.exec(item)!.groups!.title,
     ),
-  ).toEqual([
+  ).toStrictEqual([
     `<![CDATA[Newer Post]]>`,
     `<![CDATA[Older Post]]>`,
     `<![CDATA[Oldest Post]]>`,

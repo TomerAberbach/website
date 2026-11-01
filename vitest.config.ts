@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
-import { getGraph, renderThumbnail } from './src/test/commands.ts'
+import { getGraph, renderThumbnail } from './src/testing/commands.ts'
 
 const BROWSER_TESTS = `src/**/*.browser.test.{ts,tsx}`
 
@@ -40,7 +40,7 @@ export default defineConfig({
         test: {
           name: `browser`,
           include: [BROWSER_TESTS],
-          setupFiles: [`./src/test/browser-setup.ts`],
+          setupFiles: [`./src/testing/browser-setup.ts`],
           browser: {
             enabled: true,
             headless: true,

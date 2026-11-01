@@ -20,12 +20,14 @@ export const placeEdgeLabels = ({
       getVertexBox(vertex, positions.get(id)!),
     ]),
   )
+  // eslint-disable-next-line unicorn/prefer-iterator-to-array -- Safari before 18.4 lacks `Iterator#toArray`
   const segments = [...edges.values()].map(({ fromId, toId }) => ({
     fromId,
     toId,
     from: positions.get(fromId)!,
     to: positions.get(toId)!,
   }))
+  // eslint-disable-next-line unicorn/prefer-iterator-to-array -- Safari before 18.4 lacks `Iterator#toArray`
   const labeled = [...edges.values()]
     .filter(({ hrefs }) => hrefs.size > 1)
     .sort((edge1, edge2) => edge2.hrefs.size - edge1.hrefs.size)

@@ -83,13 +83,13 @@ const findFact = (
 const vertexIdsIn = (fact: GraphFact): string[] =>
   fact.text.flatMap(segment =>
     typeof segment !== `string` && `vertexId` in segment
-      ? [segment.vertexId]
+      ? segment.vertexId
       : [],
   )
 
 const hrefsIn = (fact: GraphFact): string[] =>
   fact.text.flatMap(segment =>
-    typeof segment !== `string` && `href` in segment ? [segment.href] : [],
+    typeof segment !== `string` && `href` in segment ? segment.href : [],
   )
 
 // A -> b -> c, where a is tagged x and y, b is tagged y, and c is tagged z.
@@ -161,7 +161,7 @@ test.each([
     ],
   },
 ])(`order, size, and vertex type facts for $name`, ({ graph, facts }) => {
-  expect(plainFacts(graph)).toEqual(expect.arrayContaining(facts))
+  expect(plainFacts(graph)).toStrictEqual(expect.arrayContaining(facts))
 })
 
 test(`terms in facts link to wikipedia`, () => {
@@ -203,7 +203,7 @@ test.each([
     ],
   },
 ])(`degree facts for $name`, ({ graph, facts }) => {
-  expect(plainFacts(graph)).toEqual(expect.arrayContaining(facts))
+  expect(plainFacts(graph)).toStrictEqual(expect.arrayContaining(facts))
 })
 
 test(`vertices in facts link to their ids`, () => {
@@ -240,7 +240,7 @@ test.each([
     ],
   },
 ])(`component facts for $name`, ({ graph, facts }) => {
-  expect(plainFacts(graph)).toEqual(expect.arrayContaining(facts))
+  expect(plainFacts(graph)).toStrictEqual(expect.arrayContaining(facts))
 })
 
 test.each([
@@ -280,7 +280,7 @@ test.each([
     ],
   },
 ])(`tag facts for $name`, ({ graph, facts }) => {
-  expect(plainFacts(graph)).toEqual(expect.arrayContaining(facts))
+  expect(plainFacts(graph)).toStrictEqual(expect.arrayContaining(facts))
 })
 
 test.each([
@@ -350,7 +350,7 @@ test.each([
     ],
   },
 ])(`distance facts for $name`, ({ graph, facts }) => {
-  expect(plainFacts(graph)).toEqual(expect.arrayContaining(facts))
+  expect(plainFacts(graph)).toStrictEqual(expect.arrayContaining(facts))
 })
 
 test(`radius fact lists every center when they tie on degree`, () => {
@@ -361,7 +361,7 @@ test(`radius fact lists every center when they tie on degree`, () => {
 })
 
 test(`edge weight facts use the number of hrefs per edge`, () => {
-  expect(plainFacts(path)).toEqual(
+  expect(plainFacts(path)).toStrictEqual(
     expect.arrayContaining([
       `The heaviest edge goes from B to C with weight 2.`,
       `The average edge weight is 1.50.`,
@@ -378,7 +378,7 @@ test(`heaviest edge fact links both endpoints`, () => {
 })
 
 test(`counting facts for an empty graph report zeros`, () => {
-  expect(plainFacts(buildGraph({ vertices: [] }))).toEqual(
+  expect(plainFacts(buildGraph({ vertices: [] }))).toStrictEqual(
     expect.arrayContaining([
       `The graph has order 0 and size 0.`,
       `The graph has 0 weak components.`,

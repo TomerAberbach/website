@@ -38,6 +38,7 @@ export const LogicalOperatorRadioButtonGroup = ({
                 data-home-operator={currentLogicalOperator}
                 className='group relative text-center font-mono leading-none font-medium first:rounded-l-xl last:rounded-r-xl'
               >
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label -- The wrapping label provides the name */}
                 <input
                   type='radio'
                   name='op'

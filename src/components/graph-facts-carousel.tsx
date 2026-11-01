@@ -18,6 +18,7 @@ const GraphFactsCarousel = ({
   // fades in instead of being swapped out.
   const [shuffledFacts, setShuffledFacts] = useState<GraphFact[] | null>(null)
   useEffect(() => {
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-adjust-state-on-prop-change -- Shuffling during render would make hydration differ from the server render
     setShuffledFacts(shuffle(facts))
   }, [facts])
 
@@ -49,8 +50,7 @@ const GraphFactsCarousel = ({
   const fact = (shuffledFacts ?? facts)[displayedIndex]!
 
   return (
-    <p
-      role='status'
+    <output
       aria-live='polite'
       className='flex max-h-[2lh] min-h-[2lh] max-w-prose items-center text-center text-sm text-balance text-gray-600'
     >
@@ -65,7 +65,7 @@ const GraphFactsCarousel = ({
           />
         ))}
       </span>
-    </p>
+    </output>
   )
 }
 
@@ -105,7 +105,9 @@ const shuffle = <Value,>(values: readonly Value[]): Value[] => {
   const shuffled = [...values]
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!]
+    const value = shuffled[i]!
+    shuffled[i] = shuffled[j]!
+    shuffled[j] = value
   }
   return shuffled
 }

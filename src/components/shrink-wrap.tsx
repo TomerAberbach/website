@@ -11,8 +11,7 @@ const ShrinkWrap = ({
 }) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const shrinkWrap = useCallback(() => {
-    const element = elementRef.current!
-    const { firstChild, lastChild, style } = element
+    const { firstChild, lastChild, style } = elementRef.current!
 
     style.width = ``
     if (!firstChild || !lastChild) {

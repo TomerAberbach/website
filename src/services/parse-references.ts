@@ -24,8 +24,7 @@ const parseReference = (href: string): string | null => {
     return null
   }
 
-  const url = new URL(href, SITE_URL)
-  let { host, pathname } = url
+  let { host, pathname } = new URL(href, SITE_URL)
 
   if (host === SITE_HOST) {
     const id = removePrefix(pathname, `/`)

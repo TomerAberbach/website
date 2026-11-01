@@ -7,7 +7,7 @@ import GraphWidget from './graph-widget.tsx'
 import { getVertexBox } from '~/services/graph-layout.ts'
 import type { Graph } from '~/services/graph.ts'
 import { createTagClassName } from '~/services/home-state.ts'
-import { createGraph } from '~/test/graph.ts'
+import { createGraph } from '~/testing/graph.ts'
 
 const GRAPH = createGraph({
   posts: [
@@ -100,10 +100,10 @@ test(`an internal vertex links to the post's page`, async () => {
 test(`only an edge standing for more than one link is labeled with the count`, async () => {
   const screen = await renderWidget()
 
-  const weights = [...screen.container.querySelectorAll(`svg text`)]
+  const weights = [...screen.container.querySelectorAll(`:scope svg text`)]
     .map(text => text.textContent)
     .sort()
-  expect(weights).toEqual([`2`])
+  expect(weights).toStrictEqual([`2`])
 })
 
 test(`vertices are placed at their layout position within the graph`, async () => {
@@ -115,7 +115,7 @@ test(`vertices are placed at their layout position within the graph`, async () =
     .element().parentElement!
   const { x, y } = GRAPH.layout.positions.get(`b`)!
   const { width, height } = GRAPH.layout.boundingBox
-  expect(relativeCenter(vertex, graph)).toEqual({
+  expect(relativeCenter(vertex, graph)).toStrictEqual({
     x: expect.closeTo(x / width, 2) as number,
     y: expect.closeTo(y / height, 2) as number,
   })
@@ -255,7 +255,8 @@ const findLabelsOutsideEstimate = (
   const { width, height } = graph.layout.boundingBox
   const scaleX = graphRect.width / width
   const scaleY = graphRect.height / height
-  return [...graph.vertices.values()]
+  return graph.vertices
+    .values()
     .filter(vertex => {
       const label = page
         .getByRole(`link`, { name: vertex.label, exact: true })
@@ -272,6 +273,7 @@ const findLabelsOutsideEstimate = (
       )
     })
     .map(vertex => vertex.id)
+    .toArray()
 }
 
 test(

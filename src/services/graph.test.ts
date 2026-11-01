@@ -158,8 +158,8 @@ test(`the layout positions every vertex inside the bounding box`, async () => {
     layout: { positions, boundingBox },
   } = await getGraph()
 
-  expect([...positions.keys()].sort()).toStrictEqual(
-    [...vertices.keys()].sort(),
+  expect(positions.keys().toArray().sort()).toStrictEqual(
+    vertices.keys().toArray().sort(),
   )
   expect(positionsOutside(positions, boundingBox)).toStrictEqual([])
 })
@@ -168,15 +168,18 @@ const positionsOutside = (
   positions: GraphLayout[`positions`],
   { width, height }: GraphLayout[`boundingBox`],
 ): Position[] =>
-  [...positions.values()].filter(
-    ({ x, y }) =>
-      !Number.isFinite(x) ||
-      !Number.isFinite(y) ||
-      x < 0 ||
-      y < 0 ||
-      x > width ||
-      y > height,
-  )
+  positions
+    .values()
+    .filter(
+      ({ x, y }) =>
+        !Number.isFinite(x) ||
+        !Number.isFinite(y) ||
+        x < 0 ||
+        y < 0 ||
+        x > width ||
+        y > height,
+    )
+    .toArray()
 
 test(`the graph includes facts`, async () => {
   const { facts } = await getGraph()

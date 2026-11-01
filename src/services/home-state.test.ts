@@ -5,7 +5,7 @@ import {
   parseHomeState,
   renderPreloadStyle,
 } from './home-state.ts'
-import { createGraph } from '~/test/graph.ts'
+import { createGraph } from '~/testing/graph.ts'
 
 // Newest first, as `getOrderedPosts` orders them.
 const GRAPH = createGraph({
@@ -124,7 +124,7 @@ describe(`renderPreloadStyle`, () => {
       `[data-home-tags-label]::before { content: "code and music"; }`,
     )
     expect(style).toContain(`[data-home-tags-reset] { display: inline-block; }`)
-    expect(style).toContain(`:not(.tag\\:code.tag\\:music)`)
+    expect(style).toContain(String.raw`:not(.tag\:code.tag\:music)`)
     expect(style).toContain(`[data-home-operator="&&"] > input { z-index: 10;`)
     expect(style).toContain(
       `[data-home-operator="||"] > input { z-index: auto;`,

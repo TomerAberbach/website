@@ -11,7 +11,7 @@ export const renderThumbnail: BrowserCommand<[postId: string]> = async (
   { project },
   postId,
 ) => {
-  useProductionFonts()
+  selectProductionFonts()
   const [{ getPostKeys }, { getMarkdownPost }, { renderThumbnail }] =
     await Promise.all([
       project.import<typeof PostKeysModule>(servicePath(`post-keys.ts`)),
@@ -41,7 +41,7 @@ export const getGraph: BrowserCommand = async ({ project }) => {
 // Pango uses CoreText on macOS by default, which ignores fontconfig, so the
 // fontconfig backend is forced to render text with the fonts in `private`, as
 // the production image does.
-const useProductionFonts = (): void => {
+const selectProductionFonts = (): void => {
   process.env.PANGOCAIRO_BACKEND ??= `fontconfig`
   process.env.FONTCONFIG_PATH ??= `private/fonts`
 }

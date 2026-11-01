@@ -1,8 +1,8 @@
-import { beforeEach, expect, test, vitest } from 'vitest'
+import { beforeEach, expect, test, vi } from 'vitest'
 
 beforeEach(() => {
   delete process.env.SITE_URL
-  vitest.resetModules()
+  vi.resetModules()
 })
 
 test(`SITE_URL is localhost when the environment variable is unset`, async () => {

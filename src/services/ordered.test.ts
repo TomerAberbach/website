@@ -2,10 +2,10 @@ import { expect, test } from 'vitest'
 import {
   frontMatter,
   postFrontMatter,
-  usePostsDirectory,
-} from '~/test/posts-directory.ts'
+  setUpPostsDirectory,
+} from '~/testing/posts-directory.ts'
 
-const { writePost } = usePostsDirectory()
+const { writePost } = setUpPostsDirectory()
 
 const getOrderedPosts = async () =>
   (await import(`./ordered.ts`)).getOrderedPosts()
@@ -49,7 +49,7 @@ test(`getOrderedPosts orders posts from newest to oldest`, async () => {
 
   const posts = await getOrderedPosts()
 
-  expect([...posts.keys()]).toEqual([
+  expect(posts.keys().toArray()).toStrictEqual([
     `newest`,
     `middle`,
     `https://example.com`,
@@ -97,19 +97,21 @@ test(`getOrderedPosts fills referencedBy from the posts that link to each post`,
 
   const posts = await getOrderedPosts()
 
-  expect(posts.get(`newest`)!.referencedBy).toEqual(
+  expect(posts.get(`newest`)!.referencedBy).toStrictEqual(
     new Map([
       [`middle`, `Middle`],
       [`oldest`, `Oldest`],
     ]),
   )
-  expect(posts.get(`middle`)!.referencedBy).toEqual(
+  expect(posts.get(`middle`)!.referencedBy).toStrictEqual(
     new Map([
       [`newest`, `Newest`],
       [`https://example.com`, `External`],
     ]),
   )
-  expect(posts.get(`https://example.com`)!.referencedBy).toEqual(new Map())
+  expect(posts.get(`https://example.com`)!.referencedBy).toStrictEqual(
+    new Map(),
+  )
 })
 
 test(`getOrderedPosts orders referencedBy from newest to oldest`, async () => {
@@ -117,7 +119,7 @@ test(`getOrderedPosts orders referencedBy from newest to oldest`, async () => {
 
   const posts = await getOrderedPosts()
 
-  expect([...posts.get(`middle`)!.referencedBy.keys()]).toEqual([
+  expect(posts.get(`middle`)!.referencedBy.keys().toArray()).toStrictEqual([
     `newest`,
     `https://example.com`,
   ])
@@ -128,5 +130,5 @@ test(`getOrderedMarkdownPosts excludes href posts`, async () => {
 
   const posts = await getOrderedMarkdownPosts()
 
-  expect([...posts.keys()]).toEqual([`newest`, `middle`, `oldest`])
+  expect(posts.keys().toArray()).toStrictEqual([`newest`, `middle`, `oldest`])
 })

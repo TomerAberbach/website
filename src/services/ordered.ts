@@ -78,7 +78,7 @@ export const getOrderedPosts: () => Promise<Map<string, Ordered<Post>>> = cache(
       ),
     )
 
-    for (const post of posts.values()) {
+    for (const post of posts) {
       post.referencedBy = new Map(
         [...post.referencedBy].sort(
           ([postId1], [postId2]) =>

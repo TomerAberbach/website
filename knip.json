@@ -3,7 +3,7 @@
   "entry": [
     "scripts/*.ts",
     "src/scripts/*.ts",
-    "src/test/*.{ts,tsx}",
+    "src/testing/*.{ts,tsx}",
     "types/*.d.ts"
   ],
   "project": ["src/**/*.{ts,tsx}", "scripts/*.ts", "*.{ts,js}"],

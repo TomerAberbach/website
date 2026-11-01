@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { placeEdgeLabels } from './edge-labels.ts'
-import { createGraph } from '~/test/graph.ts'
+import { createGraph } from '~/testing/graph.ts'
 
 const HREFS = [`https://site.com/one`, `https://site.com/two`]
 

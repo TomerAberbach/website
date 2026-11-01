@@ -34,7 +34,7 @@ website
 │   │   ├── render-post.tsx     # Renders post HTML with custom elements
 │   │   └── render-thumbnail.tsx # Renders a post's Open Graph image
 │   ├── styles/              # Tailwind and font stylesheets
-│   └── test/                # Test fixtures, helpers, and browser commands
+│   └── testing/             # Test fixtures, helpers, and browser commands
 ├── scripts/build.ts         # Production build, including font subsetting
 ├── wrangler.jsonc           # Serves `dist` on Cloudflare Workers with its `_redirects` and `_headers`
 └── types/                   # Ambient type declarations

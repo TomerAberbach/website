@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import type { FormEventHandler } from 'react'
+import type { SubmitEventHandler } from 'react'
 import {
   LogicalOperatorRadioButtonGroup,
   useLogicalOperator,
@@ -19,10 +19,9 @@ export const TagsFilterForm = ({
   const [selectedTags, setSelectedTags] = useSelectedTags(tags)
 
   // Prevent form submission when JavaScript is enabled.
-  const preventFormSubmission = useCallback<FormEventHandler<HTMLFormElement>>(
-    e => e.preventDefault(),
-    [],
-  )
+  const preventFormSubmission = useCallback<
+    SubmitEventHandler<HTMLFormElement>
+  >(e => e.preventDefault(), [])
 
   return (
     <form

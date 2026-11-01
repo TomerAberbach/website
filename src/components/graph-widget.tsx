@@ -57,6 +57,7 @@ const GraphWidget = ({
     () =>
       computeAltitudes({
         vertexIds: vertices.keys(),
+        // eslint-disable-next-line unicorn/prefer-iterator-to-array -- Safari before 18.4 lacks `Iterator#toArray`
         edges: [...edges.values()].map(({ fromId, toId }) => [fromId, toId]),
         selectedVertexId,
       }),
@@ -355,12 +356,10 @@ const Edge = ({
   const beforeLabelPosition = translatePosition(
     labelPosition,
     intersectedFromPosition.angle,
-    EDGE_LABEL_PADDING,
   )
   const afterLabelPosition = translatePosition(
     labelPosition,
     intersectedToPosition.angle,
-    EDGE_LABEL_PADDING,
   )
 
   const weight = hrefs.size
@@ -441,13 +440,9 @@ const intersectCircle = (
   return { x: end.x - dx, y: end.y - dy, angle }
 }
 
-const translatePosition = (
-  { x, y }: Position,
-  angle: number,
-  distance: number,
-): Position => {
-  const dx = Math.cos(angle) * distance
-  const dy = Math.sin(angle) * distance
+const translatePosition = ({ x, y }: Position, angle: number): Position => {
+  const dx = Math.cos(angle) * EDGE_LABEL_PADDING
+  const dy = Math.sin(angle) * EDGE_LABEL_PADDING
   return { x: x + dx, y: y + dy }
 }
 

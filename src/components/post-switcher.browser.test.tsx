@@ -2,12 +2,12 @@ import { expect, test, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import { PostSwitcher, useSelectedPostId } from './post-switcher.tsx'
 import { getHomeData } from '~/services/home-state.ts'
-import { createGraph } from '~/test/graph.ts'
+import { createGraph } from '~/testing/graph.ts'
 import {
   renderAtUrl,
   searchParamsProbe,
   searchParamsText,
-} from '~/test/url.tsx'
+} from '~/testing/url.tsx'
 
 // Newest first, as `getOrderedPosts` orders them.
 const GRAPH = createGraph({

@@ -149,8 +149,8 @@ const placeLeaves = ({
   const neighbors = new Map<string, Set<string>>()
   for (const { fromId, toId } of edges.values()) {
     if (core.has(fromId) && core.has(toId)) {
-      neighbors.set(fromId, new Set(neighbors.get(fromId) ?? []).add(toId))
-      neighbors.set(toId, new Set(neighbors.get(toId) ?? []).add(fromId))
+      neighbors.set(fromId, new Set(neighbors.get(fromId)).add(toId))
+      neighbors.set(toId, new Set(neighbors.get(toId)).add(fromId))
     }
   }
 
@@ -229,10 +229,10 @@ const translateBox = (box: Box, dx: number, dy: number): void => {
 
 /** Shifts the boxes so that they sit inside a padded bounding box. */
 const fitBoundingBox = (boxes: Map<string, Box>): GraphLayout => {
-  const minX = Math.min(...[...boxes.values()].map(box => box.left))
-  const minY = Math.min(...[...boxes.values()].map(box => box.top))
-  const maxX = Math.max(...[...boxes.values()].map(box => box.right))
-  const maxY = Math.max(...[...boxes.values()].map(box => box.bottom))
+  const minX = Math.min(...boxes.values().map(box => box.left))
+  const minY = Math.min(...boxes.values().map(box => box.top))
+  const maxX = Math.max(...boxes.values().map(box => box.right))
+  const maxY = Math.max(...boxes.values().map(box => box.bottom))
   return {
     boundingBox: {
       width: maxX - minX + PADDING * 2,

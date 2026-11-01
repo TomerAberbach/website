@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
-import { usePostsFixture } from '~/test/posts-fixture.ts'
+import { setUpPostsFixture } from '~/testing/posts-fixture.ts'
 
-usePostsFixture()
+setUpPostsFixture()
 
 const loadFeed = async () => {
   const { getFeed } = await import(`./feed.json.ts`)
@@ -17,7 +17,7 @@ test(`the json feed is served as json`, async () => {
   expect(response.headers.get(`Content-Type`)).toBe(
     `application/json; charset=utf-8`,
   )
-  expect(await response.json()).toMatchObject({
+  await expect(response.json()).resolves.toMatchObject({
     version: `https://jsonfeed.org/version/1.1`,
   })
 })
@@ -38,7 +38,7 @@ test(`the json feed lists the markdown posts newest first`, async () => {
   const feed = await loadFeed()
 
   const items = feed.items as { id: string }[]
-  expect(items.map(item => item.id)).toEqual([
+  expect(items.map(item => item.id)).toStrictEqual([
     `newer-post`,
     `older-post`,
     `oldest-post`,

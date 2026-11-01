@@ -21,7 +21,7 @@ test.each([
 
   const references = parseReferences([href])
 
-  expect(references).toEqual(new Map())
+  expect(references).toStrictEqual(new Map())
 })
 
 test.each([
@@ -39,7 +39,7 @@ test.each([
 
   const references = parseReferences([href])
 
-  expect(references).toEqual(new Map([[reference, new Set([href])]]))
+  expect(references).toStrictEqual(new Map([[reference, new Set([href])]]))
 })
 
 test(`parseReferences groups the hrefs of one reference into a set`, async () => {
@@ -51,7 +51,7 @@ test(`parseReferences groups the hrefs of one reference into a set`, async () =>
     `https://example.com/a`,
   ])
 
-  expect(references).toEqual(
+  expect(references).toStrictEqual(
     new Map([
       [
         `example.com`,
@@ -70,7 +70,7 @@ test(`parseHrefs collects the href of every anchor element in the tree`, async (
 
   const hrefs = parseHrefs(tree)
 
-  expect(hrefs).toEqual(new Set([`https://example.com`, `/post`]))
+  expect(hrefs).toStrictEqual(new Set([`https://example.com`, `/post`]))
 })
 
 test(`parseHrefs skips anchor elements without an href`, async () => {
@@ -79,5 +79,5 @@ test(`parseHrefs skips anchor elements without an href`, async () => {
 
   const hrefs = parseHrefs(tree)
 
-  expect(hrefs).toEqual(new Set())
+  expect(hrefs).toStrictEqual(new Set())
 })

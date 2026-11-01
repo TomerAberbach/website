@@ -3,7 +3,7 @@ import { measureFan } from './graph-geometry.ts'
 import { getVertexBox, layoutGraph } from './graph-layout.ts'
 import type { Box, GraphLayout, Position } from './graph-layout.ts'
 import type { Graph } from './graph.ts'
-import { createGraph } from '~/test/graph.ts'
+import { createGraph } from '~/testing/graph.ts'
 
 const range = (count: number): number[] =>
   Array.from({ length: count }, (_, index) => index)
@@ -135,8 +135,8 @@ test(`every vertex is positioned inside the bounding box`, () => {
 
   const layout = layoutGraph(graph)
 
-  expect([...layout.positions.keys()].sort()).toStrictEqual(
-    [...graph.vertices.keys()].sort(),
+  expect(layout.positions.keys().toArray().sort()).toStrictEqual(
+    graph.vertices.keys().toArray().sort(),
   )
   expect(findPositionsOutside(layout)).toStrictEqual([])
 })
