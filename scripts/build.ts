@@ -20,7 +20,7 @@ await $`rm -rf ${buildPaths}`
 await $`astro build`
 const fontsBuildPath = fromRoot(`private/fonts/build`)
 await $`mkdir -p ${fontsBuildPath}`
-const runServerCommand = `astro preview --port 3000`
+const runServerCommand = `astro preview --port 3000 --ignore-lock`
 const glyphhangerCommand = `glyphhanger http://localhost:3000 --spider-limit=0 --formats=woff,woff2 --subset=${fromRoot(`private/fonts/*.ttf`)} --output=${fontsBuildPath}`
 await $({
   // `get-stdin` hangs inside `glyphhanger` without this.
