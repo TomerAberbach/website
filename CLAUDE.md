@@ -37,16 +37,17 @@ website
 │   └── testing/             # Test fixtures, helpers, and browser commands
 ├── scripts/build.ts         # Production build, including font subsetting
 ├── wrangler.jsonc           # Serves `dist` on Cloudflare Workers with its `_redirects` and `_headers`
-└── types/                   # Ambient type declarations
+├── types/                   # Ambient type declarations
+└── .claude/hooks/lint-format.sh # Lints and formats each written file
 ```
 
 ## Commands
 
 - `pnpm dev` runs the development server.
-- `pnpm check` runs every check CI runs.
+- `pnpm check` runs every check CI runs. Run it before handing work back.
 - `pnpm test:node --run <file>` runs a server-side test file.
   `pnpm test:browser --run <file>` runs a component test file in Chromium and
-  WebKit.
+  WebKit. Add `-u` to rewrite the file's screenshot references.
 - `pnpm build` produces the production build, which requires `fonttools`.
 - `pnpm preview` serves the production build the way Cloudflare does.
 - `pnpm deploy` deploys the production build. CI deploys every push to `main`.

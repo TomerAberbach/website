@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm format *)",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm typecheck *)",
+      "Bash(pnpm knip *)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm test:node *)",
+      "Bash(pnpm test:browser *)",
+      "Bash(pnpm coverage *)",
+      "Bash(pnpm build *)",
+      "Bash(pnpm check *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-format.sh",
+            "statusMessage": "Linting and formatting..."
+          }
+        ]
+      }
+    ]
+  }
+}
