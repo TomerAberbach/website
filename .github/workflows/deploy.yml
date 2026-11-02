@@ -31,6 +31,11 @@ jobs:
           cache: true
           run_install: true
 
+      # The restored pnpm store skips puppeteer's postinstall, which downloads
+      # Chrome outside the store.
+      - name: Install Chrome
+        run: pnpm rebuild puppeteer
+
       # For glyphhanger
       - name: Install fonttools
         run: pip3 install fonttools[woff]
