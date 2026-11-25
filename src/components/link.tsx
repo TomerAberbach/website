@@ -31,7 +31,9 @@ const InternalLink = (props: LinkProps) => (
   <a {...withFocusRingClassName(props)} />
 )
 
-const withFocusRingClassName = <Props extends { className?: string }>({
+const withFocusRingClassName = <
+  Props extends { className?: string | undefined },
+>({
   className,
   ...restProps
 }: Props) => ({ ...restProps, className: clsx(className, `focus-ring`) })

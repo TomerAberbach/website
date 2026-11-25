@@ -142,8 +142,8 @@ export type Vertex = InternalVertex | ExternalVertex
 
 export type InternalVertex = BaseVertex & {
   type: `internal`
-  previous?: string
-  next?: string
+  previous?: string | undefined
+  next?: string | undefined
   href: string
 }
 

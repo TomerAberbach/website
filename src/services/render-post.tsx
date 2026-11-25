@@ -26,7 +26,9 @@ const Section: Components[`section`] = props => {
 }
 
 const createHeading =
-  <Type extends `h${1 | 2 | 3 | 4 | 5 | 6}`>(type: Type): Components[Type] =>
+  <Type extends `h${1 | 2 | 3 | 4 | 5 | 6}`>(
+    type: Type,
+  ): NonNullable<Components[Type]> =>
   props => {
     if (!(`id` in props) || props.id === `footnote-label`) {
       return createElement(type, props)

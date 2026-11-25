@@ -20,7 +20,7 @@ export const formatDateForDisplay = (date: Date): string =>
 
 export type Dates = {
   published: Date
-  updated?: Date
+  updated?: Date | undefined
 }
 
 export const formatMinutesToRead = (minutesToRead: number): string =>
