@@ -18,7 +18,7 @@ const GraphFactsCarousel = ({
   // fades in instead of being swapped out.
   const [shuffledFacts, setShuffledFacts] = useState<GraphFact[] | null>(null)
   useEffect(() => {
-    // eslint-disable-next-line react-you-might-not-need-an-effect/no-adjust-state-on-prop-change -- Shuffling during render would make hydration differ from the server render
+    // eslint-disable-next-line react-you-might-not-need-an-effect/no-derived-state -- Shuffling during render would make hydration differ from the server render
     setShuffledFacts(shuffle(facts))
   }, [facts])
 
@@ -36,6 +36,7 @@ const GraphFactsCarousel = ({
       document.hidden ||
       matchMedia(`(prefers-reduced-motion: reduce)`).matches
     ) {
+      // eslint-disable-next-line react-you-might-not-need-an-effect/no-external-store-subscription -- The preference is read once per index change instead of being subscribed to
       setDisplayedIndex(index)
       return
     }

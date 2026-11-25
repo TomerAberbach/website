@@ -6,7 +6,7 @@ const Tooltip = ({
   content,
   children,
 }: {
-  id?: string
+  id?: string | undefined
   content: ReactNode
   children: ReactNode | ((tooltipId: string) => ReactNode)
 }) => {
@@ -45,7 +45,7 @@ const BaseTooltip = ({
   content,
   children,
 }: {
-  id?: string
+  id?: string | undefined
   content: ReactNode
   children: ReactNode
 }) => (
