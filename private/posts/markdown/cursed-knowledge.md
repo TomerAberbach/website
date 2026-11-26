@@ -3,8 +3,9 @@ title: 'Cursed Knowledge'
 tags:
   [
     'bugs',
-    'code',
     'c#',
+    'code',
+    'compatibility',
     'dates',
     'engineering',
     'java',
@@ -18,12 +19,54 @@ tags:
   ]
 dates:
   published: 2025-08-25
-  updated: 2025-12-03
+  updated: 2026-11-25
 ---
 
 Cursed knowledge I have learned over time that I wish I never knew. Inspired by
 [Immich's Cursed Knowledge](https://immich.app/cursed-knowledge). The knowledge
 is ordered from most to least recently learned.
+
+## > C# `System.Text.Json` escaping is cursed
+
+`System.Text.Json`
+[escapes HTML-sensitive characters by default](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/character-encoding)
+in case the JSON ends up in an HTML page. These characters include `+`:
+
+```csharp
+Console.WriteLine(JsonSerializer.Serialize("1+1"));
+//=> "1\u002B1"
+```
+
+This is cursed because most JSON never ends up in an HTML page. The code that
+writes the HTML should do the escaping.
+
+## > C# enum members are cursed
+
+[C# enum members](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum)
+are compile-time constants. The compiler inlines them into the DLLs that use
+them.
+
+Suppose a library reorders its enum's members in a later version:
+
+```csharp
+// Version 1
+public enum Color { Red, Green }
+
+// Version 2
+public enum Color { Green, Red }
+```
+
+A DLL compiled against version 1 that uses `Color.Red` contains `0`, which means
+`Color.Green` in version 2.
+
+This can easily happen because of dependency version resolution. If your
+dependency tree requests multiple versions of the library, then
+[NuGet chooses one of them](https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution),
+so some of your dependencies may run against a different version than the one
+they were compiled against.
+
+This is cursed because reordering enum members looks harmless, but it silently
+changes the meaning of already compiled code.
 
 ## > Ajv `multipleOf` validation is cursed
 
